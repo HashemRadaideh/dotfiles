@@ -37,8 +37,7 @@ cd ~/arc && ~/arc/autogen.sh --prefix=/usr
 sudo make -C ~/arc install
 cd && rm -rf ~/arc
 
-ln -s ~/dotfiles/config/.bin ~/.bin
-ln -s ~/dotfiles/config/Media ~/Media
+ln -s ~/dotfiles/bin ~/.bin
 git clone https://github.com/HashemRadaideh/Studies ~/Studies
 
 # paru -Qq OR paru -Qe | awk '{print $1}'

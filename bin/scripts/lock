@@ -5,7 +5,8 @@ scrot /tmp/screenshot.png;
 # xwobf -s 11 /tmp/screenshot.png;
 
 convert /tmp/screenshot.png -blur 0x20 /tmp/screenshotblur.png;
-convert /tmp/screenshotblur.png $HOME/.bin/misc/banner.png -gravity center -composite -matte /tmp/screenlock.png;
+convert /tmp/screenshotblur.png $HOME/.bin/misc/banner.png \
+  -gravity center -composite -matte /tmp/screenlock.png;
 
 i3lock -i "/tmp/screenlock.png" \
   --color "00000000" \

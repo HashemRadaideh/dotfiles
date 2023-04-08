@@ -11,12 +11,6 @@ alias viewxkblayouts="lsxkblayouts | less -M"
 alias viewxkbvariants="lsxkbvariants | less -M"
 alias viewxkboptions="lsxkboptions | less -M"
 
-# lf configurations
-source "$HOME/.config/zsh/lf.sh"
-
-# Git configurations 
-source "$HOME/.config/zsh/git.sh"
-
 # startx alias
 alias x="startx"
 
