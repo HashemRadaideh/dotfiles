@@ -1,0 +1,91 @@
+#  lf file manager config file
+
+# Settings
+set cleaner ~/.config/lf/cleaner
+set previewer ~/.config/lf/preview
+set preview true
+
+# set drawbox true
+set icons true
+set ratios 1:2:3
+
+set ignorecase true
+# set hidden true
+map <backspace> :set hidden!
+
+# Functions
+cmd q :quit
+cmd wq :quit
+cmd wqa :quit
+cmd x :quit
+cmd xa :quit
+
+cmd find_files ${{
+	printf "File name: "
+	read name
+  temp=$(sudo find / -iname $name)
+  echo $temp | fzf
+}}
+
+map f :find_files
+
+# find files with fzf
+cmd fzf_jump ${{
+	dirs="$(find . -maxdepth 3 | fzf --header='Jump to:')"
+	if [ -f "$dirs" ]; then
+		cmd="select"
+	elif [ -d "$dirs" ]; then
+		cmd="cd"
+	fi
+  lf -remote "send $id $cmd \"$dirs\""
+}}
+
+map <space>
+map <space>ff :fzf_jump
+
+# create a new file with path
+cmd create_file ${{
+  printf "File name: "
+  read name
+
+  last_char="$(echo "${name:${#name}-1:1}")"
+  if [[ $last_char == "/" ]]; then
+    mkdir -p $name
+    exit
+  fi
+
+  if echo "$name" | grep -q "/"; then
+    mkdir -p $(sed 's/\(.*\)\/.*/\1/' <<< $name) && touch $name 
+    exit
+  fi
+
+  touch $name
+}}
+
+map a :create_file
+
+cmd set_wallpaper ${{
+  nitrogen --set-zoom-fill "$f"
+  # wal -q -i "$f"
+}}
+
+map <c-w> :set_wallpaper
+
+# Mappings
+
+# open file in vscode
+map c $code "$f"
+
+# open file in default editor ($EDITOR variable)
+map e $$EDITOR "$f"
+
+# open file in default gui editor ($VISUAL variable)
+map v $$VISUAL "$f"
+
+map d
+
+map dd $trash-put "$f"
+map dr $trash-restore
+
+map <enter> :toggle
+map <backspace2> :unselect

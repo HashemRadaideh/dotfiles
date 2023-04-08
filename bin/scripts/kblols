@@ -1,0 +1,39 @@
+#!/bin/zsh
+# KeyBoard Language Or Layout  Switcher (kblols)
+
+CURRENT_LANGUAGE="$(setxkbmap -query | grep -E 'layout|variant' | awk '{print $2}')"
+
+# localectl list-keymaps | grep 'dvorak'
+# localectl list-x11-keymap-variants us | grep 'dvorak'
+
+# languages
+# etxkbmap -layout ara
+
+# layouts
+# setxkbmap -layout us
+# setxkbmap -layout us -variant colemak
+# setxkbmap -layout us -variant dvorak
+# setxkbmap -layout us -variant dvorak-programmer
+
+# setxkbmap -layout us,ara -option grp:caps_toggle
+# grep "grp:.*toggle" /usr/share/X11/xkb/rules/base.lst | bat
+
+# switch=0
+#
+# case $switch in 
+#   1) etxkbmap -layout ara;;
+#   setxkbmap -layout us
+#   setxkbmap -layout us -variant colemak
+#   setxkbmap -layout us -variant dvorak
+#   setxkbmap -layout us -variant dvorak-programmer
+# esac
+
+if setxkbmap -query | grep -q us,ara ; then 
+  setxkbmap -layout es,de,fr;
+  # -layout us,ara,es,de,fr
+  # -layout us,us,us -variant qwerty,colemak,dvorak-programmer
+else 
+  setxkbmap -layout us,ara;
+fi
+
+xmodmap -e 'keycode 135 = Super_R'

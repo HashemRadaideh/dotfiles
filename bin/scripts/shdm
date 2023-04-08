@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+# Simple display manager
+
+file="$(fzf --layout=reverse --cycle <<< `echo "$(/bin/ls ~/.scripts/xinit | sort)\nfuzmux/tmux\n$(tty)\npower off\nreboot\nexit"`)"
+
+if [ -n "$file" ]; then
+  case "$file" in
+    "exit") exit ;;
+    "power off") systemctl poweroff ;;
+    "reboot") systemctl reboot ;;
+    "tmux/fuzmux") fuzmux ;;
+    "$(tty)") \clear && return ;;
+    *) startx ~/.scripts/xinit/"$file" ;;
+  esac
+fi

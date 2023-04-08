@@ -1,0 +1,21 @@
+#!/bin/zsh
+
+for temp in "$@"; do
+  if [[ `gfold "$temp"` ]]; then
+    for dir in `gfold -d json "$temp" | grep "parent" | awk '{print $2}' | sed 's/"\(.*\)",/\1/' | sort -u`; do
+      for repo in `gfold -d json "$dir" | grep "name" | awk '{print $2}' | sed 's/"\(.*\)",/\1/'`; do
+        if [ -d "$dir/$repo" ]; then
+          printf "Updating %s/%s\n" "$dir" "$repo"
+          git -C "$dir/$repo" pull;
+        fi
+      done
+    done
+  else
+    if [ -d "$temp" ]; then
+      printf "Updating %s\n" "$temp"
+      git -C "$temp" pull;
+    fi
+  fi
+done
+
+# vim: set ts=2 sw=2 et:

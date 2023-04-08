@@ -1,0 +1,64 @@
+#!/bin/zsh
+
+run() {
+  if ! pgrep -u "$USER" -f "$1" > /dev/null; then
+    "$@" &
+  fi
+}
+
+# ps -u $(id -u) -o pid= \
+#   | xargs -I PID -r cat /proc/PID/environ 2> /dev/null \
+#   | tr '\0' '\n' \
+#   | grep '^DISPLAY=:' \
+#   | sed 's/.*\([0-9]\)/\1/g' \
+#   | sort -u
+
+# declare -A disps usrs
+# usrs=()
+# disps=()
+#
+# for i in $(users);do
+#     [[ $i = root ]] && continue # skip root
+#     usrs[$i]=1
+# done # unique names
+#
+# for u in "${!usrs[@]}"; do
+#     for i in $(sudo ps e -u "$u" | sed -rn 's/.* DISPLAY=(:[0-9]*).*/\1/p');do
+#         disps[$i]=$u
+#     done
+# done
+#
+# for d in "${!disps[@]}";do
+#     echo "User: ${disps[$d]}, Display: $d"
+# done
+
+nitrogen --head="0" --set-zoom-fill --random "$HOME/Media/Pictures/Wallpapers"
+# run wal -i "$HOME/Media/Pictures/Wallpapers"
+# run feh --bg-fill --randomize "$HOME/Media/Pictures/Wallpapers"
+
+run nm-applet
+# run volumeicon
+
+# run komorebi
+# run polybar
+# run conky -c $HOME/.config/conky/conky.conf
+
+# run picom -b --experimental-backends --config "$HOME/.config/picom/picom.conf"
+run picom --config "$HOME/.config/picom/picom.conf"
+run /usr/bin/emacs --daemon 
+run gnome-keyring-daemon --start
+
+run locker
+# run xset -b
+# run xset r rate 250 30
+# run xset m
+# run xset s off
+# run xset s noblank
+# run xset -dpms
+# run xscreensaver -no-splash
+
+run discord --start-minimized
+# run teams
+# run zoom
+# run steam
+# run spotify

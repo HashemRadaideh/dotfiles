@@ -1,0 +1,6 @@
+[submodule "lfimg"]
+  path = lfimg
+  url = https://github.com/cirala/lfimg
+[submodule "lf-gadgets"]
+  path = lf-gadgets
+  url = https://github.com/slavistan/lf-gadgets.git

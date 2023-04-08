@@ -1,0 +1,266 @@
+#!/bin/python
+
+from tkinter import Tk, Text, messagebox
+from tkinter.ttk import Button, Style
+from tkinter.constants import W, E, END
+
+
+class Calculator():
+    def __init__(self):
+        self.__num = ''
+        self.__equation = []
+
+        Style().configure(
+            "TButton",
+            padding=(0, 5, 0, 5),
+            font=("Fira Code", 15, "normal")
+        )
+
+        self.__display = Text(height=2, width=1,
+                              font=("Fira Code", 20, "normal"))
+        self.__display.grid(row=0, columnspan=4, sticky=W+E)
+
+        Button(text="Cle",
+               command=lambda: self.__function("Cle")
+               ).grid(row=1, column=0)
+
+        Button(text='Cls',  # padding=(65, 5, 65, 5),
+               command=lambda: self.__function("Cls")
+               ).grid(row=1, column=1)  # , columnspan=2)
+
+        Button(text="Back",
+               command=lambda: self.__function("Back")
+               ).grid(row=1, column=2)
+
+        Button(text='Refresh',
+               command=lambda: self.__function('Refresh')
+               ).grid(row=1, column=3)
+
+        # ----------------------------------------
+
+        Button(text="(",
+               command=lambda: self.__number("(")
+               ).grid(row=5, column=0)
+
+        Button(text=")",
+               command=lambda: self.__number(")")
+               ).grid(row=5, column=1)
+
+        Button(text="%",
+               command=lambda: self.__operator("%")
+               ).grid(row=5, column=2)
+
+        Button(text="/",
+               command=lambda: self.__operator("/")
+               ).grid(row=5, column=3)
+
+        # ----------------------------------------
+
+        Button(text="7",
+               command=lambda: self.__number("7")
+               ).grid(row=6, column=0)
+
+        Button(text="8",
+               command=lambda: self.__number("8")
+               ).grid(row=6, column=1)
+
+        Button(text="9",
+               command=lambda: self.__number("9")
+               ).grid(row=6, column=2)
+
+        Button(text="*",
+               command=lambda: self.__operator("*")
+               ).grid(row=6, column=3)
+
+        # ----------------------------------------
+
+        Button(text="4",
+               command=lambda: self.__number("4")
+               ).grid(row=7, column=0)
+
+        Button(text="5",
+               command=lambda: self.__number("5")
+               ).grid(row=7, column=1)
+
+        Button(text="6",
+               command=lambda: self.__number("6")
+               ).grid(row=7, column=2)
+
+        Button(text="-",
+               command=lambda: self.__operator("-")
+               ).grid(row=7, column=3)
+
+        # ----------------------------------------
+
+        Button(text="1",
+               command=lambda: self.__number("1")
+               ).grid(row=8, column=0)
+
+        Button(text="2",
+               command=lambda: self.__number("2")
+               ).grid(row=8, column=1)
+
+        Button(text="3",
+               command=lambda: self.__number("3")
+               ).grid(row=8, column=2)
+
+        Button(text="+",
+               command=lambda: self.__operator("+")
+               ).grid(row=8, column=3)
+
+        # ----------------------------------------
+
+        Button(text='-/+',
+               command=lambda: self.__number("-")
+               ).grid(row=9, column=0)
+
+        Button(text="0",
+               command=lambda: self.__number("0")
+               ).grid(row=9, column=1)
+
+        Button(text=".",
+               command=lambda: self.__number(".")
+               ).grid(row=9, column=2)
+
+        Button(text="=",
+               command=lambda: self.__operator("=")
+               ).grid(row=9, column=3)
+
+    def __number(self, num):
+        if num == '.':
+            if '.' in self.__num:
+                pass
+            else:
+                self.__num += '.'
+                self.__display.delete(1.0, END)
+                self.__display.insert(1.0, self.__num)
+        elif num == '(':
+            self.__num = '(' + self.__num
+            self.__display.delete(1.0, END)
+            self.__display.insert(1.0, self.__num)
+        elif num == ')':
+            self.__num += ')'
+            self.__display.delete(1.0, END)
+            self.__display.insert(1.0, self.__num)
+        elif num == '-':
+            if '-' in self.__num:
+                self.__num = self.__num[1:]
+                self.__display.delete(1.0, END)
+                self.__display.insert(1.0, self.__num)
+            else:
+                self.__num = '-' + self.__num
+                self.__display.delete(1.0, END)
+                self.__display.insert(1.0, self.__num)
+        else:
+            self.__num += num
+            self.__display.delete(1.0, END)
+            self.__display.insert(1.0, self.__num)
+
+    def __operator(self, op):
+        if op == '=':
+            if self.__num == '':
+                self.__equation.append("0")
+            else:
+                self.__equation.append(self.__num)
+            try:
+                calculation = ''
+                for operand in self.__equation:
+                    calculation += operand
+                calculation = str(eval(calculation))
+                self.__display.delete(1.0, END)
+                self.__display.insert(1.0, calculation)
+                self.__equation = []
+                self.__num = calculation
+            except ZeroDivisionError:
+                self.__error("Can't divide by zero >:{")
+            except TypeError:
+                self.__error("Invalid input")
+            except SyntaxWarning:
+                self.__error("Wrong syntax")
+            except ValueError:
+                self.__error("The fuck just happend?")
+            except:
+                self.__error("Something went wrong")
+        else:
+            if self.__num == '':
+                self.__equation.append("0")
+            else:
+                self.__equation.append(self.__num)
+            self.__equation.append(op)
+            self.__display.delete(1.0, END)
+            self.__num = ''
+
+    def __function(self, fun):
+        if fun == 'Cle':
+            self.__display.delete(1.0, END)
+            self.__num = ''
+            self.__equation = []
+        elif fun == 'Back':
+            self.__num = self.__num[:-1]
+            self.__display.delete(1.0, END)
+            self.__display.insert(1.0, self.__num)
+        elif fun == 'Cls':
+            self.__display.delete(1.0, END)
+            self.__num = ''
+        elif fun == 'Refresh':
+            self.__display.delete(1.0, END)
+            self.__display.insert(1.0, self.__num)
+
+    def __error(self, msg):
+        messagebox.showwarning(title='Warning', message=f'{msg}')
+
+
+def main():
+    window = Tk()
+    window.title("Calculator")
+    window.resizable(False, False)
+    Calculator()
+    window.mainloop()
+
+
+if __name__ == '__main__':
+    main()
+
+
+# Frame
+# super().__init__()
+# Style().configure("TFrame", background='#C0C0C0')
+
+# self.columnconfigure(0, pad=3)
+# self.columnconfigure(1, pad=3)
+# self.columnconfigure(2, pad=3)
+# self.columnconfigure(3, pad=3)
+# self.rowconfigure(0, pad=3)
+# self.rowconfigure(1, pad=3)
+# self.rowconfigure(2, pad=3)
+# self.rowconfigure(3, pad=3)
+# self.rowconfigure(4, pad=3)
+
+# for i in range(len(self.__equation)):
+#     if i % 2:
+#         self.__operators.append(self.__equation[i])
+#     else:
+#         self.__numbers.append(float(self.__equation[i]))
+
+# self.master.destroy()
+
+# self.__clear =
+# self.__back =
+# self.__cls =
+# self.__close =
+# self.__seven =
+# self.__eight =
+# self.__nine =
+# self.__divide =
+# self.__four =
+# self.__five =
+# self.__six =
+# self.__multiply =
+# self.__one =
+# self.__two =
+# self.__three =
+# self.__minus =
+# self.__zero =
+# self.__dot =
+# self.__equal =
+# self.__plus =
