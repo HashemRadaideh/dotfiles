@@ -1,6 +1,6 @@
-#!/bin/zsh
+#!/bin/sh
 
-sudo pacman -S git
+sudo pacman -S git zsh
 
 git clone https://aur.archlinux.org/paru.git ~/paru
 makepkg -si ~/paru/PKGBUILD
@@ -38,6 +38,7 @@ sudo make -C ~/arc install
 cd && rm -rf ~/arc
 
 ln -s ~/dotfiles/bin ~/.bin
+ln -s ~/dotfiles/Media/ ~/Media
 git clone https://github.com/HashemRadaideh/Studies ~/Studies
 
 # paru -Qq OR paru -Qe | awk '{print $1}'
@@ -75,7 +76,6 @@ paru -Syyuu \
   tmux \
   byobu \
   fzf \
-  zsh \
   kitty \
   picom \
   nitrogen \
