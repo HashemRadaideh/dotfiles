@@ -9,30 +9,19 @@ rm -rf ~/paru
 echo 'export ZDOTDIR="$HOME/.config/zsh"' | sudo tee -a /etc/zsh/zshenv
 chsh -s /bin/zsh
 
-ln -s ~/dotfiles/config/alacritty ~/.config/alacritty
-ln -s ~/dotfiles/config/awesome ~/.config/awesome
-ln -s ~/dotfiles/config/fish ~/.config/fish
-ln -s ~/dotfiles/config/kitty ~/.config/kitty
-ln -s ~/dotfiles/config/lf ~/.config/lf
-ln -s ~/dotfiles/config/nvim ~/.config/nvim
-ln -s ~/dotfiles/config/picom ~/.config/picom
-ln -s ~/dotfiles/config/qtile ~/.config/qtile
-ln -s ~/dotfiles/config/qutebrowser ~/.config/qutebrowser
-ln -s ~/dotfiles/config/rofi ~/.config/rofi
-ln -s ~/dotfiles/config/starship ~/.config/starship
-ln -s ~/dotfiles/config/tmux ~/.config/tmux
-ln -s ~/dotfiles/config/zsh ~/.config/zsh
-
-ln -s ~/dotfiles/bin ~/.bin
-ln -s ~/dotfiles/Media/ ~/Media
-git clone https://github.com/HashemRadaideh/Studies ~/Studies
-
-git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
-
-git clone https://github.com/horst3180/arc-icon-theme --depth 1 ~/arc
-cd ~/arc && ~/arc/autogen.sh --prefix=/usr
-sudo make -C ~/arc install
-cd && rm -rf ~/arc
+rm ~/.config/alacritty
+rm ~/.config/awesome
+rm ~/.config/fish
+rm ~/.config/kitty
+rm ~/.config/lf
+rm ~/.config/nvim
+rm ~/.config/picom
+rm ~/.config/qtile
+rm ~/.config/qutebrowser
+rm ~/.config/rofi
+rm ~/.config/starship
+rm ~/.config/tmux
+rm ~/.config/zsh
 
 git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
 ~/.config/emacs/bin/doom install
@@ -41,8 +30,19 @@ ln -s ~/dotfiles/config/doom ~/.config/doom
 ~/.config/emacs/bin/doom install
 ~/.config/emacs/bin/doom sync
 
+git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
+
+git clone https://github.com/horst3180/arc-icon-theme --depth 1 ~/arc
+cd ~/arc && ~/arc/autogen.sh --prefix=/usr
+sudo make -C ~/arc install
+cd && rm -rf ~/arc
+
+rm ~/.bin
+rm ~/Media
+rm ~/Studies
+
 # paru -Qq OR paru -Qe | awk '{print $1}'
-paru -Syyuu \
+paru -R \
   ttf-firacode-nerd \
   ttf-sourcecodepro-nerd \
   ttf-jetbrains-mono-nerd \
@@ -174,4 +174,4 @@ paru -Syyuu \
 
 rustup default stable
 
-cargo install tock gfold
+cargo uninstall tock gfold
