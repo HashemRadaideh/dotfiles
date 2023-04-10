@@ -152,7 +152,7 @@ if [[ -z "$DISPLAY" ]] ; then
   set bell-style none
 
   autoload -Uz add-zsh-hook
-  add-zsh-hook precmd set-prompt
+  hash-prompt
 
   if [[ -z "$TMUX" ]]; then
     file="$(fzf --layout=reverse --cycle <<< `echo "$(\ls ~/.bin/xinit | sort)\ntmux\n$(tty)\npower off\nreboot\nsleep\nlogout"`)"
@@ -170,10 +170,40 @@ if [[ -z "$DISPLAY" ]] ; then
     fi
   fi
 else
+  # Fetch machine's specs.
+  neofetch
+
   # Use the starship prompt.
   export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
   eval "$(starship init zsh)"
 
-  # Fetch machine's specs.
-  neofetch
+  zle-line-init() {
+    emulate -L zsh
+
+    [[ $CONTEXT == start ]] || return 0
+
+    while true; do
+      zle .recursive-edit
+      local -i ret=$?
+      [[ $ret == 0 && $KEYS == $'\4' ]] || break
+      [[ -o ignore_eof ]] || exit 0
+    done
+
+    local saved_prompt=$PROMPT
+    local saved_rprompt=$RPROMPT
+    PROMPT='$(STARSHIP_CONFIG=~/.config/starship/config-transient.toml starship prompt --terminal-width="$COLUMNS" --keymap="${KEYMAP:-}" --status="$STARSHIP_CMD_STATUS" --pipestatus="${STARSHIP_PIPE_STATUS[*]}" --cmd-duration="${STARSHIP_DURATION:-}" --jobs="$STARSHIP_JOBS_COUNT")'
+    RPROMPT=''
+    zle .reset-prompt
+    PROMPT=$saved_prompt
+    RPROMPT=$saved_rprompt
+
+    if (( ret )); then
+      zle .send-break
+    else
+      zle .accept-line
+    fi
+    return ret
+  }
+
+  zle -N zle-line-init
 fi

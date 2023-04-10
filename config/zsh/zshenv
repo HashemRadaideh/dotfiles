@@ -46,17 +46,17 @@ export PATH="$PATH:$HOME/.bin/scripts:$HOME/.local/bin:$XDG_DATA_HOME/cargo/bin:
 export FILEMANAGER="lf"
 
 # $EDITOR use nvim
-export EDITOR="nvim"  
+export EDITOR="nvim"
 
 # $OPENER use xdg-open
-export OPENER="xdg-open"  
+export OPENER="xdg-open"
 
 # $TERM Sets the terminal
-# export TERM="alacritty"  
-export TERM="kitty"  
+export TERM="alacritty"
+# export TERM="kitty"
 
 # $VISUAL uses Emacs in GUI mode
-export VISUAL="/usr/bin/emacsclient --alternate-editor='/usr/bin/emacs' --create-frame"  
+export VISUAL="/usr/bin/emacsclient --alternate-editor='/usr/bin/emacs' --create-frame"
 
 # $PAGER uses bat with colors enabled
 export PAGER="bat --decorations=always --color=always --paging=always"
