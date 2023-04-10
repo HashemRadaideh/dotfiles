@@ -4,7 +4,7 @@ configuration{
     font: "JetBrainsMono Nerd Font 14";
     show-icons: true;
     icon-theme: "Oranchelo";
-    terminal: "st";
+    terminal: "kitty";
     drun-display-format: "{icon} {name}";
     location: 0;
     disable-history: false;
@@ -27,7 +27,8 @@ configuration{
     fg-col: #D9E0EE;
     fg-col2: #F28FAD;
     grey: #D9E0EE;
-    width: 600;
+    height: 900px;
+    width: 600px;
 }
 
 element-text, element-icon , mode-switcher {
@@ -36,7 +37,6 @@ element-text, element-icon , mode-switcher {
 }
 
 window {
-    height: 360px;
     border: 3px;
     border-color: @border-col;
     background-color: @bg-col;
@@ -98,7 +98,7 @@ element selected {
 
 mode-switcher {
     spacing: 0;
-  }
+}
 
 button {
     padding: 10px;
@@ -112,5 +112,3 @@ button selected {
   background-color: @bg-col;
   text-color: @blue;
 }
-
-/* https://github.com/catppuccin/rofi/blob/main/.config/rofi/config.rasi */

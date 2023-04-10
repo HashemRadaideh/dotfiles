@@ -24,10 +24,9 @@ ln -s ~/dotfiles/config/tmux ~/.config/tmux
 ln -s ~/dotfiles/config/zsh ~/.config/zsh
 
 ln -s ~/dotfiles/bin ~/.bin
-ln -s ~/dotfiles/Media/ ~/Media
-git clone https://github.com/HashemRadaideh/Studies ~/Studies
+ln -s ~/dotfiles/Media ~/Media
 
-git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
+git clone https://github.com/tmux-plugins/tpm ~/dotfiles/config/tmux/plugins/tpm
 
 git clone https://github.com/horst3180/arc-icon-theme --depth 1 ~/arc
 cd ~/arc && ~/arc/autogen.sh --prefix=/usr
@@ -61,6 +60,8 @@ paru -Syyuu \
   octave \
   pypy \
   python \
+  bun-bin \
+  nodejs \
   npm \
   yarn \
   gradle \
@@ -68,6 +69,7 @@ paru -Syyuu \
   jdk-openjdk \
   jre-openjdk \
   dotnet-sdk \
+  dotnet-runtime \
   exa \
   bat \
   ripgrep \
@@ -139,8 +141,6 @@ paru -Syyuu \
   xorg-xinit \
   xterm \
   zram-generator \
-  bun-bin \
-  dotnet-runtime-1.1-compat \
   i3lock-color-git \
   awesome-git \
   nomacs-git \
@@ -152,7 +152,7 @@ paru -Syyuu \
   neovim-nightly \
   drawio \
   staruml \
-  visual-studio-code-bin \
+  code-git \
   android-studio \
   unityhub \
   google-chrome-dev \

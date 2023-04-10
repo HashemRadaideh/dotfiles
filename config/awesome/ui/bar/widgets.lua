@@ -3,10 +3,10 @@ local beautiful = require('beautiful')
 local gears     = require('gears')
 local wibox     = require('wibox')
 
-local dpi = beautiful.xresources.apply_dpi
+local dpi       = beautiful.xresources.apply_dpi
 
 ---@diagnostic disable-next-line: undefined-global
-local client = client
+local client    = client
 
 function Shape(img)
   return wibox.widget.imagebox(img)
@@ -76,7 +76,8 @@ function Tasks(s)
       buttons         = {
         awful.button(
           {}, 1,
-          function(c) c:activate {
+          function(c)
+            c:activate {
               context = "tasklist",
               action = "toggle_minimization"
             }
@@ -95,7 +96,7 @@ function Tasks(s)
         ),
         awful.button(
           {}, 4,
-          function() awful.client.focus.byidx(-1) end
+          function() awful.client.focus.byidx( -1) end
         ),
         awful.button(
           {}, 5,
@@ -129,9 +130,9 @@ Layoutbox = wibox.widget {
   widget = wibox.container.margin,
   buttons = {
     awful.button({}, 1, function() awful.layout.inc(1) end),
-    awful.button({}, 3, function() awful.layout.inc(-1) end),
+    awful.button({}, 3, function() awful.layout.inc( -1) end),
     awful.button({}, 4, function() awful.layout.inc(1) end),
-    awful.button({}, 5, function() awful.layout.inc(-1) end),
+    awful.button({}, 5, function() awful.layout.inc( -1) end),
   },
 }
 

@@ -19,7 +19,7 @@ Main_menu = awful.menu {
     {
       "Launchers",
       {
-        { "rofi", "rofi -no-click-to-exit -show drun" },
+        { "rofi",  "rofi -no-click-to-exit -show drun" },
         { "dmenu", "dmenu_run" },
       }
     },
@@ -30,14 +30,14 @@ Main_menu = awful.menu {
           "Terminals",
           {
             { "Alacritty", "alacritty" },
-            { "Kitty", "kitty" }
+            { "Kitty",     "kitty" }
           }
         },
         {
           "Browsers",
           {
-            { "Brave", "brave" },
-            { "Firefox", "firefox" },
+            { "Brave",         "brave" },
+            { "Firefox",       "firefox" },
             { "Google Chrome", "google-chrome-stable" },
           }
         },
@@ -45,14 +45,14 @@ Main_menu = awful.menu {
           "File managers",
           {
             { "Terminal", Terminal_file_manager },
-            { "Visual", File_manager },
+            { "Visual",   File_manager },
           }
         },
         {
           "Editors",
           {
             { "Terminal", Terminal_editor },
-            { "Visual", Graphical_editor },
+            { "Visual",   Graphical_editor },
           }
         },
       },
@@ -60,15 +60,15 @@ Main_menu = awful.menu {
     {
       "Screenshot",
       {
-        { "Whole Screen", "screenshot" },
+        { "Whole Screen",   "screenshot" },
         { "Focused Client", "screenshot focused" },
-        { "Selected Area", "screenshot selected" },
+        { "Selected Area",  "screenshot selected" },
       },
     },
     {
       "Personalize",
       {
-        { "Theme", "lxappearance" },
+        { "Theme",     "lxappearance" },
         { "Wallpaper", "nitrogen" },
       },
     },
@@ -86,14 +86,14 @@ Main_menu = awful.menu {
           "Configure",
           {
             { "Terminal editor", Terminal_editor .. " " .. awesome.conffile },
-            { "Visual editor", Graphical_editor .. " " .. awesome.conffile }
+            { "Visual editor",   Graphical_editor .. " " .. awesome.conffile }
           },
         },
-        { "Quit", function() awesome.quit() end },
+        { "Quit",   function() awesome.quit() end },
       },
       beautiful.awesome_icon
     },
-    { "Refresh", awesome.restart },
+    { "Refresh",     awesome.restart },
     { "Lock Screen", "lock" },
     {
       "Power",

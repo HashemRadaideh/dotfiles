@@ -61,6 +61,7 @@ paru -R \
   octave \
   pypy \
   python \
+  nodejs \
   npm \
   yarn \
   gradle \
@@ -68,6 +69,7 @@ paru -R \
   jdk-openjdk \
   jre-openjdk \
   dotnet-sdk \
+  dotnet-runtime \
   exa \
   bat \
   ripgrep \
@@ -140,7 +142,6 @@ paru -R \
   xterm \
   zram-generator \
   bun-bin \
-  dotnet-runtime-1.1-compat \
   i3lock-color-git \
   awesome-git \
   nomacs-git \

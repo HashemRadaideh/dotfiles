@@ -1,0 +1,21 @@
+[submodule "config/awesome/awesome-buttons"]
+	path = config/awesome/awesome-buttons
+	url = https://github.com/streetturtle/awesome-buttons
+[submodule "config/awesome/awesome-wm-widgets"]
+	path = config/awesome/awesome-wm-widgets
+	url = https://github.com/streetturtle/awesome-wm-widgets
+[submodule "config/tmux/plugins/tpm"]
+	path = config/tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm
+[submodule "config/zsh/plugins/zsh-syntax-highlighting"]
+	path = config/zsh/plugins/zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting
+[submodule "config/zsh/plugins/zsh-autosuggestions"]
+	path = config/zsh/plugins/zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions
+[submodule "config/lf/lfimg"]
+	path = config/lf/lfimg
+	url = https://github.com/cirala/lfimg
+[submodule "config/lf/lf-gadgets"]
+	path = config/lf/lf-gadgets
+	url = https://github.com/slavistan/lf-gadgets.git

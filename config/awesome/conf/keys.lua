@@ -1,18 +1,18 @@
-local awful         = require('awful')
-local hotkeys_popup = require('awful.hotkeys_popup')
-local gears         = require('gears')
-local beautiful     = require('beautiful')
+local awful                         = require('awful')
+local hotkeys_popup                 = require('awful.hotkeys_popup')
+local gears                         = require('gears')
+local beautiful                     = require('beautiful')
 
 ---@diagnostic disable-next-line: undefined-global
 local awesome, client, screen, root = awesome, client, screen, root
 
 -- Default modkey.
-Meta = "Mod1"
-Super = "Mod4"
-Ctrl = "Control"
-Shift = "Shift"
+Meta                                = "Mod1"
+Super                               = "Mod4"
+Ctrl                                = "Control"
+Shift                               = "Shift"
 
-local logout_popup = require(
+local logout_popup                  = require(
   "awesome-wm-widgets.logout-popup-widget.logout-popup"
 )
 
@@ -244,7 +244,8 @@ awful.keyboard.append_global_keybindings(
 
     awful.key(
       { Meta }, "p",
-      function() logout_popup.launch({
+      function()
+        logout_popup.launch({
           onlock = function() awful.spawn.with_shell("lock") end,
           onsuspend = function()
             awful.spawn.with_shell("lock && systemctl suspend")
@@ -262,7 +263,7 @@ awful.keyboard.append_global_keybindings(
 
     awful.key(
       { Meta }, ",",
-      function() awful.screen.focus_relative(-1) end,
+      function() awful.screen.focus_relative( -1) end,
       { description = "Focus previous screen", group = "Workspace" }
     ),
 
@@ -341,7 +342,7 @@ awful.keyboard.append_global_keybindings(
 
     awful.key(
       { Meta }, "-",
-      function() awful.tag.incnmaster(-1, nil, true) end,
+      function() awful.tag.incnmaster( -1, nil, true) end,
       { description = "Decrease the number of columns", group = "Workspace" }
     ),
 
@@ -353,7 +354,7 @@ awful.keyboard.append_global_keybindings(
 
     awful.key(
       { Meta, Ctrl }, "-",
-      function() awful.tag.incncol(-1, nil, true) end,
+      function() awful.tag.incncol( -1, nil, true) end,
       { description = "Decrease the number of columns", group = "Workspace" }
     ),
 
@@ -454,7 +455,7 @@ awful.keyboard.append_global_keybindings(
         if client.focus.floating then
           client.focus:relative_move(0, 0, -10, 0)
         else
-          awful.tag.incmwfact(-0.025)
+          awful.tag.incmwfact( -0.025)
         end
       end,
       { description = "Decrease master width factor", group = "Workflow" }
@@ -478,7 +479,7 @@ awful.keyboard.append_global_keybindings(
         if client.focus.floating then
           client.focus:relative_move(0, 0, 0, -10)
         else
-          awful.client.incwfact(-0.025)
+          awful.client.incwfact( -0.025)
         end
       end,
       { description = "Decrease master width factor", group = "Workflow" }
@@ -487,7 +488,6 @@ awful.keyboard.append_global_keybindings(
     awful.key(
       { Meta, Shift }, "l",
       function()
-
         if client.focus.floating then
           client.focus:relative_move(0, 0, 10, 0)
         else
@@ -500,7 +500,7 @@ awful.keyboard.append_global_keybindings(
     -- Moving floating windows
     awful.key(
       { Meta, Shift, Ctrl }, "h",
-      function() client.focus:relative_move(-10, 0, 0, 0) end,
+      function() client.focus:relative_move( -10, 0, 0, 0) end,
       { description = "Move floating client to the left", group = "Workflow" }
     ),
 
@@ -531,7 +531,7 @@ awful.keyboard.append_global_keybindings(
 
     awful.key(
       { Meta, Shift }, "space",
-      function() awful.layout.inc(-1) end,
+      function() awful.layout.inc( -1) end,
       { description = "Select previous layout", group = "Workflow" }
     ),
 

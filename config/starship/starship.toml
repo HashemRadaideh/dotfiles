@@ -1,5 +1,5 @@
 format = """\
-[╭](bold green)\ 
+[╭](bold green)\
 $username\
 $hostname\
 $sudo\
@@ -7,7 +7,7 @@ $localip\
 $shlvl\
 $singularity\
 $kubernetes\
-$directory\ 
+$directory\
 $vcsh\
 (↓ Source control - for right side ↓)\
 $git_branch\
@@ -85,7 +85,7 @@ $character\
 
 right_format = '$shell $jobs at $time '
 
-add_newline = false
+add_newline = true
 
 command_timeout = 1000
 
@@ -110,18 +110,18 @@ disabled = false
 
 [username]
 format = " [$user]($style)"
-show_always = true
+show_always = false
 style_root = "bold blue"
 style_user = "bold cyan"
 
 [hostname]
-format = "[@](bold white)[$hostname]($style)"
+format = "[@](bold white)[$hostname]($style) in "
 ssh_only = true
 style = "bold dimmed green"
 # trim_at = "-"
 
 [directory]
-format = " in [$path ]($style)[$read_only]($read_only_style)"
+format = " [$path ]($style)[$read_only]($read_only_style)"
 style = "cyan"
 truncate_to_repo = true
 truncation_length = 0

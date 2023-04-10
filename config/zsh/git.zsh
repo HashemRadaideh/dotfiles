@@ -103,28 +103,28 @@ alias status='git status'
 # (sorted alphabetically)
 #
 
-function gccd() {
+gccd() {
   command git clone --recurse-submodules "$@"
   [[ -d "$_" ]] && cd "$_" || cd "${${_:t}%.git}"
 }
 
-function gdnolock() {
+gdnolock() {
   git diff "$@" ":(exclude)package-lock.json" ":(exclude)*.lock"
 }
 
-function gdv() { git diff -w "$@" | view - }
+gdv() { git diff -w "$@" | view - }
 
 # --jobs=<n> was added in git 2.8
 
 
-function ggf() {
+ggf() {
   git push --force origin "${b:=$1}"
 }
-function ggfl() {
+ggfl() {
   git push --force-with-lease origin "${b:=$1}"
 }
 
-function ggl() {
+ggl() {
   if [[ "$#" != 0 ]] && [[ "$#" != 1 ]]; then
     git pull origin "${*}"
   else
@@ -132,7 +132,7 @@ function ggl() {
   fi
 }
 
-function ggp() {
+ggp() {
   if [[ "$#" != 0 ]] && [[ "$#" != 1 ]]; then
     git push origin "${*}"
   else
@@ -140,7 +140,7 @@ function ggp() {
   fi
 }
 
-function ggpnp() {
+ggpnp() {
   if [[ "$#" == 0 ]]; then
     ggl && ggp
   else
@@ -148,7 +148,7 @@ function ggpnp() {
   fi
 }
 
-function ggu() {
+ggu() {
   git pull --rebase origin "${b:=$1}"
 }
 
@@ -271,7 +271,7 @@ alias gams='git am --skip'
 alias gama='git am --abort'
 alias gamscp='git am --show-current-patch'
 
-function grename() {
+grename() {
   if [[ -z "$1" || -z "$2" ]]; then
     echo "Usage: $0 old_branch new_branch"
     return 1
