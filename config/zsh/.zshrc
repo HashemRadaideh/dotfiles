@@ -5,11 +5,14 @@ source "$ZDOTDIR/zshenv" 2>/dev/null
 source "$ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh" 2>/dev/null
 source "$ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh" 2>/dev/null
 
+# nvim configurations
+source "$ZDOTDIR/nvim.zsh" 2>/dev/null
+
 # lf configurations
-source "$ZDOTDIR/lf.zsh"
+source "$ZDOTDIR/lf.zsh" 2>/dev/null
 
 # Git configurations 
-source "$ZDOTDIR/git.zsh"
+source "$ZDOTDIR/git.zsh" 2>/dev/null
 
 # Prompt setup.
 hash-prompt() {

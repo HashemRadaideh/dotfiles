@@ -52,8 +52,8 @@ export EDITOR="nvim"
 export OPENER="xdg-open"
 
 # $TERM Sets the terminal
-export TERM="alacritty"
-# export TERM="kitty"
+# export TERM="alacritty"
+export TERM="kitty"
 
 # $VISUAL uses Emacs in GUI mode
 export VISUAL="/usr/bin/emacsclient --alternate-editor='/usr/bin/emacs' --create-frame"

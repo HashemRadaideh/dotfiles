@@ -3,7 +3,7 @@ if not ok then
   return
 end
 
-require("general")
+require("configs.general")
 
 zenmode.setup({
   window = {
@@ -16,14 +16,14 @@ zenmode.setup({
       -- relativenumber = false, -- disable relative numbers
       -- cursorline = false, -- disable cursorline
       cursorcolumn = false, -- disable cursor column
-      foldcolumn = "0", -- disable fold column
-      list = false, -- disable whitespace characters
+      foldcolumn = "0",     -- disable fold column
+      list = false,         -- disable whitespace characters
     },
   },
   plugins = {
     options = {
       enabled = true,
-      ruler = false, -- disables the ruler text in the cmd line area
+      ruler = false,   -- disables the ruler text in the cmd line area
       showcmd = false, -- disables the command in the last line of the screen
     },
     twilight = { enabled = true },

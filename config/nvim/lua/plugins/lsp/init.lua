@@ -8,7 +8,7 @@ end
 require("plugins.lsp.configs.mason")
 require("plugins.lsp.configs.nullls")
 require("plugins.lsp.configs.cmp")
-require("general")
+require("configs.general")
 
 -- require "lsp_extensions".inlay_hints {
 --     highlight = "Comment",
@@ -45,7 +45,7 @@ local on_attach = function(client, bufnr)
   -- codelens
   if client.server_capabilities.code_lens then
     vim.api.nvim_command [[autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]]
-    vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>cl", "<Cmd>lua vim.lsp.codelens.run()<CR>", { silent = true; })
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>cl", "<Cmd>lua vim.lsp.codelens.run()<CR>", { silent = true, })
   end
 
   -- Prioritize null-ls formatting over native lsp formatting.
@@ -200,7 +200,7 @@ vim.cmd [[ autocmd! Colorscheme * highlight FloatBorder guibg=#1f2335 guifg=#fff
 vim.diagnostic.config({
   virtual_text = {
     source = "always", -- Or "if_many"
-    prefix = "■", -- Could be "●", "▎", "x"
+    prefix = "■",    -- Could be "●", "▎", "x"
   },
   float = {
     source = "always", -- Or "if_many"

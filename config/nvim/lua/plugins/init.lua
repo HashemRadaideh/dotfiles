@@ -39,7 +39,7 @@ Plugins = {
 
   "folke/which-key.nvim",
 
-  { "kevinhwang91/nvim-bqf", ft = "qf", },
+  { "kevinhwang91/nvim-bqf",   ft = "qf", },
 
   "lukas-reineke/indent-blankline.nvim",
 
@@ -65,7 +65,7 @@ Plugins = {
 
 
 
-  { "lewis6991/gitsigns.nvim", tag = "release", },
+  { "lewis6991/gitsigns.nvim",         tag = "release", },
 
   -- "sindrets/diffview.nvim",
 
@@ -152,7 +152,7 @@ Plugins = {
 
   { "nvim-neo-tree/neo-tree.nvim", branch = "v2.x", },
 
-  { "s1n7ax/nvim-window-picker", tag = "v1.*", },
+  { "s1n7ax/nvim-window-picker",   tag = "v1.*", },
 
   "nvim-telescope/telescope.nvim",
 
@@ -236,26 +236,31 @@ Configs = {
   "plugins.sessions",
 }
 
-local fn = vim.fn
-local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-if fn.empty(fn.glob(install_path)) > 0 then
-  ---@diagnostic disable-next-line: lowercase-global
-  packer_bootstrap = fn.system({ "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim",
-    install_path })
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
 end
+
+local packer_bootstrap = ensure_packer()
 
 require("packer").startup({
   function(use)
-    if packer_bootstrap then
-      require("packer").sync()
-    end
-
     for _, plugin in ipairs(Plugins) do
       use(plugin)
     end
 
     for _, config in ipairs(Configs) do
       require(config)
+    end
+
+    if packer_bootstrap then
+      require('packer').sync()
     end
   end,
   config = {

@@ -4,7 +4,7 @@ if not ok then
   return
 end
 
-require("general")
+require("configs.general")
 
 local function get_greeting(name)
   local tableTime = os.date("*t")
@@ -65,7 +65,8 @@ alpha.setup({
         [[      8I   Yb, `YbadP" ,d8,   ,d8"        I8, ,8I  _,88,_,dP   8I   8I   Yb,]],
         [[      8I   `Y8888P"Y888P"Y8888P"           "Y8P"   8P""Y88P"   8I   8I   `Y8]],
         [[                                                                            ]],
-      }, opts = {
+      },
+      opts = {
         position = "center",
         hl = "Keyword",
       },
@@ -107,9 +108,7 @@ alpha.setup({
         button("SPC e", "  File browser"),
 
         button("x", "  Find repo", ":lua require('gfold').pick_repo()<CR>"),
-
         button("p", "  Sync/Update", ":PackerSync<CR>"),
-
         button("c", "  Config", (":cd %s | e init.lua <CR>"):format(Path)),
 
         button("q", "  Quit", ":qa!<CR>"),

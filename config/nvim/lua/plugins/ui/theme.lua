@@ -1,5 +1,5 @@
 ---@diagnostic disable: redefined-local
-require("general")
+require("configs.general")
 
 vim.opt.guifont = "CaskaydiaCove NF:h10"
 -- vim.opt.guifont = "FiraCode NF:h11"
@@ -53,19 +53,15 @@ local ok, github_theme = pcall(require, "github-theme")
 if ok then
   github_theme.setup({
     hide_end_of_buffer = true,
-
     theme_style = "dark",
     comment_style = "none",
     keyword_style = "none",
     function_style = "none",
     variable_style = "none",
-
     sidebars = { "qf", "vista_kind", "terminal", "packer", "Neotree" },
     dark_float = true,
     dark_sidebar = true,
-
     colors = { hint = "orange", error = "#ff0000" },
-
     overrides = function(c)
       return {
         htmlTag = {
@@ -136,7 +132,8 @@ local ok, catppuccin = pcall(require, "catppuccin")
 if ok then
   catppuccin.setup({
     flavour = "mocha", -- latte, frappe, macchiato, mocha
-    background = { -- :h background
+    background = {
+                       -- :h background
       light = "latte",
       dark = "mocha",
     },
@@ -148,7 +145,7 @@ if ok then
       percentage = 0.15,
     },
     no_italic = false, -- Force no italic
-    no_bold = false, -- Force no bold
+    no_bold = false,   -- Force no bold
     styles = {
       comments = { "italic" },
       conditionals = { "italic" },
@@ -190,12 +187,13 @@ if ok then
       -- Compiled file"s destination location
       compile_path = vim.fn.stdpath("cache") .. "/nightfox",
       compile_file_suffix = "_compiled", -- Compiled file suffix
-      transparent = false, -- Disable setting background
-      terminal_colors = true, -- Set terminal colors (vim.g.terminal_color_*) used in `:terminal`
-      dim_inactive = false, -- Non focused panes set to alternative background
-      module_default = true, -- Default enable value for modules
-      styles = { -- Style to be applied to different syntax groups
-        comments = "NONE", -- Value is any valid attr-list value `:help attr-list`
+      transparent = false,               -- Disable setting background
+      terminal_colors = true,            -- Set terminal colors (vim.g.terminal_color_*) used in `:terminal`
+      dim_inactive = false,              -- Non focused panes set to alternative background
+      module_default = true,             -- Default enable value for modules
+      styles = {
+                                         -- Style to be applied to different syntax groups
+        comments = "NONE",               -- Value is any valid attr-list value `:help attr-list`
         conditionals = "NONE",
         constants = "NONE",
         functions = "NONE",
@@ -206,7 +204,8 @@ if ok then
         types = "NONE",
         variables = "NONE",
       },
-      inverse = { -- Inverse highlight for different types
+      inverse = {
+                  -- Inverse highlight for different types
         match_paren = false,
         visual = false,
         search = false,

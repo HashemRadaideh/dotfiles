@@ -1,4 +1,3 @@
----@diagnostic disable: undefined-global, lowercase-global
 local map = function(mode, lhs, rhs, opt)
   local options = { noremap = true, silent = true }
   if opt then
@@ -7,7 +6,26 @@ local map = function(mode, lhs, rhs, opt)
   vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
-vim.g.mapleader = ' '
+map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+
+map('n', '<C-h>', '<C-w>h', { desc = "Go to left window/pane" })
+map('n', '<C-j>', '<C-w>j', { desc = "Go to left window/pane" })
+map('n', '<C-k>', '<C-w>k', { desc = "Go to left window/pane" })
+map('n', '<C-l>', '<C-w>l', { desc = "Go to left window/pane" })
+
+map('n', '<C-Up>', '<cmd>resize +2<CR>', { desc = 'Increase window height' })
+map('n', '<C-Down>', '<cmd>resize -2<CR>', { desc = 'Decrease window height' })
+map('n', '<C-Left>', '<cmd>vertical resize +2<CR>', { desc = 'Increase window width' })
+map('n', '<C-Right>', '<cmd>vertical resize -2<CR>', { desc = 'Decrease window height' })
+
+-- Move lines up or down
+map('n', '<M-j>', '<cmd>m .+1<CR>==', { desc = 'Move line down' })
+map('n', '<M-k>', '<cmd>m .-2<CR>==', { desc = 'Move line up' })
+map('i', '<M-j>', '<Esc><cmd>m .+1<CR>==gi', { desc = 'Move line down' })
+map('i', '<M-k>', '<Esc><cmd>m .-2<CR>==gi', { desc = 'Move line up' })
+map('v', '<M-j>', "<cmd>m '>+1<CR>gv=gv", { desc = 'Move line down' })
+map('v', '<M-k>', "<cmd>m '<-2<CR>gv=gv", { desc = 'Move line up' })
 
 map("i", "<C-H>", "<C-o>db", { desc = "Delete word backward" })
 map("i", "<C-Del>", "<C-o>dw", { desc = "Delete word forward" })
@@ -45,21 +63,10 @@ map('n', '<leader>i', ':tabnew<CR>')
 
 map('n', '~', '~h')
 
-map('n', '<C-h>', '<C-w>h')
-map('n', '<C-j>', '<C-w>j')
-map('n', '<C-k>', '<C-w>k')
-map('n', '<C-l>', '<C-w>l')
 
 -- map('n', '<C-s>', '<C-w>s')
 -- map('n', '<C-v>', '<C-w>v')
 
--- Move lines up or down
--- map('n', '<C-M-j>', ':m .+1<CR>==')
--- map('n', '<C-M-k>', ':m .-2<CR>==')
--- map('i', '<C-M-j>', '<Esc>:m .+1<CR>==gi')
--- map('i', '<C-M-k>', '<Esc>:m .-2<CR>==gi')
--- map('v', '<C-M-j>', ":m '>+1<CR>gv=gv")
--- map('v', '<C-M-k>', ":m '<-2<CR>gv=gv")
 
 -- " Leader-J/K deletes blank line below/above, and leader-j/k inserts.
 map('n', '<leader>J', 'm`:silent +g/\\m^\\s*$/d<CR>``:noh<CR>')
