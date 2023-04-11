@@ -22,6 +22,7 @@ ln -s ~/dotfiles/config/rofi ~/.config/rofi
 ln -s ~/dotfiles/config/starship ~/.config/starship
 ln -s ~/dotfiles/config/tmux ~/.config/tmux
 ln -s ~/dotfiles/config/zsh ~/.config/zsh
+ln -s ~/dotfiles/config/neofetch ~/.config/neofetch
 
 ln -s ~/dotfiles/bin ~/.bin
 ln -s ~/dotfiles/Media ~/Media
@@ -44,6 +45,7 @@ ln -s ~/dotfiles/config/doom ~/.config/doom
 
 # paru -Qq OR paru -Qe | awk '{print $1}'
 paru -Syyuu \
+  otf-cascadia-code-nerd \
   ttf-firacode-nerd \
   ttf-sourcecodepro-nerd \
   ttf-jetbrains-mono-nerd \
@@ -149,6 +151,7 @@ paru -Syyuu \
   zram-generator \
   i3lock-color-git \
   awesome-git \
+  acpi \
   nomacs-git \
   openboard-git \
   cava-git \

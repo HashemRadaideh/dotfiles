@@ -20,6 +20,10 @@ local battery_widget = require(
   "awesome-wm-widgets.battery-widget.battery"
 )
 
+local batteryarc_widget = require(
+  "awesome-wm-widgets.batteryarc-widget.batteryarc"
+)
+
 -- Set up the bar
 screen.connect_signal("request::desktop_decoration", function(s)
   s.mypromptbox = awful.widget.prompt()
@@ -70,13 +74,17 @@ screen.connect_signal("request::desktop_decoration", function(s)
         Systray,
         SystrayButton,
         Clock,
-        -- NET,bar/init
+        -- NET,
         -- NETButton,
         -- MEM,
         -- MEMButton,
         -- CPU,
         -- CPUButton,
-        battery_widget(),
+        -- battery_widget(),
+        batteryarc_widget({
+          show_current_level = true,
+          arc_thickness = 1,
+        }),
         volume_widget { widget_type = 'arc' },
         logout_popup.widget {
           onlock = function() awful.spawn.with_shell("lock") end,

@@ -96,7 +96,7 @@ function Tasks(s)
         ),
         awful.button(
           {}, 4,
-          function() awful.client.focus.byidx( -1) end
+          function() awful.client.focus.byidx(-1) end
         ),
         awful.button(
           {}, 5,
@@ -130,9 +130,9 @@ Layoutbox = wibox.widget {
   widget = wibox.container.margin,
   buttons = {
     awful.button({}, 1, function() awful.layout.inc(1) end),
-    awful.button({}, 3, function() awful.layout.inc( -1) end),
+    awful.button({}, 3, function() awful.layout.inc(-1) end),
     awful.button({}, 4, function() awful.layout.inc(1) end),
-    awful.button({}, 5, function() awful.layout.inc( -1) end),
+    awful.button({}, 5, function() awful.layout.inc(-1) end),
   },
 }
 
@@ -158,7 +158,6 @@ function Tags(s)
       forced_width = dpi(35),
       align = 'center',
       widget = wibox.widget.textbox,
-
       -- create_callback = function(self, c3)
       --   self:connect_signal("button::press", function()
       --     if c3.selected then

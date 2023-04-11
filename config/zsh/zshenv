@@ -173,7 +173,7 @@ setupwin() {
 
 update() {
   paru -Syyuu 
-  reposync ~/.config/ ~/.bin/ ~/
+  reposync  ~/dotfiles/ ~/
   nvim --headless -n -u ~/.config/nvim/init.lua -c 'autocmd User PackerComplete quitall' -c 'PackerSync' 
   doom sync
   ~/.config/tmux/plugins/tpm/scripts/install_plugins.sh

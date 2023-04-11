@@ -18,8 +18,8 @@ window:
   # Specified in number of columns/lines, not pixels.
   # If both are `0`, this setting is ignored.
   dimensions:
-   columns: 100
-   lines: 25
+   columns: 0
+   lines: 0
 
   # Window position (changes require restart)
   #
@@ -33,12 +33,12 @@ window:
   #
   # Blank space added around the window in pixels. This padding is scaled
   # by DPI and the specified value is always added at both opposing sides.
-  # padding:
-  #   x: 20
-  #   y: 20
+  padding:
+    x: 0
+    y: 0
 
   # Spread additional padding evenly around the terminal content.
-  # dynamic_padding: true
+  dynamic_padding: false
 
   # Background opacity
   #
@@ -82,7 +82,7 @@ window:
   #
   # Override the variant of the GTK theme. Commonly supported values are `dark` and `light`.
   # Set this to `None` to use the default theme variant.
-  #gtk_theme_variant: None
+  gtk_theme_variant: dark
 
 scrolling:
   # Maximum number of lines in the scrollback buffer.
@@ -91,10 +91,10 @@ scrolling:
 
   # Number of lines the viewport will move for every line scrolled when
   # scrollback is enabled (history > 0).
-  #multiplier: 3
+  multiplier: 3
 
   # Scroll to the bottom when new text is written to the terminal.
-  #auto_scroll: false
+  auto_scroll: true
 
 # Spaces per Tab (changes require restart)
 #
@@ -116,19 +116,19 @@ font:
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
     # family: Source Code Pro
-    family: CaskaydiaCove NF
-    # family: FiraCode NF
+    family: CaskaydiaCove Nerd Font
+    # family: FiraCode Nerd Font
     # family: CodeNewRoman Nerd Font
     # family: RobotoMono Nerd Font
     # family: Hack
     # family: JetBrains Mono
-    # family: JetBrainsMono NF
+    # family: JetBrainsMono Nerd Font
     # family: UbuntuMono Nerd Font
     # family: Monofur Nerd Font
     # family: TerminessTTF Nerd Font
     # family: Mononoki Nerd Font
-    # family: DejaVuSansMono NF
-    # family: SauceCodePro NF
+    # family: DejaVuSansMono Nerd Font
+    # family: SauceCodePro Nerd Font
 
     # The `style` can be specified to pick a specific face.
     style: Regular
@@ -140,19 +140,19 @@ font:
     # If the bold family is not specified, it will fall back to the
     # value specified for the normal font.
     # family: Source Code Pro
-    family: CaskaydiaCove NF
-    # family: FiraCode NF
+    family: CaskaydiaCove Nerd Font
+    # family: FiraCode Nerd Font
     # family: CodeNewRoman Nerd Font
     # family: RobotoMono Nerd Font
     # family: Hack
     # family: JetBrains Mono
-    # family: JetBrainsMono NF
+    # family: JetBrainsMono Nerd Font
     # family: UbuntuMono Nerd Font
     # family: Monofur Nerd Font
     # family: TerminessTTF Nerd Font
     # family: Mononoki Nerd Font
-    # family: DejaVuSansMono NF
-    # family: SauceCodePro NF
+    # family: DejaVuSansMono Nerd Font
+    # family: SauceCodePro Nerd Font
 
     # The `style` can be specified to pick a specific face.
     style: Bold
@@ -164,19 +164,19 @@ font:
     # If the italic family is not specified, it will fall back to the
     # value specified for the normal font.
     # family: Source Code Pro
-    family: CaskaydiaCove NF
-    # family: FiraCode NF
+    family: CaskaydiaCove Nerd Font
+    # family: FiraCode Nerd Font
     # family: CodeNewRoman Nerd Font
     # family: RobotoMono Nerd Font
     # family: Hack
     # family: JetBrains Mono
-    # family: JetBrainsMono NF
+    # family: JetBrainsMono Nerd Font
     # family: UbuntuMono Nerd Font
     # family: Monofuritalic Nerd Font Mono
     # family: TerminessTTF Nerd Font
     # family: Mononoki Nerd Font
-    # family: DejaVuSansMono NF
-    # family: SauceCodePro NF
+    # family: DejaVuSansMono Nerd Font
+    # family: SauceCodePro Nerd Font
 
     # The `style` can be specified to pick a specific face.
     style: Italic
@@ -188,38 +188,38 @@ font:
     # If the bold italic family is not specified, it will fall back to the
     # value specified for the normal font.
     # family: Source Code Pro
-    family: CaskaydiaCove NF
-    # family: FiraCode NF
+    family: CaskaydiaCove Nerd Font
+    # family: FiraCode Nerd Font
     # family: CodeNewRoman Nerd Font
     # family: RobotoMono Nerd Font
     # family: Hack
     # family: JetBrains Mono
-    # family: JetBrainsMono NF
+    # family: JetBrainsMono Nerd Font
     # family: UbuntuMono Nerd Font
     # family: Monofuritalic Nerd Font Mono
     # family: TerminessTTF Nerd Font
     # family: Mononoki Nerd Font
-    # family: DejaVuSansMono NF
-    # family: SauceCodePro NF
+    # family: DejaVuSansMono Nerd Font
+    # family: SauceCodePro Nerd Font
 
     # The `style` can be specified to pick a specific face.
     style: Bold Italic
 
   # Point size
-  size: 10.5
+  size: 6.5
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
   offset:
     x: 0
-    y: 1
+    y: 0
 
   # Glyph offset determines the locations of the glyphs within their cells with
   # the default being at the bottom. Increasing `x` moves the glyph to the right,
   # increasing `y` moves the glyph upwards.
-  #glyph_offset:
-  #  x: 0
-  #  y: 0
+  glyph_offset:
+    x: 0
+    y: 0
 
   # Thin stroke font rendering (macOS only)
   #
@@ -235,7 +235,7 @@ font:
   #
   # This is a global setting and will require a log out or restart to take
   # effect.
-  #use_thin_strokes: true
+  # use_thin_strokes: true
 
 # If `true`, bold text is drawn using the bright color variants.
 draw_bold_text_with_bright_colors: true
