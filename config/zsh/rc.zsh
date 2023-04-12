@@ -1,40 +1,28 @@
-# Plugins
-source "$ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh" 2>/dev/null
-source "$ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh" 2>/dev/null
+configs=(
+  cmake
+  codi
+  git
+  lf
+  nvim
+  paru
+  prompt
+  starship
+  utils
+  wine
+)
 
-# cmake shortcuts
-source "$ZDOTDIR/configs/cmake.zsh" 2>/dev/null
-
-# codi shortcuts
-source "$ZDOTDIR/configs/codi.zsh" 2>/dev/null
-
-# Git configurations
-source "$ZDOTDIR/configs/git.zsh" 2>/dev/null
-
-# lf configurations
-source "$ZDOTDIR/configs/lf.zsh" 2>/dev/null
-
-# nvim configurations
-source "$ZDOTDIR/configs/nvim.zsh" 2>/dev/null
-
-# paru configurations
-source "$ZDOTDIR/configs/paru.zsh" 2>/dev/null
-
-# Hash prompt
-source "$ZDOTDIR/configs/prompt.zsh" 2>/dev/null
-
-# Starship prompt
-source "$ZDOTDIR/configs/starship.zsh" 2>/dev/null
-
-# utilities
-source "$ZDOTDIR/configs/utils.zsh" 2>/dev/null
-
-# wine configurations
-source "$ZDOTDIR/configs/wine.zsh" 2>/dev/null
+plugins=(
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  zsh-history-substring-search
+  zsh-auto-notify
+  zsh-you-should-use
+)
 
 main() {
   TMOUT=120
   TRAPALRM() { tock } # { pipes.sh } # { cmatrix -s }
+  eval "$(zoxide init zsh)"
 
   # Auto start tmux in ssh.
   if [[ -n "$SSH_CONNECTION" ]] ; then
@@ -42,10 +30,6 @@ main() {
   fi
 
   if [[ -z "$DISPLAY" ]] ; then
-    # Use the custom zsh prompt.
-    autoload -Uz add-zsh-hook
-    hash-prompt
-
     if [[ -z "$TMUX" ]]; then
       file="$(fzf --layout=reverse --cycle <<< `echo "$(\ls ~/.bin/xinit | sort)\ntmux\n$(tty)\npower off\nreboot\nsleep\nlogout"`)"
 
@@ -55,12 +39,19 @@ main() {
           "sleep") systemctl suspend ;;
           "reboot") systemctl reboot ;;
           "power off") systemctl poweroff ;;
-          "$(tty)") clear setterm -blength 0 && set bell-style none ;;
+          "$(tty)") clear ;;
           "tmux") exec fuzmux ;;
           *) exec startx ~/.bin/xinit/"$file" ;;
         esac
       fi
     fi
+
+    # Use the custom zsh prompt.
+    autoload -Uz add-zsh-hook
+    hash-prompt
+
+    # Fetch machine's specs.
+    pfetch
   else
     starship-prompt
 

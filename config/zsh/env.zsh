@@ -105,12 +105,20 @@ alias bat="bat --decorations=always --color=always --paging=always"
 # colored less
 alias less="less -R"
 
+# changing "cd" to "z (zoxide)"
+alias cd="z"
+
 # Changing "ls" to "exa"
-alias ls="exa -F --icons --color=always --group-directories-first"    # my preferred listing
-alias la="exa -aF --icons --color=always --group-directories-first"   # all files and dirs
-alias l="exa -lahF --icons --color=always --group-directories-first"  # long format
-alias ll="exa -lahF --icons --color=always --group-directories-first | bat"  # long format
-alias lt="exa -aT --icons --color=always --group-directories-first"   # tree listing
+# alias ls="exa -F --icons --color=always --group-directories-first"    # my preferred listing
+# alias la="exa -aF --icons --color=always --group-directories-first"   # all files and dirs
+# alias l="exa -lahF --icons --color=always --group-directories-first"  # long format
+# alias ll="exa -lahF --icons --color=always --group-directories-first | bat"  # long format
+# alias lt="exa -aT --icons --color=always --group-directories-first"   # tree listing
+alias ls="lsd -F --color=always --group-directories-first"    # my preferred listing
+alias la="lsd -AF --color=always --group-directories-first"   # all files and dirs
+alias l="lsd -lAhF --color=always --group-directories-first"  # long format
+alias ll="lsd -lAhF --color=always --group-directories-first | bat"  # long format
+alias lt="lsd -aT --color=always --group-directories-first"   # tree listing
 
 # Clear
 alias clear="clear && pfetch" # | lolcat"
@@ -179,3 +187,27 @@ ff() {
 
 # bindkey -s '^f' '^ucd "$(dirname "$(fzf)")"\n'
 bindkey -s '^f' '^uff^m'
+
+# zsh plugins configurations
+# Plugin history-substring-search-up
+# bindkey '^[[A' history-substring-search-up
+# bindkey '^[[B' history-substring-search-down
+
+# bindkey -M vicmd 'k' history-substring-search-up
+# bindkey -M vicmd 'j' history-substring-search-down
+
+# bindkey -M emacs '^P' history-substring-search-up
+# bindkey -M emacs '^N' history-substring-search-down
+
+# Plugin auto_notify
+export AUTO_NOTIFY_IGNORE=("nvim" "e" "docker" "man" "sleep")
+export AUTO_NOTIFY_THRESHOLD=20
+export AUTO_NOTIFY_EXPIRE_TIME=10000
+export AUTO_NOTIFY_TITLE="Hey! %command has just finished"
+export AUTO_NOTIFY_BODY="It completed in %elapsed seconds with exit code %exit_code"
+
+# Plugin you-should-use
+export YSU_MESSAGE_POSITION="before"
+export YSU_MODE=BESTMATCH
+export YSU_HARDCORE=1
+export YSU_IGNORED_ALIASES=("nvim")

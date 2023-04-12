@@ -1,10 +1,11 @@
 local ok, alpha = pcall(require, "alpha")
-
 if not ok then
   return
 end
 
-local function get_greeting(name)
+local _, _, path = string.find(debug.getinfo(1).short_src, "(.*nvim-new)")
+
+local function get_greeting()
   local tableTime = os.date("*t")
   local hour = tableTime.hour
   local greetingsTable = {
@@ -26,7 +27,7 @@ local function get_greeting(name)
   elseif (hour >= 21) then
     greetingIndex = 5
   end
-  return greetingsTable[greetingIndex] .. ", " .. name .. "."
+  return greetingsTable[greetingIndex] .. ", " .. os.getenv("USER") .. "."
 end
 
 local function get_info()
@@ -74,7 +75,7 @@ alpha.setup({
     {
       type = "text",
       ---@diagnostic disable-next-line: undefined-global
-      val = get_greeting(Username),
+      val = get_greeting(),
       opts = {
         position = "center",
         hl = "String"
@@ -93,23 +94,16 @@ alpha.setup({
       type = "group",
       val = {
         button("SPC s s", "  Open session"),
-
         button("SPC s p", "  Scratch pad"),
-
         button("SPC i", "  Create new file"),
-
         button("SPC f f", "  Find file"),
-
         button("SPC f o", "  Recent files"),
-
         button("SPC f g", "  Find word"),
-
         button("SPC e", "  File browser"),
-
         button("x", "  Find repo", ":lua require('gfold').pick_repo()<CR>"),
         button("p", "  Sync/Update", ":PackerSync<CR>"),
-        button("c", "  Config", (":cd %s | e init.lua <CR>"):format(Path)),
-
+        ---@diagnostic disable-next-line: undefined-global
+        button("c", "  Config", (":cd %s | e init.lua <CR>"):format(path)),
         button("q", "  Quit", ":qa!<CR>"),
       },
       opts = {

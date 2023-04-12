@@ -87,7 +87,7 @@ right_format = '$shell $jobs at $time '
 
 add_newline = false
 
-command_timeout = 1000
+command_timeout = 10000
 
 [time]
 format = '[$time](bold green)'

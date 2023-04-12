@@ -199,41 +199,12 @@ Plugins = {
 }
 
 Configs = {
-  "plugins_packed",
-  "plugins.ui.theme",
-  "plugins.ui.lualine",
-  "plugins.ui.bufferline",
-  "plugins.ui.alpha",
-  "plugins.ui.notify",
-  "plugins.ui.whichkey",
-  "plugins.ui.bqf",
-  "plugins.ui.indent",
-  "plugins.ui.cinnamon",
-  "plugins.ui.shade",
-  "plugins.ui.twilight",
-  "plugins.ui.zenmode",
-  "plugins.ui.todocomments",
-  "plugins.ui.colorizer",
-  "plugins.ui.rangehighlight",
-
-  "plugins.git.gitsigns",
-  "plugins.git.diffview",
-  "plugins.git.gfold",
-
-  "plugins.lsp.init",
-
-  "plugins.dap.init",
-
-  "plugins.ts.treesitter",
-  "plugins.ts.autopairs",
-
-  "plugins.neotree",
-  "plugins.windowpicker",
-  "plugins.telescope",
-  "plugins.toggleterm",
-  "plugins.toggletasks",
-  "plugins.comment",
-  "plugins.sessions",
+  "plugins.dap",
+  "plugins.git",
+  "plugins.lsp",
+  "plugins.tools",
+  "plugins.ts",
+  "plugins.ui",
 }
 
 local packer_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
@@ -267,16 +238,12 @@ require("packer").startup({
       use(plugin)
     end
 
-    for _, config in ipairs(Configs) do
-      require(config)
-    end
-
     if ensure_packer() then
       require('packer').sync()
     end
   end,
   config = {
-    compile_path = vim.fn.stdpath "config" .. "/lua/plugins_packed.lua",
+    compile_path = vim.fn.stdpath("config") .. "/plugins_packed.lua",
     profile = {
       enable = true,
       threshold = 0.0001,
@@ -295,3 +262,7 @@ require("packer").startup({
   },
   autoremove = true,
 })
+
+for _, config in ipairs(Configs) do
+  require(config)
+end

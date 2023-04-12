@@ -24,27 +24,27 @@ vim.cmd [[let &colorcolumn="80,".join(range(120,999),",")]]
 -- ]]
 
 vim.cmd [[
-let g:transparency = 0
-function Transparency()
-  if !exists("g:neovide")
-    if !g:transparency
-      hi Normal guibg=none ctermbg=none
-      hi LineNr guibg=none ctermbg=none
-      hi Folded guibg=none ctermbg=none
-      hi NonText guibg=none ctermbg=none
-      hi SpecialKey guibg=none ctermbg=none
-      hi VertSplit guibg=none ctermbg=none
-      hi SignColumn guibg=none ctermbg=none
-      hi EndOfBuffer guibg=none ctermbg=none
-      let g:transparency = 1
-    else
-      execute 'colorscheme ' . g:colors_name
-      let g:transparency = 0
+  let g:transparency = 0
+  function Transparency()
+    if !exists("g:neovide")
+      if !g:transparency
+        hi Normal guibg=none ctermbg=none
+        hi LineNr guibg=none ctermbg=none
+        hi Folded guibg=none ctermbg=none
+        hi NonText guibg=none ctermbg=none
+        hi SpecialKey guibg=none ctermbg=none
+        hi VertSplit guibg=none ctermbg=none
+        hi SignColumn guibg=none ctermbg=none
+        hi EndOfBuffer guibg=none ctermbg=none
+        let g:transparency = 1
+      else
+        execute 'colorscheme ' . g:colors_name
+        let g:transparency = 0
+      endif
     endif
-  endif
-endfunction
-" au VimEnter * call Transparency()
-nnoremap <silent> <F10> :call Transparency()<CR>
+  endfunction
+  au VimEnter * call Transparency()
+  nnoremap <silent> <F10> :call Transparency()<CR>
 ]]
 
 local ok, github_theme = pcall(require, "github-theme")
@@ -144,7 +144,7 @@ if ok then
       percentage = 0.15,
     },
     no_italic = false, -- Force no italic
-    no_bold = false, -- Force no bold
+    no_bold = false,   -- Force no bold
     styles = {
       comments = { "italic" },
       conditionals = { "italic" },
@@ -186,10 +186,10 @@ if ok then
       -- Compiled file"s destination location
       compile_path = vim.fn.stdpath("cache") .. "/nightfox",
       compile_file_suffix = "_compiled", -- Compiled file suffix
-      transparent = false, -- Disable setting background
-      terminal_colors = true, -- Set terminal colors (vim.g.terminal_color_*) used in `:terminal`
-      dim_inactive = false, -- Non focused panes set to alternative background
-      module_default = true, -- Default enable value for modules
+      transparent = false,               -- Disable setting background
+      terminal_colors = true,            -- Set terminal colors (vim.g.terminal_color_*) used in `:terminal`
+      dim_inactive = false,              -- Non focused panes set to alternative background
+      module_default = true,             -- Default enable value for modules
       styles = {
         -- Style to be applied to different syntax groups
         comments = "NONE", -- Value is any valid attr-list value `:help attr-list`

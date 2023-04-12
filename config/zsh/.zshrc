@@ -150,7 +150,14 @@ bindkey -M vicmd '^H' backward-kill-word
 bindkey -M emacs '^[[3;5~' kill-word
 bindkey -M viins '^[[3;5~' kill-word
 bindkey -M vicmd '^[[3;5~' kill-word
-
 # use showkey -a or Ctrl-v to get key code for binding
+
+for config in $configs; do
+  source "$ZDOTDIR/configs/$config.zsh" 2>/dev/null
+done
+
+for plugin in $plugins; do
+  source "$ZDOTDIR/plugins/$plugin/$plugin.plugin.zsh" 2>/dev/null
+done
 
 main

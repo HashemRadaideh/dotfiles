@@ -3,24 +3,15 @@ if not ok then
   return
 end
 
--- require("plugins.lsp.configs.installer")
--- require("plugins.lsp.configs.lspsaga")
 require("plugins.lsp.configs.mason")
 require("plugins.lsp.configs.nullls")
 require("plugins.lsp.configs.cmp")
 
--- require "lsp_extensions".inlay_hints {
---     highlight = "Comment",
---     prefix = " > ",
---     aligned = false,
---     only_current_line = false,
---     enabled = { "ChainingHint" }
--- }
---
--- vim.cmd([[autocmd InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *.rs :lua require"lsp_extensions".inlay_hints{ prefix = " » ", highlight = "NonText", enabled = {"ChainingHint"} }]])
-
--- inlay hints
--- vim.cmd([[autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *.rs lua require"lsp_extensions".inlay_hints{ prefix = "", highlight =  "Comment", enabled = {"TypeHint", "ChainingHint", "ParameterHint"} }]])
+local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.textDocument.completion.completionItem.resolveSupport = {
+  properties = { "documentation", "detail", "additionalTextEdits" },
+}
 
 local on_attach = function(client, bufnr)
   local opts = { noremap = true, silent = true }
@@ -113,12 +104,6 @@ local on_attach = function(client, bufnr)
     end
   })
 end
-
-local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = { "documentation", "detail", "additionalTextEdits" },
-}
 
 local function goto_definition(split_cmd)
   local util = vim.lsp.util
@@ -241,8 +226,6 @@ local handlers = {
   ["textDocument/definition"] = goto_definition("vsplit")
 }
 
-local lsp_flags = { debounce_text_changes = 150 }
-
 ---@diagnostic disable-next-line: undefined-global
 for _, lsp in pairs(Servers) do
   if lsp == "clangd" then
@@ -252,7 +235,7 @@ for _, lsp in pairs(Servers) do
 
     lspconfig.clangd.setup {
       on_attach = on_attach,
-      flags = lsp_flags,
+      flags = { debounce_text_changes = 150 },
       capabilities = clangd_capabilities,
       handlers = handlers,
       cmd = {
@@ -283,7 +266,7 @@ for _, lsp in pairs(Servers) do
   elseif lsp == "lua_ls" then
     lspconfig.lua_ls.setup {
       on_attach = on_attach,
-      flags = lsp_flags,
+      flags = { debounce_text_changes = 150 },
       capabilities = capabilities,
       handlers = handlers,
       settings = {
@@ -311,7 +294,7 @@ for _, lsp in pairs(Servers) do
   else
     lspconfig[lsp].setup {
       on_attach = on_attach,
-      flags = lsp_flags,
+      flags = { debounce_text_changes = 150 },
       capabilities = capabilities,
       handlers = handlers,
     }

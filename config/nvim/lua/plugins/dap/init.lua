@@ -1,9 +1,3 @@
---[[
--- https://www.reddit.com/r/neovim/comments/pzlzof/will_we_ever_get_nice_debugging_functionality_in/
--- https://www.reddit.com/r/neovim/comments/silikv/debugging_in_neovim/
--- https://github.com/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation
---]]
-
 local ok, dap = pcall(require, "dap")
 if not ok then
   return
@@ -11,6 +5,13 @@ end
 
 require("plugins.dap.configs.dapui")
 require("plugins.dap.configs.virtual_text")
+
+--[[
+-- https://www.reddit.com/r/neovim/comments/pzlzof/will_we_ever_get_nice_debugging_functionality_in/
+-- https://www.reddit.com/r/neovim/comments/silikv/debugging_in_neovim/
+-- https://github.com/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation
+--]]
+
 
 -- local venv = os.getenv("VIRTUAL_ENV")
 -- command = vim.fn.getcwd() .. string.format("%s/bin/python", venv)

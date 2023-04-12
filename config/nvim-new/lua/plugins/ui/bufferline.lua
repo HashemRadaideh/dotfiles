@@ -63,8 +63,8 @@ bufferline.setup {
     offsets = {
       { filetype = "NvimTree", text = "", padding = 1 },
       { filetype = "neo-tree", text = "", padding = 1 },
-      { filetype = "Outline",  text = "", padding = 1 },
-      { filetype = "alpha",    text = "", padding = 1 },
+      { filetype = "Outline", text = "", padding = 1 },
+      { filetype = "alpha", text = "", padding = 1 },
     },
     show_buffer_icons = true,
     show_buffer_close_icons = true,
@@ -82,10 +82,10 @@ bufferline.setup {
     -- end
   },
   highlights = {
-    -- fill = {
-    --   fg = { attribute = "fg", highlight = "#ff0000" },
-    --   bg = { attribute = "bg", highlight = "TabLine" },
-    -- },
+    fill = {
+      fg = { attribute = "fg", highlight = "#ff0000" },
+      bg = { attribute = "bg", highlight = "TabLine" },
+    },
     background = {
       fg = { attribute = "fg", highlight = "TabLine" },
       bg = { attribute = "bg", highlight = "TabLine" },
