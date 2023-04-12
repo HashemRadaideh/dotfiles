@@ -25,7 +25,7 @@ ln -s ~/dotfiles/config/zsh ~/.config/zsh
 ln -s ~/dotfiles/config/neofetch ~/.config/neofetch
 
 ln -s ~/dotfiles/bin ~/.bin
-ln -s ~/dotfiles/Media ~/Media
+ln -s ~/dotfiles/wallpapers ~/Pictures/Wallpapers
 
 git clone https://github.com/tmux-plugins/tpm ~/dotfiles/config/tmux/plugins/tpm
 

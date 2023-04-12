@@ -32,9 +32,9 @@ run() {
 #     echo "User: ${disps[$d]}, Display: $d"
 # done
 
-nitrogen --head="0" --set-zoom-fill --random "$HOME/Media/Pictures/Wallpapers"
-# run wal -i "$HOME/Media/Pictures/Wallpapers"
-# run feh --bg-fill --randomize "$HOME/Media/Pictures/Wallpapers"
+nitrogen --head="0" --set-zoom-fill --random "$HOME/Pictures/Wallpapers"
+# run wal -i "$HOME/Pictures/Wallpapers"
+# run feh --bg-fill --randomize "$HOME/Pictures/Wallpapers"
 
 run nm-applet
 # run volumeicon

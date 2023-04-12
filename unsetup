@@ -38,7 +38,7 @@ sudo make -C ~/arc install
 cd && rm -rf ~/arc
 
 rm ~/.bin
-rm ~/Media
+rm ~/Pictures/Wallpapers
 rm ~/Studies
 
 # paru -Qq OR paru -Qe | awk '{print $1}'

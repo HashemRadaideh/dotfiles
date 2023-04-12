@@ -1,7 +1,7 @@
 ---@diagnostic disable: redefined-local
 
-vim.opt.guifont = "CaskaydiaCove NF:h10"
--- vim.opt.guifont = "FiraCode NF:h11"
+vim.opt.guifont = "CaskaydiaCove Nerd Font:h10"
+-- vim.opt.guifont = "FiraCode Nerd Font:h11"
 -- vim.opt.guicursor = "a:blinkon0-blinkoff0"
 
 vim.opt.background = "dark"

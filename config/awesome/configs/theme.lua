@@ -28,11 +28,12 @@ theme.user                = os.getenv("USER")
 theme.hostname            = getHostname()
 
 -- Font
--- theme.font = "CaskaydiaCove NF 11"
--- theme.font = "JetBrainsMono NF 11"
-theme.font                = "FiraCode NF 11"
--- theme.font = "SauceCodePro NF 11"
--- theme.font = "DejaVuSansMono NF 11"
+theme.font_name           = "CaskaydiaCove Nerd Font"
+theme.font                = theme.font_name .. "11"
+-- theme.font                = "JetBrainsMono Nerd Font 11"
+-- theme.font                = "FiraCode Nerd Font 11"
+-- theme.font                = "SauceCodePro Nerd Font 11"
+-- theme.font                = "DejaVuSansMono Nerd Font 11"
 
 -- Colors
 

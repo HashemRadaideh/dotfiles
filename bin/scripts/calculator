@@ -13,11 +13,11 @@ class Calculator():
         Style().configure(
             "TButton",
             padding=(0, 5, 0, 5),
-            font=("Fira Code", 15, "normal")
+            font=("FiraCode Nerd Font", 15, "normal")
         )
 
         self.__display = Text(height=2, width=1,
-                              font=("Fira Code", 20, "normal"))
+                              font=("FiraCode Nerd Font", 20, "normal"))
         self.__display.grid(row=0, columnspan=4, sticky=W+E)
 
         Button(text="Cle",

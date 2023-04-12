@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-dir="$HOME/Media/Pictures/Screenshots/"
+dir="$HOME/Pictures/Screenshots/"
 
 mkdir -p "$dir"
 

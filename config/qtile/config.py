@@ -301,7 +301,7 @@ layouts = [
 ]
 
 widget_defaults = dict(
-    font="CaskaydiaCove NF",
+    font="CaskaydiaCove Nerd Font",
     fontsize=12,
     padding=3,
 )
