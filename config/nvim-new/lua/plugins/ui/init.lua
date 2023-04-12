@@ -1,0 +1,6 @@
+require('plugins.ui.alpha')
+require('plugins.ui.bufferline')
+require('plugins.ui.lualine')
+require('plugins.ui.notify')
+require('plugins.ui.theme')
+require('plugins.ui.whichkey')

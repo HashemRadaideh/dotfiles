@@ -2,15 +2,16 @@
 
 # Simple display manager
 
-file="$(fzf --layout=reverse --cycle <<< `echo "$(/bin/ls ~/.scripts/xinit | sort)\nfuzmux/tmux\n$(tty)\npower off\nreboot\nexit"`)"
+file="$(fzf --layout=reverse --cycle <<< `echo "$(\ls ~/.bin/xinit | sort)\ntmux\n$(tty)\npower off\nreboot\nsleep\nlogout"`)"
 
 if [ -n "$file" ]; then
   case "$file" in
-    "exit") exit ;;
-    "power off") systemctl poweroff ;;
+    "logout") exit ;;
+    "sleep") systemctl suspend && exit ;;
     "reboot") systemctl reboot ;;
-    "tmux/fuzmux") fuzmux ;;
-    "$(tty)") \clear && return ;;
-    *) startx ~/.scripts/xinit/"$file" ;;
+    "power off") systemctl poweroff ;;
+    "$(tty)") \clear ;;
+    "tmux") exec fuzmux ;;
+    *) exec startx ~/.bin/xinit/"$file" ;;
   esac
 fi

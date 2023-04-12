@@ -1,11 +1,6 @@
 # Zsh environment variables
 
 # Home directory clean up
-# XDG Variables
-export XDG_DATA_HOME="$HOME/.local/bin/"
-export XDG_CONFIG_HOME="$HOME/.config/"
-export XDG_STATE_HOME="$HOME/.local/state/"
-export XDG_CACHE_HOME="$HOME/.cache/"
 
 export ANDROID_HOME="$XDG_DATA_HOME/android"
 
@@ -38,9 +33,6 @@ export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 # export CXX=/usr/bin/clang++
 
 # export SSH_AUTH_SOCK
-
-# ADDING TO THE PATH
-export PATH="$PATH:$HOME/.bin/scripts:$HOME/.local/bin:$XDG_DATA_HOME/cargo/bin:$HOME/.config/doom/bin:$HOME/.config/emacs/bin:/usr/lib/jvm/java-19-openjdk/bin"
 
 # $FILEMANAGER 
 export FILEMANAGER="lf"
@@ -149,60 +141,11 @@ alias doas='sudo'
 # replace "rm" with "trash-put -i"
 alias rm="trash-put -i"
 
-# Paru shortcut
-alias install="paru -S"
-alias uninstall="paru -R"
-alias autoremove='paru -Rcns $(pacman -Qdtq)'
-alias autoclean='paru -Scc'
-
 alias ...='../..'
 
 alias feh='feh --no-fehbg'
 
 alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts"'
-
-runwin() {
-  WINARCH=win64
-  wine "$2"
-}
-
-setupwin() {
-  WINARCH=win64
-  winetricks
-}
-
-update() {
-  paru -Syyuu 
-  reposync  ~/dotfiles/ ~/
-  nvim --headless -n -u ~/.config/nvim/init.lua -c 'autocmd User PackerComplete quitall' -c 'PackerSync' 
-  doom sync
-  ~/.config/tmux/plugins/tpm/scripts/install_plugins.sh
-  rustup self upgrade-data
-  autoremove
-  autoclean
-}
-
-# Key testing
-testkey() {
-  xev | grep -A2 --line-buffered '^KeyRelease' | sed -n '/keycode /s/^.*keycode \([0-9]*\).* (.*, \(.*\)).*$/\1 \2/p'
-}
-
-# Window managers testing utility
-testwm() {
-  Xephyr :5 -resizeable  & sleep 1 ; DISPLAY=:5 "$1" # wmctrl -r :5 -e 0,0,0,100,100
-}
-
-testcolors() {
-  for x in {0..8}; do 
-    for i in {30..37}; do 
-      for a in {40..47}; do 
-        echo -ne "\e[$x;$i;$a""m\\\e[$x;$i;$a""m\e[0;37;40m "
-      done
-
-      echo
-    done
-  done
-}
 
 lookfor() {
   sudo find / -iname "$1"
@@ -237,40 +180,3 @@ ff() {
 
 # bindkey -s '^f' '^ucd "$(dirname "$(fzf)")"\n'
 bindkey -s '^f' '^uff^m'
-
-flash() {
-  notify-send "$1"
-  notify-send "$1" -t 5000
-  sudo dd bs=4M if="$1" of="$2" conv=fdatasync  status=progress
-  notify-send "$2 created successfully"
-}
-
-codi() {
-  local syntax="${1:-python}"
-  shift
-  nvim -c \
-    "let g:startify_disable_at_vimenter = 1 |\
-    set bt=nofile ls=0 noru nonu nornu |\
-    hi ColorColumn ctermbg=NONE |\
-    hi VertSplit ctermbg=NONE |\
-    hi NonText ctermfg=0 |\
-    Codi $syntax" "$@"
-}
-
-build() {
-  local mode="${1:-Debug}"
-
-  cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -B ./build && cmake --build ./build --config "$mode" --target all -j 6 --
-}
-
-run() {
-  build "$1"
-  if [ $? -eq 0 ]; then
-    ./build/"${$(grep -P 'set\(NAME.*' ./CMakeLists.txt | awk '{print $2}')//\)}"
-  fi
-}
-
-installwm() {
-  # build "Release" && sudo cmake --install build/ --prefix "/usr/local/bin"
-  cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -B ./build && sudo cmake --build ./build --config Release --target install
-}

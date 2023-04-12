@@ -1,3 +1,0 @@
-#!/bin/zsh
-
-exec $(rofi -dmenu -p 'Launch' <<< `echo 'brave\nfirefox\ngoogle-chrome-stable\nqutebrowser\nvimb'`)

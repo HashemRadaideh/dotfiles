@@ -236,18 +236,30 @@ Configs = {
   "plugins.sessions",
 }
 
-local ensure_packer = function()
-  local fn = vim.fn
-  local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
+local packer_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+
+if not vim.loop.fs_stat(packer_path) then
+  vim.fn.system({
+    'git', 'clone', '--depth', '1',
+    'https://github.com/wbthomason/packer.nvim',
+    packer_path
+  })
+end
+
+vim.opt.rtp:prepend(packer_path)
+
+local function ensure_packer()
+  if vim.fn.empty(vim.fn.glob(packer_path)) > 0 then
+    vim.fn.system({
+      'git', 'clone', '--depth', '1',
+      'https://github.com/wbthomason/packer.nvim',
+      packer_path
+    })
     vim.cmd [[packadd packer.nvim]]
     return true
   end
   return false
 end
-
-local packer_bootstrap = ensure_packer()
 
 require("packer").startup({
   function(use)
@@ -259,7 +271,7 @@ require("packer").startup({
       require(config)
     end
 
-    if packer_bootstrap then
+    if ensure_packer() then
       require('packer').sync()
     end
   end,

@@ -1,4 +1,5 @@
 #!/bin/zsh
+
 input() {
   read name\?"Enter new session name: ";
   echo "$name";
@@ -27,4 +28,4 @@ else
     "new")  name="$(input)"; tmux new -d -s "$name"; tmux -u switch -t "$name" ;;
     *)      tmux -u switch -t "$session" ;;
   esac
-fi 
+fi

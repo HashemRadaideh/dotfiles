@@ -1,4 +1,5 @@
 # LF file manager configs
+
 # lf change directory to the last visited directory
 lfcd () {
   tmp="$(mktemp)"

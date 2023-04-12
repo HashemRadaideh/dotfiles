@@ -8,7 +8,6 @@ end
 require("plugins.lsp.configs.mason")
 require("plugins.lsp.configs.nullls")
 require("plugins.lsp.configs.cmp")
-require("configs.general")
 
 -- require "lsp_extensions".inlay_hints {
 --     highlight = "Comment",

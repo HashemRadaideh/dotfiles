@@ -31,7 +31,8 @@ end
 
 local function get_info()
   ---@diagnostic disable-next-line: undefined-global
-  local plugins = #vim.tbl_keys(packer_plugins)
+  -- local plugins = #vim.tbl_keys(packer_plugins)
+  local plugins = 0
   local v = vim.version()
   local datetime = os.date " %d-%m-%Y   %H:%M:%S"
   local platform = vim.fn.has "win32" == 1 and "" or ""

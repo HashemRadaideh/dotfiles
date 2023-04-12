@@ -27,16 +27,52 @@ map('i', '<M-k>', '<Esc><cmd>m .-2<CR>==gi', { desc = 'Move line up' })
 map('v', '<M-j>', "<cmd>m '>+1<CR>gv=gv", { desc = 'Move line down' })
 map('v', '<M-k>', "<cmd>m '<-2<CR>gv=gv", { desc = 'Move line up' })
 
+-- " Leader-J/K deletes blank line below/above, and leader-j/k inserts.
+map('n', '<leader>j', 'm`:silent +g/\\m^\\s*$/d<CR>``:noh<CR>')
+map('n', '<leader>j', ':set paste<CR>m`o<Esc>``:set nopaste<CR>')
+map('n', '<leader>k', 'm`:silent -g/\\m^\\s*$/d<CR>``:noh<CR>')
+map('n', '<leader>k', ':set paste<CR>m`O<Esc>``:set nopaste<CR>')
+
+-- Improved search
+map('n', '<Esc>', '<cmd>nohl<CR><Esc><Plug>multi_cursor_quit_key', { desc = 'Escape and clear hlsearch' })
+map('i', '<Esc>', '<cmd>nohl<CR><Esc><Plug>multi_cursor_quit_key', { desc = 'Escape and clear hlsearch' })
+
+map('n', 'n', "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
+map('x', 'n', "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
+map('o', 'n', "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
+map('n', 'N', "'nN'[v:searchforward]", { expr = true, desc = "Previous search result" })
+map('x', 'N', "'nN'[v:searchforward]", { expr = true, desc = "Previous search result" })
+map('o', 'N', "'nN'[v:searchforward]", { expr = true, desc = "Previous search result" })
+
+-- Improved indenting
+map("v", "<", "<gv")
+map("v", ">", ">gv")
+
+
+map('n', '~', '~h')
+
+-- better insert mode
 map("i", "<C-H>", "<C-o>db", { desc = "Delete word backward" })
 map("i", "<C-Del>", "<C-o>dw", { desc = "Delete word forward" })
 
-map("i", "<C-Left>", "<C-o>w", { desc = "Move one word forward" })
-map("i", "<C-Right>", "<C-o>b", { desc = "Move one word backward" })
+map("i", "<C-Left>", "<C-o>b", { desc = "Move one word forward" })
+map("i", "<C-Right>", "<C-o>w", { desc = "Move one word backward" })
 
-map("i", "<C-f>", "<C-o>/", { desc = "Move one word backward" })
+map("i", "<C-f>", "<C-o>/", { desc = "Search for a string" })
 
-map("i", "<C-n>", "<C-o>n", { desc = "Move one word backward" })
-map("i", "<C-p>", "<C-o>N", { desc = "Move one word backward" })
+map("i", "<C-n>", "<C-o>n", { desc = "Move to next occurrence" })
+map("i", "<C-p>", "<C-o>N", { desc = "Move to previous occurrence" })
+
+map('i', ',', ',<C-g>u')
+map('i', '.', '.<C-g>u')
+map('i', ';', ';<C-g>u')
+
+map('i', '<C-z>', '<C-o>u', { desc = "Undo last move" })
+
+map('n', '<C-s>', '<cmd>w<CR><esc>', { desc = 'Save file' })
+map('v', '<C-s>', '<cmd>w<CR><esc>', { desc = 'Save file' })
+map('i', '<C-s>', '<cmd>w<CR><esc>', { desc = 'Save file' })
+map('s', '<C-s>', '<cmd>w<CR><esc>', { desc = 'Save file' })
 
 map("n", "<leader>sp", ":e /tmp/scratchpad<cr>", { desc = "Scratchpad" })
 
@@ -52,62 +88,32 @@ map("n", "<leader>sp", ":e /tmp/scratchpad<cr>", { desc = "Scratchpad" })
 -- map('n', '<leader>r', ':Reload<CR>')
 
 -- map('n', '<leader>y', ":enew | startinsert<CR>")
-map("n", "<leader>y", ":enew<cr>", { desc = "New File" })
-
-map("v", "<", "<gv", { desc = "unindent line" })
-map("v", ">", ">gv", { desc = "indent line" })
+map("n", "<leader>fn", ":enew<cr>", { desc = "New File" })
 
 -- map('n', '<tab>', ':tabn<CR>')
 -- map('n', '<S-tab>', ':tabp<CR>')
 map('n', '<leader>i', ':tabnew<CR>')
 
-map('n', '~', '~h')
-
-
 -- map('n', '<C-s>', '<C-w>s')
 -- map('n', '<C-v>', '<C-w>v')
 
-
--- " Leader-J/K deletes blank line below/above, and leader-j/k inserts.
-map('n', '<leader>J', 'm`:silent +g/\\m^\\s*$/d<CR>``:noh<CR>')
-map('n', '<leader>K', 'm`:silent -g/\\m^\\s*$/d<CR>``:noh<CR>')
-map('n', '<leader>j', ':set paste<CR>m`o<Esc>``:set nopaste<CR>')
-map('n', '<leader>k', ':set paste<CR>m`O<Esc>``:set nopaste<CR>')
-
 -- add new line from current position
--- map('n', '<leader>j', ':set paste<CR>i<CR><ESC>x:set nopaste<CR>')
+-- map('n', '<leader>j', ':set paste<CR>i<CR><Esc>x:set nopaste<CR>')
 
-map('n', '<leader>h', '_')
-map('n', '<leader>l', '$')
-map('n', '<leader>n', ':nohl<CR>')
+map('n', '<F5>', '<cmd>vs<CR><cmd>terminal<CR>')
 
--- map('n', '<F5>', ':terminal pwsh.exe<CR>')
+function DelMark()
+  vim.cmd [[function! Delmarks()                                              ]]
+  vim.cmd [[  let l:m = join(filter(                                          ]]
+  vim.cmd [[      \ map(range(char2nr('a'), char2nr('z')), 'nr2char(v:val)'), ]]
+  vim.cmd [[      \ 'line("''".v:val) == line(".")'))                         ]]
+  vim.cmd [[   if !empty(l:m)                                                 ]]
+  vim.cmd [[       exe 'delmarks' l:m                                         ]]
+  vim.cmd [[   endif                                                          ]]
+  vim.cmd [[endfunction                                                       ]]
+end
 
--- function DelMark()
---   vim.cmd [[function! Delmarks()                                              ]]
---   vim.cmd [[  let l:m = join(filter(                                          ]]
---   vim.cmd [[      \ map(range(char2nr('a'), char2nr('z')), 'nr2char(v:val)'), ]]
---   vim.cmd [[      \ 'line("''".v:val) == line(".")'))                         ]]
---   vim.cmd [[   if !empty(l:m)                                                 ]]
---   vim.cmd [[       exe 'delmarks' l:m                                         ]]
---   vim.cmd [[   endif                                                          ]]
---   vim.cmd [[endfunction                                                       ]]
--- end
---
--- map('n', 'dm', ':<c-u>lua Delmarks()<cr>')
-
--- map('i', 'jj', '<Esc>')
--- map('i', 'jk', '<Esc>')
--- map('i', 'kj', '<Esc>')
--- map('i', 'kk', '<Esc>')
-
--- map('i', '<C-Z>', '<Esc><C-r>i')
--- map('i', '<C-z>', '<Esc>ui')
-
--- map("n", "<leader>w", ":w<cr>", { desc = "Save" })
--- map("n", "<leader>q", ":q<cr>", { desc = "Quit" })
--- map("n", "<C-s>", ":w!<cr>", { desc = "Force write" })
--- map("n", "<C-q>", ":q!<cr>", { desc = "Force quit" })
+map('n', 'dm', ':<c-u>lua Delmarks()<cr>')
 
 -- Packer mappings
 map('n', '<leader>ps', ':PackerSync<CR>')
@@ -138,7 +144,6 @@ map('n', 'g<C-G>', '<Plug>multi_cursor_select_all_key')
 map('n', '<C-g>', '<Plug>multi_cursor_next_key')
 map('n', '<C-p>', '<Plug>multi_cursor_prev_key')
 map('n', 'g<C-x>', '<Plug>multi_cursor_skip_key')
-map('n', '<Esc>', '<Plug>multi_cursor_quit_key')
 
 map('n', 'w', '<Plug>CamelCaseMotion_w')
 map('n', 'b', '<Plug>CamelCaseMotion_b')
@@ -156,8 +161,8 @@ map('x', 'ib', '<Plug>CamelCaseMotion_ib')
 map('o', 'ie', '<Plug>CamelCaseMotion_ie')
 map('x', 'ie', '<Plug>CamelCaseMotion_ie')
 
-map('i', '<C-Left>', '<C-o><Plug>CamelCaseMotion_b')
-map('i', '<C-Right>', '<C-o><Plug>CamelCaseMotion_w')
+-- map('i', '<C-Left>', '<C-o><Plug>CamelCaseMotion_b')
+-- map('i', '<C-Right>', '<C-o><Plug>CamelCaseMotion_w')
 
 -- Bufferline mappings
 map('n', '<S-tab>', ':BufferLineCyclePrev<CR>')
