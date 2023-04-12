@@ -1,15 +1,15 @@
-local awful     = require('awful')
-local beautiful = require('beautiful')
-local gears     = require('gears')
-local wibox     = require('wibox')
-local naughty   = require('naughty')
+local awful                        = require('awful')
+local beautiful                    = require('beautiful')
+local gears                        = require('gears')
+local wibox                        = require('wibox')
+local naughty                      = require('naughty')
 
 ---@diagnostic disable-next-line: undefined-global
 local screen, dpi, awesome, client = screen, beautiful.xresources.apply_dpi, awesome, client
 
-Desktop = {}
+Desktop                            = {}
 
-Desktop.Tasks = awful.popup {
+Desktop.Tasks                      = awful.popup {
   widget       = awful.widget.tasklist {
     screen          = screen[1],
     filter          = awful.widget.tasklist.filter.currenttags,
@@ -41,7 +41,8 @@ Desktop.Tasks = awful.popup {
     buttons         = {
       awful.button(
         {}, 1,
-        function(c) c:activate {
+        function(c)
+          c:activate {
             context = "tasklist",
             action = "toggle_minimization"
           }
@@ -60,7 +61,7 @@ Desktop.Tasks = awful.popup {
       ),
       awful.button(
         {}, 4,
-        function() awful.client.focus.byidx(-1) end
+        function() awful.client.focus.byidx( -1) end
       ),
       awful.button(
         {}, 5,
@@ -76,7 +77,7 @@ Desktop.Tasks = awful.popup {
   visible      = false
 }
 
-Desktop.Clock = wibox {
+Desktop.Clock                      = wibox {
   visible = false,
   x       = screen.primary.geometry.width / 2 - 275,
   y       = 69,
@@ -102,7 +103,7 @@ Desktop.Clock = wibox {
   ),
 }
 
-Desktop.Side_Panel = wibox {
+Desktop.Side_Panel                 = wibox {
   screen = screen.primary,
   visible = false,
   width = screen.primary.geometry.height - 400,
@@ -156,9 +157,9 @@ Desktop.Side_Panel = wibox {
         right  = 10,
         {
           markup = '' ..
-              '<span font="Monospace 21">' ..
-              beautiful.user .. "@" .. beautiful.hostname ..
-              '</span>',
+          '<span font="Monospace 21">' ..
+          beautiful.user .. "@" .. beautiful.hostname ..
+          '</span>',
           forced_width = dpi(400),
           widget = wibox.widget.textbox,
         }
@@ -167,7 +168,7 @@ Desktop.Side_Panel = wibox {
   },
 }
 
-Desktop.Bartoggle = wibox {
+Desktop.Bartoggle                  = wibox {
   visible = true,
   ontop   = true,
   x       = 0,
@@ -228,5 +229,5 @@ w:setup {
 }
 -- w.visible = true
 
-local touchwidget = require('ui.desktop.touchwidgets')
+local touchwidget = require('configs.ui.desktop.touchwidgets')
 -- touchwidget.toggle()

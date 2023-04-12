@@ -1,18 +1,17 @@
-local awful                         = require('awful')
-local hotkeys_popup                 = require('awful.hotkeys_popup')
-local gears                         = require('gears')
-local beautiful                     = require('beautiful')
+local awful                   = require('awful')
+local hotkeys_popup           = require('awful.hotkeys_popup')
+local beautiful               = require('beautiful')
 
 ---@diagnostic disable-next-line: undefined-global
-local awesome, client, screen, root = awesome, client, screen, root
+local awesome, client, screen = awesome, client, screen
 
 -- Default modkey.
-Meta                                = "Mod1"
-Super                               = "Mod4"
-Ctrl                                = "Control"
-Shift                               = "Shift"
+Meta                          = "Mod1"
+Super                         = "Mod4"
+Ctrl                          = "Control"
+Shift                         = "Shift"
 
-local logout_popup                  = require(
+local logout_popup            = require(
   "awesome-wm-widgets.logout-popup-widget.logout-popup"
 )
 

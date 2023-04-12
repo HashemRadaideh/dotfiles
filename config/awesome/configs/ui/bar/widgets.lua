@@ -96,7 +96,7 @@ function Tasks(s)
         ),
         awful.button(
           {}, 4,
-          function() awful.client.focus.byidx(-1) end
+          function() awful.client.focus.byidx( -1) end
         ),
         awful.button(
           {}, 5,
@@ -130,9 +130,9 @@ Layoutbox = wibox.widget {
   widget = wibox.container.margin,
   buttons = {
     awful.button({}, 1, function() awful.layout.inc(1) end),
-    awful.button({}, 3, function() awful.layout.inc(-1) end),
+    awful.button({}, 3, function() awful.layout.inc( -1) end),
     awful.button({}, 4, function() awful.layout.inc(1) end),
-    awful.button({}, 5, function() awful.layout.inc(-1) end),
+    awful.button({}, 5, function() awful.layout.inc( -1) end),
   },
 }
 
@@ -228,6 +228,7 @@ local update_clock = gears.timer {
 
 -- local mytextclock = wibox.widget.textclock()
 
+---@diagnostic disable-next-line: unused-local
 local clock_tooltip = awful.tooltip {
   objects        = { Clock },
   timer_function = function()

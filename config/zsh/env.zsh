@@ -1,7 +1,6 @@
 # Zsh environment variables
 
 # Home directory clean up
-
 export ANDROID_HOME="$XDG_DATA_HOME/android"
 
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
@@ -65,6 +64,7 @@ export DISTRO="$(hostnamectl | grep 'Operating System' | awk '{ print substr($0,
 # IPv4 address.
 export IPv4="${$(ip a | grep -P '^.*(?=.*inet )(?=.*dynamic).*$' | awk '{print $2}')//\/*}"
 
+# xkb
 alias lsxkbmodels="sed '/^! model$/,/^ *$/!d;//d' /usr/share/X11/xkb/rules/base.lst"
 alias lsxkblayouts="sed '/^! layout$/,/^ *$/!d;//d' /usr/share/X11/xkb/rules/base.lst"
 alias lsxkbvariants="sed '/^! variant$/,/^ *$/!d;//d' /usr/share/X11/xkb/rules/base.lst"
@@ -82,6 +82,8 @@ alias x="startx"
 alias e="$EDITOR"
 bindkey -s '^e' "^u$EDITOR^m"
 alias v="$VISUAL"
+
+bindkey -s '^n' '^ufuzmux^m'
 
 # nvim shortcut
 alias nv="nvim"
@@ -123,15 +125,10 @@ alias lg="lazygit"
 # Glow shortcut
 alias gl="glow"
 
-# Git shortcut
-alias g="git"
-
 alias cmatrix='cmatrix -b -u 3 -C cyan'
 
 # tock centered with cyan coloring shortcut
 alias tock='tock -c -C 6'
-
-alias fm="exec fuzmux"
 
 # please is a "sudo !!" alias
 # alias please='sudo $(!!)'
@@ -171,10 +168,12 @@ ff() {
     cd
   fi
 
-  if [ -d "$dirs" ]; then
-    cd "$dirs"
-  else
-    cd "$(sed 's/\(.*\)\/.*/\1/' <<< "$dirs") && $EDITOR $(sed 's/.*\/\(.*\)/\1/' <<< "$dirs")"
+  if [[ -n "$dirs" ]]; then
+    if  [ -d "$dirs" ]; then
+      cd "$dirs"
+    else
+      cd "$(sed 's/\(.*\)\/.*/\1/' <<< "$dirs") && $EDITOR $(sed 's/.*\/\(.*\)/\1/' <<< "$dirs")"
+    fi
   fi
 }
 

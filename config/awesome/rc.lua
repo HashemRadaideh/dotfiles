@@ -3,10 +3,9 @@ require('awful.autofocus')
 
 local gears = require("gears")
 local beautiful = require("beautiful")
-beautiful.init(gears.filesystem.get_configuration_dir() .. "theme/theme.lua")
+beautiful.init(gears.filesystem.get_configuration_dir() .. "configs/theme.lua")
 
-require('conf')
-require('ui')
+require('configs')
 
 gears.timer {
   timeout = 5,

@@ -1,6 +1,0 @@
-require('ui.tags')
-require('ui.client')
-require('ui.menu')
-require('ui.bar')
-require('ui.titlebar')
-require('ui.desktop')

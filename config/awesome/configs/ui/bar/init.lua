@@ -6,7 +6,7 @@ local wibox = require('wibox')
 local screen, dpi = screen, beautiful.xresources.apply_dpi
 
 -- Widgets
-require("ui.bar.widgets")
+require("configs.ui.bar.widgets")
 
 local logout_popup = require(
   "awesome-wm-widgets.logout-popup-widget.logout-popup"
@@ -14,10 +14,6 @@ local logout_popup = require(
 
 local volume_widget = require(
   'awesome-wm-widgets.volume-widget.volume'
-)
-
-local battery_widget = require(
-  "awesome-wm-widgets.battery-widget.battery"
 )
 
 local batteryarc_widget = require(
@@ -80,7 +76,6 @@ screen.connect_signal("request::desktop_decoration", function(s)
         -- MEMButton,
         -- CPU,
         -- CPUButton,
-        -- battery_widget(),
         batteryarc_widget({
           show_current_level = true,
           arc_thickness = 1,

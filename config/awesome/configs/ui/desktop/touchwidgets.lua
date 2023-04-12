@@ -2,7 +2,7 @@ local wibox = require("wibox")
 local awful = require("awful")
 local gears = require("gears")
 local beautiful = require("beautiful")
-local xrandr = require('ui.desktop.xrandr')
+local xrandr = require('configs.ui.desktop.xrandr')
 
 local xmin, ymin, spacing = 60, 60, 20
 local bg = beautiful.bg_normal
@@ -28,43 +28,55 @@ local wibox_tree = {
     {
       row = 1, col = 1,
       image = os.getenv("HOME") .. "/.icons/power-logoff.png",
-      callback = function() awful.spawn.easy_async(os.getenv("HOME") .. "/bin/at-exit.sh",
-          function(stdout) end)
+      callback = function()
+        awful.spawn.easy_async(os.getenv("HOME") .. "/bin/at-exit.sh",
+          function(stdout)
+          end)
       end
     },
     {
       row = 1, col = 2,
       image = os.getenv("HOME") .. "/.icons/power-shutdown.png",
-      callback = function() awful.spawn.easy_async("/usr/bin/sudo /sbin/shutdown -h now",
-          function(stdout) end)
+      callback = function()
+        awful.spawn.easy_async("/usr/bin/sudo /sbin/shutdown -h now",
+          function(stdout)
+          end)
       end
     },
     {
       row = 1, col = 3,
       image = os.getenv("HOME") .. "/.icons/power-restart.png",
-      callback = function() awful.spawn.easy_async("/usr/bin/sudo /sbin/reboot",
-          function(stdout) end)
+      callback = function()
+        awful.spawn.easy_async("/usr/bin/sudo /sbin/reboot",
+          function(stdout)
+          end)
       end
     },
     {
       row = 2, col = 1,
       image = os.getenv("HOME") .. "/.icons/power-hibernate.png",
-      callback = function() awful.spawn.easy_async("systemctl hibernate",
-          function(stdout) end)
+      callback = function()
+        awful.spawn.easy_async("systemctl hibernate",
+          function(stdout)
+          end)
       end
     },
     {
       row = 2, col = 2,
       image = os.getenv("HOME") .. "/.icons/power-sleep.png",
-      callback = function() awful.spawn.easy_async("systemctl suspend",
-          function(stdout) end)
+      callback = function()
+        awful.spawn.easy_async("systemctl suspend",
+          function(stdout)
+          end)
       end
     },
     {
       row = 2, col = 3,
       image = os.getenv("HOME") .. "/.icons/power-lock.png",
-      callback = function() awful.spawn.easy_async("/usr/bin/slock",
-          function(stdout) end)
+      callback = function()
+        awful.spawn.easy_async("/usr/bin/slock",
+          function(stdout)
+          end)
       end
     }
   },
@@ -81,41 +93,52 @@ local wibox_tree = {
     {
       row = 1, col = 1,
       image = os.getenv("HOME") .. "/.icons/terminal.png",
-      callback = function() awful.spawn.easy_async(os.getenv("HOME") .. "/bin/urxvt.sh",
-          function(stdout) end)
+      callback = function()
+        awful.spawn.easy_async(os.getenv("HOME") .. "/bin/urxvt.sh",
+          function(stdout)
+          end)
       end
     },
     {
       row = 1, col = 2,
       image = os.getenv("HOME") .. "/.icons/emacs.png",
-      callback = function() awful.spawn.easy_async(os.getenv("HOME") .. "/bin/emacs.sh",
-          function(stdout) end)
+      callback = function()
+        awful.spawn.easy_async(os.getenv("HOME") .. "/bin/emacs.sh",
+          function(stdout)
+          end)
       end
     },
     {
       row = 1, col = 3,
       image = os.getenv("HOME") .. "/.icons/qutebrowser.png",
-      callback = function() awful.spawn.easy_async(os.getenv("HOME") .. "/bin/qutebrowser",
-          function(stdout) end)
+      callback = function()
+        awful.spawn.easy_async(os.getenv("HOME") .. "/bin/qutebrowser",
+          function(stdout)
+          end)
       end
     },
     {
       row = 2, col = 1,
       image = os.getenv("HOME") .. "/.icons/styluslab-write.png",
-      callback = function() awful.spawn.easy_async(os.getenv("HOME") .. "/usr/src/Write/Write",
-          function(stdout) end)
+      callback = function()
+        awful.spawn.easy_async(os.getenv("HOME") .. "/usr/src/Write/Write",
+          function(stdout)
+          end)
       end
     },
     {
       row = 2, col = 2,
       image = os.getenv("HOME") .. "/.icons/xournal.png",
-      callback = function() awful.spawn.easy_async("/usr/bin/xournal", function(stdout) end) end
+      callback = function() awful.spawn.easy_async("/usr/bin/xournal", function(stdout)
+        end) end
     },
     {
       row = 2, col = 3,
       image = os.getenv("HOME") .. "/.icons/firefox.png",
-      callback = function() awful.spawn.easy_async(os.getenv("HOME") .. "/bin/firefox-esr",
-          function(stdout) end)
+      callback = function()
+        awful.spawn.easy_async(os.getenv("HOME") .. "/bin/firefox-esr",
+          function(stdout)
+          end)
       end
     },
   },
@@ -132,8 +155,10 @@ local wibox_tree = {
     {
       row = 1, col = 1,
       image = os.getenv("HOME") .. "/.icons/screenshot.png",
-      callback = function() awful.spawn.easy_async(os.getenv("HOME") .. "/bin/print.sh",
-          function(stdout) end)
+      callback = function()
+        awful.spawn.easy_async(os.getenv("HOME") .. "/bin/print.sh",
+          function(stdout)
+          end)
       end
     },
     {
@@ -226,9 +251,9 @@ local function make_wibox_list(wibox_tree, xmin, ymin, bg, wibox_list)
       x = wibox_tree.x or xmin,
       y = wibox_tree.y or ymin,
       width = wibox_tree.width * wibox_tree.forced_num_cols +
-          (wibox_tree.spacing or 0) * (wibox_tree.forced_num_cols - 1),
+      (wibox_tree.spacing or 0) * (wibox_tree.forced_num_cols - 1),
       height = wibox_tree.height * wibox_tree.forced_num_rows +
-          (wibox_tree.spacing or 0) * (wibox_tree.forced_num_rows - 1),
+      (wibox_tree.spacing or 0) * (wibox_tree.forced_num_rows - 1),
       ontop = wibox_tree.ontop or true,
       bg = wibox_tree.bg or bg
     }
@@ -295,7 +320,8 @@ end
 
 local wibox_list = {}
 
-awful.spawn.easy_async(make_wibox_list(wibox_tree, xmin, ymin, bg, wibox_list), function(stdout) end)
+awful.spawn.easy_async(make_wibox_list(wibox_tree, xmin, ymin, bg, wibox_list), function(stdout)
+end)
 
 local function toggle()
   local is_one_visible = false
