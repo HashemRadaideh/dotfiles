@@ -185,6 +185,12 @@ vim.keymap.set('n', '<C-7>', '<cmd>BufferLineGoToBuffer 7<CR>')
 vim.keymap.set('n', '<C-8>', '<cmd>BufferLineGoToBuffer 8<CR>')
 vim.keymap.set('n', '<C-9>', '<cmd>BufferLineGoToBuffer 9<CR>')
 
+-- lspconfig
+vim.keymap.set('n', '<leader>p', ':lua vim.diagnostic.open_float()<CR>')
+vim.keymap.set('n', 'gk', ':lua vim.diagnostic.goto_prev()<CR>')
+vim.keymap.set('n', 'gj', ':lua vim.diagnostic.goto_next()<CR>')
+vim.keymap.set('n', '<leader>q', ':lua vim.diagnostic.setloclist()<CR>')
+
 -- DAP mappings
 vim.keymap.set("n", "<F2>", "<cmd>lua require('dap').step_over()<CR>")
 vim.keymap.set("n", "<F3>", "<cmd>lua require('dap').step_into()<CR>")

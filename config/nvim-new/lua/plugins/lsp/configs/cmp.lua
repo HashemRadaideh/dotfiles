@@ -75,7 +75,7 @@ cmp.setup({
     -- { name = "nvim_lua" },
   },
   mapping = {
-    ["<C-k>"] = cmp.mapping(function(fallback)
+    ["<C-j>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
       elseif luasnip.expandable() then
@@ -90,7 +90,7 @@ cmp.setup({
         fallback()
       end
     end, { "i", "s", }),
-    ["<C-j>"] = cmp.mapping(function(fallback)
+    ["<C-k>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
       elseif luasnip.jumpable(-1) then
@@ -99,7 +99,7 @@ cmp.setup({
         fallback()
       end
     end, { "i", "s", }),
-    ["<C-p>"] = cmp.mapping(function(fallback)
+    ["<C-n>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
       elseif luasnip.expandable() then
@@ -114,7 +114,7 @@ cmp.setup({
         fallback()
       end
     end, { "i", "s", }),
-    ["<C-n>"] = cmp.mapping(function(fallback)
+    ["<C-p>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
       elseif luasnip.jumpable(-1) then

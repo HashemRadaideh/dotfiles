@@ -35,7 +35,7 @@ require('lazy').setup({
       'L3MON4D3/LuaSnip',
 
       'jose-elias-alvarez/null-ls.nvim',
-      -- { 'j-hui/fidget.nvim',       opts = {} },
+      { 'j-hui/fidget.nvim',       opts = {} },
     },
     config = function()
       require('plugins.lsp')
@@ -96,7 +96,10 @@ require('lazy').setup({
     end
   },
 
-  { 'tpope/vim-fugitive', },
+  {
+    'tpope/vim-fugitive',
+    cmd = "G"
+  },
 
   { 'tpope/vim-rhubarb', },
 
@@ -158,8 +161,6 @@ require('lazy').setup({
 
   {
     'nvim-telescope/telescope-fzf-native.nvim',
-    -- NOTE: If you are having trouble with this installation,
-    --       refer to the README for telescope-fzf-native for more instructions.
     build = 'make',
     cond = function()
       return vim.fn.executable 'make' == 1
@@ -255,6 +256,7 @@ require('lazy').setup({
 
   {
     'goolord/alpha-nvim',
+    -- cmd = 'Alpha',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
       require('plugins.alpha')
