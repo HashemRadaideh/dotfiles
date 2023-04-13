@@ -10,7 +10,7 @@ lfcd () {
     # [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
     if [ -d "$dir" ]; then
       if [ "$dir" != "$(pwd)" ]; then
-        cd "$dir"
+        z "$dir"
       fi
     fi
   fi

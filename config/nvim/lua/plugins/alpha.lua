@@ -3,7 +3,7 @@ if not ok then
   return
 end
 
-local _, _, path = string.find(debug.getinfo(1).short_src, "(.*nvim-new)")
+local _, _, path = string.find(debug.getinfo(1).short_src, "(.*nvim)")
 
 local function get_greeting()
   local tableTime = os.date("*t")
@@ -32,8 +32,7 @@ end
 
 local function get_info()
   ---@diagnostic disable-next-line: undefined-global
-  -- local plugins = #vim.tbl_keys(packer_plugins)
-  local plugins = 0
+  local plugins = #vim.tbl_keys(packer_plugins)
   local v = vim.version()
   local datetime = os.date " %d-%m-%Y   %H:%M:%S"
   local platform = vim.fn.has "win32" == 1 and "" or ""
