@@ -95,13 +95,13 @@ alpha.setup({
       val = {
         button("SPC s s", "  Open session"),
         button("SPC s p", "  Scratch pad"),
-        button("SPC i", "  Create new file"),
+        button("SPC f n", "  Create new file"),
         button("SPC f f", "  Find file"),
         button("SPC f o", "  Recent files"),
         button("SPC f g", "  Find word"),
-        button("SPC e", "  File browser"),
-        button("x", "  Find repo", ":lua require('gfold').pick_repo()<CR>"),
-        button("p", "  Sync/Update", ":PackerSync<CR>"),
+        button("SPC f e", "  File browser"),
+        button("SPC p r", "  Find repo", ":lua require('gfold').pick_repo()<CR>"),
+        button("SPC p s", "  Sync/Update"),
         ---@diagnostic disable-next-line: undefined-global
         button("c", "  Config", (":cd %s | e init.lua <CR>"):format(path)),
         button("q", "  Quit", ":qa!<CR>"),

@@ -62,6 +62,7 @@ paru -Syyuu \
   clojure \
   ghc \
   octave \
+  go \
   pypy \
   python \
   bun-bin \

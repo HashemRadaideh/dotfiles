@@ -6,7 +6,7 @@ if not vim.loop.fs_stat(lazypath) then
     'clone',
     '--filter=blob:none',
     'https://github.com/folke/lazy.nvim.git',
-    '--branch=stable', -- latest stable release
+    '--branch=stable',
     lazypath,
   })
 end
@@ -14,51 +14,273 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
-  'wbthomason/packer.nvim',
-
   {
     'neovim/nvim-lspconfig',
     dependencies = {
       { 'williamboman/mason.nvim', build = ':MasonUpdate' },
       'williamboman/mason-lspconfig.nvim',
+
       {
         'hrsh7th/nvim-cmp',
         dependencies = {
           'hrsh7th/cmp-nvim-lsp',
           'hrsh7th/cmp-buffer',
+          'saadparwaiz1/cmp_luasnip',
           'hrsh7th/cmp-path',
-          'hrsh7th/cmp-cmdline'
+          'hrsh7th/cmp-cmdline',
         },
       },
+
       'rafamadriz/friendly-snippets',
       'L3MON4D3/LuaSnip',
-      'saadparwaiz1/cmp_luasnip',
+
       'jose-elias-alvarez/null-ls.nvim',
+      -- { 'j-hui/fidget.nvim',       opts = {} },
     },
     config = function()
       require('plugins.lsp')
     end
   },
 
-  -- 'projekt0n/github-nvim-theme'
+  {
+    'nvim-treesitter/nvim-treesitter',
+    dependencies = 'nvim-treesitter/nvim-treesitter-textobjects',
+    build = ':TSUpdate',
+    config = function()
+      require('plugins.treesitter')
+    end
+  },
 
-  -- 'navarasu/onedark.nvim' -- 'ful1e5/onedark.nvim'
+  {
+    'mfussenegger/nvim-dap',
+    -- NOTE: And you can specify dependencies as well
+    dependencies = {
+      "Pocco81/dap-buddy.nvim",
+      'rcarriga/nvim-dap-ui',
+      "theHamsta/nvim-dap-virtual-text",
 
-  -- 'catppuccin/nvim'
+      "nvim-neotest/neotest",
 
-  -- 'EdenEast/nightfox.nvim'
+      'williamboman/mason.nvim',
+      'jay-babu/mason-nvim-dap.nvim',
 
-  -- 'sainnhe/edge'
+      'leoluz/nvim-dap-go',
+    },
+    config = function()
+      require('plugins.dap')
+    end
+  },
 
-  -- 'dylanaraps/wal.vim'
+  { 'github/copilot.vim' },
 
-  -- 'ellisonleao/gruvbox.nvim'
+  {
+    'AckslD/nvim-gfold.lua',
+    config = function()
+      require('plugins.gfold')
+    end
+  },
 
-  -- 'shaunsingh/nord.nvim'
+  {
+    'lewis6991/gitsigns.nvim',
+    -- tag = 'release',
+    config = function()
+      require('plugins.gitsigns')
+    end
+  },
 
-  -- 'Shatur/neovim-ayu'
+  {
+    'sindrets/diffview.nvim',
+    dependencies = 'nvim-lua/plenary.nvim',
+    config = function()
+      require('plugins.diffview')
+    end
+  },
 
-  'folke/tokyonight.nvim',
+  { 'tpope/vim-fugitive', },
+
+  { 'tpope/vim-rhubarb', },
+
+  { 'tpope/vim-surround', },
+
+  { 'tpope/vim-commentary', },
+
+  { 'tpope/vim-sleuth', },
+
+  -- { 'vim-scripts/ReplaceWithRegister', },
+
+  { 'mg979/vim-visual-multi', },
+
+  { 'bkad/CamelCaseMotion', },
+
+  {
+    'ggandor/leap.nvim',
+    requires = 'tpope/vim-repeat',
+    config = function()
+      require('leap').add_default_mappings()
+    end
+  },
+
+  {
+    'phaazon/hop.nvim',
+    branch = 'v2',
+    config = function()
+      require('plugins.hop')
+    end
+  },
+
+  {
+    'kevinhwang91/nvim-bqf',
+    ft = 'qf',
+    config = function()
+      require('plugins.bqf')
+    end
+  },
+
+  {
+    'junegunn/fzf',
+    build = function()
+      vim.fn['fzf#install']()
+    end
+  },
+
+  {
+    'nvim-telescope/telescope.nvim',
+    -- tag = '0.1.x',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'kdheepak/lazygit.nvim',
+      'nvim-telescope/telescope-ui-select.nvim',
+    },
+    config = function()
+      require('plugins.telescope')
+    end
+  },
+
+  {
+    'nvim-telescope/telescope-fzf-native.nvim',
+    -- NOTE: If you are having trouble with this installation,
+    --       refer to the README for telescope-fzf-native for more instructions.
+    build = 'make',
+    cond = function()
+      return vim.fn.executable 'make' == 1
+    end,
+  },
+
+  {
+    'nvim-neo-tree/neo-tree.nvim',
+    cmd = "Neotree",
+    branch = 'v2.x',
+    keys = { { '<leader>fe', '<cmd>Neotree toggle<CR>', desc = "Open file explorer" } },
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
+      'MunifTanjim/nui.nvim',
+      {
+        -- only needed if you want to the commands with '_with_window_picker' suffix
+        's1n7ax/nvim-window-picker',
+        -- tag = 'v1.*',
+        config = function()
+          require('plugins.windowpicker')
+        end,
+      }
+    },
+    config = function()
+      require('plugins.neotree')
+    end
+  },
+
+  {
+    'mbbill/undotree',
+    cmd = "UndotreeToggle",
+    keys = { { '<leader>ut', '<cmd>UndotreeToggle<CR>', desc = "Open Undotree" } },
+  },
+
+  {
+    'simrat39/symbols-outline.nvim',
+    cmd = "SymbolsOutline",
+    keys = { { '<leader>so', '<cmd>SymbolsOutline<CR>', desc = "Open SymbolsOutline" } },
+    config = function()
+      require('plugins.outline')
+    end
+  },
+
+  {
+    'metakirby5/codi.vim',
+    config = function()
+      vim.cmd [[
+          let g:codi#rightalign = 1
+          let g:codi#rightsplit = 1
+        ]]
+    end
+  },
+
+  {
+    'Shatur/neovim-session-manager',
+    dependencies = 'nvim-lua/plenary.nvim',
+    config = function()
+      require('plugins.session')
+    end
+  },
+
+  {
+    'windwp/nvim-autopairs',
+    config = function()
+      require('plugins.autopairs')
+    end
+  },
+
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons', opt = true },
+    config = function()
+      require('plugins.lualine')
+    end
+  },
+
+  {
+    'akinsho/bufferline.nvim',
+    -- tag = 'v3.*',
+    dependencies = 'nvim-tree/nvim-web-devicons',
+    config = function()
+      require('plugins.bufferline')
+    end
+  },
+
+  {
+    'rcarriga/nvim-notify',
+    config = function()
+      require('plugins.notify')
+    end
+  },
+
+  {
+    'goolord/alpha-nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      require('plugins.alpha')
+    end
+  },
+
+  {
+    'lukas-reineke/indent-blankline.nvim',
+    config = function()
+      require('plugins.indent')
+    end
+  },
+
+  {
+    'norcalli/nvim-colorizer.lua',
+    config = function()
+      require('plugins.colorizer')
+    end
+  },
+
+  {
+    'anuvyklack/pretty-fold.nvim',
+    config = function()
+      require('pretty-fold').setup()
+    end
+  },
 
   {
     'folke/which-key.nvim',
@@ -89,187 +311,20 @@ require('lazy').setup({
     end
   },
 
-  'tpope/vim-fugitive',
-
-  'tpope/vim-surround',
-
-  'tpope/vim-commentary',
-
-  'vim-scripts/ReplaceWithRegister',
-
-  'mg979/vim-visual-multi',
-
-  'bkad/CamelCaseMotion',
-
-  'easymotion/vim-easymotion',
-
-  -- 'justinmk/vim-sneak'
-
   {
-    'phaazon/hop.nvim',
-    branch = 'v2',
+    -- 'projekt0n/github-nvim-theme',
+    'navarasu/onedark.nvim',
+    -- 'catppuccin/nvim',
+    -- 'EdenEast/nightfox.nvim',
+    -- 'sainnhe/edge',
+    -- 'dylanaraps/wal.vim',
+    -- 'ellisonleao/gruvbox.nvim',
+    -- 'shaunsingh/nord.nvim',
+    -- 'Shatur/neovim-ayu',
+    -- 'folke/tokyonight.nvim',
+    priority = 1000,
     config = function()
-      require('plugins.hop')
+      require('plugins.theme')
     end
   },
-
-  {
-    'lukas-reineke/indent-blankline.nvim',
-    config = function()
-      require('plugins.indent')
-    end
-  },
-
-  {
-    'norcalli/nvim-colorizer.lua',
-    config = function()
-      require('plugins.colorizer')
-    end
-  },
-
-
-  {
-    'kevinhwang91/nvim-bqf',
-    ft = 'qf',
-    config = function()
-      require('plugins.bqf')
-    end
-  },
-
-  {
-    'junegunn/fzf',
-    build = function()
-      vim.fn['fzf#install']()
-    end
-  },
-
-  {
-    'nvim-telescope/telescope.nvim',
-    tag = '0.1.x',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'kdheepak/lazygit.nvim',
-      'nvim-telescope/telescope-ui-select.nvim',
-    },
-    config = function()
-      require('plugins.telescope')
-    end
-  },
-
-  {
-    'nvim-neo-tree/neo-tree.nvim',
-    branch = 'v2.x',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
-      'MunifTanjim/nui.nvim',
-      {
-        -- only needed if you want to the commands with '_with_window_picker' suffix
-        's1n7ax/nvim-window-picker',
-        tag = 'v1.*',
-        config = function()
-          require('plugins.windowpicker')
-        end,
-      }
-    },
-    config = function()
-      require('plugins.neotree')
-    end
-  },
-
-  {
-    'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons', opt = true },
-    config = function()
-      require('plugins.lualine')
-    end
-  },
-
-  {
-    'akinsho/bufferline.nvim',
-    tag = 'v3.*',
-    dependencies = 'nvim-tree/nvim-web-devicons',
-    config = function()
-      -- require('bufferline').setup()
-      require('plugins.bufferline')
-    end
-  },
-
-  'rcarriga/nvim-notify',
-
-  {
-    'simrat39/symbols-outline.nvim',
-    config = function()
-      require('plugins.outline')
-    end
-  },
-
-  {
-    'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate',
-    config = function()
-      require('plugins.treesitter')
-    end
-  },
-
-  {
-    'windwp/nvim-autopairs',
-    config = function()
-      require('plugins.autopairs')
-    end
-  },
-
-  {
-    'goolord/alpha-nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-    config = function()
-      require('plugins.alpha')
-      -- require'alpha'.setup(require'alpha.themes.startify'.config)
-    end
-  },
-
-  {
-    'metakirby5/codi.vim',
-    config = function()
-      vim.cmd [[
-          let g:codi#rightalign = 1
-          let g:codi#rightsplit = 1
-        ]]
-    end
-  },
-
-  'github/copilot.vim',
-
-  {
-    'AckslD/nvim-gfold.lua',
-    config = function()
-      require('plugins.gfold')
-    end
-  },
-
-  {
-    'lewis6991/gitsigns.nvim',
-    tag = 'release', -- To the latest release (do not this if you build Neovim nightly or dev builds!)
-    config = function()
-      require('plugins.gitsigns')
-    end
-  },
-
-  {
-    'sindrets/diffview.nvim',
-    dependencies = 'nvim-lua/plenary.nvim',
-    config = function()
-      require('plugins.diffview')
-    end
-  },
-
-  {
-    'Shatur/neovim-session-manager',
-    dependencies = 'nvim-lua/plenary.nvim',
-    config = function()
-      require('plugins.session')
-    end
-  }
-})
-
-require('plugins.theme')
+}, {})

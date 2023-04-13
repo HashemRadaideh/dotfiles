@@ -3,6 +3,7 @@ if not ok then
   return
 end
 
+require('neodev').setup()
 require("plugins.lsp.configs.mason")
 require("plugins.lsp.configs.nullls")
 require("plugins.lsp.configs.cmp")
@@ -233,6 +234,7 @@ lspconfig.lua_ls.setup {
   handlers = handlers,
   settings = {
     Lua = {
+      workspace = { checkThirdParty = false },
       runtime = {
         version = 'LuaJIT',
         -- path = runtime_path,
@@ -249,7 +251,8 @@ lspconfig.lua_ls.setup {
       --   maxPreload = 10000,
       --   preloadFileSize = 10000,
       -- },
-      telemetry = { enable = true },
+      telemetry = { enable = false },
+      -- telemetry = { enable = true },
     },
   },
 }
@@ -262,6 +265,13 @@ lspconfig.pyright.setup {
 }
 
 lspconfig.tsserver.setup {
+  on_attach = on_attach,
+  flags = { debounce_text_changes = 150 },
+  capabilities = capabilities,
+  handlers = handlers,
+}
+
+lspconfig.gopls.setup {
   on_attach = on_attach,
   flags = { debounce_text_changes = 150 },
   capabilities = capabilities,

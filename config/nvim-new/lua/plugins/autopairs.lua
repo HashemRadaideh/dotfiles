@@ -3,11 +3,16 @@ if not ok then
   return
 end
 
-local Rule = require("nvim-autopairs.rule")
-
 autopairs.setup({
+  check_ts = true,
+  ts_config = {
+    lua = { 'string', 'source' },
+    javascript = { 'string', 'template_string' },
+    java = false,
+  },
+  disabled_filetype = { "TelescopePrompt", "spectre_panel" },
   fast_wrap = {
-    map = '<C-m>',
+    map = '<C-e>',
     chars = { '{', '[', '(', '"', "'" },
     pattern = [=[[%'%"%>%]%)%}%,]]=],
     end_key = '$',
@@ -16,20 +21,15 @@ autopairs.setup({
     highlight = 'Search',
     highlight_grey = 'Comment'
   },
-  check_ts = true,
-  ts_config = {
-    lua = { 'string' }, -- it will not add a pair on that treesitter node
-    javascript = { 'template_string' },
-    java = false,       -- don't check treesitter on java
-  },
-  enable_check_bracket_line = false,
+  enable_check_bracket_line = true,
   ignored_next_char = "[%w%.]" -- will ignore alphanumeric and `.` symbol
 })
 
-autopairs.add_rule(Rule("$$", "$$", "tex"))
+local Rule = require('nvim-autopairs.rule')
+local ts_conds = require('nvim-autopairs.ts-conds')
+local cond = require('nvim-autopairs.conds')
 
 -- press % => %% only while inside a comment or string
-local ts_conds = require('nvim-autopairs.ts-conds')
 autopairs.add_rules({
   Rule("%", "%", "lua")
       :with_pair(ts_conds.is_ts_node({ 'string', 'comment' })),
@@ -37,7 +37,8 @@ autopairs.add_rules({
       :with_pair(ts_conds.is_not_ts_node({ 'function' }))
 })
 
-local cond = require('nvim-autopairs.conds')
+autopairs.add_rule(Rule("$$", "$$", "tex"))
+
 autopairs.add_rules({
     Rule("$", "$", { "tex", "latex" })
     -- don't add a pair if the next character is %
@@ -106,4 +107,3 @@ autopairs.add_rule(
   Rule("$$", "$$")
   :with_pair(cond.not_filetypes({ "lua" }))
 )
---- check ./lua/nvim-autopairs/rules/basic.lua
