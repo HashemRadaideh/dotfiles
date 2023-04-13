@@ -8,7 +8,8 @@ alias autoclean='paru -Scc'
 update() {
   paru -Syyuu 
   reposync  ~/dotfiles/ ~/
-  nvim --headless -n -u ~/.config/nvim/init.lua -c 'autocmd User PackerComplete quitall' -c 'PackerSync' 
+  # nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' 
+  nvim --headless "+Lazy! sync" +qa
   doom sync
   ~/.config/tmux/plugins/tpm/scripts/install_plugins.sh
   rustup self upgrade-data

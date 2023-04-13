@@ -190,14 +190,14 @@ bindkey -s '^f' '^uff^m'
 
 # zsh plugins configurations
 # Plugin history-substring-search-up
-# bindkey '^[[A' history-substring-search-up
-# bindkey '^[[B' history-substring-search-down
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
 
-# bindkey -M vicmd 'k' history-substring-search-up
-# bindkey -M vicmd 'j' history-substring-search-down
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
 
-# bindkey -M emacs '^P' history-substring-search-up
-# bindkey -M emacs '^N' history-substring-search-down
+bindkey -M emacs '^P' history-substring-search-up
+bindkey -M emacs '^N' history-substring-search-down
 
 # Plugin auto_notify
 export AUTO_NOTIFY_IGNORE=("nvim" "e" "docker" "man" "sleep")
