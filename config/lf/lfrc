@@ -72,6 +72,7 @@ cmd set_wallpaper ${{
 map <c-w> :set_wallpaper
 
 # Mappings
+map b $bat "$f"
 
 # open file in vscode
 map c $code "$f"
@@ -89,3 +90,4 @@ map dr $trash-restore
 
 map <enter> :toggle
 map <backspace2> :unselect
+map <esc> clear

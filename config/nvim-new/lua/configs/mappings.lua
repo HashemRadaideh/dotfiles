@@ -55,8 +55,8 @@ map('n', '~', '~h')
 map("i", "<C-H>", "<C-o>db", { desc = "Delete word backward" })
 map("i", "<C-Del>", "<C-o>dw", { desc = "Delete word forward" })
 
-map("i", "<C-Left>", "<C-o>b", { desc = "Move one word forward" })
-map("i", "<C-Right>", "<C-o>w", { desc = "Move one word backward" })
+-- map("i", "<C-Left>", "<C-o>b", { desc = "Move one word forward" })
+-- map("i", "<C-Right>", "<C-o>w", { desc = "Move one word backward" })
 
 map("i", "<C-f>", "<C-o>/", { desc = "Search for a string" })
 
@@ -145,14 +145,23 @@ map('n', '<C-g>', '<Plug>multi_cursor_next_key')
 map('n', '<C-p>', '<Plug>multi_cursor_prev_key')
 map('n', 'g<C-x>', '<Plug>multi_cursor_skip_key')
 
+map('v', '<C-g>', '<Plug>multi_cursor_start_word_key')
+map('v', '<C-G>', '<Plug>multi_cursor_select_all_word_key')
+map('v', 'g<C-g>', '<Plug>multi_cursor_start_key')
+map('v', 'g<C-G>', '<Plug>multi_cursor_select_all_key')
+map('v', '<C-g>', '<Plug>multi_cursor_next_key')
+map('v', '<C-p>', '<Plug>multi_cursor_prev_key')
+map('v', 'g<C-x>', '<Plug>multi_cursor_skip_key')
+
 map('n', 'w', '<Plug>CamelCaseMotion_w')
 map('n', 'b', '<Plug>CamelCaseMotion_b')
 map('n', 'e', '<Plug>CamelCaseMotion_e')
 map('n', 'ge', '<Plug>CamelCaseMotion_ge')
--- map('s', 'w')
--- map('s', 'b')
--- map('s', 'e')
--- map('s', 'ge')
+
+map('v', 'w', '<Plug>CamelCaseMotion_w')
+map('v', 'b', '<Plug>CamelCaseMotion_b')
+map('v', 'e', '<Plug>CamelCaseMotion_e')
+map('v', 'ge', '<Plug>CamelCaseMotion_ge')
 
 map('o', 'iw', '<Plug>CamelCaseMotion_iw')
 map('x', 'iw', '<Plug>CamelCaseMotion_iw')
@@ -161,8 +170,8 @@ map('x', 'ib', '<Plug>CamelCaseMotion_ib')
 map('o', 'ie', '<Plug>CamelCaseMotion_ie')
 map('x', 'ie', '<Plug>CamelCaseMotion_ie')
 
--- map('i', '<C-Left>', '<C-o><Plug>CamelCaseMotion_b')
--- map('i', '<C-Right>', '<C-o><Plug>CamelCaseMotion_w')
+map('i', '<C-Left>', '<C-o><Plug>CamelCaseMotion_b')
+map('i', '<C-Right>', '<C-o><Plug>CamelCaseMotion_w')
 
 -- Bufferline mappings
 map('n', '<S-tab>', ':BufferLineCyclePrev<CR>')
@@ -220,9 +229,10 @@ map('n', '<leader>fo', ':lua require("telescope.builtin").oldfiles()<cr>')
 -- vim.keymap.set('n', '<leader>ts', require('telescope').extensions.toggletasks.spawn, { desc = 'toggletasks: spawn' })
 
 -- ToggleTerm mappings
-map("n", "<leader>t", ":lua Lazygit:toggle() <CR>")
-map("n", "<leader>g", ":lua Glow:toggle()<CR>")
-map("n", "<leader>o", ":lua LF:toggle()<CR>", { desc = "Focus Explorer" })
+map("n", "<leader>tt", ':lua require("telescope").extensions.lazygit.lazygit()<CR>')
+map("n", "<leader>tl", ":lua Lazygit:toggle()<CR>")
+map("n", "<leader>tg", ":lua Glow:toggle()<CR>")
+map("n", "<leader>to", ":lua LF:toggle()<CR>", { desc = "Focus Explorer" })
 
 -- Trouble mappings
 -- map("n", "<leader>xx", ":Trouble<cr>", { silent = true, noremap = true })
