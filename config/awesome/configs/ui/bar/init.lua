@@ -8,18 +8,6 @@ local screen, dpi = screen, beautiful.xresources.apply_dpi
 -- Widgets
 require("configs.ui.bar.widgets")
 
-local logout_popup = require(
-  "awesome-wm-widgets.logout-popup-widget.logout-popup"
-)
-
-local volume_widget = require(
-  'awesome-wm-widgets.volume-widget.volume'
-)
-
-local batteryarc_widget = require(
-  "awesome-wm-widgets.batteryarc-widget.batteryarc"
-)
-
 -- Set up the bar
 screen.connect_signal("request::desktop_decoration", function(s)
   s.mypromptbox = awful.widget.prompt()
@@ -70,35 +58,29 @@ screen.connect_signal("request::desktop_decoration", function(s)
         Systray,
         SystrayButton,
         Clock,
-        -- NET,
-        -- NETButton,
-        -- MEM,
-        -- MEMButton,
-        -- CPU,
-        -- CPUButton,
-        batteryarc_widget({
-          show_current_level = true,
-          arc_thickness = 1,
-        }),
-        volume_widget { widget_type = 'arc' },
-        logout_popup.widget {
-          onlock = function() awful.spawn.with_shell("lock") end,
-          onsuspend = function()
-            awful.spawn.with_shell("lock && systemctl suspend")
-          end
-        },
+        NET,
+        NETButton,
+        MEM,
+        MEMButton,
+        CPU,
+        CPUButton,
+        Battery,
+        Volume,
+        Logout,
       },
     }
   }
 
-  --Auto hide bar
-  ---@diagnostic disable-next-line: undefined-global
-  local hide = timer({ timeout = 10 })
+  if Autohide then
+    --Auto hide bar
+    ---@diagnostic disable-next-line: undefined-global
+    local hide = timer({ timeout = 10 })
 
-  hide:connect_signal("timeout", function()
-    s.Bar.visible = false
-    hide:stop()
-  end)
+    hide:connect_signal("timeout", function()
+      s.Bar.visible = not s.Bar.visible
+      hide:stop()
+    end)
 
-  hide:start()
+    hide:start()
+  end
 end)

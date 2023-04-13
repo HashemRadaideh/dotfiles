@@ -64,17 +64,19 @@ awful.keyboard.append_global_keybindings(
     awful.key(
       { Meta }, "b",
       function()
-        for s in screen do
-          s.Bar.visible = true
-          ---@diagnostic disable-next-line: undefined-global
-          local hide = timer({ timeout = 5 })
+        if Autohide then
+          for s in screen do
+            s.Bar.visible = true
+            ---@diagnostic disable-next-line: undefined-global
+            local hide = timer({ timeout = 5 })
 
-          hide:connect_signal("timeout", function()
-            s.Bar.visible = false
-            hide:stop()
-          end)
+            hide:connect_signal("timeout", function()
+              s.Bar.visible = false
+              hide:stop()
+            end)
 
-          hide:start()
+            hide:start()
+          end
         end
       end,
       { description = "Toggle bar visibility", group = "awesome" }
@@ -83,8 +85,10 @@ awful.keyboard.append_global_keybindings(
     awful.key(
       { Meta, Shift }, "b",
       function()
-        for s in screen do
-          s.Bar.visible = not s.Bar.visible
+        if Autohide then
+          for s in screen do
+            s.Bar.visible = not s.Bar.visible
+          end
         end
       end,
       { description = "Toggle bar visibility", group = "awesome" }
@@ -262,7 +266,7 @@ awful.keyboard.append_global_keybindings(
 
     awful.key(
       { Meta }, ",",
-      function() awful.screen.focus_relative( -1) end,
+      function() awful.screen.focus_relative(-1) end,
       { description = "Focus previous screen", group = "Workspace" }
     ),
 
@@ -341,7 +345,7 @@ awful.keyboard.append_global_keybindings(
 
     awful.key(
       { Meta }, "-",
-      function() awful.tag.incnmaster( -1, nil, true) end,
+      function() awful.tag.incnmaster(-1, nil, true) end,
       { description = "Decrease the number of columns", group = "Workspace" }
     ),
 
@@ -353,7 +357,7 @@ awful.keyboard.append_global_keybindings(
 
     awful.key(
       { Meta, Ctrl }, "-",
-      function() awful.tag.incncol( -1, nil, true) end,
+      function() awful.tag.incncol(-1, nil, true) end,
       { description = "Decrease the number of columns", group = "Workspace" }
     ),
 
@@ -454,7 +458,7 @@ awful.keyboard.append_global_keybindings(
         if client.focus.floating then
           client.focus:relative_move(0, 0, -10, 0)
         else
-          awful.tag.incmwfact( -0.025)
+          awful.tag.incmwfact(-0.025)
         end
       end,
       { description = "Decrease master width factor", group = "Workflow" }
@@ -478,7 +482,7 @@ awful.keyboard.append_global_keybindings(
         if client.focus.floating then
           client.focus:relative_move(0, 0, 0, -10)
         else
-          awful.client.incwfact( -0.025)
+          awful.client.incwfact(-0.025)
         end
       end,
       { description = "Decrease master width factor", group = "Workflow" }
@@ -499,7 +503,7 @@ awful.keyboard.append_global_keybindings(
     -- Moving floating windows
     awful.key(
       { Meta, Shift, Ctrl }, "h",
-      function() client.focus:relative_move( -10, 0, 0, 0) end,
+      function() client.focus:relative_move(-10, 0, 0, 0) end,
       { description = "Move floating client to the left", group = "Workflow" }
     ),
 
@@ -530,7 +534,7 @@ awful.keyboard.append_global_keybindings(
 
     awful.key(
       { Meta, Shift }, "space",
-      function() awful.layout.inc( -1) end,
+      function() awful.layout.inc(-1) end,
       { description = "Select previous layout", group = "Workflow" }
     ),
 

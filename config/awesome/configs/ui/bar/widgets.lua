@@ -96,7 +96,7 @@ function Tasks(s)
         ),
         awful.button(
           {}, 4,
-          function() awful.client.focus.byidx( -1) end
+          function() awful.client.focus.byidx(-1) end
         ),
         awful.button(
           {}, 5,
@@ -130,9 +130,9 @@ Layoutbox = wibox.widget {
   widget = wibox.container.margin,
   buttons = {
     awful.button({}, 1, function() awful.layout.inc(1) end),
-    awful.button({}, 3, function() awful.layout.inc( -1) end),
+    awful.button({}, 3, function() awful.layout.inc(-1) end),
     awful.button({}, 4, function() awful.layout.inc(1) end),
-    awful.button({}, 5, function() awful.layout.inc( -1) end),
+    awful.button({}, 5, function() awful.layout.inc(-1) end),
   },
 }
 
@@ -282,7 +282,13 @@ CPU = wibox.widget {
   })
 }
 
-CPUButton = wibox.widget.imagebox(beautiful.cpu_icon)
+CPUButton = wibox.widget {
+  {
+    widget = wibox.widget.imagebox(beautiful.cpu_icon)
+  },
+  margins = { left = dpi(5), right = dpi(5) },
+  widget = wibox.container.margin,
+}
 
 CPUButton:connect_signal("button::press", function()
   CPU.visible = not CPU.visible
@@ -300,7 +306,13 @@ MEM = wibox.widget {
   ram_widget(),
 }
 
-MEMButton = wibox.widget.imagebox(beautiful.mem_icon)
+MEMButton = wibox.widget {
+  {
+    widget = wibox.widget.imagebox(beautiful.mem_icon)
+  },
+  margins = { left = dpi(5), right = dpi(5) },
+  widget = wibox.container.margin,
+}
 
 MEMButton:connect_signal("button::press", function()
   MEM.visible = not MEM.visible
@@ -318,8 +330,76 @@ NET = wibox.widget {
   net_speed_widget(),
 }
 
-NETButton = wibox.widget.imagebox(beautiful.net_icon)
+NETButton = wibox.widget {
+  {
+    widget = wibox.widget.imagebox(beautiful.net_icon)
+  },
+  margins = { left = dpi(5), right = dpi(5) },
+  widget = wibox.container.margin,
+}
 
 NETButton:connect_signal("button::press", function()
   NET.visible = not NET.visible
 end)
+
+local volume_widget = require(
+  'awesome-wm-widgets.volume-widget.volume'
+)
+
+local batteryarc_widget = require(
+  "awesome-wm-widgets.batteryarc-widget.batteryarc"
+)
+
+local logout_popup = require(
+  "awesome-wm-widgets.logout-popup-widget.logout-popup"
+)
+
+local function battery()
+  local cmd = [[
+    LEVEL="$(upower -i $(upower -e | grep 'BAT') | grep -E "percentage" | awk '{print $2}' | sed 's/\%//g')"
+
+    if [ $LEVEL -le 100 ]; then
+      true
+    else
+      false
+    fi
+  ]]
+
+  if os.execute(cmd) then
+    return batteryarc_widget({
+      show_current_level = true,
+      arc_thickness = 2,
+    })
+  end
+
+  return wibox.widget { wiget = wibox.widget.textbox }
+end
+
+Battery = wibox.widget {
+  {
+    widget = battery(),
+  },
+  margins = { left = dpi(3), right = dpi(5) },
+  widget = wibox.container.margin,
+}
+
+Volume = wibox.widget {
+  {
+    widget = volume_widget { widget_type = 'arc' },
+  },
+  margins = { left = dpi(5), right = dpi(3) },
+  widget = wibox.container.margin,
+}
+
+Logout = wibox.widget {
+  {
+    widget = logout_popup.widget {
+      onlock = function() awful.spawn.with_shell("lock") end,
+      onsuspend = function()
+        awful.spawn.with_shell("lock && systemctl suspend")
+      end
+    },
+  },
+  margins = { left = dpi(3), right = dpi(3) },
+  widget = wibox.container.margin,
+}

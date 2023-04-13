@@ -61,7 +61,7 @@ Desktop.Tasks                      = awful.popup {
       ),
       awful.button(
         {}, 4,
-        function() awful.client.focus.byidx( -1) end
+        function() awful.client.focus.byidx(-1) end
       ),
       awful.button(
         {}, 5,
@@ -157,9 +157,9 @@ Desktop.Side_Panel                 = wibox {
         right  = 10,
         {
           markup = '' ..
-          '<span font="Monospace 21">' ..
-          beautiful.user .. "@" .. beautiful.hostname ..
-          '</span>',
+              '<span font="Monospace 21">' ..
+              beautiful.user .. "@" .. beautiful.hostname ..
+              '</span>',
           forced_width = dpi(400),
           widget = wibox.widget.textbox,
         }
@@ -168,44 +168,47 @@ Desktop.Side_Panel                 = wibox {
   },
 }
 
-Desktop.Bartoggle                  = wibox {
-  visible = true,
-  ontop   = true,
-  x       = 0,
-  y       = 0,
-  width   = screen.primary.geometry.width,
-  height  = 1,
-  bg      = "#000000",
-}
+if Autohide then
+  Desktop.Bartoggle = wibox {
+    visible = true,
+    ontop   = true,
+    x       = 0,
+    y       = 0,
+    width   = screen.primary.geometry.width,
+    height  = 1,
+    bg      = "#000000",
+  }
 
-Desktop.Bartoggle:connect_signal('mouse::enter', function(self)
-  for s in screen do
-    s.Bar.visible = true
-    ---@diagnostic disable-next-line: undefined-global
-    local hide = timer({ timeout = 5 })
+  Desktop.Bartoggle:connect_signal('mouse::enter', function(self)
+    for s in screen do
+      s.Bar.visible = true
+      ---@diagnostic disable-next-line: undefined-global
+      local hide = timer({ timeout = 5 })
 
-    hide:connect_signal("timeout", function()
-      s.Bar.visible = false
-      hide:stop()
-    end)
+      hide:connect_signal("timeout", function()
+        s.Bar.visible = false
+        hide:stop()
+      end)
 
-    hide:start()
-  end
-end)
-Desktop.Bartoggle:connect_signal('mouse::leave', function(self)
-  for s in screen do
-    s.Bar.visible = true
-    ---@diagnostic disable-next-line: undefined-global
-    local hide = timer({ timeout = 5 })
+      hide:start()
+    end
+  end)
 
-    hide:connect_signal("timeout", function()
-      s.Bar.visible = false
-      hide:stop()
-    end)
+  Desktop.Bartoggle:connect_signal('mouse::leave', function(self)
+    for s in screen do
+      s.Bar.visible = true
+      ---@diagnostic disable-next-line: undefined-global
+      local hide = timer({ timeout = 5 })
 
-    hide:start()
-  end
-end)
+      hide:connect_signal("timeout", function()
+        s.Bar.visible = false
+        hide:stop()
+      end)
+
+      hide:start()
+    end
+  end)
+end
 
 local function my_button(text, cb)
   local tb = wibox.widget.textbox(text)
