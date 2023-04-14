@@ -1,314 +1,226 @@
-local map = function(mode, lhs, rhs, opt)
-  local options = { noremap = true, silent = true }
-  if opt then
-    options = vim.tbl_extend("force", options, opt)
-  end
-  vim.api.nvim_set_keymap(mode, lhs, rhs, options)
-end
+vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true })
+vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
 
-map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
-map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+-- move between panes with Ctrl hjkl
+vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = "Go to left window/pane" })
+vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = "Go to left window/pane" })
+vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = "Go to left window/pane" })
+vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = "Go to left window/pane" })
 
-map('n', '<C-h>', '<C-w>h', { desc = "Go to left window/pane" })
-map('n', '<C-j>', '<C-w>j', { desc = "Go to left window/pane" })
-map('n', '<C-k>', '<C-w>k', { desc = "Go to left window/pane" })
-map('n', '<C-l>', '<C-w>l', { desc = "Go to left window/pane" })
-
-map('n', '<C-Up>', '<cmd>resize +2<CR>', { desc = 'Increase window height' })
-map('n', '<C-Down>', '<cmd>resize -2<CR>', { desc = 'Decrease window height' })
-map('n', '<C-Left>', '<cmd>vertical resize +2<CR>', { desc = 'Increase window width' })
-map('n', '<C-Right>', '<cmd>vertical resize -2<CR>', { desc = 'Decrease window height' })
+-- resize panes with Ctrl up, down, left, right
+vim.keymap.set('n', '<C-Up>', '<cmd>resize +2<CR>', { desc = 'Increase window height' })
+vim.keymap.set('n', '<C-Down>', '<cmd>resize -2<CR>', { desc = 'Decrease window height' })
+vim.keymap.set('n', '<C-Left>', '<cmd>vertical resize +2<CR>', { desc = 'Increase window width' })
+vim.keymap.set('n', '<C-Right>', '<cmd>vertical resize -2<CR>', { desc = 'Decrease window height' })
 
 -- Move lines up or down
-map('n', '<M-j>', '<cmd>m .+1<CR>==', { desc = 'Move line down' })
-map('n', '<M-k>', '<cmd>m .-2<CR>==', { desc = 'Move line up' })
-map('i', '<M-j>', '<Esc><cmd>m .+1<CR>==gi', { desc = 'Move line down' })
-map('i', '<M-k>', '<Esc><cmd>m .-2<CR>==gi', { desc = 'Move line up' })
-map('v', '<M-j>', "<cmd>m '>+1<CR>gv=gv", { desc = 'Move line down' })
-map('v', '<M-k>', "<cmd>m '<-2<CR>gv=gv", { desc = 'Move line up' })
+vim.keymap.set('v', '<C-j>', "<cmd>m '>+1<CR>gv=gv", { desc = 'Move line down' })
+vim.keymap.set('v', '<C-k>', "<cmd>m '<-2<CR>gv=gv", { desc = 'Move line up' })
 
--- " Leader-J/K deletes blank line below/above, and leader-j/k inserts.
-map('n', '<leader>j', 'm`:silent +g/\\m^\\s*$/d<CR>``:noh<CR>')
-map('n', '<leader>j', ':set paste<CR>m`o<Esc>``:set nopaste<CR>')
-map('n', '<leader>k', 'm`:silent -g/\\m^\\s*$/d<CR>``:noh<CR>')
-map('n', '<leader>k', ':set paste<CR>m`O<Esc>``:set nopaste<CR>')
+-- Remove newline and keep cursor position
+vim.keymap.set('n', 'J', "mzJ`z")
+
+-- Leader-J/K deletes blank line below/above, and leader-j/k inserts.
+vim.keymap.set('n', '<leader>j', '<cmd>set paste<CR>m`o<Esc>``<cmd>set nopaste<CR>')
+vim.keymap.set('n', '<leader>k', '<cmd>set paste<CR>m`O<Esc>``<cmd>set nopaste<CR>')
+vim.keymap.set('n', '<leader>J', 'm`<cmd>silent +g/\\m^\\s*$/d<CR>``<cmd>noh<CR>')
+vim.keymap.set('n', '<leader>K', 'm`<cmd>silent -g/\\m^\\s*$/d<CR>``<cmd>noh<CR>')
+
+-- keep screen centered when moving
+vim.keymap.set('n', '<C-b>', '<C-b>zz')
+vim.keymap.set('n', '<C-f>', '<C-f>zz')
+vim.keymap.set('n', '<C-d>', '<C-d>zz')
+vim.keymap.set('n', '<C-u>', '<C-u>zz')
 
 -- Improved search
-map('n', '<Esc>', '<cmd>nohl<CR><Esc><Plug>multi_cursor_quit_key', { desc = 'Escape and clear hlsearch' })
-map('i', '<Esc>', '<cmd>nohl<CR><Esc><Plug>multi_cursor_quit_key', { desc = 'Escape and clear hlsearch' })
+vim.keymap.set('n', '<Esc>', '<cmd>nohl<CR><Esc><Plug>multi_cursor_quit_key', { desc = 'Escape and clear hlsearch' })
+vim.keymap.set('i', '<Esc>', '<cmd>nohl<CR><Esc><Plug>multi_cursor_quit_key', { desc = 'Escape and clear hlsearch' })
 
-map('n', 'n', "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
-map('x', 'n', "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
-map('o', 'n', "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
-map('n', 'N', "'nN'[v:searchforward]", { expr = true, desc = "Previous search result" })
-map('x', 'N', "'nN'[v:searchforward]", { expr = true, desc = "Previous search result" })
-map('o', 'N', "'nN'[v:searchforward]", { expr = true, desc = "Previous search result" })
+vim.keymap.set('n', 'n', 'nzzzv')
+vim.keymap.set('n', 'N', 'Nzzzv')
+
+vim.keymap.set('n', 'n', "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
+vim.keymap.set('x', 'n', "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
+vim.keymap.set('o', 'n', "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
+vim.keymap.set('n', 'N', "'nN'[v:searchforward]", { expr = true, desc = "Previous search result" })
+vim.keymap.set('x', 'N', "'nN'[v:searchforward]", { expr = true, desc = "Previous search result" })
+vim.keymap.set('o', 'N', "'nN'[v:searchforward]", { expr = true, desc = "Previous search result" })
+
+-- Replace with empty buffer
+vim.keymap.set('x', 'p', "\"_dP")
+
+-- Replace word under cursor
+vim.keymap.set("n", "<leader>sw", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
 -- Improved indenting
-map("v", "<", "<gv")
-map("v", ">", ">gv")
+vim.keymap.set("v", "<", "<gv")
+vim.keymap.set("v", ">", ">gv")
 
-
-map('n', '~', '~h')
+-- keep position after changing capitalization
+vim.keymap.set('n', '~', '~h')
 
 -- better insert mode
-map("i", "<C-H>", "<C-o>db", { desc = "Delete word backward" })
-map("i", "<C-Del>", "<C-o>dw", { desc = "Delete word forward" })
+vim.keymap.set("i", "<C-H>", "<C-o>db", { desc = "Delete word backward" })
+vim.keymap.set("i", "<C-Del>", "<C-o>dw", { desc = "Delete word forward" })
 
--- map("i", "<C-Left>", "<C-o>b", { desc = "Move one word forward" })
--- map("i", "<C-Right>", "<C-o>w", { desc = "Move one word backward" })
+-- vim.keymap.set("i", "<C-Left>", "<C-o>b", { desc = "Move one word forward" })
+-- vim.keymap.set("i", "<C-Right>", "<C-o>w", { desc = "Move one word backward" })
 
-map("i", "<C-f>", "<C-o>/", { desc = "Search for a string" })
+vim.keymap.set("i", "<C-f>", "<C-o>/", { desc = "Search for a string" })
 
-map("i", "<C-n>", "<C-o>n", { desc = "Move to next occurrence" })
-map("i", "<C-p>", "<C-o>N", { desc = "Move to previous occurrence" })
+vim.keymap.set("i", "<C-n>", "<C-o>n", { desc = "Move to next occurrence" })
+vim.keymap.set("i", "<C-p>", "<C-o>N", { desc = "Move to previous occurrence" })
 
-map('i', ',', ',<C-g>u')
-map('i', '.', '.<C-g>u')
-map('i', ';', ';<C-g>u')
+vim.keymap.set('i', ',', ',<C-g>u')
+vim.keymap.set('i', '.', '.<C-g>u')
+vim.keymap.set('i', ';', ';<C-g>u')
 
-map('i', '<C-z>', '<C-o>u', { desc = "Undo last move" })
+vim.keymap.set('i', '<C-z>', '<C-o>u', { desc = "Undo last move" })
 
-map('n', '<C-s>', '<cmd>w<CR><esc>', { desc = 'Save file' })
-map('v', '<C-s>', '<cmd>w<CR><esc>', { desc = 'Save file' })
-map('i', '<C-s>', '<cmd>w<CR><esc>', { desc = 'Save file' })
-map('s', '<C-s>', '<cmd>w<CR><esc>', { desc = 'Save file' })
+vim.keymap.set('n', '<C-s>', '<cmd>w<CR><esc>', { desc = 'Save file' })
+vim.keymap.set('v', '<C-s>', '<cmd>w<CR><esc>', { desc = 'Save file' })
+vim.keymap.set('i', '<C-s>', '<cmd>w<CR><esc>', { desc = 'Save file' })
+vim.keymap.set('s', '<C-s>', '<cmd>w<CR><esc>', { desc = 'Save file' })
 
-map("n", "<leader>sp", ":e /tmp/scratchpad<cr>", { desc = "Scratchpad" })
+vim.keymap.set("n", "<leader>sp", "<cmd>e /tmp/scratchpad<cr>", { desc = "Scratchpad" })
+vim.keymap.set("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
 
--- map('n', '<leader>c', ':cd %/..<CR>')
-
--- https://superuser.com/questions/93492/how-to-add-a-command-in-vim-editor
--- vim.cmd([[command Gcc !set $1 `echo "%" | sed 's/\.c//g'` ;gcc -o $1 "%" ; chmod o+x $1; $1]])
--- vim.cmd([[command Gdb !set $1 `echo "%" | sed 's/\.c//g'` ;gcc -o $1 "%" ; gdb $1]])
--- map('n', '<F5>', ':Gdb<CR>')
--- map('n', '<C-F5>', ':Gdb<CR>')
-
--- vim.cmd(string.format("command Reload :wa! | :so %s", Path))
--- map('n', '<leader>r', ':Reload<CR>')
-
--- map('n', '<leader>y', ":enew | startinsert<CR>")
-map("n", "<leader>fn", ":enew<cr>", { desc = "New File" })
-
--- map('n', '<tab>', ':tabn<CR>')
--- map('n', '<S-tab>', ':tabp<CR>')
-map('n', '<leader>i', ':tabnew<CR>')
-
--- map('n', '<C-s>', '<C-w>s')
--- map('n', '<C-v>', '<C-w>v')
-
--- add new line from current position
--- map('n', '<leader>j', ':set paste<CR>i<CR><Esc>x:set nopaste<CR>')
-
-map('n', '<F5>', '<cmd>vs<CR><cmd>terminal<CR>')
-
-function DelMark()
-  vim.cmd [[function! Delmarks()                                              ]]
-  vim.cmd [[  let l:m = join(filter(                                          ]]
-  vim.cmd [[      \ map(range(char2nr('a'), char2nr('z')), 'nr2char(v:val)'), ]]
-  vim.cmd [[      \ 'line("''".v:val) == line(".")'))                         ]]
-  vim.cmd [[   if !empty(l:m)                                                 ]]
-  vim.cmd [[       exe 'delmarks' l:m                                         ]]
-  vim.cmd [[   endif                                                          ]]
-  vim.cmd [[endfunction                                                       ]]
-end
-
-map('n', 'dm', ':<c-u>lua Delmarks()<cr>')
-
+-- Plugins mappings
 -- Packer mappings
-map('n', '<leader>ps', ':PackerSync<CR>')
-
--- Symbol-Outlines
-map('n', '<C-u>', ':SymbolsOutline<CR>')
-
--- map("n", "<F10>", ":TransparentToggle<cr>", { desc = "Transparency toggle" })
-
--- Tagbar mappings
--- map('n', '<F8>', ':TagbarToggle<CR>')
-
--- Nvim-tree mappings
--- map("n", "<leader>e", ":NvimTreeToggle<CR>", { desc = "Toggle Explorer" })
--- map("n", "<leader>o", ":NvimTreeFocus<CR>", { desc = "Focus Explorer" })
-
--- Neotree mappings
-map("n", "<leader>e", ":Neotree toggle<CR>", { desc = "Toggle Explorer" })
--- map("n", "<leader>o", ":Neotree focus<CR>", { desc = "Focus Explorer" })
-map('n', '<leader><leader>e', ':Neotree toggle buffers<CR>', { desc = "Neotree toggle buffer view" })
-map('n', 'g<leader>e', ':Neotree toggle git_status<CR>', { desc = "Neotree toggle git status view" })
-
--- CamelCaseMotion mappings
-map('n', '<C-g>', '<Plug>multi_cursor_start_word_key')
-map('n', '<C-G>', '<Plug>multi_cursor_select_all_word_key')
-map('n', 'g<C-g>', '<Plug>multi_cursor_start_key')
-map('n', 'g<C-G>', '<Plug>multi_cursor_select_all_key')
-map('n', '<C-g>', '<Plug>multi_cursor_next_key')
-map('n', '<C-p>', '<Plug>multi_cursor_prev_key')
-map('n', 'g<C-x>', '<Plug>multi_cursor_skip_key')
-
-map('v', '<C-g>', '<Plug>multi_cursor_start_word_key')
-map('v', '<C-G>', '<Plug>multi_cursor_select_all_word_key')
-map('v', 'g<C-g>', '<Plug>multi_cursor_start_key')
-map('v', 'g<C-G>', '<Plug>multi_cursor_select_all_key')
-map('v', '<C-g>', '<Plug>multi_cursor_next_key')
-map('v', '<C-p>', '<Plug>multi_cursor_prev_key')
-map('v', 'g<C-x>', '<Plug>multi_cursor_skip_key')
-
-map('n', 'w', '<Plug>CamelCaseMotion_w')
-map('n', 'b', '<Plug>CamelCaseMotion_b')
-map('n', 'e', '<Plug>CamelCaseMotion_e')
-map('n', 'ge', '<Plug>CamelCaseMotion_ge')
-
-map('v', 'w', '<Plug>CamelCaseMotion_w')
-map('v', 'b', '<Plug>CamelCaseMotion_b')
-map('v', 'e', '<Plug>CamelCaseMotion_e')
-map('v', 'ge', '<Plug>CamelCaseMotion_ge')
-
-map('o', 'iw', '<Plug>CamelCaseMotion_iw')
-map('x', 'iw', '<Plug>CamelCaseMotion_iw')
-map('o', 'ib', '<Plug>CamelCaseMotion_ib')
-map('x', 'ib', '<Plug>CamelCaseMotion_ib')
-map('o', 'ie', '<Plug>CamelCaseMotion_ie')
-map('x', 'ie', '<Plug>CamelCaseMotion_ie')
-
-map('i', '<C-Left>', '<C-o><Plug>CamelCaseMotion_b')
-map('i', '<C-Right>', '<C-o><Plug>CamelCaseMotion_w')
-
--- Bufferline mappings
-map('n', '<S-tab>', ':BufferLineCyclePrev<CR>')
-map('n', '<tab>', ':BufferLineCycleNext<CR>')
--- map('n', '<C-,>', ':BufferLineCyclePrev<CR>')
--- map('n', '<C-.>', ':BufferLineCycleNext<CR>')
-
-map('n', '<C-z>', ':BufferLineCloseLeft<CR>')
-map('n', '<C-x>', ':bd %<CR>')
-map('n', '<C-c>', ':BufferLineCloseRight<CR>')
-
-map('n', '<leader>,', ':BufferLineMovePrev<CR>')
-map('n', '<leader>.', ':BufferLineMoveNext<CR>')
-
-map('n', '<leader>be', ':BufferLineSortByExtension<CR>')
-map('n', '<leader>bd', ':BufferLineSortByDirectory<CR>')
-map('n', '<leader>bb',
-  ":lua require'bufferline'.sort_buffers_by(function (buf_a, buf_b) return buf_a.id < buf_b.id end)<CR>")
-
-map('n', '<C-1>', ':BufferLineGoToBuffer 1<CR>')
-map('n', '<C-2>', ':BufferLineGoToBuffer 2<CR>')
-map('n', '<C-3>', ':BufferLineGoToBuffer 3<CR>')
-map('n', '<C-4>', ':BufferLineGoToBuffer 4<CR>')
-map('n', '<C-5>', ':BufferLineGoToBuffer 5<CR>')
-map('n', '<C-6>', ':BufferLineGoToBuffer 6<CR>')
-map('n', '<C-7>', ':BufferLineGoToBuffer 7<CR>')
-map('n', '<C-8>', ':BufferLineGoToBuffer 8<CR>')
-map('n', '<C-9>', ':BufferLineGoToBuffer 9<CR>')
-
--- lspconfig
-map('n', '<leader>p', ':lua vim.diagnostic.open_float()<CR>')
-map('n', 'gk', ':lua vim.diagnostic.goto_prev()<CR>')
-map('n', 'gj', ':lua vim.diagnostic.goto_next()<CR>')
-map('n', '<leader>q', ':lua vim.diagnostic.setloclist()<CR>')
-
--- lspsaga mappings
--- map("n", "gr", ":Lspsaga rename<cr>", { silent = true, noremap = true })
--- map("n", "gx", ":Lspsaga code_action<cr>", { silent = true, noremap = true })
--- map("x", "gx", ":<c-u>Lspsaga range_code_action<cr>", { silent = true, noremap = true })
--- map("n", "K", ":Lspsaga hover_doc<cr>", { silent = true, noremap = true })
--- map("n", "go", ":Lspsaga show_line_diagnostics<cr>", { silent = true, noremap = true })
--- map("n", "gj", ":Lspsaga diagnostic_jump_next<cr>", { silent = true, noremap = true })
--- map("n", "gk", ":Lspsaga diagnostic_jump_prev<cr>", { silent = true, noremap = true })
--- map("n", "<C-u>", ":lua require('lspsaga.action').smart_scroll_with_saga(-1, '<c-u>')<cr>", {})
--- map("n", "<C-d>", ":lua require('lspsaga.action').smart_scroll_with_saga(1, '<c-d>')<cr>", {})
-
--- Telescope: using Lua functions
-map('n', '<leader>ff', ':lua require("telescope.builtin").find_files()<cr>')
-map('n', '<leader>fg', ':lua require("telescope.builtin").live_grep()<cr>')
-map('n', '<leader>fb', ':lua require("telescope.builtin").buffers()<cr>')
-map('n', '<leader>fh', ':lua require("telescope.builtin").help_tags()<cr>')
-map('n', '<leader>fo', ':lua require("telescope.builtin").oldfiles()<cr>')
-
--- ToggleTasks/Telescope: Toggle Tasks/Telescope
--- vim.keymap.set('n', '<leader>ts', require('telescope').extensions.toggletasks.spawn, { desc = 'toggletasks: spawn' })
+vim.keymap.set('n', '<leader>ps', '<cmd>Lazy<CR>')
 
 -- ToggleTerm mappings
-map("n", "<leader>tt", ':lua require("telescope").extensions.lazygit.lazygit()<CR>')
-map("n", "<leader>tl", ":lua Lazygit:toggle()<CR>")
-map("n", "<leader>tg", ":lua Glow:toggle()<CR>")
-map("n", "<leader>to", ":lua LF:toggle()<CR>", { desc = "Focus Explorer" })
+vim.keymap.set("n", "<leader>tl", "<cmd>lua Lazygit:toggle()<CR>")
+vim.keymap.set("n", "<leader>tg", "<cmd>lua Glow:toggle()<CR>")
+vim.keymap.set("n", "<leader>to", "<cmd>lua LF:toggle()<CR>", { desc = "Focus Explorer" })
 
--- Trouble mappings
--- map("n", "<leader>xx", ":Trouble<cr>", { silent = true, noremap = true })
--- map("n", "<leader>xw", ":Trouble workspace_diagnostics<cr>", { silent = true, noremap = true })
--- map("n", "<leader>xd", ":Trouble document_diagnostics<cr>", { silent = true, noremap = true })
--- map("n", "<leader>xl", ":Trouble loclist<cr>", { silent = true, noremap = true })
--- map("n", "<leader>xq", ":Trouble quickfix<cr>", { silent = true, noremap = true })
--- map("n", "gR", ":Trouble lsp_references<cr>", { silent = true, noremap = true })
+-- Telescope: using Lua functions
+vim.keymap.set('n', '<leader>ff', '<cmd>lua require("telescope.builtin").find_files()<cr>')
+vim.keymap.set('n', '<leader>fg', '<cmd>lua require("telescope.builtin").live_grep()<cr>')
+vim.keymap.set('n', '<leader>fb', '<cmd>lua require("telescope.builtin").buffers()<cr>')
+vim.keymap.set('n', '<leader>fh', '<cmd>lua require("telescope.builtin").help_tags()<cr>')
+vim.keymap.set('n', '<leader>fo', '<cmd>lua require("telescope.builtin").oldfiles()<cr>')
+vim.keymap.set("n", "<leader>tt", '<cmd>lua require("telescope").extensions.lazygit.lazygit()<CR>')
 
--- jump to the next item, skipping the groups
--- map('n', 'g.', 'require("trouble").next({ skip_groups = true, jump = true })')
+-- Neotree mappings
+vim.keymap.set("n", "<leader>fe", "<cmd>Neotree toggle<CR>", { desc = "Toggle Explorer" })
+vim.keymap.set('n', '<leader><leader>e', '<cmd>Neotree toggle buffers<CR>', { desc = "Neotree toggle buffer view" })
+vim.keymap.set('n', '<leader>ge', '<cmd>Neotree toggle git_status<CR>', { desc = "Neotree toggle git status view" })
 
--- jump to the previous item, skipping the groups
--- map('n', 'g,', ':lua require("trouble").previous({ skip_groups = true, jump = true })')
+-- Undotree mappings
+vim.keymap.set('n', '<leader>ut', '<cmd>UndotreeToggle<CR>', { desc = "Open Undotree" })
 
-map('n', '<leader>w', ":lua require('window-picker').pick_window()<CR>")
+-- Symbol-Outlines
+vim.keymap.set('n', '<leader>so', '<cmd>SymbolsOutline<CR>', { desc = "Open SymbolsOutline" })
 
--- gitlinker mappings
-map(
-  'n',
-  '<leader>gb',
-  ':lua require"gitlinker".get_buf_range_url("n", {action_callback = require"gitlinker.actions".open_in_browser})<cr>',
-  { silent = true }
-)
-map(
-  'v',
-  '<leader>gb',
-  ':lua require"gitlinker".get_buf_range_url("v", {action_callback = require"gitlinker.actions".open_in_browser})<cr>',
-  {}
-)
-
-map(
-  'n',
-  '<leader>gY',
-  ':lua require"gitlinker".get_repo_url()<cr>',
-  { silent = true }
-)
-map(
-  'n',
-  '<leader>gB',
-  ':lua require"gitlinker".get_repo_url({action_callback = require"gitlinker.actions".open_in_browser})<cr>',
-  { silent = true }
-)
-
--- Illuminate mappings
-map('n', '<a-n>', ':lua require"illuminate".next_reference{wrap=true}<cr>', { noremap = true })
-map('n', '<a-p>', ':lua require"illuminate".next_reference{reverse=true,wrap=true}<cr>', { noremap = true })
-
--- DAP mappings
-map("n", "<F2>", ":lua require('dap').step_over()<CR>")
-map("n", "<F3>", ":lua require('dap').step_into()<CR>")
-map("n", "<F4>", ":lua require('dap').step_out()<CR>")
-map("n", "<F5>", ":lua require('dap').continue()<CR>")
-
-map("n", "<F6>", ":lua require('dapui').toggle()<CR>")
-map('n', '<leader>;', ':lua require"dap".toggle_breakpoint()<cr>')
-
-map("n", "<Leader>dhh", ":lua require('dap.ui.variables').hover()<CR>")
-map("v", "<Leader>dhv", ":lua require('dap.ui.variables').visual_hover()<CR>")
-
-map("n", "<Leader>duh", ":lua require('dap.ui.widgets').hover()<CR>")
-map("n", "<Leader>duf", ":lua local widgets=require('dap.ui.widgets');widgets.centered_float(widgets.scopes)<CR>")
-
-map("n", "<Leader>dro", ":lua require('dap').repl.open()<CR>")
-map("n", "<Leader>drl", ":lua require('dap').repl.run_last()<CR>")
-
-map("n", "<Leader>dbc", ":lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>")
-map("n", "<Leader>dbm", ":lua require('dap').set_breakpoint({ nil, nil, vim.fn.input('Log point message: ') })<CR>")
-map("n", "<Leader>dbt", ":lua require('dap').toggle_breakpoint()<CR>")
-
-map("n", "<Leader>dc", ":lua require('dap.ui.variables').scopes()<CR>")
-map("n", "<Leader>di", ":lua require('dapui').toggle()<CR>")
+-- Window picker
+vim.keymap.set('n', '<leader>w', "<cmd>lua require('window-picker').pick_window()<CR>")
 
 -- session manager mappings
-map('n', '<leader>ss', ':lua require"session_manager".load_session()<cr>')
-map('n', '<leader>sd', ':lua require"session_manager".delete_session()<cr>')
+vim.keymap.set('n', '<leader>ss', '<cmd>lua require"session_manager".load_session()<cr>')
+vim.keymap.set('n', '<leader>sd', '<cmd>lua require"session_manager".delete_session()<cr>')
+
+-- ZenMode
+vim.keymap.set("n", "<Leader>zz", vim.cmd.ZenMode, { silent = true, desc = "Toggle ZenMode" })
+
+-- CamelCaseMotion mappings
+vim.keymap.set('n', '<C-g>', '<Plug>multi_cursor_start_word_key')
+vim.keymap.set('n', '<C-G>', '<Plug>multi_cursor_select_all_word_key')
+vim.keymap.set('n', 'g<C-g>', '<Plug>multi_cursor_start_key')
+vim.keymap.set('n', 'g<C-G>', '<Plug>multi_cursor_select_all_key')
+vim.keymap.set('n', '<C-g>', '<Plug>multi_cursor_next_key')
+vim.keymap.set('n', '<C-p>', '<Plug>multi_cursor_prev_key')
+vim.keymap.set('n', 'g<C-x>', '<Plug>multi_cursor_skip_key')
+
+vim.keymap.set('v', '<C-g>', '<Plug>multi_cursor_start_word_key')
+vim.keymap.set('v', '<C-G>', '<Plug>multi_cursor_select_all_word_key')
+vim.keymap.set('v', 'g<C-g>', '<Plug>multi_cursor_start_key')
+vim.keymap.set('v', 'g<C-G>', '<Plug>multi_cursor_select_all_key')
+vim.keymap.set('v', '<C-g>', '<Plug>multi_cursor_next_key')
+vim.keymap.set('v', '<C-p>', '<Plug>multi_cursor_prev_key')
+vim.keymap.set('v', 'g<C-x>', '<Plug>multi_cursor_skip_key')
+
+vim.keymap.set('n', 'w', '<Plug>CamelCaseMotion_w')
+vim.keymap.set('n', 'b', '<Plug>CamelCaseMotion_b')
+vim.keymap.set('n', 'e', '<Plug>CamelCaseMotion_e')
+vim.keymap.set('n', 'ge', '<Plug>CamelCaseMotion_ge')
+
+vim.keymap.set('v', 'w', '<Plug>CamelCaseMotion_w')
+vim.keymap.set('v', 'b', '<Plug>CamelCaseMotion_b')
+vim.keymap.set('v', 'e', '<Plug>CamelCaseMotion_e')
+vim.keymap.set('v', 'ge', '<Plug>CamelCaseMotion_ge')
+
+vim.keymap.set('o', 'iw', '<Plug>CamelCaseMotion_iw')
+vim.keymap.set('x', 'iw', '<Plug>CamelCaseMotion_iw')
+vim.keymap.set('o', 'ib', '<Plug>CamelCaseMotion_ib')
+vim.keymap.set('x', 'ib', '<Plug>CamelCaseMotion_ib')
+vim.keymap.set('o', 'ie', '<Plug>CamelCaseMotion_ie')
+vim.keymap.set('x', 'ie', '<Plug>CamelCaseMotion_ie')
+
+vim.keymap.set('i', '<C-Left>', '<C-o><Plug>CamelCaseMotion_b')
+vim.keymap.set('i', '<C-Right>', '<C-o><Plug>CamelCaseMotion_w')
+
+-- Bufferline mappings
+vim.keymap.set('n', '<S-tab>', '<cmd>BufferLineCyclePrev<CR>')
+vim.keymap.set('n', '<tab>', '<cmd>BufferLineCycleNext<CR>')
+-- vim.keymap.set('n', '<C-,>', '<cmd>BufferLineCyclePrev<CR>')
+-- vim.keymap.set('n', '<C-.>', '<cmd>BufferLineCycleNext<CR>')
+
+vim.keymap.set('n', '<C-z>', '<cmd>BufferLineCloseLeft<CR>')
+vim.keymap.set('n', '<C-x>', '<cmd>bd %<CR>')
+vim.keymap.set('n', '<C-c>', '<cmd>BufferLineCloseRight<CR>')
+
+vim.keymap.set('n', '<leader>,', '<cmd>BufferLineMovePrev<CR>')
+vim.keymap.set('n', '<leader>.', '<cmd>BufferLineMoveNext<CR>')
+
+vim.keymap.set('n', '<leader>be', '<cmd>BufferLineSortByExtension<CR>')
+vim.keymap.set('n', '<leader>bd', '<cmd>BufferLineSortByDirectory<CR>')
+vim.keymap.set('n', '<leader>bb',
+  "<cmd>lua require'bufferline'.sort_buffers_by(function (buf_a, buf_b) return buf_a.id < buf_b.id end)<CR>")
+
+vim.keymap.set('n', '<C-1>', '<cmd>BufferLineGoToBuffer 1<CR>')
+vim.keymap.set('n', '<C-2>', '<cmd>BufferLineGoToBuffer 2<CR>')
+vim.keymap.set('n', '<C-3>', '<cmd>BufferLineGoToBuffer 3<CR>')
+vim.keymap.set('n', '<C-4>', '<cmd>BufferLineGoToBuffer 4<CR>')
+vim.keymap.set('n', '<C-5>', '<cmd>BufferLineGoToBuffer 5<CR>')
+vim.keymap.set('n', '<C-6>', '<cmd>BufferLineGoToBuffer 6<CR>')
+vim.keymap.set('n', '<C-7>', '<cmd>BufferLineGoToBuffer 7<CR>')
+vim.keymap.set('n', '<C-8>', '<cmd>BufferLineGoToBuffer 8<CR>')
+vim.keymap.set('n', '<C-9>', '<cmd>BufferLineGoToBuffer 9<CR>')
+
+-- lspconfig
+vim.keymap.set('n', '<leader>pd', ':lua vim.diagnostic.open_float()<CR>')
+vim.keymap.set('n', 'gk', ':lua vim.diagnostic.goto_prev()<CR>')
+vim.keymap.set('n', 'gj', ':lua vim.diagnostic.goto_next()<CR>')
+vim.keymap.set('n', '<leader>q', ':lua vim.diagnostic.setloclist()<CR>')
+
+-- DAP mappings
+vim.keymap.set("n", "<F2>", "<cmd>lua require('dap').step_over()<CR>")
+vim.keymap.set("n", "<F3>", "<cmd>lua require('dap').step_into()<CR>")
+vim.keymap.set("n", "<F4>", "<cmd>lua require('dap').step_out()<CR>")
+vim.keymap.set("n", "<F5>", "<cmd>lua require('dap').continue()<CR>")
+
+vim.keymap.set("n", "<F6>", "<cmd>lua require('dapui').toggle()<CR>")
+vim.keymap.set('n', '<leader>;', '<cmd>lua require"dap".toggle_breakpoint()<cr>')
+
+vim.keymap.set("n", "<Leader>dhh", "<cmd>lua require('dap.ui.variables').hover()<CR>")
+vim.keymap.set("v", "<Leader>dhv", "<cmd>lua require('dap.ui.variables').visual_hover()<CR>")
+
+vim.keymap.set("n", "<Leader>duh", "<cmd>lua require('dap.ui.widgets').hover()<CR>")
+vim.keymap.set("n", "<Leader>duf",
+  "<cmd>lua local widgets=require('dap.ui.widgets');widgets.centered_float(widgets.scopes)<CR>")
+
+vim.keymap.set("n", "<Leader>dro", "<cmd>lua require('dap').repl.open()<CR>")
+vim.keymap.set("n", "<Leader>drl", "<cmd>lua require('dap').repl.run_last()<CR>")
+
+vim.keymap.set("n", "<Leader>dbc",
+  "<cmd>lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition<cmd> '))<CR>")
+vim.keymap.set("n", "<Leader>dbm",
+  "<cmd>lua require('dap').set_breakpoint({ nil, nil, vim.fn.input('Log point message<cmd> ') })<CR>")
+vim.keymap.set("n", "<Leader>dbt", "<cmd>lua require('dap').toggle_breakpoint()<CR>")
+
+vim.keymap.set("n", "<Leader>dc", "<cmd>lua require('dap.ui.variables').scopes()<CR>")
+vim.keymap.set("n", "<Leader>di", "<cmd>lua require('dapui').toggle()<CR>")
 
 -- Markdown-preview mappings
-map('n', '<leader>m', ':MarkdownPreviewToggle<cr>')
+vim.keymap.set('n', '<leader>m', '<cmd>MarkdownPreviewToggle<cr>')

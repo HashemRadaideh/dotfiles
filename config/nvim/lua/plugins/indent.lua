@@ -26,6 +26,7 @@ indent_blankline.setup({
     "NvimTree",
     "neo-tree",
     "Trouble",
+    "lazy",
   },
   context_patterns = {
     "class",
@@ -57,6 +58,6 @@ indent_blankline.setup({
   show_first_indent_level = true,
   -- space_char_blankline = " ",
   -- blankline_char = "▏",
-  char = "",
+  char = "│",
   context_char = "▏",
 })

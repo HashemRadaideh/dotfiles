@@ -27,11 +27,11 @@ bufferline.setup {
     tab_size = 18,
     diagnostics = "nvim_lsp",
     diagnostics_update_in_insert = true,
-    -- The diagnostics indicator can be set to nil to keep the buffer name highlight but delete the highlighting
-    diagnostics_indicator = function(count, level, diagnostics_dict, context)
-      return "(" .. count .. ")"
+    diagnostics_indicator = function(_, _, diagnostics_dict)
+      local ret = (diagnostics_dict.error and '' .. diagnostics_dict.error .. " " or "")
+          .. (diagnostics_dict.warning and '' .. diagnostics_dict.warning or "")
+      return vim.trim(ret)
     end,
-    -- NOTE: this will be called a lot so don't do any heavy processing here
     custom_filter = function(buf_number, buf_numbers)
       -- filter out filetypes you don't want to see
       if vim.bo[buf_number].filetype ~= "<i-dont-want-to-see-this>" then
@@ -52,10 +52,10 @@ bufferline.setup {
       end
     end,
     offsets = {
-      { filetype = "NvimTree", text = "File Explorer",   text_align = "left", separator = true },
-      { filetype = "neo-tree", text = "File Explorer",   text_align = "left", separator = true },
-      { filetype = "Outline",  text = "Symbols Outline", text_align = "left", separator = true },
-      { filetype = "alpha",    text = "Dashboard",       text_align = "left", separator = true },
+      { filetype = "NvimTree", text = "File Explorer",   highlight = "Directory", text_align = "left", separator = true },
+      { filetype = "neo-tree", text = "File Explorer",   highlight = "Directory", text_align = "left", separator = true },
+      { filetype = "Outline",  text = "Symbols Outline", highlight = "Directory", text_align = "left", separator = true },
+      { filetype = "alpha",    text = "Dashboard",       highlight = "Directory", text_align = "left", separator = true },
     },
     color_icons = true,
     show_buffer_icons = true,

@@ -93,6 +93,7 @@ mason.setup({
   },
 })
 
+---@diagnostic disable-next-line: redefined-local
 local ok, mason_lspconfig = pcall(require, "mason-lspconfig")
 if not ok then
   return

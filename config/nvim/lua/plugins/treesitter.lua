@@ -28,7 +28,7 @@ treesitter.setup({
   },
   context_commentstring = {
     enable = true,
-    enable_autocmd = true,
+    enable_autocmd = false,
   },
   incremental_selection = {
     enable = true,
@@ -45,7 +45,7 @@ treesitter.setup({
   playground = {
     enable = true,
     disable = {},
-    updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
+    updatetime = 25,         -- Debounced time for highlighting nodes in the playground from source code
     persist_queries = false, -- Whether the query persists across vim sessions
     keybindings = {
       toggle_query_editor = "o",
