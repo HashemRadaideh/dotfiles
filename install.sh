@@ -8,6 +8,8 @@ rm -rf ~/paru
 
 echo 'export ZDOTDIR="$HOME/.config/zsh"' | sudo tee -a /etc/zsh/zshenv
 chsh -s /bin/zsh
+mkdir -p ~/.cache/zsh
+touch ~/.cache/zsh/history
 
 ln -s ~/dotfiles/config/alacritty ~/.config/alacritty
 ln -s ~/dotfiles/config/awesome ~/.config/awesome
@@ -75,10 +77,12 @@ paru -Syyuu \
   jre-openjdk \
   dotnet-sdk \
   dotnet-runtime \
+  lsd \
   exa \
   bat \
   ripgrep \
   fd \
+  zoxide \
   starship \
   tmux \
   byobu \
@@ -184,4 +188,4 @@ paru -Syyuu \
 
 rustup default stable
 
-cargo install tock gfold
+cargo install tock gfold zellij
