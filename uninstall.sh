@@ -1,13 +1,6 @@
 #!/bin/sh
 
-sudo pacman -S git zsh
-
-git clone https://aur.archlinux.org/paru.git ~/paru
-makepkg -si ~/paru/PKGBUILD
-rm -rf ~/paru
-
-echo 'export ZDOTDIR="$HOME/.config/zsh"' | sudo tee -a /etc/zsh/zshenv
-chsh -s /bin/zsh
+sudo pacman -R git zsh
 
 rm ~/.config/alacritty
 rm ~/.config/awesome
@@ -23,19 +16,8 @@ rm ~/.config/starship
 rm ~/.config/tmux
 rm ~/.config/zsh
 
-git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
-~/.config/emacs/bin/doom install
+rm ~/.config/emacs
 rm -rf ~/.config/doom/
-ln -s ~/dotfiles/config/doom ~/.config/doom
-~/.config/emacs/bin/doom install
-~/.config/emacs/bin/doom sync
-
-git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
-
-git clone https://github.com/horst3180/arc-icon-theme --depth 1 ~/arc
-cd ~/arc && ~/arc/autogen.sh --prefix=/usr
-sudo make -C ~/arc install
-cd && rm -rf ~/arc
 
 rm ~/.bin
 rm ~/Pictures/Wallpapers

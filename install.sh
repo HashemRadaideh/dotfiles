@@ -2,31 +2,61 @@
 
 sudo pacman -S git zsh
 
-git clone https://aur.archlinux.org/paru.git ~/paru
-makepkg -si ~/paru/PKGBUILD
-rm -rf ~/paru
-
 echo 'export ZDOTDIR="$HOME/.config/zsh"' | sudo tee -a /etc/zsh/zshenv
 chsh -s /bin/zsh
 mkdir -p ~/.cache/zsh
 touch ~/.cache/zsh/history
 
+git clone https://aur.archlinux.org/paru.git ~/paru
+makepkg -si ~/paru/PKGBUILD
+rm -rf ~/paru
+
+mv ~/.config/alacritty ~/.config/alacritty.bak
 ln -s ~/dotfiles/config/alacritty ~/.config/alacritty
+
+mv ~/.config/awesome ~/.config/awesome.bak
 ln -s ~/dotfiles/config/awesome ~/.config/awesome
+
+mv ~/.config/fish ~/.config/fish.bak
 ln -s ~/dotfiles/config/fish ~/.config/fish
+
+mv ~/.config/kitty ~/.config/kitty.bak
 ln -s ~/dotfiles/config/kitty ~/.config/kitty
+
+mv ~/.config/lf ~/.config/lf.bak
 ln -s ~/dotfiles/config/lf ~/.config/lf
+
+mv ~/.config/nvim ~/.config/nvim.bak
 ln -s ~/dotfiles/config/nvim ~/.config/nvim
+
+mv ~/.config/picom ~/.config/picom.bak
 ln -s ~/dotfiles/config/picom ~/.config/picom
+
+mv ~/.config/qtile ~/.config/qtile.bak
 ln -s ~/dotfiles/config/qtile ~/.config/qtile
+
+mv ~/.config/qutebrowser ~/.config/qutebrowser.bak
 ln -s ~/dotfiles/config/qutebrowser ~/.config/qutebrowser
+
+mv ~/.config/rofi ~/.config/rofi.bak
 ln -s ~/dotfiles/config/rofi ~/.config/rofi
+
+mv ~/.config/starship ~/.config/starship.bak
 ln -s ~/dotfiles/config/starship ~/.config/starship
+
+mv ~/.config/tmux ~/.config/tmux.bak
 ln -s ~/dotfiles/config/tmux ~/.config/tmux
+
+mv ~/.config/zsh ~/.config/zsh.bak
 ln -s ~/dotfiles/config/zsh ~/.config/zsh
+
+mv ~/.config/neofetch ~/.config/neofetch.bak
 ln -s ~/dotfiles/config/neofetch ~/.config/neofetch
 
+mv ~/.bin ~/bin.bak
 ln -s ~/dotfiles/bin ~/.bin
+
+mv ~/Pictures/Wallpapers ~/Pictures/Wallpapers.bak
 ln -s ~/dotfiles/wallpapers ~/Pictures/Wallpapers
 
 git clone https://github.com/tmux-plugins/tpm ~/dotfiles/config/tmux/plugins/tpm
@@ -38,6 +68,8 @@ cd ~/arc && ~/arc/autogen.sh --prefix=/usr
 sudo make -C ~/arc install
 cd && rm -rf ~/arc
 
+mv ~/.config/emacs ~/.config/emacs.bak
+mv ~/.config/doom ~/.config/doom.bak
 git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
 ~/.config/emacs/bin/doom install
 rm -rf ~/.config/doom/
