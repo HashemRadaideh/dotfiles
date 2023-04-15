@@ -36,28 +36,50 @@ theme.font                = theme.font_name .. "11"
 -- theme.font                = "DejaVuSansMono Nerd Font 11"
 
 -- Colors
+theme.background          = '#1e2127'
+theme.foreground          = '#abb2bf'
+theme.dim_foreground      = '#9a9a9a'
+theme.bright_foreground   = '#e6efff'
 
-theme.black               = "#282c34"
-theme.red                 = "#e06c75"
-theme.green               = "#98c379"
-theme.yellow              = "#e5c07b"
-theme.blue                = "#61afef"
-theme.magenta             = "#c678dd"
-theme.cyan                = "#56b6c2"
-theme.white               = "#abb2bf"
+theme.black               = '#1e2127'
+theme.red                 = '#e06c75'
+theme.green               = '#98c379'
+theme.yellow              = '#d19a66'
+theme.blue                = '#61afef'
+theme.magenta             = '#c678dd'
+theme.cyan                = '#56b6c2'
+theme.white               = '#abb2bf'
+
+-- theme.black               = '#5c6370'
+-- theme.red                 = '#e06c75'
+-- theme.green               = '#98c379'
+-- theme.yellow              = '#d19a66'
+-- theme.blue                = '#61afef'
+-- theme.magenta             = '#c678dd'
+-- theme.cyan                = '#56b6c2'
+-- theme.white               = '#ffffff'
+
+-- theme.black               = "#282c34"
+-- theme.red                 = "#e06c75"
+-- theme.green               = "#98c379"
+-- theme.yellow              = "#e5c07b"
+-- theme.blue                = "#61afef"
+-- theme.magenta             = "#c678dd"
+-- theme.cyan                = "#56b6c2"
+-- theme.white               = "#abb2bf"
 
 -- General/default Settings
-theme.bg_normal           = "#1e2127"
+theme.bg_normal           = theme.background
 theme.bg_transparent      = theme.bg_normal .. "bf"
 theme.bg_focus            = "#333333"
 theme.bg_urgent           = theme.red
 theme.bg_minimize         = "#444444"
 theme.bg_systray          = theme.bg_normal
 
-theme.fg_normal           = theme.white
-theme.fg_focus            = theme.white
-theme.fg_urgent           = theme.white
-theme.fg_minimize         = theme.white
+theme.fg_normal           = theme.foreground
+theme.fg_focus            = theme.bright_foreground
+theme.fg_urgent           = theme.red
+theme.fg_minimize         = theme.dim_foreground
 
 theme.border_normal       = "#000000"
 theme.border_focus        = "#456789"
