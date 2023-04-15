@@ -42,9 +42,11 @@ export EDITOR="nvim"
 # $OPENER use xdg-open
 export OPENER="xdg-open"
 
+export alacritty="WINIT_X11_SCALE_FACTOR=1.66 alacritty"
+
 # $TERM Sets the terminal
-# export TERM="alacritty"
-export TERM="kitty"
+export TERM="alacritty"
+# export TERM="kitty"
 
 # $VISUAL uses Emacs in GUI mode
 export VISUAL="/usr/bin/emacsclient --alternate-editor='/usr/bin/emacs' --create-frame"
