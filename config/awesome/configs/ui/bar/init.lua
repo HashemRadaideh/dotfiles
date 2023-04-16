@@ -64,7 +64,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
         MEMButton,
         CPU,
         CPUButton,
-        Battery,
+        Battery(),
         Volume,
         Logout,
       },

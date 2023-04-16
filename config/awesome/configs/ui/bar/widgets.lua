@@ -342,19 +342,11 @@ NETButton:connect_signal("button::press", function()
   NET.visible = not NET.visible
 end)
 
-local volume_widget = require(
-  'awesome-wm-widgets.volume-widget.volume'
-)
-
 local batteryarc_widget = require(
   "awesome-wm-widgets.batteryarc-widget.batteryarc"
 )
 
-local logout_popup = require(
-  "awesome-wm-widgets.logout-popup-widget.logout-popup"
-)
-
-local function battery()
+function Battery()
   local cmd = [[
     LEVEL="$(upower -i $(upower -e | grep 'BAT') | grep -E "percentage" | awk '{print $2}' | sed 's/\%//g')"
 
@@ -366,22 +358,22 @@ local function battery()
   ]]
 
   if os.execute(cmd) then
-    return batteryarc_widget({
-      show_current_level = true,
-      arc_thickness = 2,
-    })
+    return wibox.widget {
+      {
+        widget = batteryarc_widget({
+          show_current_level = true,
+          arc_thickness = 2,
+        }),
+      },
+      margins = { left = dpi(3), right = dpi(5) },
+      widget = wibox.container.margin,
+    }
   end
-
-  return wibox.widget { wiget = wibox.widget.textbox }
 end
 
-Battery = wibox.widget {
-  {
-    widget = battery(),
-  },
-  margins = { left = dpi(3), right = dpi(5) },
-  widget = wibox.container.margin,
-}
+local volume_widget = require(
+  'awesome-wm-widgets.volume-widget.volume'
+)
 
 Volume = wibox.widget {
   {
@@ -390,6 +382,10 @@ Volume = wibox.widget {
   margins = { left = dpi(5), right = dpi(3) },
   widget = wibox.container.margin,
 }
+
+local logout_popup = require(
+  "awesome-wm-widgets.logout-popup-widget.logout-popup"
+)
 
 Logout = wibox.widget {
   {
