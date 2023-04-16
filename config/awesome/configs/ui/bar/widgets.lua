@@ -60,10 +60,10 @@ function Tasks(s)
               margins = 2,
               widget  = wibox.container.margin,
             },
-            {
-              id     = 'text_role',
-              widget = wibox.widget.textbox,
-            },
+            -- {
+            --   id     = 'text_role',
+            --   widget = wibox.widget.textbox,
+            -- },
             layout = wibox.layout.fixed.horizontal,
           },
           left   = 10,

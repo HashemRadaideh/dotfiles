@@ -1,19 +1,19 @@
-local awful = require('awful')
-local beautiful = require('beautiful')
-local dpi = beautiful.xresources.apply_dpi
+local awful                        = require('awful')
+local beautiful                    = require('beautiful')
+local dpi                          = beautiful.xresources.apply_dpi
 
-beautiful.master_fill_policy = "master_width_factor"
-beautiful.master_fill_policy = "expand"
+beautiful.master_fill_policy       = "master_width_factor"
+beautiful.master_fill_policy       = "expand"
 -- beautiful.master_width_factor = 0.53
-beautiful.useless_gap        = dpi(0)
-beautiful.border_width       = dpi(1)
-beautiful.gap_single_client  = true
-beautiful.master_count       = 1
-beautiful.column_count       = 1
+beautiful.useless_gap              = dpi(0)
+beautiful.border_width             = dpi(1)
+beautiful.gap_single_client        = true
+beautiful.master_count             = 1
+beautiful.column_count             = 1
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.suit.tile.left.mirror = true
-awful.layout.layouts = {
+awful.layout.layouts               = {
   awful.layout.suit.tile,
   awful.layout.suit.tile.left,
   awful.layout.suit.tile.bottom,
