@@ -1,3 +1,6 @@
+vim.keymap.set({ "n", "i", "x", "o", "v" }, "<C-z>", "<nop>")
+vim.keymap.set({ "n", "i", "x", "o", "v" }, "Q", "<nop>")
+
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true })
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
 
@@ -33,18 +36,14 @@ vim.keymap.set('n', '<C-d>', '<C-d>zz')
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
 
 -- Improved search
-vim.keymap.set('n', '<Esc>', '<cmd>nohl<CR><Esc><Plug>multi_cursor_quit_key', { desc = 'Escape and clear hlsearch' })
-vim.keymap.set('i', '<Esc>', '<cmd>nohl<CR><Esc><Plug>multi_cursor_quit_key', { desc = 'Escape and clear hlsearch' })
+vim.keymap.set({ 'n', 'i' }, '<Esc>', '<cmd>nohl<CR><Esc><Plug>multi_cursor_quit_key',
+  { desc = 'Escape and clear hlsearch' })
 
 vim.keymap.set('n', 'n', 'nzzzv')
 vim.keymap.set('n', 'N', 'Nzzzv')
 
-vim.keymap.set('n', 'n', "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
-vim.keymap.set('x', 'n', "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
-vim.keymap.set('o', 'n', "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
-vim.keymap.set('n', 'N', "'nN'[v:searchforward]", { expr = true, desc = "Previous search result" })
-vim.keymap.set('x', 'N', "'nN'[v:searchforward]", { expr = true, desc = "Previous search result" })
-vim.keymap.set('o', 'N', "'nN'[v:searchforward]", { expr = true, desc = "Previous search result" })
+vim.keymap.set({ 'n', 'x', 'o' }, 'n', "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
+vim.keymap.set({ 'n', 'x', 'o' }, 'N', "'nN'[v:searchforward]", { expr = true, desc = "Previous search result" })
 
 -- Replace with empty buffer
 vim.keymap.set('x', 'p', "\"_dP")
@@ -62,7 +61,9 @@ vim.keymap.set('n', '~', '~h')
 -- better insert mode
 vim.keymap.set("i", "<C-H>", "<C-o>db", { desc = "Delete word backward" })
 vim.keymap.set("i", "<C-Del>", "<C-o>dw", { desc = "Delete word forward" })
-vim.keymap.set("i", "<C-a>", "<C-o>v", { desc = "Delete word forward" })
+vim.keymap.set("i", "<S-right>", "<C-o>v", { desc = "Delete word forward" })
+vim.keymap.set("i", "<S-left>", "<C-o>v", { desc = "Delete word forward" })
+vim.keymap.set("i", "<C-c>", "<Esc>")
 
 -- vim.keymap.set("i", "<C-Left>", "<C-o>b", { desc = "Move one word forward" })
 -- vim.keymap.set("i", "<C-Right>", "<C-o>w", { desc = "Move one word backward" })
@@ -78,10 +79,7 @@ vim.keymap.set('i', ';', ';<C-g>u')
 
 vim.keymap.set('i', '<C-z>', '<C-o>u', { desc = "Undo last move" })
 
-vim.keymap.set('n', '<C-s>', '<cmd>w<CR><esc>', { desc = 'Save file' })
-vim.keymap.set('v', '<C-s>', '<cmd>w<CR><esc>', { desc = 'Save file' })
-vim.keymap.set('i', '<C-s>', '<cmd>w<CR><esc>', { desc = 'Save file' })
-vim.keymap.set('s', '<C-s>', '<cmd>w<CR><esc>', { desc = 'Save file' })
+vim.keymap.set({ 'n', 'v', 'i', 's' }, '<C-s>', '<cmd>w<CR><Esc>', { desc = 'Save file' })
 
 vim.keymap.set("n", "<leader>sp", "<cmd>e /tmp/scratchpad<cr>", { desc = "Scratchpad" })
 vim.keymap.set("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
@@ -151,9 +149,9 @@ vim.keymap.set('n', '<tab>', '<cmd>BufferLineCycleNext<CR>')
 -- vim.keymap.set('n', '<C-,>', '<cmd>BufferLineCyclePrev<CR>')
 -- vim.keymap.set('n', '<C-.>', '<cmd>BufferLineCycleNext<CR>')
 
-vim.keymap.set('n', '<C-z>', '<cmd>BufferLineCloseLeft<CR>')
-vim.keymap.set('n', '<C-x>', '<cmd>bd %<CR>')
-vim.keymap.set('n', '<C-c>', '<cmd>BufferLineCloseRight<CR>')
+vim.keymap.set('n', '<leader>z', '<cmd>BufferLineCloseLeft<CR>')
+vim.keymap.set('n', '<leader>x', '<cmd>bd %<CR>')
+vim.keymap.set('n', '<leader>c', '<cmd>BufferLineCloseRight<CR>')
 
 vim.keymap.set('n', '<leader>,', '<cmd>BufferLineMovePrev<CR>')
 vim.keymap.set('n', '<leader>.', '<cmd>BufferLineMoveNext<CR>')
