@@ -6,8 +6,9 @@ alias autoremove='paru -Rcns $(pacman -Qdtq)'
 alias autoclean='paru -Scc'
 
 update() {
-  paru -Syyuu 
-  reposync  ~/dotfiles/ ~/
+  paru -Syu
+  paru -Sua
+  reposync  ~/.files/ ~/
   # nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' 
   nvim --headless "+Lazy! sync" +qa
   doom sync
