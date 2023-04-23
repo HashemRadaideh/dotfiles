@@ -1,14 +1,10 @@
 configs=(
+  aliases
   cmake
-  codi
   docker
-  fzf
-  git
   lf
   nvim
   paru
-  prompt
-  starship
   utils
   wine
 )
@@ -16,38 +12,35 @@ configs=(
 plugins=(
   zsh-autosuggestions
   zsh-syntax-highlighting
-  zsh-history-substring-search
+  # zsh-history-substring-search
   # zsh-auto-notify
   # zsh-you-should-use
 )
 
 main() {
-  eval "$(zoxide init zsh)"
+  require "configs/fzf"
+
+  # Auto start tmux in ssh.
+  [ -x "$(command -v fzf)"  ] && [[ -n "$SSH_CONNECTION" ]] && fzt
+
+  if [[ -z "$DISPLAY" ]] ; then
+    [ -x "$(command -v fzf)"  ] && fzdm
+
+    # Use the custom zsh prompt.
+    require "configs/prompt" && hash-prompt
+
+    # Fetch machine's specs.
+    [ -x "$(command -v pfetch)"  ] && pfetch
+  else
+    require "configs/starship" && starship-prompt
+
+    # Fetch machine's specs.
+    [ -x "$(command -v neofetch)"  ] && neofetch
+  fi
 
   if [[ -z "$TMUX" ]]; then
     TMOUT=120
-    TRAPALRM() { tock }
+    TRAPALRM() { asciiquarium }
     # pipes.sh | tock | cmatrix -s | asciiquarium
-  fi
-
-  # Auto start tmux in ssh.
-  if [[ -n "$SSH_CONNECTION" ]] ; then
-    fzt
-  fi
-
-  if [[ -z "$DISPLAY" ]] ; then
-    fzdm
-
-    # Use the custom zsh prompt.
-    autoload -Uz add-zsh-hook
-    hash-prompt
-
-    # Fetch machine's specs.
-    pfetch
-  else
-    starship-prompt
-
-    # Fetch machine's specs.
-    neofetch
   fi
 }

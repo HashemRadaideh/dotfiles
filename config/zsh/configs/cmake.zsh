@@ -1,3 +1,6 @@
+if [ ! -x "$(command -v cmake)"  ]; then
+  return
+fi
 
 cbuild() {
   cmake -B ./build && cmake --build ./build $@

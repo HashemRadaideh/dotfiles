@@ -1,3 +1,6 @@
+if [ ! -x "$(command -v paru)"  ]; then
+  return
+fi
 
 # Paru shortcut
 alias install="paru -S"

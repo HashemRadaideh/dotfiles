@@ -1,3 +1,6 @@
+if [ ! -x "$(command -v wine)"  ]; then
+  return
+fi
 
 runwin() {
   WINARCH=win64

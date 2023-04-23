@@ -1,17 +1,28 @@
 # Zsh config file (zshrc without oh-my-zsh)
 
-# ADDING TO THE PATH
-export PATH="$PATH:$HOME/.bin/scripts:$HOME/.local/bin:$XDG_DATA_HOME/cargo/bin:$HOME/.config/doom/bin:$HOME/.config/emacs/bin:/usr/lib/jvm/java-19-openjdk/bin"
+require() {
+  source "$ZDOTDIR/$1.zsh" 2>/dev/null
+}
 
-# XDG Variables
-# export XDG_DATA_HOME="$HOME/.local/bin"
-# export XDG_CONFIG_HOME="$HOME/.config"
-# export XDG_STATE_HOME="$HOME/.local/state"
-# export XDG_CACHE_HOME="$HOME/.cache"
+require "env"
+require "rc"
 
-# zsh configurations
-source "$ZDOTDIR/env.zsh" 2>/dev/null
-source "$ZDOTDIR/rc.zsh" 2>/dev/null
+main
+
+for config in $configs; do
+  require "configs/$config"
+done
+
+for plugin in $plugins; do
+  require "plugins/$plugin/$plugin.plugin"
+done
+
+require "plugins/conf"
+
+[ -x "$(command -v zoxide)"  ] && eval "$(zoxide init zsh)"
+
+# changing "cd" to "z (zoxide)"
+alias cd="z"
 
 # History in cache directory:
 export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
@@ -151,13 +162,3 @@ bindkey -M emacs '^[[3;5~' kill-word
 bindkey -M viins '^[[3;5~' kill-word
 bindkey -M vicmd '^[[3;5~' kill-word
 # use showkey -a or Ctrl-v to get key code for binding
-
-for config in $configs; do
-  source "$ZDOTDIR/configs/$config.zsh" 2>/dev/null
-done
-
-for plugin in $plugins; do
-  source "$ZDOTDIR/plugins/$plugin/$plugin.plugin.zsh" 2>/dev/null
-done
-
-main

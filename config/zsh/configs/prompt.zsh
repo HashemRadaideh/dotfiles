@@ -87,4 +87,3 @@ fi)%F{white}%b"
   autoload -Uz add-zsh-hook
   add-zsh-hook precmd set-prompt
 }
-

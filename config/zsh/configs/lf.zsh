@@ -1,4 +1,6 @@
-# LF file manager configs
+if [ ! -x "$(command -v lf)"  ]; then
+  return
+fi
 
 # lf change directory to the last visited directory
 lfcd () {

@@ -1,3 +1,6 @@
+if [ ! -x "$(command -v starship)"  ]; then
+  return
+fi
 
 starship-prompt() {
   # Use the starship prompt.
