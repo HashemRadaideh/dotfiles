@@ -12,56 +12,56 @@ makepkg -si ~/paru/PKGBUILD
 rm -rf ~/paru
 
 mv ~/.config/alacritty ~/.config/alacritty.bak
-ln -s ~/dotfiles/config/alacritty ~/.config/alacritty
+ln -s ~/.files/config/alacritty ~/.config/alacritty
 
 mv ~/.config/awesome ~/.config/awesome.bak
-ln -s ~/dotfiles/config/awesome ~/.config/awesome
+ln -s ~/.files/config/awesome ~/.config/awesome
 
 mv ~/.config/fish ~/.config/fish.bak
-ln -s ~/dotfiles/config/fish ~/.config/fish
+ln -s ~/.files/config/fish ~/.config/fish
 
 mv ~/.config/kitty ~/.config/kitty.bak
-ln -s ~/dotfiles/config/kitty ~/.config/kitty
+ln -s ~/.files/config/kitty ~/.config/kitty
 
 mv ~/.config/lf ~/.config/lf.bak
-ln -s ~/dotfiles/config/lf ~/.config/lf
+ln -s ~/.files/config/lf ~/.config/lf
 
 mv ~/.config/nvim ~/.config/nvim.bak
-ln -s ~/dotfiles/config/nvim ~/.config/nvim
+ln -s ~/.files/config/nvim ~/.config/nvim
 
 mv ~/.config/picom ~/.config/picom.bak
-ln -s ~/dotfiles/config/picom ~/.config/picom
+ln -s ~/.files/config/picom ~/.config/picom
 
 mv ~/.config/qtile ~/.config/qtile.bak
-ln -s ~/dotfiles/config/qtile ~/.config/qtile
+ln -s ~/.files/config/qtile ~/.config/qtile
 
 mv ~/.config/qutebrowser ~/.config/qutebrowser.bak
-ln -s ~/dotfiles/config/qutebrowser ~/.config/qutebrowser
+ln -s ~/.files/config/qutebrowser ~/.config/qutebrowser
 
 mv ~/.config/rofi ~/.config/rofi.bak
-ln -s ~/dotfiles/config/rofi ~/.config/rofi
+ln -s ~/.files/config/rofi ~/.config/rofi
 
 mv ~/.config/starship ~/.config/starship.bak
-ln -s ~/dotfiles/config/starship ~/.config/starship
+ln -s ~/.files/config/starship ~/.config/starship
 
 mv ~/.config/tmux ~/.config/tmux.bak
-ln -s ~/dotfiles/config/tmux ~/.config/tmux
+ln -s ~/.files/config/tmux ~/.config/tmux
 
 mv ~/.config/zsh ~/.config/zsh.bak
-ln -s ~/dotfiles/config/zsh ~/.config/zsh
+ln -s ~/.files/config/zsh ~/.config/zsh
 
 mv ~/.config/neofetch ~/.config/neofetch.bak
-ln -s ~/dotfiles/config/neofetch ~/.config/neofetch
+ln -s ~/.files/config/neofetch ~/.config/neofetch
 
 mv ~/.bin ~/bin.bak
-ln -s ~/dotfiles/bin ~/.bin
+ln -s ~/.files/bin ~/.bin
 
 mv ~/Pictures/Wallpapers ~/Pictures/Wallpapers.bak
-ln -s ~/dotfiles/wallpapers ~/Pictures/Wallpapers
+ln -s ~/.files/wallpapers ~/Pictures/Wallpapers
 
-git clone https://github.com/tmux-plugins/tpm ~/dotfiles/config/tmux/plugins/tpm
+git clone https://github.com/tmux-plugins/tpm ~/.files/config/tmux/plugins/tpm
 
-make -C ~/dotfiles/config/lf/lfimg install
+make -C ~/.files/config/lf/lfimg install
 
 git clone https://github.com/horst3180/arc-icon-theme --depth 1 ~/arc
 cd ~/arc && ~/arc/autogen.sh --prefix=/usr
@@ -73,12 +73,12 @@ mv ~/.config/doom ~/.config/doom.bak
 git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
 ~/.config/emacs/bin/doom install
 rm -rf ~/.config/doom/
-ln -s ~/dotfiles/config/doom ~/.config/doom
+ln -s ~/.files/config/doom ~/.config/doom
 ~/.config/emacs/bin/doom install
 ~/.config/emacs/bin/doom sync
 
 # paru -Qq OR paru -Qe | awk '{print $1}'
-paru -Syyuu \
+paru -Syu \
   otf-cascadia-code-nerd \
   ttf-firacode-nerd \
   ttf-sourcecodepro-nerd \
