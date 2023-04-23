@@ -1,17 +1,17 @@
+# Zsh config file (zshrc without oh-my-zsh)
+
 # ADDING TO THE PATH
 export PATH="$PATH:$HOME/.bin/scripts:$HOME/.local/bin:$XDG_DATA_HOME/cargo/bin:$HOME/.config/doom/bin:$HOME/.config/emacs/bin:/usr/lib/jvm/java-19-openjdk/bin"
 
 # XDG Variables
-export XDG_DATA_HOME="$HOME/.local/bin"
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_STATE_HOME="$HOME/.local/state"
-export XDG_CACHE_HOME="$HOME/.cache"
+# export XDG_DATA_HOME="$HOME/.local/bin"
+# export XDG_CONFIG_HOME="$HOME/.config"
+# export XDG_STATE_HOME="$HOME/.local/state"
+# export XDG_CACHE_HOME="$HOME/.cache"
 
 # zsh configurations
-source "$ZDOTDIR/rc.zsh" 2>/dev/null
 source "$ZDOTDIR/env.zsh" 2>/dev/null
-
-# Zsh config file (zshrc without oh-my-zsh)
+source "$ZDOTDIR/rc.zsh" 2>/dev/null
 
 # History in cache directory:
 export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
@@ -24,10 +24,10 @@ zstyle ':completion:*' completer _expand _complete _ignored _correct _approximat
 zstyle ':completion:*' glob 'x == 2'
 zstyle ':completion:*' matcher-list '+m:{[:lower:]}={[:upper:]} m:{[:lower:][:upper:]}={[:upper:][:lower:]} r:|[._-]=** r:|=** l:|=*' '+m:{[:lower:]}={[:upper:]} m:{[:lower:][:upper:]}={[:upper:][:lower:]} r:|[._-]=** r:|=** l:|=*' '+m:{[:lower:]}={[:upper:]} m:{[:lower:][:upper:]}={[:upper:][:lower:]} r:|[._-]=** r:|=** l:|=*' '+m:{[:lower:]}={[:upper:]} m:{[:lower:][:upper:]}={[:upper:][:lower:]} r:|[._-]=** r:|=** l:|=*'
 zstyle ':completion:*' max-errors 5 numeric
-zstyle :compinstall filename '$HOME/.config/zsh/.zshrc'
+zstyle :compinstall filename "$ZDOTDIR/.zshrc"
 
 zmodload zsh/complist
-_comp_options+=(globdots)		# Include hidden files.
+_comp_options+=(globdots) # Include hidden files.
 
 autoload -Uz compinit
 compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"

@@ -10,7 +10,7 @@ Terminal_emulator = os.getenv("TERM")
 -- Terminal_editor = Terminal_emulator .. " -e " .. Shell .. " -c " .. os.getenv("EDITOR")
 Terminal_editor = "editor"
 Terminal_file_manager = Terminal_emulator .. " -e " .. os.getenv("FILEMANAGER")
-Terminal_multiplexed = Terminal_emulator .. " -e fuzmux"
+Terminal_multiplexed = Terminal_emulator .. " -e zsh -c 'source $ZDOTDIR/configs/fzf.zsh && fzt'"
 Web_browser = "qutebrowser"
 
 require('configs.error')

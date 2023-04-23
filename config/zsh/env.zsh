@@ -1,28 +1,28 @@
 # Zsh environment variables
 
 # Home directory clean up
-export ANDROID_HOME="$XDG_DATA_HOME/android"
+# export ANDROID_HOME="$XDG_DATA_HOME/android"
 
-export CARGO_HOME="$XDG_DATA_HOME/cargo"
+# export CARGO_HOME="$XDG_DATA_HOME/cargo"
 
 # export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 
-export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
+# export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 
 # export _JAVA_OPTIONS=-Djava.io.tmpdir="$XDG_CONFIG_HOME"/java
 # export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_RUNTIME_DIR/java"
 
-export MINIKUBE_HOME="$XDG_DATA_HOME/minikube"
+# export MINIKUBE_HOME="$XDG_DATA_HOME/minikube"
 
-export MPLAYER_HOME="$XDG_CONFIG_HOME/mplayer"
+# export MPLAYER_HOME="$XDG_CONFIG_HOME/mplayer"
 
-export prefix=${XDG_DATA_HOME}/npm
-export cache=${XDG_CACHE_HOME}/npm
-export tmp=${XDG_RUNTIME_DIR}/npm
+# export prefix=${XDG_DATA_HOME}/npm
+# export cache=${XDG_CACHE_HOME}/npm
+# export tmp=${XDG_RUNTIME_DIR}/npm
 
-export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/pythonrc"
+# export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/pythonrc"
 
-export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+# export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 
 # export WINEPREFIX="$HOME/wine"
 
@@ -33,11 +33,14 @@ export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 
 # export SSH_AUTH_SOCK
 
-# $FILEMANAGER 
+# $FILEMANAGER
 export FILEMANAGER="lf"
 
 # $EDITOR use nvim
 export EDITOR="nvim"
+
+# git editor
+export GIT_EDITOR="$EDITOR"
 
 # $OPENER use xdg-open
 export OPENER="xdg-open"
@@ -49,7 +52,7 @@ export TERM="alacritty"
 # export TERM="kitty"
 
 # $VISUAL uses Emacs in GUI mode
-export VISUAL="/usr/bin/emacsclient --alternate-editor='/usr/bin/emacs' --create-frame"
+export VISUAL="emacsclient --alternate-editor='emacs' --create-frame"
 
 # $PAGER uses bat with colors enabled
 export PAGER="bat --decorations=always --color=always --paging=always"
@@ -58,7 +61,7 @@ export PAGER="bat --decorations=always --color=always --paging=always"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 # $HOSTNAME current machine hostname
-export HOSTNAME="$(/bin/hostnamectl | grep 'Static hostname: ' | awk '{print $3}')"
+export HOSTNAME="$(hostnamectl | grep 'Static hostname: ' | awk '{print $3}')"
 
 # $DISTRO current linux distribution
 export DISTRO="$(hostnamectl | grep 'Operating System' | awk '{ print substr($0, index($0,$3)) }')"
@@ -67,25 +70,23 @@ export DISTRO="$(hostnamectl | grep 'Operating System' | awk '{ print substr($0,
 export IPv4="${$(ip a | grep -P '^.*(?=.*inet )(?=.*dynamic).*$' | awk '{print $2}')//\/*}"
 
 # xkb
-alias lsxkbmodels="sed '/^! model$/,/^ *$/!d;//d' /usr/share/X11/xkb/rules/base.lst"
-alias lsxkblayouts="sed '/^! layout$/,/^ *$/!d;//d' /usr/share/X11/xkb/rules/base.lst"
-alias lsxkbvariants="sed '/^! variant$/,/^ *$/!d;//d' /usr/share/X11/xkb/rules/base.lst"
-alias lsxkboptions="sed '/^! option$/,/^ *$/!d;//d' /usr/share/X11/xkb/rules/base.lst"
+# alias lsxkbmodels="sed '/^! model$/,/^ *$/!d;//d' /usr/share/X11/xkb/rules/base.lst"
+# alias lsxkblayouts="sed '/^! layout$/,/^ *$/!d;//d' /usr/share/X11/xkb/rules/base.lst"
+# alias lsxkbvariants="sed '/^! variant$/,/^ *$/!d;//d' /usr/share/X11/xkb/rules/base.lst"
+# alias lsxkboptions="sed '/^! option$/,/^ *$/!d;//d' /usr/share/X11/xkb/rules/base.lst"
 
-alias viewxkb="less -M '+/^\s*\!\s\w+$' /usr/share/X11/xkb/rules/base.lst"
-alias viewxkbmodels="lsxkbmodels | less -M"
-alias viewxkblayouts="lsxkblayouts | less -M"
-alias viewxkbvariants="lsxkbvariants | less -M"
-alias viewxkboptions="lsxkboptions | less -M"
+# alias viewxkb="less -M '+/^\s*\!\s\w+$' /usr/share/X11/xkb/rules/base.lst"
+# alias viewxkbmodels="lsxkbmodels | less -M"
+# alias viewxkblayouts="lsxkblayouts | less -M"
+# alias viewxkbvariants="lsxkbvariants | less -M"
+# alias viewxkboptions="lsxkboptions | less -M"
 
 # startx alias
-alias x="startx"
+# alias x="startx"
 
 alias e="$EDITOR"
 bindkey -s '^e' "^u$EDITOR^m"
 alias v="$VISUAL"
-
-bindkey -s '^n' '^ufuzmux^m'
 
 # nvim shortcut
 alias nv="nvim"
@@ -96,7 +97,7 @@ alias vim="nvim"
 alias emacs="emacsclient -c -a 'emacs'"
 
 # terminal emacs editor
-alias em="/usr/bin/emacs -nw"
+alias em="emacs -nw"
 
 # tmux with unicode shortcut
 alias tmux="tmux -u"
@@ -123,17 +124,17 @@ alias ll="lsd -lAhF --color=always --group-directories-first | bat"  # long form
 alias lt="lsd -aT --color=always --group-directories-first"   # tree listing
 
 # Clear
-alias clear="clear && pfetch" # | lolcat"
+# alias clear="clear && pfetch" # | lolcat"
 
 # Start / Open (Windows and Mac)
-alias start="xdg-open"
-alias open="xdg-open"
+# alias start="xdg-open"
+# alias open="xdg-open"
 
 # Lazygit shortcut
 alias lg="lazygit"
 
 # Glow shortcut
-alias gl="glow"
+# alias gl="glow"
 
 alias cmatrix='cmatrix -b -u 3 -C cyan'
 
@@ -143,12 +144,12 @@ alias tock='tock -c -C 6'
 # please is a "sudo !!" alias
 # alias please='sudo $(!!)'
 alias please='sudo $(fc -ln -1)'
-alias doas='sudo'
+# alias doas='sudo'
 
 # replace "rm" with "trash-put -i"
 alias rm="trash-put -i"
 
-alias ...='../..'
+# alias ...='cd ../..'
 
 alias feh='feh --no-fehbg'
 
@@ -173,7 +174,7 @@ mk() {
 }
 
 ff() {
-  dirs="$(find . | fzf --header='Jump to:')"
+  dirs="$(find . | fzf --prompt='Jump to:')"
   if [[ "$dirs" == "." ]]; then
     cd
   fi
@@ -187,7 +188,6 @@ ff() {
   fi
 }
 
-# bindkey -s '^f' '^ucd "$(dirname "$(fzf)")"\n'
 bindkey -s '^f' '^uff^m'
 
 # zsh plugins configurations
@@ -202,14 +202,14 @@ bindkey -M emacs '^P' history-substring-search-up
 bindkey -M emacs '^N' history-substring-search-down
 
 # Plugin auto_notify
-export AUTO_NOTIFY_IGNORE=("nvim" "e" "docker" "man" "sleep")
-export AUTO_NOTIFY_THRESHOLD=20
-export AUTO_NOTIFY_EXPIRE_TIME=10000
-export AUTO_NOTIFY_TITLE="Hey! %command has just finished"
-export AUTO_NOTIFY_BODY="It completed in %elapsed seconds with exit code %exit_code"
+# export AUTO_NOTIFY_IGNORE=("nvim" "e" "docker" "man" "sleep")
+# export AUTO_NOTIFY_THRESHOLD=20
+# export AUTO_NOTIFY_EXPIRE_TIME=10000
+# export AUTO_NOTIFY_TITLE="Hey! %command has just finished"
+# export AUTO_NOTIFY_BODY="It completed in %elapsed seconds with exit code %exit_code"
 
 # Plugin you-should-use
-export YSU_MESSAGE_POSITION="before"
-export YSU_MODE=BESTMATCH
-export YSU_HARDCORE=1
-export YSU_IGNORED_ALIASES=("nvim")
+# export YSU_MESSAGE_POSITION="before"
+# export YSU_MODE=BESTMATCH
+# export YSU_HARDCORE=1
+# export YSU_IGNORED_ALIASES=("nvim")

@@ -3,7 +3,7 @@ alias newvim="NVIM_APPNAME=nvim-new nvim"
 
 nvims() {
   items=("Default" "nvim-new")
-  config=$(printf "%s\n" "${items[@]}" | fzf --prompt=" Neovim Config  " --height=~50% --layout=reverse --border --exit-0)
+  config=$(printf "%s\n" "${items[@]}" | fzf --prompt=" Neovim Config  ")
   if [[ -z "$config" ]]; then
     echo "Nothing selected"
     return 0
