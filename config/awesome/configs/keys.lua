@@ -6,10 +6,10 @@ local beautiful               = require('beautiful')
 local awesome, client, screen = awesome, client, screen
 
 -- Default modkey.
-Meta                          = "Mod1"
-Super                         = "Mod4"
 Ctrl                          = "Control"
+Meta                          = "Mod1"
 Shift                         = "Shift"
+Super                         = "Mod4"
 
 local logout_popup            = require(
   "awesome-wm-widgets.logout-popup-widget.logout-popup"
@@ -43,26 +43,26 @@ awful.mouse.append_global_mousebindings(
 awful.keyboard.append_global_keybindings(
   {
     awful.key(
-      { Meta, Shift }, "/",
+      { Super, Shift }, "/",
       hotkeys_popup.show_help,
       { description = "Show help popup", group = "Awesome" }
     ),
 
     awful.key(
-      { Meta, Ctrl }, "r",
+      { Super, Ctrl }, "r",
       awesome.restart,
       { description = "Reload Awesome", group = "Awesome" }
     ),
 
     awful.key(
-      { Meta, Ctrl }, "q",
+      { Super, Ctrl }, "q",
       awesome.quit,
       { description = "Quit awesome", group = "Awesome" }
     ),
 
     -- Show/Hide Wibox
     awful.key(
-      { Meta }, "b",
+      { Super }, "b",
       function()
         if Autohide then
           for s in screen do
@@ -83,7 +83,7 @@ awful.keyboard.append_global_keybindings(
     ),
 
     awful.key(
-      { Meta, Shift }, "b",
+      { Super, Shift }, "b",
       function()
         if Autohide then
           for s in screen do
@@ -95,7 +95,7 @@ awful.keyboard.append_global_keybindings(
     ),
 
     awful.key(
-      { Meta }, "t",
+      { Super }, "t",
       function()
         ZenSwitch()
         if Is_zen then
@@ -108,7 +108,7 @@ awful.keyboard.append_global_keybindings(
     ),
 
     awful.key(
-      { Meta, Shift }, "s",
+      { Super, Shift }, "s",
       function()
         if Is_sloppy then
           Is_sloppy = false
@@ -119,16 +119,16 @@ awful.keyboard.append_global_keybindings(
       { description = "Toggle sloppy focus", group = "System" }
     ),
 
-    awful.key(
-      { Meta, }, "/",
-      function()
-        Desktop.Side_Panel.visible = not Desktop.Side_Panel.visible
-      end,
-      { description = "Toggle side panel visibility", group = "System" }
-    ),
+    -- awful.key(
+    --   { Super, }, "/",
+    --   function()
+    --     Desktop.Side_Panel.visible = not Desktop.Side_Panel.visible
+    --   end,
+    --   { description = "Toggle side panel visibility", group = "System" }
+    -- ),
 
     awful.key(
-      { Meta, }, "a",
+      { Super, }, "a",
       function()
         Task.visible = not Task.visible
 
@@ -142,7 +142,7 @@ awful.keyboard.append_global_keybindings(
     ),
 
     awful.key(
-      { Meta, }, "s",
+      { Super, }, "s",
       function()
         Systray.visible = not Systray.visible
 
@@ -162,61 +162,67 @@ awful.keyboard.append_global_keybindings(
     -- ),
 
     awful.key(
-      { Meta }, ";",
+      { Super }, "'",
       function() Main_menu:toggle { coords = { x = 0, y = 0 } } end,
       { description = "Show main menu", group = "System" }
     ),
 
     awful.key(
-      { Meta }, "Return",
+      { Super }, "Return",
       function() awful.spawn(Terminal_multiplexed) end,
       { description = "Open a terminal with multiplexer", group = "Launch" }
     ),
 
     awful.key(
-      { Meta, Shift }, "Return",
+      { Super, Shift }, "Return",
       function() awful.spawn(Terminal_emulator) end,
       { description = "Open a terminal", group = "Launch" }
     ),
 
     awful.key(
-      { Meta }, "r",
+      { Super }, "/",
       function() awful.spawn.with_shell("rofi -no-lazy-grab -show drun") end,
       { description = "Open rofi run prompt", group = "Launch" }
     ),
 
     awful.key(
-      { Meta }, "d",
+      { Super }, "r",
+      function() awful.spawn.with_shell("rofi -no-lazy-grab -show drun") end,
+      { description = "Open rofi run prompt", group = "Launch" }
+    ),
+
+    awful.key(
+      { Super }, "d",
       function() awful.spawn.with_shell("dmenu_run") end,
       { description = "Open dmenu run prompt", group = "Launch" }
     ),
 
     awful.key(
-      { Meta }, "c",
+      { Super }, "c",
       function() awful.spawn.with_shell("code") end,
       { description = "Open vscode", group = "Launch" }
     ),
 
     awful.key(
-      { Meta }, "v",
+      { Super }, "v",
       function() awful.spawn.with_shell(Graphical_editor) end,
       { description = "Open emacs", group = "Launch" }
     ),
 
     awful.key(
-      { Meta }, "e",
+      { Super }, "e",
       function() awful.spawn.with_shell(Terminal_editor) end,
       { description = "Open nvim", group = "Launch" }
     ),
 
     awful.key(
-      { Meta }, "o",
+      { Super }, "o",
       function() awful.spawn.with_shell(Terminal_file_manager) end,
       { description = "Open lf", group = "Launch" }
     ),
 
     awful.key(
-      { Meta }, "f",
+      { Super }, "f",
       function() awful.spawn.with_shell(File_manager) end,
       { description = "Open thunar", group = "Launch" }
     ),
@@ -228,7 +234,7 @@ awful.keyboard.append_global_keybindings(
     ),
 
     awful.key(
-      { Meta, }, "Print",
+      { Super, }, "Print",
       function() awful.spawn.with_shell("screenshot focused") end,
       { description = "Screenshot focused window", group = "System" }
     ),
@@ -240,13 +246,13 @@ awful.keyboard.append_global_keybindings(
     ),
 
     awful.key(
-      { Meta, }, "x",
+      { Super, }, "x",
       function() awful.spawn.with_shell("lock") end,
       { description = "Lock screen", group = "System" }
     ),
 
     awful.key(
-      { Meta }, "p",
+      { Super }, "p",
       function()
         logout_popup.launch({
           onlock = function() awful.spawn.with_shell("lock") end,
@@ -259,75 +265,75 @@ awful.keyboard.append_global_keybindings(
     ),
 
     awful.key(
-      { Meta }, ".",
+      { Super }, ".",
       function() awful.screen.focus_relative(1) end,
       { description = "Focus next screen", group = "Workspace" }
     ),
 
     awful.key(
-      { Meta }, ",",
+      { Super }, ",",
       function() awful.screen.focus_relative(-1) end,
       { description = "Focus previous screen", group = "Workspace" }
     ),
 
     awful.key(
-      { Meta }, "Tab",
+      { Super }, "Tab",
       awful.tag.viewnext,
       { description = "View next tag", group = "Workspace" }
     ),
 
     awful.key(
-      { Meta, Shift }, "Tab",
+      { Super, Shift }, "Tab",
       awful.tag.viewprev,
       { description = "View previous tag", group = "Workspace" }
     ),
 
-    awful.key(
-      { Meta }, "i",
-      function()
-        Desktop.Tasks.visible = not Desktop.Tasks.visible
+    -- awful.key(
+    --   { Super }, "i",
+    --   function()
+    --     Desktop.Tasks.visible = not Desktop.Tasks.visible
 
-        ---@diagnostic disable-next-line: undefined-global
-        local hide = timer({ timeout = 1 })
+    --     ---@diagnostic disable-next-line: undefined-global
+    --     local hide = timer({ timeout = 1 })
 
-        hide:connect_signal("timeout", function()
-          Desktop.Tasks.visible = not Desktop.Tasks.visible
-          hide:stop()
-        end)
+    --     hide:connect_signal("timeout", function()
+    --       Desktop.Tasks.visible = not Desktop.Tasks.visible
+    --       hide:stop()
+    --     end)
 
-        hide:start()
+    --     hide:start()
 
-        awful.client.focus.history.previous()
-        -- awful.client.focus.byidx(1)
+    --     awful.client.focus.history.previous()
+    --     -- awful.client.focus.byidx(1)
 
-        if client.focus then
-          client.focus:raise()
-        end
+    --     if client.focus then
+    --       client.focus:raise()
+    --     end
 
-        -- if awful.client.ismarked() then
-        --   awful.screen.focus_relative(-1)
-        --   awful.client.getmarked()
-        -- end
+    --     -- if awful.client.ismarked() then
+    --     --   awful.screen.focus_relative(-1)
+    --     --   awful.client.getmarked()
+    --     -- end
 
-        -- awful.client.togglemarked()
-      end,
-      { description = "Focus previous client", group = "System" }
-    ),
-
-    awful.key(
-      { Meta }, "u",
-      awful.tag.history.restore,
-      { description = "Go to last focused client", group = "System" }
-    ),
+    --     -- awful.client.togglemarked()
+    --   end,
+    --   { description = "Focus previous client", group = "System" }
+    -- ),
 
     -- awful.key(
-    --   { Meta }, "u",
-    --   awful.client.urgent.jumpto,
-    --   { description = "Focus urgent client", group = "System" }
+    --   { Super }, "u",
+    --   awful.tag.history.restore,
+    --   { description = "Go to last focused client", group = "System" }
     -- ),
 
     awful.key(
-      { Meta, Ctrl }, "n",
+      { Meta }, "u",
+      awful.client.urgent.jumpto,
+      { description = "Focus urgent client", group = "System" }
+    ),
+
+    awful.key(
+      { Super, Ctrl }, "n",
       function()
         local c = awful.client.restore()
         if c then
@@ -338,32 +344,32 @@ awful.keyboard.append_global_keybindings(
     ),
 
     awful.key(
-      { Meta }, "=",
+      { Super }, "=",
       function() awful.tag.incnmaster(1, nil, true) end,
       { description = "Increase the number of columns", group = "Workspace" }
     ),
 
     awful.key(
-      { Meta }, "-",
+      { Super }, "-",
       function() awful.tag.incnmaster(-1, nil, true) end,
       { description = "Decrease the number of columns", group = "Workspace" }
     ),
 
     awful.key(
-      { Meta, Ctrl }, "=",
+      { Super, Ctrl }, "=",
       function() awful.tag.incncol(1, nil, true) end,
       { description = "Increase the number of columns", group = "Workspace" }
     ),
 
     awful.key(
-      { Meta, Ctrl }, "-",
+      { Super, Ctrl }, "-",
       function() awful.tag.incncol(-1, nil, true) end,
       { description = "Decrease the number of columns", group = "Workspace" }
     ),
 
     -- Move focus between clients by global direction
     awful.key(
-      { Meta }, "h",
+      { Super }, "h",
       function()
         awful.client.focus.global_bydirection("left")
         if client.focus then
@@ -374,7 +380,7 @@ awful.keyboard.append_global_keybindings(
     ),
 
     awful.key(
-      { Meta }, "j",
+      { Super }, "j",
       function()
         awful.client.focus.global_bydirection("down")
         if client.focus then
@@ -385,7 +391,7 @@ awful.keyboard.append_global_keybindings(
     ),
 
     awful.key(
-      { Meta }, "k",
+      { Super }, "k",
       function()
         awful.client.focus.global_bydirection("up")
         if client.focus then
@@ -396,7 +402,7 @@ awful.keyboard.append_global_keybindings(
     ),
 
     awful.key(
-      { Meta }, "l",
+      { Super }, "l",
       function()
         awful.client.focus.global_bydirection("right")
         if client.focus then
@@ -408,7 +414,7 @@ awful.keyboard.append_global_keybindings(
 
     -- Swap focused client by global direction
     awful.key(
-      { Meta, Ctrl }, "h",
+      { Super, Ctrl }, "h",
       function()
         awful.client.swap.global_bydirection("left")
         if client.focus then
@@ -419,7 +425,7 @@ awful.keyboard.append_global_keybindings(
     ),
 
     awful.key(
-      { Meta, Ctrl }, "j",
+      { Super, Ctrl }, "j",
       function()
         awful.client.swap.global_bydirection("down")
         if client.focus then
@@ -430,7 +436,7 @@ awful.keyboard.append_global_keybindings(
     ),
 
     awful.key(
-      { Meta, Ctrl }, "k",
+      { Super, Ctrl }, "k",
       function()
         awful.client.swap.global_bydirection("up")
         if client.focus then
@@ -441,7 +447,7 @@ awful.keyboard.append_global_keybindings(
     ),
 
     awful.key(
-      { Meta, Ctrl }, "l",
+      { Super, Ctrl }, "l",
       function()
         awful.client.swap.global_bydirection("right")
         if client.focus then
@@ -453,7 +459,7 @@ awful.keyboard.append_global_keybindings(
 
     -- modify the client size
     awful.key(
-      { Meta, Shift }, "h",
+      { Super, Shift }, "h",
       function()
         if client.focus.floating then
           client.focus:relative_move(0, 0, -10, 0)
@@ -465,7 +471,7 @@ awful.keyboard.append_global_keybindings(
     ),
 
     awful.key(
-      { Meta, Shift }, "j",
+      { Super, Shift }, "j",
       function()
         if client.focus.floating then
           client.focus:relative_move(0, 0, 0, 10)
@@ -477,7 +483,7 @@ awful.keyboard.append_global_keybindings(
     ),
 
     awful.key(
-      { Meta, Shift }, "k",
+      { Super, Shift }, "k",
       function()
         if client.focus.floating then
           client.focus:relative_move(0, 0, 0, -10)
@@ -489,7 +495,7 @@ awful.keyboard.append_global_keybindings(
     ),
 
     awful.key(
-      { Meta, Shift }, "l",
+      { Super, Shift }, "l",
       function()
         if client.focus.floating then
           client.focus:relative_move(0, 0, 10, 0)
@@ -502,53 +508,53 @@ awful.keyboard.append_global_keybindings(
 
     -- Moving floating windows
     awful.key(
-      { Meta, Shift, Ctrl }, "h",
+      { Super, Meta }, "h",
       function() client.focus:relative_move(-10, 0, 0, 0) end,
       { description = "Move floating client to the left", group = "Workflow" }
     ),
 
     awful.key(
-      { Meta, Shift, Ctrl }, "j",
+      { Super, Meta }, "j",
       function() client.focus:relative_move(0, 10, 0, 0) end,
       { description = "Move floating client to the down", group = "Workflow" }
     ),
 
     awful.key(
-      { Meta, Shift, Ctrl }, "k",
+      { Super, Meta }, "k",
       function() client.focus:relative_move(0, -10, 0, 0) end,
       { description = "Move floating client to the top", group = "Workflow" }
     ),
 
     awful.key(
-      { Meta, Shift, Ctrl }, "l",
+      { Super, Meta }, "l",
       function() client.focus:relative_move(10, 0, 0, 0) end,
       { description = "Move floating client to the right", group = "Workflow" }
     ),
 
     -- Change layout
     awful.key(
-      { Meta }, "space",
+      { Super }, "]",
       function() awful.layout.inc(1) end,
       { description = "Select next layout", group = "Workflow" }
     ),
 
     awful.key(
-      { Meta, Shift }, "space",
+      { Super }, "[",
       function() awful.layout.inc(-1) end,
       { description = "Select previous layout", group = "Workflow" }
     ),
 
-    awful.key(
-      { Meta, }, "]",
-      function() awful.util.spawn("amixer -D pulse sset Master 5%+") end,
-      { description = "Increase volume", group = "Media" }
-    ),
+    -- awful.key(
+    --   { Super, }, "]",
+    --   function() awful.util.spawn("amixer -D pulse sset Master 5%+") end,
+    --   { description = "Increase volume", group = "Media" }
+    -- ),
 
-    awful.key(
-      { Meta, }, "[",
-      function() awful.util.spawn("amixer -D pulse sset Master 5%-") end,
-      { description = "Decrease volume", group = "Media" }
-    ),
+    -- awful.key(
+    --   { Super, }, "[",
+    --   function() awful.util.spawn("amixer -D pulse sset Master 5%-") end,
+    --   { description = "Decrease volume", group = "Media" }
+    -- ),
 
     awful.key(
       {}, "XF86AudioRaiseVolume",
@@ -581,7 +587,7 @@ awful.keyboard.append_global_keybindings(
     ),
 
     awful.key {
-      modifiers = { Meta },
+      modifiers = { Super },
       keygroup = "numrow",
       description = "Focus tag",
       group = "Workflow",
@@ -598,7 +604,7 @@ awful.keyboard.append_global_keybindings(
     },
 
     awful.key {
-      modifiers = { Meta, Shift },
+      modifiers = { Super, Shift },
       keygroup = "numrow",
       description = "Toggle tag viewablity",
       group = "Workflow",
@@ -615,7 +621,7 @@ awful.keyboard.append_global_keybindings(
     },
 
     awful.key {
-      modifiers = { Ctrl, Meta, },
+      modifiers = { Ctrl, Super, },
       keygroup = "numrow",
       description = "Move focused client to tag",
       group = "Workflow",
@@ -633,7 +639,7 @@ awful.keyboard.append_global_keybindings(
     },
 
     awful.key {
-      modifiers = { Meta, Ctrl, Shift },
+      modifiers = { Super, Ctrl, Shift },
       keygroup = "numrow",
       description = "Toggle focused client on tag",
       group = "Workflow",
@@ -651,7 +657,7 @@ awful.keyboard.append_global_keybindings(
     },
 
     awful.key {
-      modifiers = { Meta },
+      modifiers = { Super },
       keygroup = "numpad",
       description = "Select layout directly",
       group = "Workflow",
@@ -683,14 +689,14 @@ client.connect_signal("request::default_mousebindings", function()
       ),
 
       awful.button(
-        { Meta }, 1,
+        { Super }, 1,
         function(c)
           c:activate { context = "mouse_click", action = "mouse_move" }
         end
       ),
 
       awful.button(
-        { Meta }, 3,
+        { Super }, 3,
         function(c)
           c:activate { context = "mouse_click", action = "mouse_resize" }
         end
@@ -701,7 +707,7 @@ client.connect_signal("request::default_mousebindings", function()
   awful.keyboard.append_client_keybindings(
     {
       awful.key(
-        { Meta, }, "F11",
+        { Super, }, "F11",
         function(c)
           c.fullscreen = not c.fullscreen
           c:raise()
@@ -710,37 +716,43 @@ client.connect_signal("request::default_mousebindings", function()
       ),
 
       awful.key(
-        { Meta }, "q",
+        { Super }, ";",
         function(c) c:kill() end,
         { description = "Close Focused client", group = "System" }
       ),
 
       awful.key(
-        { Meta, Ctrl }, "space",
+        { Super }, "q",
+        function(c) c:kill() end,
+        { description = "Close Focused client", group = "System" }
+      ),
+
+      awful.key(
+        { Super, Meta }, "Return",
         awful.client.floating.toggle,
         { description = "Toggle floating", group = "Workspace" }
       ),
 
       awful.key(
-        { Meta, Ctrl }, "Return",
+        { Super, Ctrl }, "Return",
         function(c) c:swap(awful.client.getmaster()) end,
         { description = "Set focused client as master", group = "Workspace" }
       ),
 
       awful.key(
-        { Meta, Ctrl }, ",",
-        function(c) c:move_to_screen(c.screen.index - 1) end,
-        { description = "Move to screen", group = "Workspace" }
-      ),
-
-      awful.key(
-        { Meta, Ctrl }, ",",
+        { Super, Ctrl }, ".",
         function(c) c:move_to_screen(c.screen.index + 1) end,
         { description = "Move to screen", group = "Workspace" }
       ),
 
       awful.key(
-        { Meta }, "y",
+        { Super, Ctrl }, ",",
+        function(c) c:move_to_screen(c.screen.index - 1) end,
+        { description = "Move to screen", group = "Workspace" }
+      ),
+
+      awful.key(
+        { Super }, "y",
         function(c) c.ontop = not c.ontop end,
         { description = "Keep floating client on top", group = "Workspace" }
       ),
@@ -748,13 +760,13 @@ client.connect_signal("request::default_mousebindings", function()
       awful.key(
       -- The client currently has the input focus, so it cannot be
       -- minimized, since minimized clients can't have the focus.
-        { Meta }, "n",
+        { Super }, "n",
         function(c) c.minimized = true end,
         { description = "Minimize focused client", group = "System" }
       ),
 
       awful.key(
-        { Meta }, "m",
+        { Super }, "m",
         function(c)
           c.maximized = not c.maximized
           c:raise()
@@ -763,7 +775,7 @@ client.connect_signal("request::default_mousebindings", function()
       ),
 
       awful.key(
-        { Meta, Shift, }, "=",
+        { Super, Shift, }, "=",
         function(c)
           c.maximized_vertical = not c.maximized_vertical
           c:raise()
@@ -772,7 +784,7 @@ client.connect_signal("request::default_mousebindings", function()
       ),
 
       awful.key(
-        { Meta, Shift, }, "-",
+        { Super, Shift, }, "-",
         function(c)
           c.maximized_horizontal = not c.maximized_horizontal
           c:raise()
