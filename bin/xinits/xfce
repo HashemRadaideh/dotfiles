@@ -4,12 +4,12 @@ if [ -n "${DISPLAY+x}" ]; then
 fi
 
 # XDG variables
-export XDG_SESSION_TYPE=x11
 export XDG_CURRENT_DESKTOP=xfce
-export XDG_DATA_HOME="$HOME/.local/bin"
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_STATE_HOME="$HOME/.local/state"
 export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/bin"
+export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_SESSION_TYPE=x11
 
 source /etc/X11/xinit/xinitrc.d/50-systemd-user.sh
 
