@@ -1,13 +1,11 @@
 # Zsh config file (zshrc without oh-my-zsh)
+source "$ZDOTDIR/rc.zsh"
 
 require() {
   source "$ZDOTDIR/$1.zsh" 2>/dev/null
 }
 
-require "env"
-require "rc"
-
-main
+zrc
 
 for config in $configs; do
   require "configs/$config"
@@ -18,16 +16,6 @@ for plugin in $plugins; do
 done
 
 require "plugins/conf"
-
-[ -x "$(command -v zoxide)"  ] && eval "$(zoxide init zsh)"
-
-# changing "cd" to "z (zoxide)"
-alias cd="z"
-
-# History in cache directory:
-export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
-export HISTSIZE=10000000
-export SAVEHIST=10000000
 
 # Completion engine setup
 zstyle ':completion:*' menu select

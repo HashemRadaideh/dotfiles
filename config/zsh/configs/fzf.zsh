@@ -10,8 +10,18 @@ export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --e
 
 fzdm() {
   if [[ -z "$TMUX" ]]; then
-    local list=("$(ls "$HOME/.bin/xinits" | sort)" "tmux" "$(tty)" "power off" "reboot" "sleep" "logout")
+    local list=("$(\ls "$XDG_DATA_HOME/sessions" | sort)" "tmux" "$(tty)" "power off" "reboot" "sleep" "logout")
     local file=`printf "%s\n" "${list[@]}" | fzf --border-label=" Fuzzy Display Manager (fzdm) "`
+
+    starter() {
+      local extension="${$(grep -P 'export XDG_SESSION_TYPE=*' "$XDG_DATA_HOME/sessions/$1" | awk '{print $2}')//\)}"
+
+      if [[ "$extension" == "XDG_SESSION_TYPE=x11" ]]; then
+        startx "$XDG_DATA_HOME/sessions/$1"
+      else
+        eval "$(\cat $XDG_DATA_HOME/sessions/$1)"
+      fi
+    }
 
     if [ -n "$file" ]; then
       case "$file" in
@@ -21,40 +31,9 @@ fzdm() {
         "power off") systemctl poweroff ;;
         "$(tty)") clear ;;
         "tmux") exec fzt ;;
-        *) exec startx "$HOME/.bin/xinits/$file" ;;
+        *) exec starter "$file" ;;
       esac
     fi
-  fi
-}
-
-fzt() {
-  input() {
-    read name\?"Enter new session name: ";
-    echo "$name";
-  }
-
-  local session="exit"
-
-  if [[ -n "$(tmux -u ls 2>/dev/null | grep -i "windows")" ]]; then
-    local list=`echo "exit\nnew\n$(tmux -u ls)"`
-    fzf --prompt="Session: " <<< "${list[@]}" | awk '{print $1}' | read -t 5 session
-  else
-    echo "default" | read -t 5 session
-  fi
-
-  if [ -z "$TMUX" ]; then
-    case "$session" in
-      "exit")    return;;
-      "new")     exec tmux -u new -s "$(input)" ;;
-      "default") exec tmux -u new -s "$session" ;;
-      *)         exec tmux -u attach -t "$session" ;;
-    esac
-  else
-    case "$session" in
-      "exit") return;;
-      "new")  name="$(input)"; tmux -u new -d -s "$name"; tmux -u switch -t "$name" ;;
-      *)      tmux -u switch -t "$session" ;;
-    esac
   fi
 }
 
@@ -74,5 +53,3 @@ ff() {
 }
 
 bindkey -s '^f' '^uff^m'
-
-# bindkey -s '^n' "^utmux popup -d '#{pane_current_path}' -xC -yC -w80% -h80% -E zsh -c 'source "$ZDOTDIR/configs/fzt.zsh" && fzt'^m"

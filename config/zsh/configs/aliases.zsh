@@ -1,4 +1,3 @@
-
 # $HOSTNAME current machine hostname
 export HOSTNAME="$(hostnamectl | grep 'Static hostname: ' | awk '{print $3}')"
 
@@ -82,3 +81,5 @@ alias feh='feh --no-fehbg'
 
 alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts"'
 
+# changing "cd" to "z (zoxide)"
+alias cd="z"
