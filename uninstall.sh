@@ -1,160 +1,128 @@
 #!/bin/sh
 
+DOTFILES="${DOTFILES:-$HOME/.files}"
+
+XDG_CACHE_HOME="${DOTFILES:-$HOME/.cache}"
+XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/bin}"
+XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+
+XDG_DESKTOP_DIR="${XDG_DESKTOP_DIR:-$HOME/Desktop}"
+XDG_DOCUMENTS_DIR="${XDG_DOCUMENTS_DIR:-$HOME/Documents}"
+XDG_DOWNLOAD_DIR="${XDG_DOWNLOAD_DIR:-$HOME/Downloads}"
+XDG_MUSIC_DIR="${XDG_MUSIC_DIR:-$HOME/Music}"
+XDG_PICTURES_DIR="${XDG_PICTURES_DIR:-$HOME/Pictures}"
+XDG_PUBLICSHARE_DIR="${XDG_PUBLICSHARE_DIR:-$HOME/Public}"
+XDG_TEMPLATES_DIR="${XDG_TEMPLATES_DIR:-$HOME/Templates}"
+XDG_VIDEOS_DIR="${XDG_VIDEOS_DIR:-$HOME/Videos}"
+
+rollback() {
+  local filePath=`dirname "$1"`
+  local fileName=`basename "$1"`
+
+  local backups=(`\ls "$filePath" | grep "$fileName"`)
+
+  local sorted=($(sort <<< "${backups[*]}"))
+
+  local newest="${sorted[@]: -1:1}"
+
+  if ! [ "${#sorted[@]}" -eq 1 ]; then
+    echo "deleting"
+    \rm -rf "$1"
+    mv "$filePath/$newest" "$1"
+  fi
+}
+
+deconfs() {
+  rollback /etc/modprobe.d/nobeep.conf
+
+  rollback /etc/X11/xorg.conf.d/30-touchpad.conf
+
+  rollback /etc/pacman.conf
+}
+
+switch_shell() {
+  if [ -x "$(command -v fzf)"  ]; then
+    if grep -Fxq 'export ZDOTDIR="$XDG_CONFIG_HOME/zsh"' /etc/zsh/zshenv; then
+      sudo sed -i 's/export ZDOTDIR=.*//' /etc/zsh/zshenv
+    fi
+
+    if grep -Fxq 'zsh' "$SHELL"; then
+      local choice=`cat /etc/shells | grep "/.*" | fzf`
+      chsh -s $choice
+    fi
+
+    rm -rf "$XDG_CACHE_HOME/zsh"
+  fi
+}
+
+rm_symln() {
+  sudo rm /usr/share/applications/chrome-*
+  sudo rm /usr/share/applications/calculator.desktop
+
+  rollback "$XDG_CONFIG_HOME/alacritty"
+
+  rollback "$XDG_CONFIG_HOME/awesome"
+
+  rollback "$XDG_CONFIG_HOME/fish"
+
+  rollback "$XDG_CONFIG_HOME/kitty"
+
+  rollback "$XDG_CONFIG_HOME/lf"
+
+  rollback "$XDG_CONFIG_HOME/nvim"
+
+  rollback "$XDG_CONFIG_HOME/picom"
+
+  rollback "$XDG_CONFIG_HOME/qtile"
+
+  rollback "$XDG_CONFIG_HOME/qutebrowser"
+
+  rollback "$XDG_CONFIG_HOME/rofi"
+
+  rollback "$XDG_CONFIG_HOME/starship"
+
+  rollback "$XDG_CONFIG_HOME/tmux"
+
+  rollback "$XDG_CONFIG_HOME/zsh"
+
+  rollback "$XDG_CONFIG_HOME/neofetch"
+
+  rollback "$XDG_DATA_HOME/scripts"
+
+  rollback "$XDG_DATA_HOME/misc"
+
+  rollback "$XDG_DATA_HOME/sessions"
+
+  rollback "$XDG_PICTURES_DIR/wallpapers"
+}
+
+uninstall_pkgs() {
+  cargo uninstall gfold tock zellij
+
+  local packages=( $(cat "$DOTFILES/packages.txt" |tr "\n" " ") )
+  # paru -Qq OR paru -Qe | awk '{print $1}'
+  paru -Rns $packages
+}
+
+emacs_unsetup() {
+  if [ -n "$(which emacs)" ]; then
+    rollback "$XDG_CONFIG_HOME/emacs"
+    rollback "$XDG_CONFIG_HOME/doom"
+  fi
+}
+
 sudo pacman -R git zsh
 
-rm ~/.config/alacritty
-rm ~/.config/awesome
-rm ~/.config/fish
-rm ~/.config/kitty
-rm ~/.config/lf
-rm ~/.config/nvim
-rm ~/.config/picom
-rm ~/.config/qtile
-rm ~/.config/qutebrowser
-rm ~/.config/rofi
-rm ~/.config/starship
-rm ~/.config/tmux
-rm ~/.config/zsh
+git submodule init
+git submodule update
 
-rm ~/.config/emacs
-rm -rf ~/.config/doom/
+switch_shell
 
-rm ~/.bin
-rm ~/Pictures/Wallpapers
-rm ~/Studies
+deconfs
 
-# paru -Qq OR paru -Qe | awk '{print $1}'
-paru -R \
-  ttf-firacode-nerd \
-  ttf-sourcecodepro-nerd \
-  ttf-jetbrains-mono-nerd \
-  ttf-hack-nerd \
-  ttf-dejavu-nerd \
-  github-cli \
-  rustup \
-  zig \
-  cmake \
-  clang \
-  lua \
-  luarocks \
-  ruby \
-  clojure \
-  ghc \
-  octave \
-  pypy \
-  python \
-  nodejs \
-  npm \
-  yarn \
-  gradle \
-  maven \
-  jdk-openjdk \
-  jre-openjdk \
-  dotnet-sdk \
-  dotnet-runtime \
-  exa \
-  bat \
-  ripgrep \
-  starship \
-  tmux \
-  byobu \
-  fzf \
-  kitty \
-  picom \
-  nitrogen \
-  alsa-utils \
-  rofi \
-  lf \
-  thunar \
-  screenkey \
-  scrot \
-  lazygit \
-  glow \
-  neovide \
-  emacs \
-  umbrello \
-  pycharm-community-edition \
-  intellij-idea-community-edition \
-  qtcreator \
-  obsidian \
-  libreoffice \
-  discord \
-  steam \
-  wine \
-  winetricks \
-  lutris \
-  blender \
-  virt-manager \
-  virtualbox \
-  sl \
-  cmatrix \
-  gpick \
-  conky \
-  dmenu \
-  feh \
-  kdenlive \
-  gimp \
-  lolcat \
-  lxappearance \
-  qt5ct \
-  mdcat \
-  mpv \
-  ncmpcpp \
-  neofetch \
-  network-manager-applet \
-  networkmanager \
-  obs-studio \
-  pavucontrol \
-  tldr \
-  trash-cli \
-  zathura \
-  zathura-pdf-poppler \
-  xautolock \
-  xclip \
-  xdelta3 \
-  xf86-video-amdgpu \
-  xf86-video-ati \
-  xf86-video-nouveau \
-  xf86-video-vmware \
-  xf86-input-libinput \
-  xorg-server \
-  xorg-server-xephyr \
-  xorg-xev \
-  xorg-xinit \
-  xterm \
-  zram-generator \
-  bun-bin \
-  i3lock-color-git \
-  awesome-git \
-  nomacs-git \
-  openboard-git \
-  cava-git \
-  krita-git \
-  nordic-theme-git \
-  xdg-ninja-git \
-  neovim-nightly \
-  drawio \
-  staruml \
-  visual-studio-code-bin \
-  android-studio \
-  unityhub \
-  google-chrome-dev \
-  brave-bin \
-  onlyoffice-bin \
-  notion-app \
-  trello \
-  evernote-beta-bin \
-  tradingview \
-  zoom \
-  teams \
-  spotify-dev \
-  pipes.sh \
-  pfetch \
-  typora \
-  xdiskusage \
-  xidlehook \
-  xss-lock
+rm_symln
 
-rustup default stable
+uninstall_pkgs
 
-cargo uninstall tock gfold
+emacs_unsetup
