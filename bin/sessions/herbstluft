@@ -1,0 +1,4 @@
+export XDG_CURRENT_DESKTOP=herbstluftwm
+export XDG_SESSION_TYPE=x11
+
+exec "$XDG_CURRENT_DESKTOP"

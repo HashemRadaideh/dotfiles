@@ -1,0 +1,4 @@
+export XDG_CURRENT_DESKTOP=qtile
+export XDG_SESSION_TYPE=x11
+
+exec qtile start

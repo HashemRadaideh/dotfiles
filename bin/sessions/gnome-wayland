@@ -1,0 +1,9 @@
+export XDG_CURRENT_DESKTOP=gnome
+export XDG_SESSION_TYPE=wayland
+
+export MOZ_ENABLE_WAYLAND=1
+export QT_QPA_PLATFORM=wayland
+
+export GDK_BACKEND=wayland
+
+exec dbus-run-session gnome-session --session gnome-wayland
