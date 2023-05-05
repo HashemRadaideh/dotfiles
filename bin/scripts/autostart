@@ -6,57 +6,68 @@ run() {
   fi
 }
 
-# ps -u $(id -u) -o pid= \
-#   | xargs -I PID -r cat /proc/PID/environ 2> /dev/null \
-#   | tr '\0' '\n' \
-#   | grep '^DISPLAY=:' \
-#   | sed 's/.*\([0-9]\)/\1/g' \
-#   | sort -u
+if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "${DISPLAY+x}" ]; then
+  setxkbmap -layout us,ara -option grp:win_space_toggle
+  xmodmap -e "keycode 135 = Super_R"
+  xset -b
 
-# declare -A disps usrs
-# usrs=()
-# disps=()
-#
-# for i in $(users);do
-#     [[ $i = root ]] && continue # skip root
-#     usrs[$i]=1
-# done # unique names
-#
-# for u in "${!usrs[@]}"; do
-#     for i in $(sudo ps e -u "$u" | sed -rn 's/.* DISPLAY=(:[0-9]*).*/\1/p');do
-#         disps[$i]=$u
-#     done
-# done
-#
-# for d in "${!disps[@]}";do
-#     echo "User: ${disps[$d]}, Display: $d"
-# done
+  run picom --config "$HOME/.config/picom/picom.conf"
 
-nitrogen --head="0" --set-zoom-fill --random "$HOME/Pictures/Wallpapers"
-# run wal -i "$HOME/Pictures/Wallpapers"
-# run feh --bg-fill --randomize "$HOME/Pictures/Wallpapers"
+  # run polybar
+  # run conky -c $HOME/.config/conky/conky.conf
 
-run nm-applet
+  nitrogen --head="0" --set-zoom-fill --random "$HOME/Pictures/wallpapers"
+  # run wal -i "$HOME/Pictures/wallpapers"
+  # run feh --bg-fill --randomize "$HOME/Pictures/wallpapers"
+  # run komorebi
+
+  run dunst
+
+  # run locker
+else
+  run waybar
+  run swww init
+  # run hyprpaper
+  # run swaybg
+  # run wpapered
+
+  # swww img \
+  #   "$(find ~/Pictures/wallpapers/ -name '*' -exec file {} \; | grep -o -P '^.+: \w+ image' | cut -d':' -f1 | shuf -n 1)" \
+  #   --transition-type random \
+  #   --transition-angle $((1 + $RANDOM % 360)) \
+  #   --transition-fps 255 &
+
+  swww img \
+    "$(find ~/Pictures/wallpapers/ -type f -exec file {} \; | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)" \
+    --transition-type random \
+    --transition-angle $((1 + $RANDOM % 360)) \
+    --transition-fps 255 &
+
+  # swww img \
+  #   "$(fd . ~/Pictures/wallpapers -tf | shuf -n 1)" \
+  #   --transition-type random \
+  #   --transition-angle $((1 + $RANDOM % 360)) \
+  #   --transition-fps 255
+
+  run wl-paste --type text --watch cliphist store #Stores only text data
+
+  run wl-paste --type image --watch cliphist store #Stores only image data
+
+  run mako
+fi
+
+run /usr/bin/polkit-dumb-agent 
+# run gnome-keyring-daemon --start
+
+# run wireplumber
+
+run udiskie -s -f pcmanfm
+
+run blueman-applet
+run nm-applet --indicator
 # run volumeicon
 
-# run komorebi
-# run polybar
-# run conky -c $HOME/.config/conky/conky.conf
-
-# run picom -b --experimental-backends --config "$HOME/.config/picom/picom.conf"
-run picom --config "$HOME/.config/picom/picom.conf"
-run /usr/bin/emacs --daemon 
-run gnome-keyring-daemon --start
-
-run locker
-# run xset -b
-# run xset r rate 250 30
-# run xset m
-# run xset s off
-# run xset s noblank
-# run xset -dpms
-# run xscreensaver -no-splash
-
+run /usr/bin/emacs --daemon
 run discord --start-minimized
 # run teams
 # run zoom

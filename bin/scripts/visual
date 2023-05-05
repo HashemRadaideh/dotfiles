@@ -1,7 +1,0 @@
-#!/bin/zsh
-
-if [ -z "$1" ]; then
-  emacsclient -c -a 'emacs'
-else
-  emacsclient -c -a 'emacs' "$1"
-fi

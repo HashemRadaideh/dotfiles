@@ -1,41 +1,15 @@
 #!/bin/zsh
 
-export PRIMARY_DISPLAY=`xrandr | awk '/ primary/{print $1}'`
+exec xautolock \
+  -detectsleep \
+  -time 10 \
+  -locker "$DOTFILES/bin/scripts/lock" \
+  -notify 30 \
+  -notifier "notify-send -u critical -t 10000 -- 'LOCKING screen in 30 seconds'" &
 
-exec xautolock -detectsleep -time 10 -locker "$HOME/.bin/scripts/lock" -notify 30 -notifier "notify-send -u critical -t 10000 -- 'LOCKING screen in 30 seconds'" &
-
-exec xidlehook --not-when-audio --not-when-fullscreen --timer 1200 "systemctl suspend" -
-
-# exec xautolock \
-#   -detectsleep \
-#   -time 10 \
-#   -locker "$HOME/.bin/scripts/lock"\
-#   -notify 30 \
-#   -notifier "notify-send -u critical -t 10000 -- 'LOCKING screen in 30 seconds'" &
-#
-# exec xidlehook \
-#   --not-when-fullscreen \
-#   --not-when-audio \
-#   --timer 300 \
-#   'notify-send -u critical -t 10000 -- "screen will lock in T-60 seconds"' \
-#   '' \
-#   --timer 60 \
-#   'lock' \
-#   '' \
-#   --timer 120 \
-#   'systemctl suspend' \
-#   ''
-
-# exec xautolock\
-#   -detectsleep\
-#   -time 10\
-#   -locker "lock"\
-#   -notify 30\
-#   -notifier "notify-send -u critical -t 10000 -- 'LOCKING screen in 30 seconds'" &
-#
-# exec xidlehook\
-#   --not-when-fullscreen\
-#   --not-when-audio \
-#   --timer 120\
-#   "systemctl suspend" \
-#   ""
+exec xidlehook \
+  --not-when-fullscreen \
+  --not-when-audio \
+  --timer 1200 \
+    'systemctl suspend' \
+    ''
