@@ -224,7 +224,7 @@ awful.keyboard.append_global_keybindings(
     awful.key(
       { Super }, "f",
       function() awful.spawn.with_shell(File_manager) end,
-      { description = "Open thunar", group = "Launch" }
+      { description = "Open file manger", group = "Launch" }
     ),
 
     awful.key(
