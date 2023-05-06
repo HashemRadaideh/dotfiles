@@ -9,23 +9,23 @@ configuration{
     location: 0;
     disable-history: false;
     hide-scrollbar: true;
-    display-drun: "   Apps ";
-    display-run: "   Run ";
-    display-window: " 﩯  Window";
-    display-Network: " 󰤨  Network";
+    display-drun: "  Apps ";
+    display-run: "  Run ";
+    display-window: "  Window";
+    display-Network: " 󰤨 Network";
     sidebar-mode: true;
 }
 
 @theme "/dev/null"
 
 * {
-    bg-col:  #1E1D2F;
-    bg-col-light: #1E1D2F;
-    border-col: #1E1D2F;
-    selected-col: #1E1D2F;
-    blue: #7aa2f7;
-    fg-col: #D9E0EE;
-    fg-col2: #F28FAD;
+    bg-col:  #2e3440;
+    bg-col-light: #3b4252;
+    border-col: #252a33;
+    selected-col: #2b313c;
+    blue: #6ba4b7;
+    fg-col: #51596b;
+    fg-col2: #b1b7c2;
     grey: #D9E0EE;
     height: 900px;
     width: 600px;
