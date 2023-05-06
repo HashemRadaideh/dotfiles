@@ -19,14 +19,16 @@ configuration{
 @theme "/dev/null"
 
 * {
-    bg-col:  #2e3440;
-    bg-col-light: #3b4252;
-    border-col: #252a33;
-    selected-col: #2b313c;
-    blue: #6ba4b7;
-    fg-col: #51596b;
-    fg-col2: #b1b7c2;
-    grey: #D9E0EE;
+
+    bg-col:  #303446;
+    bg-col-light: #303446;
+    border-col: #303446;
+    selected-col: #303446;
+    blue: #8caaee;
+    fg-col: #c6d0f5;
+    fg-col2: #e78284;
+    grey: #737994;
+
     height: 900px;
     width: 600px;
 }
