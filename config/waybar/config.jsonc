@@ -6,15 +6,17 @@
     "passthrough": false,
     "gtk-layer-shell": true,
     "height": 0,
-    "spacing": 4,
+    // "spacing": 4,
 
     "modules-left": [
+        "custom/search",
+        "custom/new",
         "wlr/workspaces",
+        "hyprland/window",
     ],
 
     "modules-center": [
     ],
-    // "hyprland/window",
 
     "modules-right": [
         "pulseaudio",
@@ -31,11 +33,20 @@
         "tray"
     ],
 
+    "custom/search": {
+        "format": "",
+        "on-click": "killall rofi || rofi -show drun",
+    },
+
+    "custom/new": {
+        "format": "",
+        "on-click": "hyprctl dispatch workspace empty",
+    },
+
     "wlr/workspaces": {
         "disable-scroll": true,
         "all-outputs": true,
         "on-click": "activate",
-        //"format": "{icon}",
         "persistent_workspaces": {
             "1": [],
             "2": [],
@@ -98,12 +109,14 @@
     },
 
     "memory": {
-        "format": " {}%"
+        "format": " {}%",
+        "tooltip": false
     },
 
     "temperature": {
         // "thermal-zone": 2,
         // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+        "tooltip": false,
         "critical-threshold": 80,
         "format-critical": "{icon} {temperatureC}°C",
         "format": "{icon} {temperatureC}°C",

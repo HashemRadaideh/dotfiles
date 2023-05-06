@@ -82,6 +82,8 @@ button:hover {
     border-bottom: 3px solid #ffffff;
 }
 
+#custom-search
+#custom-new
 #window,
 #tray,
 #clock,
@@ -105,15 +107,15 @@ button:hover {
 
 #window {
     border-radius: 10px;
-    margin-left: 60px;
+    /* margin-left: 60px; */
     margin-right: 60px;
 }
 
 #workspaces {
     /* margin: 0 4px; */
     border-radius: 10px;
-    margin-left: 60px;
-    margin-right: 60px;
+    /* margin-left: 60px; */
+    /* margin-right: 60px; */
 }
 
 /* If workspaces is the leftmost module, omit left margin */
@@ -189,6 +191,13 @@ label:focus {
 #pulseaudio {
     background-color: #f1c40f;
     color: #000000;
+    padding: 0px 5px 0px 10px;
+}
+
+#pulseaudio.microphone {
+    background-color: #f1c40f;
+    color: #000000;
+    padding: 0px 10px 0px 5px;
 }
 
 #pulseaudio.muted {
@@ -219,6 +228,16 @@ label:focus {
     background-color: #ffa000;
 }
 
+#custom-search {
+    padding: 0 5px;
+    background-color: #f5c2e7;
+}
+
+#custom-new {
+    padding: 0 5px;
+    background-color: #98c5a9;
+}
+
 #temperature {
     background-color: #f0932b;
 }
@@ -228,7 +247,7 @@ label:focus {
 }
 
 #tray {
-    background-color: #2980b9;
+    background-color: #0fc2e7;
 }
 
 #tray > .passive {
