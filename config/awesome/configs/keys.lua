@@ -60,6 +60,12 @@ awful.keyboard.append_global_keybindings(
       { description = "Quit awesome", group = "Awesome" }
     ),
 
+    awful.key(
+      { Super, Ctrl }, ";",
+      awesome.quit,
+      { description = "Quit awesome", group = "Awesome" }
+    ),
+
     -- Show/Hide Wibox
     awful.key(
       { Super }, "b",

@@ -19,7 +19,7 @@ Main_menu = awful.menu {
     {
       "Launchers",
       {
-        { "rofi",  "rofi -no-click-to-exit -show drun" },
+        { "rofi",  "rofi -show drun" },
         { "dmenu", "dmenu_run" },
       }
     },
