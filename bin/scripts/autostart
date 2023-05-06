@@ -21,45 +21,32 @@ if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "${DISPLAY+x}" ]; then
   # run feh --bg-fill --randomize "$HOME/Pictures/wallpapers"
   # run komorebi
 
-  run dunst
-
   # run locker
 else
   run waybar
-  run swww init
+
   # run hyprpaper
   # run swaybg
   # run wpapered
-
-  # swww img \
-  #   "$(find ~/Pictures/wallpapers/ -name '*' -exec file {} \; | grep -o -P '^.+: \w+ image' | cut -d':' -f1 | shuf -n 1)" \
-  #   --transition-type random \
-  #   --transition-angle $((1 + $RANDOM % 360)) \
-  #   --transition-fps 255 &
-
+  run swww init
   swww img \
     "$(find ~/Pictures/wallpapers/ -type f -exec file {} \; | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)" \
     --transition-type random \
     --transition-angle $((1 + $RANDOM % 360)) \
     --transition-fps 255 &
 
-  # swww img \
-  #   "$(fd . ~/Pictures/wallpapers -tf | shuf -n 1)" \
-  #   --transition-type random \
-  #   --transition-angle $((1 + $RANDOM % 360)) \
-  #   --transition-fps 255
-
   run wl-paste --type text --watch cliphist store #Stores only text data
-
   run wl-paste --type image --watch cliphist store #Stores only image data
 
   run mako
 fi
 
-run /usr/bin/polkit-dumb-agent 
-# run gnome-keyring-daemon --start
+[ ! "$XDG_CURRENT_DESKTOP" = "awesome" ] && run dunst
+
+run /usr/bin/polkit-dumb-agent
 
 # run wireplumber
+run qjwgraph --minimized
 
 run udiskie -s -f pcmanfm
 
@@ -69,7 +56,7 @@ run nm-applet --indicator
 
 run /usr/bin/emacs --daemon
 run discord --start-minimized
-# run teams
-# run zoom
-# run steam
+run steam -silent
+# run /usr/bin/teams %U
 # run spotify
+# run zoom
