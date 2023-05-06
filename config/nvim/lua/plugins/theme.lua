@@ -127,9 +127,9 @@ local ok, catppuccin = pcall(require, "catppuccin")
 
 if ok then
   catppuccin.setup({
-    flavour = "mocha", -- latte, frappe, macchiato, mocha
+    flavour = "frappe", -- latte, frappe, macchiato, mocha
     background = {
-                       -- :h background
+      -- :h background
       light = "latte",
       dark = "mocha",
     },

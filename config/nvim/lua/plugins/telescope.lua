@@ -71,7 +71,7 @@ telescope.setup({
   },
   pickers = {
     -- find_files = {
-    --     theme = "dropdown",
+    --   theme = "ivy",
     -- }
   },
   extensions = {
@@ -82,7 +82,7 @@ telescope.setup({
       find_cmd = "rg" -- find command (defaults to `fd`)
     },
     ["ui-select"] = {
-      require("telescope.themes").get_dropdown {},
+      require("telescope.themes").get_ivy {},
     }
   },
 })
