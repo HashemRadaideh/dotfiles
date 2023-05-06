@@ -22,20 +22,6 @@ mkbackup() {
   fi
 }
 
-confs() {
-  sudo rmmod pcspkr
-  sudo rmmod snd_pcsp
-
-  sudo mkbackup /etc/modprobe.d/nobeep.conf
-  sudo ln -s "$DOTFILES/bin/confs/nobeep.conf" /etc/modprobe.d/nobeep.conf
-
-  sudo mkbackup /etc/X11/xorg.conf.d/30-touchpad.conf
-  sudo ln -s "$DOTFILES/bin/confs/30-touchpad.conf" /etc/X11/xorg.conf.d
-
-  sudo mkbackup /etc/pacman.conf
-  sudo ln -s "$DOTFILES/bin/confs/pacman.conf" /etc
-}
-
 default_shell() {
   if [ -x "$(command -v zsh)"  ]; then
     if ! grep -Fxq 'export ZDOTDIR="$XDG_CONFIG_HOME/zsh"' /etc/zsh/zshenv; then
@@ -56,7 +42,31 @@ default_shell() {
 mk_symln() {
   mkdir -p "$XDG_DESKTOP_DIR" "$XDG_DOCUMENTS_DIR" "$XDG_DOWNLOAD_DIR" "$XDG_MUSIC_DIR" "$XDG_PICTURES_DIR" "$XDG_PUBLICSHARE_DIR" "$XDG_TEMPLATES_DIR" "$XDG_VIDEOS_DIR""$XDG_CACHE_HOME" "$XDG_CONFIG_HOME" "$XDG_DATA_HOME" "$XDG_STATE_HOME"
 
-  sudo ln -s "$DOTFILES/bin/desktop/*" /usr/share/applications
+  sudo rmmod pcspkr
+  sudo rmmod snd_pcsp
+
+  sudo mkbackup /etc/modprobe.d/nobeep.conf
+  sudo ln -s "$DOTFILES/bin/confs/nobeep.conf" /etc/modprobe.d/nobeep.conf
+
+  sudo mkbackup /etc/X11/xorg.conf.d/30-touchpad.conf
+  sudo ln -s "$DOTFILES/bin/confs/30-touchpad.conf" /etc/X11/xorg.conf.d
+
+  sudo mkbackup /etc/pacman.conf
+  sudo ln -s "$DOTFILES/bin/confs/pacman.conf" /etc
+
+  sudo ln -s "$DOTFILES/bin/desktop/"* /usr/share/applications
+
+  mkbackup "$XDG_DATA_HOME/scripts"
+  ln -s "$DOTFILES/bin/scripts" "$XDG_DATA_HOME"
+
+  mkbackup "$XDG_DATA_HOME/misc"
+  ln -s "$DOTFILES/bin/misc" "$XDG_DATA_HOME"
+
+  mkbackup "$XDG_DATA_HOME/sessions"
+  ln -s "$DOTFILES/bin/sessions" "$XDG_DATA_HOME"
+
+  mkbackup "$XDG_PICTURES_DIR/wallpapers"
+  ln -s "$DOTFILES/wallpapers" "$XDG_PICTURES_DIR"
 
   mkbackup "$XDG_CONFIG_HOME/alacritty"
   ln -s "$DOTFILES/config/alacritty" "$XDG_CONFIG_HOME"
@@ -76,6 +86,12 @@ mk_symln() {
   mkbackup "$XDG_CONFIG_HOME/lf"
   ln -s "$DOTFILES/config/lf" "$XDG_CONFIG_HOME"
 
+  mkbackup "$XDG_CONFIG_HOME/mako"
+  ln -s "$DOTFILES/config/mako" "$XDG_CONFIG_HOME"
+
+  mkbackup "$XDG_CONFIG_HOME/neofetch"
+  ln -s "$DOTFILES/config/neofetch" "$XDG_CONFIG_HOME"
+
   mkbackup "$XDG_CONFIG_HOME/nvim"
   ln -s "$DOTFILES/config/nvim" "$XDG_CONFIG_HOME"
 
@@ -94,32 +110,11 @@ mk_symln() {
   mkbackup "$XDG_CONFIG_HOME/starship"
   ln -s "$DOTFILES/config/starship" "$XDG_CONFIG_HOME"
 
-  mkbackup "$XDG_CONFIG_HOME/tmux"
-  ln -s "$DOTFILES/config/tmux" "$XDG_CONFIG_HOME"
-
-  mkbackup "$XDG_CONFIG_HOME/zsh"
-  ln -s "$DOTFILES/config/zsh" "$XDG_CONFIG_HOME"
-
-  mkbackup "$XDG_CONFIG_HOME/neofetch"
-  ln -s "$DOTFILES/config/neofetch" "$XDG_CONFIG_HOME"
-
-  mkbackup "$XDG_DATA_HOME/scripts"
-  ln -s "$DOTFILES/bin/scripts" "$XDG_DATA_HOME"
-
-  mkbackup "$XDG_DATA_HOME/misc"
-  ln -s "$DOTFILES/bin/misc" "$XDG_DATA_HOME"
-
-  mkbackup "$XDG_DATA_HOME/sessions"
-  ln -s "$DOTFILES/bin/sessions" "$XDG_DATA_HOME"
-
-  mkbackup "$XDG_PICTURES_DIR/wallpapers"
-  ln -s "$DOTFILES/wallpapers" "$XDG_PICTURES_DIR"
-
-  mkbackup "$XDG_CONFIG_HOME/hypr"
-  ln -s "$DOTFILES/config/hypr" "$XDG_CONFIG_HOME"
-
   mkbackup "$XDG_CONFIG_HOME/swaylock"
   ln -s "$DOTFILES/config/swaylock" "$XDG_CONFIG_HOME"
+
+  mkbackup "$XDG_CONFIG_HOME/tmux"
+  ln -s "$DOTFILES/config/tmux" "$XDG_CONFIG_HOME"
 
   mkbackup "$XDG_CONFIG_HOME/waybar"
   ln -s "$DOTFILES/config/waybar" "$XDG_CONFIG_HOME"
@@ -127,8 +122,11 @@ mk_symln() {
   mkbackup "$XDG_CONFIG_HOME/wlogout"
   ln -s "$DOTFILES/config/wlogout" "$XDG_CONFIG_HOME"
 
-  mkbackup "$XDG_CONFIG_HOME/mako"
-  ln -s "$DOTFILES/config/mako" "$XDG_CONFIG_HOME"
+  mkbackup "$XDG_CONFIG_HOME/wofi"
+  ln -s "$DOTFILES/config/wofi" "$XDG_CONFIG_HOME"
+
+  mkbackup "$XDG_CONFIG_HOME/zsh"
+  ln -s "$DOTFILES/config/zsh" "$XDG_CONFIG_HOME"
 }
 
 install_pkgs() {
@@ -138,8 +136,6 @@ install_pkgs() {
 
   git clone https://aur.archlinux.org/paru.git /tmp/paru
   makepkg -si /tmp/paru/PKGBUILD
-
-  rustup default stable
 
   local packages=( $(\cat "$DOTFILES/packages.txt" | tr "\n" " ") )
   paru -Syu $packages
@@ -160,24 +156,14 @@ emacs_setup() {
   fi
 }
 
-arc_icons() {
-  if [ -n "$(which awesome)" ]; then
-    local current_dir=`pwd`
-    git clone https://github.com/horst3180/arc-icon-theme --depth 1 /tmp/arc
-    cd /tmp/arc && arc/autogen.sh --prefix=/usr
-    sudo make -C /tmp/arc install
-    cd "$current_dir"
-  fi
-}
-
-sudo pacman -S git zsh
+sudo pacman -S git zsh rustup
 
 git submodule init
 git submodule update
 
-default_shell
+rustup default stable
 
-confs
+default_shell
 
 mk_symln
 
@@ -187,5 +173,3 @@ sudo systemctl enable NetworkManager.service
 sudo systemctl enable bluetooth.service
 
 emacs_setup
-
-arc_icons

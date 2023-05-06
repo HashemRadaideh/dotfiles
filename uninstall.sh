@@ -33,14 +33,6 @@ rollback() {
   fi
 }
 
-deconfs() {
-  rollback /etc/modprobe.d/nobeep.conf
-
-  rollback /etc/X11/xorg.conf.d/30-touchpad.conf
-
-  rollback /etc/pacman.conf
-}
-
 switch_shell() {
   if [ -x "$(command -v fzf)"  ]; then
     if grep -Fxq 'export ZDOTDIR="$XDG_CONFIG_HOME/zsh"' /etc/zsh/zshenv; then
@@ -57,6 +49,12 @@ switch_shell() {
 }
 
 rm_symln() {
+  rollback /etc/modprobe.d/nobeep.conf
+
+  rollback /etc/X11/xorg.conf.d/30-touchpad.conf
+
+  rollback /etc/pacman.conf
+
   sudo rm /usr/share/applications/chrome-*
   sudo rm /usr/share/applications/calculator.desktop
 
@@ -102,7 +100,7 @@ uninstall_pkgs() {
 
   local packages=( $(cat "$DOTFILES/packages.txt" |tr "\n" " ") )
   # paru -Qq OR paru -Qe | awk '{print $1}'
-  paru -Rns $packages
+  paru -Rnsdd $packages
 }
 
 emacs_unsetup() {
@@ -118,8 +116,6 @@ git submodule init
 git submodule update
 
 switch_shell
-
-deconfs
 
 rm_symln
 
