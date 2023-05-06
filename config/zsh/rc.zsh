@@ -16,11 +16,11 @@ export XDG_VIDEOS_DIR="$HOME/Videos"
 
 export PATH="$PATH:$XDG_DATA_HOME:$XDG_DATA_HOME/scripts:$XDG_DATA_HOME/sessions:$XDG_DATA_HOME/cargo/bin:$XDG_CONFIG_HOME/doom/bin:$XDG_CONFIG_HOME/emacs/bin:/usr/lib/jvm/java-19-openjdk/bin"
 
-export CC=`which clang`
-alias cc=`which clang`
+# export CC=`which clang`
+# alias cc=`which clang`
 
-export CXX=`which clang++`
-alias cpp=`which clang++`
+# export CXX=`which clang++`
+# alias cpp=`which clang++`
 
 # $EDITOR use nvim
 export EDITOR="nvim"
@@ -55,6 +55,9 @@ export GNUPGHOME="$XDG_DATA_HOME/gnupm"
 export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
 export GTK_2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 
+export QT_QPA_PLATFORMTHEME="qt5ct"
+export QT_STYLE_OVERRIDE="kvantum"
+
 # History in cache directory:
 export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
 export HISTSIZE=10000000
@@ -66,7 +69,7 @@ configs=(
   docker
   lf
   nvim
-  paru
+  pacman
   utils
   wine
 )
