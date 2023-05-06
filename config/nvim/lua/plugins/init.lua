@@ -395,8 +395,9 @@ require('lazy').setup({
 
   {
     -- 'projekt0n/github-nvim-theme',
-    'navarasu/onedark.nvim',
-    -- 'catppuccin/nvim',
+    -- 'AlexvZyl/nordic.nvim',
+    -- 'navarasu/onedark.nvim',
+    'catppuccin/nvim',
     -- 'EdenEast/nightfox.nvim',
     -- 'sainnhe/edge',
     -- 'dylanaraps/wal.vim',
@@ -404,6 +405,7 @@ require('lazy').setup({
     -- 'shaunsingh/nord.nvim',
     -- 'Shatur/neovim-ayu',
     -- 'folke/tokyonight.nvim',
+    lazy = false,
     priority = 1000,
     config = function()
       require('plugins.theme')

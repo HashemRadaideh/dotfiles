@@ -79,43 +79,43 @@ end
 local ok, onedark = pcall(require, "onedark")
 
 if ok then
-  onedark.setup  {
+  onedark.setup {
     -- Main options --
-    style = 'dark', -- Default theme style. Choose between 'dark', 'darker', 'cool', 'deep', 'warm', 'warmer' and 'light'
-    transparent = false,  -- Show/hide background
-    term_colors = true, -- Change terminal color as per the selected theme style
-    ending_tildes = false, -- Show the end-of-buffer tildes. By default they are hidden
+    style = 'dark',               -- Default theme style. Choose between 'dark', 'darker', 'cool', 'deep', 'warm', 'warmer' and 'light'
+    transparent = false,          -- Show/hide background
+    term_colors = true,           -- Change terminal color as per the selected theme style
+    ending_tildes = false,        -- Show the end-of-buffer tildes. By default they are hidden
     cmp_itemkind_reverse = false, -- reverse item kind highlights in cmp menu
 
     -- toggle theme style ---
-    toggle_style_key = nil, -- keybind to toggle theme style. Leave it nil to disable it, or set it to a string, for example "<leader>ts"
-    toggle_style_list = {'dark', 'darker', 'cool', 'deep', 'warm', 'warmer', 'light'}, -- List of styles to toggle between
+    toggle_style_key = nil,                                                              -- keybind to toggle theme style. Leave it nil to disable it, or set it to a string, for example "<leader>ts"
+    toggle_style_list = { 'dark', 'darker', 'cool', 'deep', 'warm', 'warmer', 'light' }, -- List of styles to toggle between
 
     -- Change code style ---
     -- Options are italic, bold, underline, none
     -- You can configure multiple style with comma separated, For e.g., keywords = 'italic,bold'
     code_style = {
-        comments = 'italic',
-        keywords = 'none',
-        functions = 'none',
-        strings = 'none',
-        variables = 'none'
+      comments = 'italic',
+      keywords = 'none',
+      functions = 'none',
+      strings = 'none',
+      variables = 'none'
     },
 
     -- Lualine options --
     lualine = {
-        transparent = false, -- lualine center bar transparency
+      transparent = false, -- lualine center bar transparency
     },
 
     -- Custom Highlights --
-    colors = {}, -- Override default colors
+    colors = {},     -- Override default colors
     highlights = {}, -- Override highlight groups
 
     -- Plugins Config --
     diagnostics = {
-        darker = true, -- darker colors for diagnostic
-        undercurl = true,   -- use undercurl instead of underline for diagnostics
-        background = true,    -- use background color for virtual text
+      darker = true,     -- darker colors for diagnostic
+      undercurl = true,  -- use undercurl instead of underline for diagnostics
+      background = true, -- use background color for virtual text
     },
   }
 
@@ -129,11 +129,12 @@ if ok then
   catppuccin.setup({
     flavour = "mocha", -- latte, frappe, macchiato, mocha
     background = {
-      -- :h background
+                       -- :h background
       light = "latte",
       dark = "mocha",
     },
     transparent_background = false,
+    show_end_of_buffer = false, -- show the '~' characters after the end of buffers
     term_colors = false,
     dim_inactive = {
       enabled = false,
@@ -169,6 +170,8 @@ if ok then
     },
   })
 
+  -- setup must be called before loading
+  vim.cmd.colorscheme "catppuccin"
   -- setup must be called before loading
   vim.cmd.colorscheme "catppuccin"
   return
@@ -290,4 +293,61 @@ if ok then
     end
   })
   vim.cmd([[colorscheme ayu]])
+end
+
+local ok, nordic = pcall(require, 'nordic')
+
+if ok then
+  nordic.setup {
+    -- Available themes: 'nordic', 'onedark'.
+    -- Onedark is WIP.
+    theme = 'nordic',
+    -- Enable bold keywords.
+    bold_keywords = false,
+    -- Enable italic comments.
+    italic_comments = true,
+    -- Enable general editor background transparency.
+    transparent_bg = false,
+    -- Enable brighter float border.
+    bright_border = true,
+    -- Nordic specific options.
+    -- Set all to false to use original Nord colors.
+    -- Adjusts some colors to make the theme a bit nicer (imo).
+    nordic = {
+      -- Reduce the overall amount of blue in the theme (diverges from base Nord).
+      reduced_blue = true,
+    },
+    -- Onedark specific options.
+    -- Set all to false to keep original onedark colors.
+    -- Adjusts some colors to make the theme a bit nicer (imo).
+    -- WIP.
+    onedark = {
+      -- Brighten the whites to fit the theme better.
+      brighter_whites = true,
+    },
+    -- Override the styling of any highlight group.
+    override = {},
+    cursorline = {
+      -- Enable bold font in cursorline.
+      bold = false,
+      -- Avialable styles: 'dark', 'light'.
+      theme = 'light',
+      -- Hide the cursorline when the window is not focused.
+      hide_unfocused = true,
+    },
+    noice = {
+      -- Available styles: `classic`, `flat`.
+      style = 'classic',
+    },
+    telescope = {
+      -- Available styles: `classic`, `flat`.
+      style = 'flat',
+    },
+    leap = {
+      -- Dims the backdrop when using leap.
+      dim_backdrop = false,
+    },
+  }
+
+  nordic.load()
 end
