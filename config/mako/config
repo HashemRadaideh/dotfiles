@@ -1,0 +1,63 @@
+# GLOBAL
+max-history=100
+sort=-time
+
+# BINDING OPTIONS
+on-button-left=dismiss
+on-button-middle=none
+on-button-right=dismiss-all
+on-touch=dismiss
+on-notify=exec mpv --no-video /usr/share/sounds/freedesktop/stereo/dialog-information.oga
+
+# STYLE OPTIONS
+font=JetBrainsMono Nerd Font
+width=300
+height=100
+margin=10
+padding=15
+border-size=2
+border-radius=8
+icons=1
+icon-path=1
+max-icon-size=48
+icon-location=left
+markup=1
+actions=1
+history=1
+text-alignment=center
+default-timeout=5000
+ignore-timeout=0
+max-visible=5
+layer=overlay
+
+background-color=#303446
+text-color=#C6D0F5
+border-color=#303446
+progress-color=over #8CAAEE
+
+[urgency=low]
+border-color=#F4B8E4
+default-timeout=10000
+on-notify=exec mpv --no-video /usr/share/sounds/freedesktop/stereo/message-new-instant.oga
+
+[urgency=normal]
+border-color=#51576D
+default-timeout=15000
+on-notify=exec mpv --no-video /usr/share/sounds/freedesktop/stereo/message.oga
+
+[urgency=high]
+border-color=#E78284
+text-color=#E78284
+default-timeout=0
+on-notify=exec mpv --no-video /usr/share/sounds/freedesktop/stereo/dialog-warning.oga
+# on-notify=exec mpv --no-video /usr/share/sounds/freedesktop/stereo/dialog-error.oga
+
+[category=mpd]
+border-color=#E5C890
+default-timeout=2000
+group-by=category
+
+[category=spotify]
+border-color=#A6D189
+default-timeout=2000
+group-by=category
