@@ -1,0 +1,28 @@
+#!/bin/zsh
+
+if [[ -z "$TMUX" ]]; then
+  local list=("$(\ls "$XDG_DATA_HOME/sessions" | sort)" "tmux" "$(tty)" "power off" "reboot" "sleep" "logout")
+  local file=`printf "%s\n" "${list[@]}" | fzf --border-label=" Fuzzy Display Manager (fzdm) "`
+
+  starter() {
+    local extension="${$(grep -P 'export XDG_SESSION_TYPE=*' "$XDG_DATA_HOME/sessions/$1" | awk '{print $2}')//\)}"
+
+    if [[ "$extension" == "XDG_SESSION_TYPE=x11" ]]; then
+      startx "$XDG_DATA_HOME/sessions/$1"
+    else
+      eval "$(\cat $XDG_DATA_HOME/sessions/$1)"
+    fi
+  }
+
+  if [ -n "$file" ]; then
+    case "$file" in
+      "logout") exit ;;
+      "sleep") systemctl suspend ;;
+      "reboot") systemctl reboot ;;
+      "power off") systemctl poweroff ;;
+      "$(tty)") clear ;;
+      "tmux") exec fzt ;;
+      *) exec starter "$file" ;;
+    esac
+  fi
+fi
