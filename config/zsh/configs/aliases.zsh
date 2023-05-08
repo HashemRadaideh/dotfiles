@@ -80,6 +80,3 @@ alias rm="trash-put -i"
 alias feh='feh --no-fehbg'
 
 alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts"'
-
-# changing "cd" to "z (zoxide)"
-alias cd="z"

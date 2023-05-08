@@ -1,21 +1,7 @@
 # Zsh config file (zshrc without oh-my-zsh)
 source "$ZDOTDIR/rc.zsh"
 
-require() {
-  source "$ZDOTDIR/$1.zsh" 2>/dev/null
-}
-
 zrc
-
-for config in $configs; do
-  require "configs/$config"
-done
-
-for plugin in $plugins; do
-  require "plugins/$plugin/$plugin.plugin"
-done
-
-require "plugins/conf"
 
 # Completion engine setup
 zstyle ':completion:*' menu select
@@ -150,3 +136,9 @@ bindkey -M emacs '^[[3;5~' kill-word
 bindkey -M viins '^[[3;5~' kill-word
 bindkey -M vicmd '^[[3;5~' kill-word
 # use showkey -a or Ctrl-v to get key code for binding
+
+for plugin in $plugins; do
+  require "plugins/$plugin/$plugin.plugin"
+done
+
+require "plugins/conf"
