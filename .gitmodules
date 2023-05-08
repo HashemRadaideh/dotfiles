@@ -31,6 +31,3 @@
 [submodule "/home/hashem/.files/config/alacritty/catppuccin"]
 	path = /home/hashem/.files/config/alacritty/catppuccin
 	url = https://github.com/catppuccin/alacritty.git
-[submodule "config/rofi/rofi-themes-collection"]
-	path = config/rofi/rofi-themes-collection
-	url = https://github.com/lr-tech/rofi-themes-collection.git

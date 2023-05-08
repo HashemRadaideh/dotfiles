@@ -1,116 +1,34 @@
 configuration{
     modi: "run,drun,window";
-    lines: 5;
-    font: "JetBrainsMono Nerd Font 14";
     show-icons: true;
-    icon-theme: "Oranchelo";
-    terminal: "kitty";
+    icon-theme: "Arc";
+    terminal: "alacritty";
     drun-display-format: "{icon} {name}";
     location: 0;
     disable-history: false;
     hide-scrollbar: true;
-    display-drun: "  Apps ";
-    display-run: "  Run ";
-    display-window: "  Window";
-    display-Network: " 󰤨 Network";
+    display-drun: "   Apps ";
+    display-run: "   Run ";
+    display-window: "   Windows";
+    display-Network: " 󰤨  Network";
     sidebar-mode: true;
 }
 
-@theme "/dev/null"
-
-* {
-
-    bg-col:  #303446;
-    bg-col-light: #303446;
-    border-col: #303446;
-    selected-col: #303446;
-    blue: #8caaee;
-    fg-col: #c6d0f5;
-    fg-col2: #e78284;
-    grey: #737994;
-
-    height: 900px;
-    width: 600px;
-}
-
-element-text, element-icon , mode-switcher {
-    background-color: inherit;
-    text-color:       inherit;
-}
-
-window {
-    border: 3px;
-    border-color: @border-col;
-    background-color: @bg-col;
-}
-
-mainbox {
-    background-color: @bg-col;
-}
-
-inputbar {
-    children: [prompt,entry];
-    background-color: @bg-col;
-    border-radius: 5px;
-    padding: 2px;
-}
-
-prompt {
-    background-color: @blue;
-    padding: 6px;
-    text-color: @bg-col;
-    border-radius: 3px;
-    margin: 20px 0px 0px 20px;
-}
-
-textbox-prompt-colon {
-    expand: false;
-    str: ":";
-}
-
-entry {
-    padding: 6px;
-    margin: 20px 0px 0px 10px;
-    text-color: @fg-col;
-    background-color: @bg-col;
-}
-
-listview {
-    border: 0px 0px 0px;
-    padding: 6px 0px 0px;
-    margin: 10px 0px 0px 20px;
-    columns: 2;
-    background-color: @bg-col;
-}
-
-element {
-    padding: 5px;
-    background-color: @bg-col;
-    text-color: @fg-col  ;
-}
-
-element-icon {
-    size: 25px;
-}
-
-element selected {
-    background-color:  @selected-col ;
-    text-color: @fg-col2  ;
-}
-
-mode-switcher {
-    spacing: 0;
-}
-
-button {
-    padding: 10px;
-    background-color: @bg-col-light;
-    text-color: @grey;
-    vertical-align: 0.5; 
-    horizontal-align: 0.5;
-}
-
-button selected {
-  background-color: @bg-col;
-  text-color: @blue;
-}
+@theme "themes/catppuccin-frappe"
+// @theme "themes/catppuccin-latte"
+// @theme "themes/catppuccin-macchiato"
+// @theme "themes/catppuccin-mocha"
+// @theme "themes/launchpad.rasi"
+// @theme "themes/nord-oneline.rasi"
+// @theme "themes/nord-twolines.rasi"
+// @theme "themes/nord.rasi"
+// @theme "themes/nord.rasi"
+// @theme "themes/rounded-blue-dark.rasi"
+// @theme "themes/rounded-common.rasi"
+// @theme "themes/simple-tokyonight.rasi"
+// @theme "themes/spotlight-dark.rasi"
+// @theme "themes/squared-everforest.rasi"
+// @theme "themes/squared-material-red.rasi"
+// @theme "themes/squared-nord.rasi"
+// @theme "themes/windows11-grid-dark.rasi"
+// @theme "themes/windows11-list-dark.rasi"
