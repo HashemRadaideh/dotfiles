@@ -70,9 +70,10 @@ telescope.setup({
     },
   },
   pickers = {
-    -- find_files = {
-    --   theme = "ivy",
-    -- }
+    find_files = {
+      hidden = true
+      -- theme = "ivy",
+    }
   },
   extensions = {
     media_files = {
