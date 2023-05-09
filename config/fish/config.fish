@@ -39,7 +39,7 @@ else
   set -x EDITOR "nvim"  # $EDITOR use nvim in local sessions
 end
 set -x fish_greeting  # Supresses fish's intro message
-set -x TERM "alacritty"  # Sets the terminal type
+set -x TERMINAL "alacritty"  # Sets the terminal type
 # set -x OPENER="xdg-open"  # $OPENER use xdg-open in local sessions
 set -x VISUAL "emacsclient -c -a 'emacs'"  # $VISUAL use Emacs in GUI mode
 
