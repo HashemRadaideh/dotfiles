@@ -27,3 +27,21 @@ flash() {
   sudo dd bs=4M if="$1" of="$2" conv=fdatasync  status=progress
   notify-send "$2 created successfully"
 }
+
+lookfor() {
+  fd -H "$1" . /
+}
+
+mk() {
+  if [[ "$(echo "${1:${#1}-1:1}")" == "/" ]]; then
+    mkdir -p $1
+    return;
+  fi
+
+  if echo "$1" | grep -q "/"; then
+    mkdir -p "$(sed 's/\(.*\)\/.*/\1/' <<< "$1")" && touch "$1"
+    return;
+  fi
+
+  touch "$1"
+}
