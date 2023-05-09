@@ -10,7 +10,7 @@
 
     "modules-left": [
         "custom/search",
-        "custom/new",
+        // "custom/new",
         "wlr/workspaces",
         "hyprland/window",
     ],
@@ -19,23 +19,23 @@
     ],
 
     "modules-right": [
+        // "cpu",
+        // "memory",
+        // "temperature",
+        // "backlight",
+        // "keyboard-state",
+        "tray",
         "pulseaudio",
         "pulseaudio#microphone",
         "network",
-        "cpu",
-        "memory",
-        "temperature",
-        // "backlight",
-        // "keyboard-state",
         "battery",
         "battery#bat2",
         "clock",
-        "tray"
     ],
 
     "custom/search": {
         "format": "",
-        "on-click": "killall rofi || rofi -show drun",
+        "on-click": "killall rofi || rofi -show drun -theme 'themes/launchpad.rasi'",
     },
 
     "custom/new": {
