@@ -3,23 +3,15 @@ if [ ! -x "$(command -v lf)"  ]; then
 fi
 
 # lf change directory to the last visited directory
-lfcd () {
+lf () {
   tmp="$(mktemp)"
-  lfrun -last-dir-path="$tmp" "$@"
+  command lf -last-dir-path="$tmp" "$@"
   if [ -f "$tmp" ]; then
     dir="$(cat "$tmp")"
     rm -f "$tmp"
-    # [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
-    if [ -d "$dir" ]; then
-      if [ "$dir" != "$(pwd)" ]; then
-        z "$dir"
-      fi
-    fi
+    [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
   fi
 }
-
-# Replacing lf with lfcd
-alias lf="lfcd"
 
 bindkey -s '^o' '^ulf^m'
 

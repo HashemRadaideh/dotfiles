@@ -4,12 +4,13 @@
 set previewer previewer
 set cleaner cleaner
 
+set preview true
 set ignorecase true
 set hidden false
 
 set drawbox false
 set icons true
-set ratios 1:2:3
+set ratios 1:2:2
 
 # Functions
 cmd q :quit
@@ -113,3 +114,8 @@ map <backspace> set hidden!
 map <enter> toggle
 map <backspace2> unselect
 map <esc> clear
+
+map h :updir; redraw
+map j :down; redraw
+map k :up; redraw
+map l :open; redraw

@@ -2,8 +2,8 @@
 file=$1
 w=$2
 h=$3
-x=$4
-y=$5
+x=$(($4-1))
+y=$(($5+2))
 
 filetype="$( file -Lb --mime-type "$file")"
 
