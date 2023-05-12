@@ -67,7 +67,11 @@ cmd create_file ${{
 }}
 
 cmd set_wallpaper ${{
-  nitrogen --set-zoom-fill "$f"
+  if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "${DISPLAY+x}" ]; then
+    nitrogen --set-zoom-fill "$f"
+  else
+    swww img "$f" --transition-step 255
+  fi
   # wal -q -i "$f"
 }}
 
@@ -108,7 +112,7 @@ map <space>ff fzf_jump
 
 map a create_file
 
-map <c-w> set_wallpaper
+map sw set_wallpaper
 
 map <backspace> set hidden!
 map <enter> toggle
