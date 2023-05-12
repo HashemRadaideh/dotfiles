@@ -10,7 +10,7 @@ configs=(
   wine
 )
 
-export TERMINAL="alacritty"
+export TERMINAL="kitty"
 
 # History in cache directory:
 export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"

@@ -1,17 +1,15 @@
 #  lf file manager config file
 
 # Settings
-set cleaner ~/.config/lf/cleaner
-set previewer ~/.config/lf/preview
-set preview true
-
-set drawbox true
-set icons true
-set ratios 1:2:3
+set previewer previewer
+set cleaner cleaner
 
 set ignorecase true
-# set hidden true
-map <backspace> :set hidden!
+set hidden false
+
+set drawbox false
+set icons true
+set ratios 1:2:3
 
 # Functions
 cmd q :quit
@@ -20,14 +18,22 @@ cmd wqa :quit
 cmd x :quit
 cmd xa :quit
 
+cmd unarchive ${{
+  case "$f" in
+      *.zip) unzip "$f" ;;
+      *.tar.gz) tar -xzvf "$f" ;;
+      *.tar.bz2) tar -xjvf "$f" ;;
+      *.tar) tar -xvf "$f" ;;
+      *) echo "Unsupported format" ;;
+  esac
+}}
+
 cmd find_files ${{
 	printf "File name: "
 	read name
   temp=$(sudo find / -iname $name)
   echo $temp | fzf
 }}
-
-map f :find_files
 
 # find files with fzf
 cmd fzf_jump ${{
@@ -39,9 +45,6 @@ cmd fzf_jump ${{
 	fi
   lf -remote "send $id $cmd \"$dirs\""
 }}
-
-map <space>
-map <space>ff :fzf_jump
 
 # create a new file with path
 cmd create_file ${{
@@ -62,14 +65,10 @@ cmd create_file ${{
   touch $name
 }}
 
-map a :create_file
-
 cmd set_wallpaper ${{
   nitrogen --set-zoom-fill "$f"
   # wal -q -i "$f"
 }}
-
-map <c-w> :set_wallpaper
 
 # Mappings
 map b $bat "$f"
@@ -84,10 +83,33 @@ map e $$EDITOR "$f"
 map v $$VISUAL "$f"
 
 map d
+map m
 
 map dd $trash-put "$f"
 map dr $trash-restore
 
-map <enter> :toggle
-map <backspace2> :unselect
+map ae $wine "$f"
+
+map p paste
+map x cut
+map y copy
+
+map C clear
+
+map R reload
+
+map au unarchive
+
+map f find_files
+
+map <space>
+map <space>ff fzf_jump
+
+map a create_file
+
+map <c-w> set_wallpaper
+
+map <backspace> set hidden!
+map <enter> toggle
+map <backspace2> unselect
 map <esc> clear

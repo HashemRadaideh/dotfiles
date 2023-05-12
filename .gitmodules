@@ -13,12 +13,6 @@
 [submodule "config/zsh/plugins/zsh-autosuggestions"]
 	path = config/zsh/plugins/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions
-[submodule "config/lf/lfimg"]
-	path = config/lf/lfimg
-	url = https://github.com/cirala/lfimg
-[submodule "config/lf/lf-gadgets"]
-	path = config/lf/lf-gadgets
-	url = https://github.com/slavistan/lf-gadgets.git
 [submodule "config/zsh/plugins/zsh-auto-notify"]
 	path = config/zsh/plugins/zsh-auto-notify
 	url = https://github.com/MichaelAquilina/zsh-auto-notify
@@ -28,6 +22,3 @@
 [submodule "config/zsh/plugins/zsh-you-should-use"]
 	path = config/zsh/plugins/zsh-you-should-use
 	url = https://github.com/MichaelAquilina/zsh-you-should-use
-[submodule "/home/hashem/.files/config/alacritty/catppuccin"]
-	path = /home/hashem/.files/config/alacritty/catppuccin
-	url = https://github.com/catppuccin/alacritty.git
