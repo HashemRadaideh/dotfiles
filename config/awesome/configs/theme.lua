@@ -36,19 +36,35 @@ theme.font                = theme.font_name .. "11"
 -- theme.font                = "DejaVuSansMono Nerd Font 11"
 
 -- Colors
-theme.background          = '#1e2127'
-theme.foreground          = '#abb2bf'
-theme.dim_foreground      = '#9a9a9a'
-theme.bright_foreground   = '#e6efff'
+theme.background          = "#303446"
+theme.bright_background   = "#A5ADCE"
 
-theme.black               = '#1e2127'
-theme.red                 = '#e06c75'
-theme.green               = '#98c379'
-theme.yellow              = '#d19a66'
-theme.blue                = '#61afef'
-theme.magenta             = '#c678dd'
-theme.cyan                = '#56b6c2'
-theme.white               = '#abb2bf'
+theme.foreground          = "#C6D0F5"
+theme.dim_foreground      = "#F2D5CF"
+theme.bright_foreground   = "#BABBF1"
+
+theme.black               = "#51576D"
+theme.red                 = "#E78284"
+theme.green               = "#A6D189"
+theme.yellow              = "#E5C890"
+theme.blue                = "#8CAAEE"
+theme.magenta             = "#F4B8E4"
+theme.cyan                = "#81C8BE"
+theme.white               = "#B5BFE2"
+
+-- theme.background          = '#1e2127'
+-- theme.foreground          = '#abb2bf'
+-- theme.dim_foreground      = '#9a9a9a'
+-- theme.bright_foreground   = '#e6efff'
+
+-- theme.black               = '#1e2127'
+-- theme.red                 = '#e06c75'
+-- theme.green               = '#98c379'
+-- theme.yellow              = '#d19a66'
+-- theme.blue                = '#61afef'
+-- theme.magenta             = '#c678dd'
+-- theme.cyan                = '#56b6c2'
+-- theme.white               = '#abb2bf'
 
 -- theme.black               = '#5c6370'
 -- theme.red                 = '#e06c75'
@@ -112,7 +128,7 @@ theme.menu_bg_focus       = theme.bg_focus
 theme.menu_bg_normal      = theme.bg_normal
 
 -- Set different colors for urgent notifications.
-rnotification.connect_signal('request::rules', function()
+rnotification.connect_signal('request=rules', function()
   rnotification.append_rule {
     rule       = { urgency = 'critical' },
     properties = { bg = '#ff0000', fg = '#ffffff' }

@@ -16,3 +16,5 @@ require('configs.error')
 require('configs.keys')
 require('configs.rules')
 require('configs.ui')
+
+ZenSwitch()

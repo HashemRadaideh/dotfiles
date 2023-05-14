@@ -54,11 +54,11 @@ ruled.client.connect_signal("request::rules", function()
         "Event Tester", -- xev.
       },
       role     = {
-        "AlarmWindow", -- Thunderbird's calendar.
+        "AlarmWindow",   -- Thunderbird's calendar.
         "ConfigManager", -- Thunderbird's about:config.
-        "pop-up", -- e.g. Google Chrome's (detached) Developer Tools.
+        "pop-up",        -- e.g. Google Chrome's (detached) Developer Tools.
         "GtkFileChooserDialog",
-        "devtools", ---Google Chrome's (detached) Developer Tools.
+        "devtools",      ---Google Chrome's (detached) Developer Tools.
       },
       type     = {
         "dialog",
@@ -81,7 +81,7 @@ ruled.client.connect_signal("request::rules", function()
   ruled.client.append_rule {
     id         = "titlebars",
     rule_any   = { type = { "normal" } },
-    properties = { titlebars_enabled = not Is_zen }
+    properties = { titlebars_enabled = Is_titled }
   }
 
   ruled.client.append_rule {

@@ -101,15 +101,8 @@ awful.keyboard.append_global_keybindings(
     ),
 
     awful.key(
-      { Super }, "t",
-      function()
-        ZenSwitch()
-        if Is_zen then
-          ModeToggle.image = beautiful.mode_icon
-        else
-          ModeToggle.image = beautiful.mode_icon_active
-        end
-      end,
+      { Super }, "z",
+      function() ZenSwitch() end,
       { description = "Toggle titlebars mode", group = "System" }
     ),
 
@@ -186,15 +179,40 @@ awful.keyboard.append_global_keybindings(
     ),
 
     awful.key(
-      { Super }, "/",
-      function() awful.spawn.with_shell("rofi -no-lazy-grab -show drun") end,
+      { Super }, "r",
+      function() awful.spawn('rofi -show drun -theme "themes/launchpad.rasi"') end,
       { description = "Open rofi run prompt", group = "Launch" }
     ),
 
     awful.key(
-      { Super }, "r",
-      function() awful.spawn.with_shell("rofi -no-lazy-grab -show drun") end,
+      { Super }, "/",
+      function() awful.spawn('rofi -show drun -theme "themes/launchpad.rasi"') end,
       { description = "Open rofi run prompt", group = "Launch" }
+    ),
+
+    awful.key(
+      { Super }, ".",
+      function() awful.spawn('rofi -show emoji -modi emoji -theme "themes/emojis.rasi"') end,
+      { description = "Open rofi run prompt", group = "Launch" }
+    ),
+
+    awful.key(
+      { Super }, "v",
+      function()
+        awful.spawn(
+          'cliphist list | rofi -dmenu -theme "themes/clipboard.rasi" | cliphist decode | wl-copy')
+      end,
+      { description = "Open rofi run prompt", group = "Launch" }
+    ),
+
+    awful.key(
+      { Super }, "c",
+      function()
+        awful.spawn(
+          'rofi -show calc -modi calc -no-show-match -no-sort -theme "themes/calculator.rasi" | wl-copy')
+      end,
+      { description = "Open rofi run prompt", group = "Launch" }
+
     ),
 
     awful.key(
