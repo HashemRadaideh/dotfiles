@@ -11,7 +11,7 @@ if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "${DISPLAY+x}" ]; then
   xmodmap -e "keycode 135 = Super_R"
   xset -b
 
-  run picom --config "$HOME/.config/picom/picom.conf"
+  run picom  -b --experimental-backends --config "$DOTFILES/config/picom/picom.conf"
 
   # run polybar
   # run conky -c $HOME/.config/conky/conky.conf
