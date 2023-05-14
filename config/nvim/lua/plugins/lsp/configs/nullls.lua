@@ -9,6 +9,9 @@ null_ls.setup({
     -- null_ls.builtins.formatting.stylua,
     -- null_ls.builtins.formatting.rustfmt,
     -- null_ls.builtins.formatting.clang_format,
+    null_ls.builtins.formatting.djhtml.with({
+      filetypes = { "django", "jinja.html", "htmldjango", "jsp", },
+    }),
     null_ls.builtins.formatting.prettier.with({
       filetypes = {
         "javascript",
@@ -39,26 +42,9 @@ null_ls.setup({
         group = augroup,
         buffer = bufnr,
         callback = function()
-          -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
-          vim.lsp.buf.format()
+          vim.lsp.buf.format({ bufnr = bufnr })
         end,
       })
     end
-
-    -- require "illuminate".on_attach(client)
-    --
-    -- vim.g.Illuminate_ftblacklist = { "neo-tree", }
-    --
-    -- vim.cmd([[
-    --     augroup illuminate_augroup
-    --         autocmd!
-    --         autocmd VimEnter * hi illuminatedWord cterm=underline gui=underline
-    --     augroup END
-    -- ]])
-    --
-    -- vim.api.nvim_command [[ hi def link LspReferenceText CursorLine ]]
-    -- vim.api.nvim_command [[ hi def link LspReferenceWrite CursorLine ]]
-    -- vim.api.nvim_command [[ hi def link LspReferenceRead CursorLine ]]
-
   end,
 })

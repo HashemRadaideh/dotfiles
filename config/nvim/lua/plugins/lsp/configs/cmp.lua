@@ -174,7 +174,7 @@ cmp.setup({
     ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
     ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
     ["<C-l>"] = cmp.mapping.complete(),
-    ["<Esc>"] = cmp.mapping {
+    ["<C-e>"] = cmp.mapping {
       i = cmp.mapping.abort(),
       c = cmp.mapping.close(),
     },
@@ -221,7 +221,7 @@ cmp.setup({
   },
   preselect = cmp.PreselectMode.None,
   experimental = {
-    ghost_text = true,
+    ghost_text = false,
     native_menu = false,
   },
 })

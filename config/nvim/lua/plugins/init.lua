@@ -35,7 +35,16 @@ require('lazy').setup({
       'L3MON4D3/LuaSnip',
 
       'jose-elias-alvarez/null-ls.nvim',
-      { 'j-hui/fidget.nvim',       opts = {} },
+      'j-hui/fidget.nvim',
+      'ray-x/lsp_signature.nvim',
+      'folke/trouble.nvim',
+      'RRethy/vim-illuminate',
+
+      -- 'simrat39/inlay-hints.nvim',
+      'lvimuser/lsp-inlayhints.nvim',
+
+      'simrat39/rust-tools.nvim',
+      "mfussenegger/nvim-jdtls",
     },
     config = function()
       require('plugins.lsp')
@@ -338,6 +347,9 @@ require('lazy').setup({
     event = "VeryLazy",
     opts = {
       lsp = {
+        signature = {
+          enabled = false,
+        },
         override = {
           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
           ["vim.lsp.util.stylize_markdown"] = true,
