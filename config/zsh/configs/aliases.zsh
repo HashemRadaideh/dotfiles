@@ -80,3 +80,5 @@ alias rm="trash-put -i"
 alias feh='feh --no-fehbg'
 
 alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts"'
+
+alias gpg='gpg --homedir="$HOME"'

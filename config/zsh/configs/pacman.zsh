@@ -14,12 +14,12 @@ download() {
 
   $pkgman -S $@
 
-  touch "$DOTFILES/packages.txt" 2> /dev/null
+  touch "$DOTFILES/scripts/packages.txt" 2> /dev/null
 
   if [ $? -eq 0 ]; then
     for item in "$@"; do
-      if ! rg -q "^$item$" "$DOTFILES/packages.txt" ; then
-        echo "$item" >> "$DOTFILES/packages.txt"
+      if ! rg -q "^$item$" "$DOTFILES/scripts/packages.txt" ; then
+        echo "$item" >> "$DOTFILES/scripts/packages.txt"
       fi
     done
   fi
@@ -31,10 +31,10 @@ delete() {
 
   $pkgman -Rnsdd $@
 
-  if [ $? -eq 0 ] && [ -f "$DOTFILES/packages.txt" ]; then
+  if [ $? -eq 0 ] && [ -f "$DOTFILES/scripts/packages.txt" ]; then
     for item in "$@"; do
-      if rg -q "^$item$" "$DOTFILES/packages.txt"; then
-        sed -i "/^$item$/d" "$DOTFILES/packages.txt"
+      if rg -q "^$item$" "$DOTFILES/scripts/packages.txt"; then
+        sed -i "/^$item$/d" "$DOTFILES/scripts/packages.txt"
       fi
     done
   fi

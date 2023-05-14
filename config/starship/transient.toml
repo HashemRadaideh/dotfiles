@@ -1,6 +1,6 @@
 format = """$directory$character"""
 
-add_newline = false
+add_newline = true
 
 [directory]
 format = "[$path]($style)[$read_only]($read_only_style)"
@@ -12,6 +12,6 @@ read_only = "  "
 read_only_style = "fg:blue bold"
 
 [character]
-error_symbol = "[ﬀ](bold red)"
-success_symbol = "[ﬀ](bold blue)"  # ❱❯ ﬀ
+error_symbol = "[](bold red)"
+success_symbol = "[](bold blue)"  # ❱❯ ﬀ
 

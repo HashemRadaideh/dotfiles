@@ -4,7 +4,7 @@ fi
 
 starship-prompt() {
   # Use the starship prompt.
-  export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
+  export STARSHIP_CONFIG="$DOTFILES/config/starship/starship.toml"
   eval "$(starship init zsh)"
 
   zle-line-init() {
@@ -21,7 +21,7 @@ starship-prompt() {
 
     local saved_prompt=$PROMPT
     local saved_rprompt=$RPROMPT
-    PROMPT='$(STARSHIP_CONFIG=~/.config/starship/config-transient.toml starship prompt --terminal-width="$COLUMNS" --keymap="${KEYMAP:-}" --status="$STARSHIP_CMD_STATUS" --pipestatus="${STARSHIP_PIPE_STATUS[*]}" --cmd-duration="${STARSHIP_DURATION:-}" --jobs="$STARSHIP_JOBS_COUNT")'
+    PROMPT='$(STARSHIP_CONFIG="$DOTFILES/config/starship/transient.toml" "$COLUMNS" --keymap="${KEYMAP:-}" --status="$STARSHIP_CMD_STATUS" --pipestatus="${STARSHIP_PIPE_STATUS[*]}" --cmd-duration="${STARSHIP_DURATION:-}" --jobs="$STARSHIP_JOBS_COUNT")'
     RPROMPT=''
     zle .reset-prompt
     PROMPT=$saved_prompt
