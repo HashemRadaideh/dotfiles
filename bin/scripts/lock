@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env bash
 
 [ -z "${DISPLAY+x}" ] && echo "there is no display" && return -1
 
