@@ -6,46 +6,6 @@ vim.opt.guifont = "CaskaydiaCove Nerd Font:h10"
 
 vim.opt.background = "dark"
 
-vim.cmd [[let &scrolloff=999-&scrolloff]]
-vim.cmd [[let &colorcolumn="80,".join(range(120,999),",")]]
-
--- vim.cmd [[
---   if !exists("g:neovide")
---     au ColorScheme * hi Normal guibg=none ctermbg=none
---     au ColorScheme * hi LineNr guibg=none ctermbg=none
---     au ColorScheme * hi Folded guibg=none ctermbg=none
---     au ColorScheme * hi NonText guibg=none ctermbg=none
---     au ColorScheme * hi SpecialKey guibg=none ctermbg=none
---     au ColorScheme * hi VertSplit guibg=none ctermbg=none
---     au ColorScheme * hi SignColumn guibg=none ctermbg=none
---     au ColorScheme * hi EndOfBuffer guibg=none ctermbg=none
---   endif
--- ]]
-
-vim.cmd [[
-  let g:transparency = 0
-  function Transparency()
-    if !exists("g:neovide")
-      if !g:transparency
-        hi Normal guibg=none ctermbg=none
-        hi LineNr guibg=none ctermbg=none
-        hi Folded guibg=none ctermbg=none
-        hi NonText guibg=none ctermbg=none
-        hi SpecialKey guibg=none ctermbg=none
-        hi VertSplit guibg=none ctermbg=none
-        hi SignColumn guibg=none ctermbg=none
-        hi EndOfBuffer guibg=none ctermbg=none
-        let g:transparency = 1
-      else
-        execute 'colorscheme ' . g:colors_name
-        let g:transparency = 0
-      endif
-    endif
-  endfunction
-  " au VimEnter * call Transparency()
-  nnoremap <silent> <F10> :call Transparency()<CR>
-]]
-
 local ok, github_theme = pcall(require, "github-theme")
 
 if ok then

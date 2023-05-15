@@ -1,5 +1,34 @@
-vim.cmd [[:command V vs .]]
-vim.cmd [[:command H sp .]]
+vim.cmd [[let &scrolloff=999-&scrolloff]]
+-- vim.cmd [[let &colorcolumn="80,".join(range(120,999),",")]]
+
+vim.cmd [[ command V vs . ]]
+vim.cmd [[ command H sp . ]]
+vim.cmd [[ highlight CursorColumn guibg=#ff0000 ]]
+
+vim.cmd [[
+  let g:transparency = 0
+  function Transparency()
+    if !exists("g:neovide")
+      if !g:transparency
+        hi Normal guibg=none ctermbg=none
+        hi LineNr guibg=none ctermbg=none
+        hi Folded guibg=none ctermbg=none
+        hi NonText guibg=none ctermbg=none
+        hi SpecialKey guibg=none ctermbg=none
+        hi VertSplit guibg=none ctermbg=none
+        hi SignColumn guibg=none ctermbg=none
+        hi EndOfBuffer guibg=none ctermbg=none
+        let g:transparency = 1
+      else
+        execute 'colorscheme ' . g:colors_name
+        let g:transparency = 0
+      endif
+    endif
+  endfunction
+  " au VimEnter * call Transparency()
+  nnoremap <silent> <F10> :call Transparency()<CR>
+]]
+
 
 -- vim.cmd [[
 --   augroup config_change

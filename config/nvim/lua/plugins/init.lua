@@ -132,21 +132,21 @@ require('lazy').setup({
 
   { 'bkad/CamelCaseMotion', },
 
-  {
-    'ggandor/leap.nvim',
-    dependencies = { "tpope/vim-repeat", event = "VeryLazy" },
-    config = function()
-      require('leap').add_default_mappings()
-    end
-  },
+  -- {
+  --   'ggandor/leap.nvim',
+  --   dependencies = { "tpope/vim-repeat", event = "VeryLazy" },
+  --   config = function()
+  --     require('leap').add_default_mappings()
+  --   end
+  -- },
 
-  {
-    'phaazon/hop.nvim',
-    branch = 'v2',
-    config = function()
-      require('plugins.hop')
-    end
-  },
+  -- {
+  --   'phaazon/hop.nvim',
+  --   branch = 'v2',
+  --   config = function()
+  --     require('plugins.hop')
+  --   end
+  -- },
 
   {
     'kevinhwang91/nvim-bqf',
@@ -185,9 +185,9 @@ require('lazy').setup({
 
   {
     'nvim-neo-tree/neo-tree.nvim',
-    cmd = "Neotree",
+    -- cmd = "Neotree",
     branch = 'v2.x',
-    keys = { { '<leader>fe', '<cmd>Neotree toggle<CR>', desc = "Open file explorer" } },
+    -- keys = { { '<leader>fe', '<cmd>Neotree toggle<CR>', desc = "Open file explorer" } },
     dependencies = {
       {
         -- only needed if you want to the commands with '_with_window_picker' suffix
@@ -257,6 +257,37 @@ require('lazy').setup({
     -- tag = 'v3.*',
     config = function()
       require('plugins.bufferline')
+    end
+  },
+
+  {
+    "utilyre/barbecue.nvim",
+    name = "barbecue",
+    version = "*",
+    dependencies = {
+      "SmiteshP/nvim-navic",
+      "nvim-tree/nvim-web-devicons", -- optional dependency
+    },
+    config = function()
+      require("barbecue").setup({
+        attach_navic = false,   -- prevent barbecue from automatically attaching nvim-navic
+        create_autocmd = false, -- prevent barbecue from updating itself automatically
+      })
+
+      vim.api.nvim_create_autocmd({
+        "WinScrolled", -- or WinResized on NVIM-v0.9 and higher
+        "BufWinEnter",
+        "CursorHold",
+        "InsertLeave",
+
+        -- include this if you have set `show_modified` to `true`
+        "BufModifiedSet",
+      }, {
+        group = vim.api.nvim_create_augroup("barbecue.updater", {}),
+        callback = function()
+          require("barbecue.ui").update()
+        end,
+      })
     end
   },
 
