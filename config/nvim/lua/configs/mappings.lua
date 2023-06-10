@@ -81,12 +81,20 @@ vim.keymap.set('i', '<C-z>', '<C-o>u', { desc = "Undo last move" })
 
 vim.keymap.set({ 'n', 'v', 'i', 's' }, '<C-s>', '<cmd>w<CR><Esc>', { desc = 'Save file' })
 
+vim.keymap.set('n', '-', '<cmd>sp .<CR>')
+vim.keymap.set('n', '\\', '<cmd>vs .<CR>')
+
 vim.keymap.set("n", "<leader>sp", "<cmd>e /tmp/scratchpad<cr>", { desc = "Scratchpad" })
 vim.keymap.set("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
 
 -- Plugins mappings
 -- Packer mappings
 vim.keymap.set('n', '<leader>ps', '<cmd>Lazy<CR>')
+
+vim.keymap.set("n", '<leader>ghc', "<cmd>Copilot<CR>")
+vim.keymap.set("n", '<leader>ai', "<cmd>NeoAIToggle<CR>")
+vim.keymap.set("n", '<leader>gpt', "<cmd>ChatGPT<CR>")
+vim.keymap.set("n", '<leader>tn', "<cmd>TabnineToggle<CR>")
 
 -- ToggleTerm mappings
 vim.keymap.set("n", "<leader>tlg", "<cmd>lua Lazygit:toggle()<CR>")

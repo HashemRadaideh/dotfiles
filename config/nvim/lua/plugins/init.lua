@@ -13,6 +13,14 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
+local function tabnine_build_path()
+  if vim.loop.os_uname().sysname == "Windows_NT" then
+    return "pwsh.exe -file .\\dl_binaries.ps1"
+  else
+    return "./dl_binaries.sh"
+  end
+end
+
 require('lazy').setup({
   {
     'neovim/nvim-lspconfig',
@@ -81,7 +89,85 @@ require('lazy').setup({
     end
   },
 
-  { 'github/copilot.vim', cmd = "Copilot" },
+  {
+    "jackMort/ChatGPT.nvim",
+    event = "VeryLazy",
+    cmd = {
+      "ChatGPT",
+    },
+    keys = {
+      { "<leader>ch", desc = "toggle chatgpt" },
+    },
+    config = function()
+      require("chatgpt").setup({
+        api_key_cmd = "gpg --decrypt ~/secret.txt.gpg 2>/dev/null"
+      })
+    end,
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim"
+    }
+  },
+
+  {
+    "Bryley/neoai.nvim",
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+    },
+    cmd = {
+      "NeoAI",
+      "NeoAIOpen",
+      "NeoAIClose",
+      "NeoAIToggle",
+      "NeoAIContext",
+      "NeoAIContextOpen",
+      "NeoAIContextClose",
+      "NeoAIInject",
+      "NeoAIInjectCode",
+      "NeoAIInjectContext",
+      "NeoAIInjectContextCode",
+    },
+    keys = {
+      { "<leader>as", desc = "summarize text" },
+      { "<leader>ag", desc = "generate git message" },
+      { "<leader>ai", desc = "toggle ai" },
+    },
+    config = function()
+      require("neoai").setup()
+    end,
+  },
+
+  {
+    'codota/tabnine-nvim',
+    build = tabnine_build_path(),
+    -- cmd = {
+    --   "TabnineStatus",
+    --   "TabnineDisable",
+    --   "TabnineEnable",
+    --   "TabnineToggle",
+    -- },
+    -- keys = {
+    --   { "<leader>tn", desc = "toggle tabnine" },
+    -- },
+    config = function()
+      require('tabnine').setup({
+        disable_auto_comment = true,
+        accept_keymap = "<Tab>",
+        dismiss_keymap = "<C-]>",
+        debounce_ms = 800,
+        suggestion_color = { gui = "#808080", cterm = 244 },
+        exclude_filetypes = { "TelescopePrompt" },
+        log_file_path = nil, -- absolute path to Tabnine log file
+      })
+    end
+  },
+
+  {
+    'github/copilot.vim',
+    cmd = "Copilot",
+    keys = { { "<leader>co", desc = "toggle copilot" } }
+  },
 
   {
     'AckslD/nvim-gfold.lua',
