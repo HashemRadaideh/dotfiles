@@ -14,12 +14,52 @@ end
 
 telescope.setup({
   defaults = {
+    sorting_strategy = "ascending", -- display results top->bottom
     layout_config = {
-      vertical = { width = 0.5 }
+      -- vertical = { width = 0.5 },
+      prompt_position = 'top',
+      -- center = {
+      --   anchor = 'N'
+      -- }
     },
     prompt_prefix = " > ",
     selection_caret = " ",
     path_display = { "smart" },
+  },
+  pickers = {
+    find_files = {
+      hidden = true
+    },
+    live_grep = {
+      -- theme = 'cursor'
+    },
+    lsp_references = {
+      -- theme = 'cursor'
+    },
+    diagnostics = {
+      -- theme = "ivy",
+    },
+    current_buffer_fuzzy_find = {
+      -- theme = 'dropdown'
+    }
+  },
+  extensions = {
+    file_browser = {
+      theme = "ivy",
+      -- disables netrw and use telescope-file-browser in its place
+      hijack_netrw = true,
+      mappings = {
+        ["i"] = {
+          -- your custom insert mode mappings
+        },
+        ["n"] = {
+          -- your custom normal mode mappings
+        },
+      },
+    },
+    ["ui-select"] = {
+      require("telescope.themes").get_ivy {},
+    }
   },
   mappings = {
     i = {
@@ -69,26 +109,10 @@ telescope.setup({
       ["<PageDown>"] = actions.results_scrolling_down,
     },
   },
-  pickers = {
-    find_files = {
-      hidden = true
-      -- theme = "ivy",
-    }
-  },
-  extensions = {
-    media_files = {
-      -- filetypes whitelist
-      -- defaults to {"png", "jpg", "mp4", "webm", "pdf"}
-      filetypes = { "png", "webp", "jpg", "jpeg" },
-      find_cmd = "rg" -- find command (defaults to `fd`)
-    },
-    ["ui-select"] = {
-      require("telescope.themes").get_ivy {},
-    }
-  },
 })
 
 -- telescope.load_extension("toggletasks")
+-- telescope.load_extension("fzf")
 telescope.load_extension("lazygit")
 telescope.load_extension("ui-select")
-telescope.load_extension("fzf")
+telescope.load_extension "file_browser"

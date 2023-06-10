@@ -242,12 +242,13 @@ require('lazy').setup({
     end
   },
 
-  {
-    'junegunn/fzf',
-    build = function()
-      vim.fn['fzf#install']()
-    end
-  },
+
+  -- {
+  --   'junegunn/fzf',
+  --   build = function()
+  --     vim.fn['fzf#install']()
+  --   end
+  -- },
 
   {
     'nvim-telescope/telescope.nvim',
@@ -262,11 +263,19 @@ require('lazy').setup({
   },
 
   {
-    'nvim-telescope/telescope-fzf-native.nvim',
-    build = 'make',
-    cond = function()
-      return vim.fn.executable 'make' == 1
-    end,
+    "nvim-telescope/telescope-file-browser.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
+  },
+
+  -- {
+  --   'nvim-telescope/telescope-fzf-native.nvim',
+  --   build = 'make',
+  --   cond = function()
+  --     return vim.fn.executable 'make' == 1
+  --   end,
+  -- },
+
+  {
     {
       'akinsho/toggleterm.nvim',
       version = "*",

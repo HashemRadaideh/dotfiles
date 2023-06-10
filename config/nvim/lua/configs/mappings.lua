@@ -106,9 +106,11 @@ vim.keymap.set("n", "<leader>tfm", "<cmd>lua Frogmouth:toggle()<CR>", { desc = "
 vim.keymap.set('n', '<leader>ff', '<cmd>lua require("telescope.builtin").find_files()<cr>')
 vim.keymap.set('n', '<leader>fg', '<cmd>lua require("telescope.builtin").live_grep()<cr>')
 vim.keymap.set('n', '<leader>fb', '<cmd>lua require("telescope.builtin").buffers()<cr>')
+vim.keymap.set('n', '<leader>gf', '<cmd>lua require("telescope.builtin").git_files()<cr>')
 vim.keymap.set('n', '<leader>fh', '<cmd>lua require("telescope.builtin").help_tags()<cr>')
 vim.keymap.set('n', '<leader>fo', '<cmd>lua require("telescope.builtin").oldfiles()<cr>')
 vim.keymap.set("n", "<leader>tt", '<cmd>lua require("telescope").extensions.lazygit.lazygit()<CR>')
+vim.keymap.set("n", "<leader>.", "<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>")
 
 -- Neotree mappings
 vim.keymap.set("n", "<leader>fe", "<cmd>Neotree toggle<CR>", { desc = "Toggle Explorer" })
