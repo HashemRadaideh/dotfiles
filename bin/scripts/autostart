@@ -1,12 +1,20 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
-run() {
+function run {
   if ! pgrep -u "$USER" -f "$1" > /dev/null; then
     "$@" &
   fi
 }
 
+wallpaper="$(find ~/Pictures/wallpapers/ -type f -exec file {} \; | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)"
+
 if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "${DISPLAY+x}" ]; then
+  screenCount=$(xrandr | rg " connected" | wc -l)
+
+  if [ $screenCount -gt 1 ] && [ -f $DOTFILES/bin/scripts/screenlayout ]; then
+    run $DOTFILES/bin/scripts/screenlayout
+  fi
+
   setxkbmap -layout us,ara -option grp:win_space_toggle
   xmodmap -e "keycode 135 = Super_R"
   xset -b
@@ -16,39 +24,46 @@ if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "${DISPLAY+x}" ]; then
   # run polybar
   # run conky -c $HOME/.config/conky/conky.conf
 
-  nitrogen --head="0" --set-zoom-fill --random "$HOME/Pictures/wallpapers"
-  # run wal -i "$HOME/Pictures/wallpapers"
-  # run feh --bg-fill --randomize "$HOME/Pictures/wallpapers"
-  # run komorebi
+  for (( i = 0; i < $screenCount; i++ )); do
+    # nitrogen --head="$i" --set-zoom-fill --random "$HOME/Pictures/wallpapers"
+    nitrogen --head="$i" --set-zoom-fill "$wallpaper"
+  done
 
-  # run locker
+  run locker
 else
   run waybar
 
   run swww init && swww img \
-    "$(find ~/Pictures/wallpapers/ -type f -exec file {} \; | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)" \
-    --transition-step 255 &
+    $wallpaper \
+    --transition-step 255
 
   run wl-paste --type text --watch cliphist store
   # run wl-paste --type image --watch cliphist store
+
+  run mako
 fi
 
+run playerctld daemon
+
 run /usr/bin/polkit-dumb-agent
+
+run /usr/lib/geoclue-2.0/demos/agent
 
 # run wireplumber
 # run qjwgraph --minimized
 
+run flameshot
 run udiskie -s
 
 run blueman-applet
 run nm-applet --indicator
 # run volumeicon
 
-# run /usr/bin/emacs --daemon
-# run discord --start-minimized
-# run steam -silent
+run /usr/bin/emacs --daemon
+run discord --start-minimized
+run steam -silent
+# run spotify --minimized
 # run teams
-# run spotify
 # run zoom
 
 mpv --no-video /usr/share/sounds/freedesktop/stereo/service-login.oga
