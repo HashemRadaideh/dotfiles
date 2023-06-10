@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+if [ $# -ne 2 ]; then
+    echo "Invalid number of arguments."
+    echo "Usage: ./archive <file/folder> <format>"
+    exit 1
+fi
+
+if [ ! -e "$1" ]; then
+    echo "ERROR: File or folder does not exist."
+    exit 1
+fi
+
+if [ -f "$1" ]; then
+    echo "Archiving file: $1"
+else
+    echo "Archiving folder: $1"
+fi
+
+case "$2" in
+  rar)       rar a "$1.rar" "$1"         ;;
+  zip)       zip -r "$1.zip" "$1"        ;;
+  7z)        7z a "$1.7z" "$1"           ;;
+  gz)        tar cvfz "$1.tar.gz" "$1"   ;;
+  bz2)       tar cvfj "$1.tar.bz2" "$1"  ;;
+  tar)       tar cvf "$1.tar" "$1"       ;;
+  tgz)       tar cvfz "$1.tgz" "$1"      ;;
+  tbz2)      tar cvfj "$1.tbz2" "$1"     ;;
+  txz)       tar cvfJ "$1.tar.xz" "$1"   ;;
+  tar.gz)    tar cvfz "$1.tar.gz" "$1"   ;;
+  tar.bz2)   tar cvfj "$1.tar.bz2" "$1"  ;;
+  tar.xz)    tar cvfJ "$1.tar.xz" "$1"   ;;
+  *) echo "Unsupported format"; exit 1 ;;
+esac
+
+echo "Archive created successfully."
