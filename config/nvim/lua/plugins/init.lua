@@ -181,6 +181,13 @@ require('lazy').setup({
     cond = function()
       return vim.fn.executable 'make' == 1
     end,
+    {
+      'akinsho/toggleterm.nvim',
+      version = "*",
+      config = function()
+        require("plugins.toggleterm")
+      end
+    }
   },
 
   {

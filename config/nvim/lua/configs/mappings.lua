@@ -89,9 +89,10 @@ vim.keymap.set("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
 vim.keymap.set('n', '<leader>ps', '<cmd>Lazy<CR>')
 
 -- ToggleTerm mappings
-vim.keymap.set("n", "<leader>tl", "<cmd>lua Lazygit:toggle()<CR>")
-vim.keymap.set("n", "<leader>tg", "<cmd>lua Glow:toggle()<CR>")
-vim.keymap.set("n", "<leader>to", "<cmd>lua LF:toggle()<CR>", { desc = "Focus Explorer" })
+vim.keymap.set("n", "<leader>tlg", "<cmd>lua Lazygit:toggle()<CR>")
+vim.keymap.set("n", "<leader>tgl", "<cmd>lua Glow:toggle()<CR>")
+vim.keymap.set("n", "<leader>tlf", "<cmd>lua LF:toggle()<CR>", { desc = "Focus Explorer" })
+vim.keymap.set("n", "<leader>tfm", "<cmd>lua Frogmouth:toggle()<CR>", { desc = "Focus Explorer" })
 
 -- Telescope: using Lua functions
 vim.keymap.set('n', '<leader>ff', '<cmd>lua require("telescope.builtin").find_files()<cr>')
