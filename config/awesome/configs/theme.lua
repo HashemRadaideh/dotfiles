@@ -29,7 +29,7 @@ theme.hostname            = getHostname()
 
 -- Font
 theme.font_name           = "CaskaydiaCove Nerd Font"
-theme.font                = theme.font_name .. "11"
+theme.font                = theme.font_name .. "12"
 -- theme.font                = "JetBrainsMono Nerd Font 11"
 -- theme.font                = "FiraCode Nerd Font 11"
 -- theme.font                = "SauceCodePro Nerd Font 11"
@@ -134,6 +134,25 @@ rnotification.connect_signal('request=rules', function()
     properties = { bg = '#ff0000', fg = '#ffffff' }
   }
 end)
+
+theme.notification_font = theme.font
+theme.notification_padding = dpi(5)
+theme.notification_spacing = dpi(5)
+theme.notification_margin = dpi(5)
+theme.notification_border_width = dpi(5)
+theme.notification_position = "top_right"
+
+theme.notification_low_bg = "#303446"
+theme.notification_low_fg = "#C6D0F5"
+theme.notification_low_border = "#C6D0F5"
+
+theme.notification_bg = "#303446"
+theme.notification_fg = "#C6D0F5"
+theme.notification_border = "#C6D0F5"
+
+theme.notification_crit_bg = "#303446"
+theme.notification_crit_fg = "#C6D0F5"
+theme.notification_crit_border = "#EF9F76"
 
 theme.layout_fairh = theme.default_dir .. "default/layouts/fairhw.png"
 theme.layout_fairv = theme.default_dir .. "default/layouts/fairvw.png"

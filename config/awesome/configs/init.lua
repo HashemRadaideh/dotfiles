@@ -12,9 +12,10 @@ Terminal_file_manager = Terminal_emulator .. " -e " .. Shell .. " -c " .. os.get
 Terminal_multiplexed = Terminal_emulator .. " -e " .. Shell .. " -c " .. "fzt"
 Web_browser = "qutebrowser"
 
-require('configs.error')
 require('configs.keys')
 require('configs.rules')
 require('configs.ui')
 
 ZenSwitch()
+
+require('configs.notifications')
