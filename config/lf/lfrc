@@ -1,16 +1,28 @@
 #  lf file manager config file
 
+# ${{
+#     w=$(tput cols)
+#     if [ $w -le 80 ]; then
+#         lf -remote "send $id set ratios 1:2"
+#     elif [ $w -le 160 ]; then
+#         lf -remote "send $id set ratios 1:2:3"
+#     else
+#         lf -remote "send $id set ratios 1:2:3:5"
+#     fi
+# }}
+
 # Settings
 set previewer previewer
 set cleaner cleaner
 
-set preview true
 set ignorecase true
 set hidden false
 
 set drawbox false
 set icons true
+
 set ratios 1:2:2
+set info size:time
 
 # Functions
 cmd q :quit
@@ -19,14 +31,14 @@ cmd wqa :quit
 cmd x :quit
 cmd xa :quit
 
+cmd archive ${{
+  printf "File name: "
+  read name
+  archive $f $name
+}}
+
 cmd unarchive ${{
-  case "$f" in
-      *.zip) unzip "$f" ;;
-      *.tar.gz) tar -xzvf "$f" ;;
-      *.tar.bz2) tar -xjvf "$f" ;;
-      *.tar) tar -xvf "$f" ;;
-      *) echo "Unsupported format" ;;
-  esac
+  unarchive $f
 }}
 
 cmd find_files ${{
@@ -38,12 +50,12 @@ cmd find_files ${{
 
 # find files with fzf
 cmd fzf_jump ${{
-	dirs="$(find . -maxdepth 3 | fzf --header='Jump to:')"
-	if [ -f "$dirs" ]; then
-		cmd="select"
-	elif [ -d "$dirs" ]; then
-		cmd="cd"
-	fi
+  dirs="$(find . -maxdepth 3 | fzf --header='Jump to:')"
+  if [ -f "$dirs" ]; then
+	  cmd="select"
+  elif [ -d "$dirs" ]; then
+	  cmd="cd"
+  fi
   lf -remote "send $id $cmd \"$dirs\""
 }}
 
@@ -82,10 +94,10 @@ map b $bat "$f"
 map c $code "$f"
 
 # open file in default editor ($EDITOR variable)
-map e $$EDITOR "$f"
+map e $nvim "$f"
 
 # open file in default gui editor ($VISUAL variable)
-map v $$VISUAL "$f"
+map v $emacs "$f"
 
 map d
 map m
@@ -103,9 +115,12 @@ map C clear
 
 map R reload
 
-map au unarchive
+map f
 
-map f find_files
+map fa archive
+map fu unarchive
+
+map ff find_files
 
 map <space>
 map <space>ff fzf_jump
@@ -123,3 +138,6 @@ map h :updir; redraw
 map j :down; redraw
 map k :up; redraw
 map l :open; redraw
+
+map J :updir; set dironly true; down; set dironly false; open; redraw
+map K :updir; set dironly true; up; set dironly false; open; redraw
