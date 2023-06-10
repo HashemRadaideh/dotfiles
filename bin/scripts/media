@@ -1,0 +1,64 @@
+#!/usr/bin/env zsh
+
+get_volume() {
+  amixer get Master | awk 'match($0, /\[([0-9]*)%\]/, arr) { if (!printed) { print arr[1]; printed=1 } }'
+}
+
+is_mute() {
+  amixer get Master | grep '%' | grep -oE '[^ ]+$' | grep off > /dev/null
+}
+
+is_micmute() {
+  amixer get Capture | grep '%' | grep -oE '[^ ]+$' | grep off > /dev/null
+}
+
+send_notification() {
+  volume=$(($(get_volume) / 5))
+
+  bar=$(printf '%.0s▇' {0..$volume})
+
+  notify-send -a "media" -r 1000 "$bar"
+  # id=$(
+  # awesome-client "return require('naughty').notify{ message = '$bar', replaces_id = '1000' }"
+  # )
+  # id=$(awesome-client "return require('naughty').notify{ replaces_id = 1, text = '$bar' }.id")
+  # notify-send -a "media" -r 1000 "$id"
+}
+
+case "$1" in
+  "up")
+    amixer -D pulse set Master on > /dev/null
+    amixer -D pulse sset Master 5%+ > /dev/null
+
+    # pactl set-sink-volume 0 +5%
+
+    send_notification
+    ;;
+  "down")
+    amixer -D pulse set Master on > /dev/null
+    amixer -D pulse sset Master 5%- > /dev/null
+
+    # pactl set-sink-volume 0 -5%
+
+    send_notification
+    ;;
+  "mute")
+    amixer -D pulse set Master 1+ toggle > /dev/null
+
+    # pactl set-sink-mute 0 toggle
+
+    if is_mute ; then
+      notify-send  -a "media" -r 1001 "Audio muted"
+    else
+      notify-send  -a "media" -r 1001 "Audio unmuted"
+    fi
+    ;;
+  "micmute") 
+    amixer -D pulse sset Capture toggle
+    if is_micmute ; then 
+      notify-send -a "media" -r 1002 "MIC switched OFF"
+    else
+      notify-send -a "media" -r 1002 "MIC switched ON"
+    fi
+    ;;
+esac
