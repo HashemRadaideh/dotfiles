@@ -88,7 +88,7 @@ Desktop.Clock                      = wibox {
   shape   = gears.shape.rounded_rect,
   widget  = wibox.widget.textclock(
     (
-    [[         <span font="Anurati 69"> %s </span>
+      [[         <span font="Anurati 69"> %s </span>
             <span font="Monospace 21"> %s %s, %s </span>
                       <span font="Monospace 16"> - %s:%s %s - </span>]]
     ):format(

@@ -23,57 +23,50 @@ client.connect_signal("manage", function(c)
   end
 end)
 
-function ZenSwitch()
-  if not Is_zen then
-    for _, t in ipairs(root.tags()) do
-      awful.tag.incgap(8, t)
-    end
-
+function Titles()
+  if not Is_titled then
     for _, c in ipairs(client.get()) do
-      if Is_titled then
+      if not c.maximized then
         awful.titlebar.show(c)
       end
-      -- c.shape = function(cr, w, h)
-      --   gears.shape.rounded_rect(cr, w, h, 15)
-      -- end
     end
   else
-    for _, t in ipairs(root.tags()) do
-      awful.tag.incgap(-8, t)
-    end
-
     for _, c in ipairs(client.get()) do
-      if Is_titled then
-        awful.titlebar.hide(c)
-      end
-      -- c.shape = nil
+      awful.titlebar.hide(c)
     end
   end
 
   ruled.client.append_rule {
     id         = "titlebars",
     rule_any   = { type = { "normal" } },
-    properties = { titlebars_enabled = Is_titled }
+    properties = { titlebars_enabled = not Is_titled }
   }
 
-  if Is_zen then
-    ModeToggle.image = beautiful.mode_icon
+  Is_titled = not Is_titled
+end
+
+function ZenSwitch()
+  if not Is_zen then
+    for _, t in ipairs(root.tags()) do
+      awful.tag.incgap(8, t)
+    end
   else
-    ModeToggle.image = beautiful.mode_icon_active
+    for _, t in ipairs(root.tags()) do
+      awful.tag.incgap(-8, t)
+    end
   end
+
+  -- if Is_zen then
+  --   ModeToggle.image = beautiful.mode_icon
+  -- else
+  --   ModeToggle.image = beautiful.mode_icon_active
+  -- end
 
   Is_zen = not Is_zen
 end
 
 -- Rounded Borders and no border for maximized clients
 local function border_adjust(c)
-  if c.maximized or c.fullscreen then
-    c.border_width = 0
-    c.shape = nil
-  else
-    c.shape = function(cr, w, h) gears.shape.rounded_rect(cr, w, h, 15) end
-  end
-
   if #awful.screen.focused().clients > 1 then
     c.border_width = beautiful.border_width
   else
@@ -81,7 +74,12 @@ local function border_adjust(c)
   end
 
   if Is_zen then
-    c.shape = function(cr, w, h) gears.shape.rounded_rect(cr, w, h, 20) end
+    if c.maximized or c.fullscreen then
+      c.border_width = 0
+      c.shape = nil
+    else
+      c.shape = function(cr, w, h) gears.shape.rounded_rect(cr, w, h, 15) end
+    end
   else
     c.shape = nil
   end

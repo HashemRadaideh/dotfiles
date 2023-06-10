@@ -201,6 +201,7 @@ ModeToggle = wibox.widget.imagebox(beautiful.mode_icon)
 
 ModeToggle:connect_signal("button::press", function(self)
   ZenSwitch()
+  Titles()
 
   if Is_zen then
     self.image = beautiful.mode_icon
@@ -265,7 +266,9 @@ SystrayButton:connect_signal("button::press", function(self)
   end
 end)
 
-local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
+local cpu_widget = require(
+  "awesome-wm-widgets.cpu-widget.cpu-widget"
+)
 
 CPU = wibox.widget {
   widget  = wibox.container.margin,
@@ -294,7 +297,9 @@ CPUButton:connect_signal("button::press", function()
   CPU.visible = not CPU.visible
 end)
 
-local ram_widget = require("awesome-wm-widgets.ram-widget.ram-widget")
+local ram_widget = require(
+  "awesome-wm-widgets.ram-widget.ram-widget"
+)
 
 MEM = wibox.widget {
   widget  = wibox.container.margin,
@@ -318,7 +323,9 @@ MEMButton:connect_signal("button::press", function()
   MEM.visible = not MEM.visible
 end)
 
-local net_speed_widget = require("awesome-wm-widgets.net-speed-widget.net-speed")
+local net_speed_widget = require(
+  "awesome-wm-widgets.net-speed-widget.net-speed"
+)
 
 NET = wibox.widget {
   widget  = wibox.container.margin,
@@ -342,8 +349,45 @@ NETButton:connect_signal("button::press", function()
   NET.visible = not NET.visible
 end)
 
+local volume_widget = require(
+  'awesome-wm-widgets.volume-widget.volume'
+)
+
+Volume = wibox.widget {
+  {
+    widget = volume_widget({
+      -- widget_type = 'icon_and_text'
+      widget_type = 'arc',
+      step = 1,
+    }),
+  },
+  margins = { left = dpi(5), right = dpi(3) },
+  widget = wibox.container.margin,
+}
+
+local brightness_widget = require(
+  "awesome-wm-widgets.brightness-widget.brightness"
+)
+
+Brightness = wibox.widget {
+  {
+    widget = brightness_widget {
+      -- type = 'icon_and_text',
+      type = 'arc',
+      program = 'brightnessctl',
+      step = 1,
+    }
+  },
+  margins = { left = dpi(5), right = dpi(5) },
+  widget = wibox.container.margin,
+}
+
 local batteryarc_widget = require(
   "awesome-wm-widgets.batteryarc-widget.batteryarc"
+)
+
+local battery_widget = require(
+  "awesome-wm-widgets.battery-widget.battery"
 )
 
 function Battery()
@@ -360,6 +404,10 @@ function Battery()
   if os.execute(cmd) then
     return wibox.widget {
       {
+        -- widget = battery_widget({
+        --   show_current_level = true,
+        --   display_notification = true,
+        -- }),
         widget = batteryarc_widget({
           show_current_level = true,
           arc_thickness = 2,
@@ -370,18 +418,6 @@ function Battery()
     }
   end
 end
-
-local volume_widget = require(
-  'awesome-wm-widgets.volume-widget.volume'
-)
-
-Volume = wibox.widget {
-  {
-    widget = volume_widget { widget_type = 'arc' },
-  },
-  margins = { left = dpi(5), right = dpi(3) },
-  widget = wibox.container.margin,
-}
 
 local logout_popup = require(
   "awesome-wm-widgets.logout-popup-widget.logout-popup"
