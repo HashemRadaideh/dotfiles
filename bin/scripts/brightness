@@ -1,0 +1,60 @@
+#!/usr/bin/env zsh
+
+brightness_file="/tmp/brightness_previous"
+
+get_brightness() {
+  cat /sys/class/backlight/*/brightness
+}
+
+set_brightness() {
+  echo $1 | tee /sys/class/backlight/*/brightness
+}
+
+save_brightness() {
+  get_brightness > "$brightness_file"
+}
+
+send_notification() {
+  brightness=$((`get_brightness` * 20 / 255))
+  echo $brightness
+
+  bar=$(printf '%.0s▇' {0..$brightness})
+
+  dunstify -a "brightness" -r 1004 "$bar"
+}
+
+restore_brightness() {
+  set_brightness 102
+  # if [[ -f "$brightness_file" ]]; then
+  #   brightness=$(cat "$brightness_file")
+  #   set_brightness "$brightness"
+  # fi
+}
+
+set_brightness_max() {
+  # save_brightness
+
+  max_brightness=$(cat /sys/class/backlight/*/max_brightness)
+  set_brightness "$max_brightness"
+}
+
+case "$1" in 
+  "up")
+    brightnessctl set 5%+
+    send_notification
+    ;;
+  "down")
+    brightnessctl set 5%-
+    send_notification
+    ;;
+  "BAT")
+    restore_brightness
+    ;;
+  "AC")
+    set_brightness_max
+    ;;
+  *)
+    echo "Usage: $0 [AC|BAT]"
+    exit 1
+    ;;
+esac
