@@ -540,6 +540,7 @@ require('lazy').setup({
 
   {
     -- 'projekt0n/github-nvim-theme',
+    -- 'rmehri01/onenord.nvim',
     -- 'AlexvZyl/nordic.nvim',
     -- 'navarasu/onedark.nvim',
     'catppuccin/nvim',
