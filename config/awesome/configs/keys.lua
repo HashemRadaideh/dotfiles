@@ -70,20 +70,20 @@ awful.keyboard.append_global_keybindings(
     awful.key(
       { Super }, "b",
       function()
-        if Autohide then
-          for s in screen do
-            s.Bar.visible = true
-            ---@diagnostic disable-next-line: undefined-global
-            local hide = timer({ timeout = 5 })
+        -- if Autohide then
+        for s in screen do
+          s.Bar.visible = true
+          ---@diagnostic disable-next-line: undefined-global
+          local hide = timer({ timeout = 5 })
 
-            hide:connect_signal("timeout", function()
-              s.Bar.visible = false
-              hide:stop()
-            end)
+          hide:connect_signal("timeout", function()
+            s.Bar.visible = false
+            hide:stop()
+          end)
 
-            hide:start()
-          end
+          hide:start()
         end
+        -- end
       end,
       { description = "Toggle bar visibility", group = "awesome" }
     ),
@@ -91,19 +91,25 @@ awful.keyboard.append_global_keybindings(
     awful.key(
       { Super, Shift }, "b",
       function()
-        if Autohide then
-          for s in screen do
-            s.Bar.visible = not s.Bar.visible
-          end
+        -- if Autohide then
+        for s in screen do
+          s.Bar.visible = not s.Bar.visible
         end
+        -- end
       end,
       { description = "Toggle bar visibility", group = "awesome" }
     ),
 
     awful.key(
+      { Super }, "t",
+      function() Titles() end,
+      { description = "Toggle titlebars mode", group = "System" }
+    ),
+
+    awful.key(
       { Super }, "z",
       function() ZenSwitch() end,
-      { description = "Toggle titlebars mode", group = "System" }
+      { description = "Toggle zen mode", group = "System" }
     ),
 
     awful.key(
@@ -191,7 +197,7 @@ awful.keyboard.append_global_keybindings(
     ),
 
     awful.key(
-      { Super }, ".",
+      { Super }, "g",
       function() awful.spawn('rofi -show emoji -modi emoji -theme "themes/emojis.rasi"') end,
       { description = "Open rofi run prompt", group = "Launch" }
     ),
@@ -221,17 +227,17 @@ awful.keyboard.append_global_keybindings(
       { description = "Open dmenu run prompt", group = "Launch" }
     ),
 
-    awful.key(
-      { Super }, "c",
-      function() awful.spawn.with_shell("code") end,
-      { description = "Open vscode", group = "Launch" }
-    ),
+    -- awful.key(
+    --   { Super }, "c",
+    --   function() awful.spawn.with_shell("code") end,
+    --   { description = "Open vscode", group = "Launch" }
+    -- ),
 
-    awful.key(
-      { Super }, "v",
-      function() awful.spawn.with_shell(Graphical_editor) end,
-      { description = "Open emacs", group = "Launch" }
-    ),
+    -- awful.key(
+    --   { Super }, "v",
+    --   function() awful.spawn.with_shell(Graphical_editor) end,
+    --   { description = "Open emacs", group = "Launch" }
+    -- ),
 
     awful.key(
       { Super }, "e",
@@ -351,7 +357,7 @@ awful.keyboard.append_global_keybindings(
     -- ),
 
     awful.key(
-      { Meta }, "u",
+      { Super }, "u",
       awful.client.urgent.jumpto,
       { description = "Focus urgent client", group = "System" }
     ),
@@ -568,46 +574,89 @@ awful.keyboard.append_global_keybindings(
       { description = "Select previous layout", group = "Workflow" }
     ),
 
-    -- awful.key(
-    --   { Super, }, "]",
-    --   function() awful.util.spawn("amixer -D pulse sset Master 5%+") end,
-    --   { description = "Increase volume", group = "Media" }
-    -- ),
-
-    -- awful.key(
-    --   { Super, }, "[",
-    --   function() awful.util.spawn("amixer -D pulse sset Master 5%-") end,
-    --   { description = "Decrease volume", group = "Media" }
-    -- ),
+    awful.key(
+      { Super }, "i",
+      function()
+        awful.util.spawn([[ playerctl play-pause ]])
+      end,
+      { description = "Increase volume", group = "Media" }
+    ),
 
     awful.key(
       {}, "XF86AudioRaiseVolume",
-      function() awful.spawn.with_shell("pamixer -i 3") end,
+      function() awful.util.spawn([[media up]]) end,
       { description = "Increase volume", group = "Media" }
     ),
 
     awful.key(
       {}, "XF86AudioLowerVolume",
-      function() awful.spawn.with_shell("pamixer -d 3") end,
+      function() awful.util.spawn([[media down]]) end,
       { description = "Decrease volume", group = "Media" }
     ),
 
     awful.key(
       {}, "XF86AudioMute",
-      function() awful.spawn.with_shell("pamixer -t") end,
+      function() awful.util.spawn([[media mute]]) end,
+      { description = "Mute volume", group = "Media" }
+    ),
+
+    awful.key(
+      {}, "XF86AudioMicMute",
+      function() awful.util.spawn([[media micmute]]) end,
       { description = "Mute volume", group = "Media" }
     ),
 
     awful.key(
       {}, "XF86MonBrightnessUp",
-      function() awful.spawn.with_shell("brightnessctl set 3%+") end,
+      function() awful.util.spawn([[brightness up]]) end,
       { description = "Increase brightness", group = "Media" }
     ),
 
     awful.key(
       {}, "XF86MonBrightnessDown",
-      function() awful.spawn.with_shell("brightnessctl set 3%-") end,
+      function() awful.util.spawn([[brightness down]]) end,
       { description = "Decrease brightness", group = "Media" }
+    ),
+
+    awful.key(
+      {}, "XF86AudioPrev",
+      function()
+        awful.util.spawn([[ playerctl previous ]])
+      end,
+      { description = "Increase volume", group = "Media" }
+    ),
+
+    awful.key(
+      {}, "XF86Calculator",
+      function()
+        awful.spawn(
+          'rofi -show calc -modi calc -no-show-match -no-sort -theme "themes/calculator.rasi" | wl-copy')
+      end,
+      { description = "Increase volume", group = "Media" }
+    ),
+
+    awful.key(
+      {}, "XF86AudioNext",
+      function()
+        awful.util.spawn([[ playerctl next ]])
+      end,
+      { description = "Increase volume", group = "Media" }
+    ),
+
+    awful.key(
+      {}, "XF86AudioPlay",
+      function()
+        awful.util.spawn([[ playerctl play-pause ]])
+      end,
+      { description = "Increase volume", group = "Media" }
+    ),
+
+    awful.key(
+      {}, "XF86AudioStop",
+      function()
+        awful.util.spawn([[ playerctl stop ]])
+      end,
+      { description = "Increase volume", group = "Media" }
     ),
 
     awful.key {
@@ -782,8 +831,6 @@ client.connect_signal("request::default_mousebindings", function()
       ),
 
       awful.key(
-      -- The client currently has the input focus, so it cannot be
-      -- minimized, since minimized clients can't have the focus.
         { Super }, "n",
         function(c) c.minimized = true end,
         { description = "Minimize focused client", group = "System" }

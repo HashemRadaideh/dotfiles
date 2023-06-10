@@ -5,10 +5,9 @@ local gears = require("gears")
 local beautiful = require("beautiful")
 beautiful.init(gears.filesystem.get_configuration_dir() .. "configs/theme.lua")
 
--- Focus mode (style mode)
-Is_zen = false
+Autohide = true
+Is_zen = true
 Is_titled = false
-Is_sloppy = true
-Autohide = false
+Is_sloppy = false
 
 require('configs')
