@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 file=$1
 w=$2
 h=$3

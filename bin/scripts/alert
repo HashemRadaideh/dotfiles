@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+appname="$1"
+summary="$2"
+body="$3"
+icon="$4"
+urgency="$5"
+
+case $appname in
+  "media")
+  exit
+  ;;
+  "brightness")
+  exit
+  ;;
+  "spotify")
+  exit
+  ;;
+  "Spotify")
+  exit
+  ;;
+esac
+
+case "$urgency" in
+  "LOW") mpv --no-video /usr/share/sounds/freedesktop/stereo/message-new-instant.oga ;;
+  "NORMAL") mpv --no-video /usr/share/sounds/freedesktop/stereo/message.oga ;;
+  "CRITICAL")
+    mpv --no-video /usr/share/sounds/freedesktop/stereo/dialog-warning.oga
+    # mpv --no-video /usr/share/sounds/freedesktop/stereo/dialog-error.oga
+    ;;
+  *) mpv --no-video /usr/share/sounds/freedesktop/stereo/dialog-information.oga ;;
+esac
