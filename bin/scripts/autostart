@@ -6,6 +6,8 @@ function run {
   fi
 }
 
+run autorotate
+
 wallpaper="$(find ~/Pictures/wallpapers/ -type f -exec file {} \; | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)"
 
 if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "${DISPLAY+x}" ]; then
