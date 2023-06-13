@@ -8,8 +8,9 @@ if not ok then
 end
 
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
-    pattern = { "*.java", "*.jsp" },
+    pattern = { "*.java", --[[ "*.jsp" ]] },
     callback = function()
+        vim.opt.shiftwidth = 4
         local jdtls_path = vim.fn.stdpath('data') .. "/mason/packages/jdtls"
         local path_to_lsp_server = jdtls_path .. "/config_linux"
         local path_to_plugins = jdtls_path .. "/plugins/"
