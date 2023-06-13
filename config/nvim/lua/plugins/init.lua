@@ -43,7 +43,7 @@ require('lazy').setup({
       'L3MON4D3/LuaSnip',
 
       'jose-elias-alvarez/null-ls.nvim',
-      'j-hui/fidget.nvim',
+      { 'j-hui/fidget.nvim',       tag = 'legacy' },
       'ray-x/lsp_signature.nvim',
       'folke/trouble.nvim',
       'RRethy/vim-illuminate',

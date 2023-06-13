@@ -164,13 +164,22 @@ vim.keymap.set('n', '<leader>z', '<cmd>BufferLineCloseLeft<CR>')
 vim.keymap.set('n', '<leader>x', '<cmd>bd %<CR>')
 vim.keymap.set('n', '<leader>c', '<cmd>BufferLineCloseRight<CR>')
 
-vim.keymap.set('n', '<leader>,', '<cmd>BufferLineMovePrev<CR>')
-vim.keymap.set('n', '<leader>.', '<cmd>BufferLineMoveNext<CR>')
+vim.keymap.set('n', '<S-h>', '<cmd>BufferLineMovePrev<CR>')
+vim.keymap.set('n', '<S-l>', '<cmd>BufferLineMoveNext<CR>')
 
 vim.keymap.set('n', '<leader>be', '<cmd>BufferLineSortByExtension<CR>')
 vim.keymap.set('n', '<leader>bd', '<cmd>BufferLineSortByDirectory<CR>')
 vim.keymap.set('n', '<leader>bb',
   "<cmd>lua require'bufferline'.sort_buffers_by(function (buf_a, buf_b) return buf_a.id < buf_b.id end)<CR>")
+
+vim.keymap.set("n", "]t", function() require("todo-comments").jump_next() end, { desc = "Next todo comment" })
+
+vim.keymap.set("n", "[t", function() require("todo-comments").jump_prev() end, { desc = "Previous todo comment" })
+
+-- You can also specify a list of valid jump keywords
+
+vim.keymap.set("n", "]t", function() require("todo-comments").jump_next({ keywords = { "ERROR", "WARNING" } }) end,
+  { desc = "Next error/warning todo comment" })
 
 vim.keymap.set('n', '<C-1>', '<cmd>BufferLineGoToBuffer 1<CR>')
 vim.keymap.set('n', '<C-2>', '<cmd>BufferLineGoToBuffer 2<CR>')

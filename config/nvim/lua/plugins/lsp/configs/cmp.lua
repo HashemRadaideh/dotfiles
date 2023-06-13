@@ -58,6 +58,9 @@ local kind_icons = {
 }
 
 cmp.setup({
+  completion = {
+    completeopt = 'menu,menuone,noinsert,noselect'
+  },
   -- completion = {
   --   completeopt = 'menu,menuone,noinsert',
   --   autocomplete = true
@@ -72,7 +75,7 @@ cmp.setup({
     { name = "luasnip" },
     { name = "buffer" },
     { name = "path" },
-    -- { name = "nvim_lua" },
+    { name = "nvim_lua" },
   },
   mapping = {
     ["<C-j>"] = cmp.mapping(function(fallback)
@@ -123,64 +126,53 @@ cmp.setup({
         fallback()
       end
     end, { "i", "s", }),
-    ["<Down>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expandable() then
-        luasnip.expand()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      elseif check_backspace() then
-        fallback()
-      elseif has_words_before() then
-        cmp.complete()
-      else
-        fallback()
-      end
-    end, { "i", "s", }),
-    ["<Up>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, { "i", "s", }),
-    ["<Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-        -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
-        -- they way you will only jump inside the snippet region
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      elseif has_words_before() then
-        cmp.complete()
-      else
-        fallback()
-      end
-    end, { "i", "s" }),
-    ["<S-Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, { "i", "s" }),
     ["<C-d>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i", "c" }),
     ["<C-u>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "i", "c" }),
     ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
     ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
-    ["<C-l>"] = cmp.mapping.complete(),
-    ["<C-e>"] = cmp.mapping {
+    ["<C-h>"] = cmp.mapping {
       i = cmp.mapping.abort(),
       c = cmp.mapping.close(),
     },
-    ["<c-y>"] = cmp.mapping.confirm({
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
+    ["<C-space>"] = cmp.mapping({
+      i = function()
+        if cmp.visible() then
+          require("notify")("visible")
+          cmp.abort()
+        else
+          require("notify")("not visible")
+          cmp.complete()
+        end
+      end,
+      c = function()
+        if cmp.visible() then
+          require("notify")("visible")
+          cmp.close()
+        else
+          require("notify")("not visible")
+          cmp.complete()
+        end
+      end,
+    }),
+    ["<C-l>"] = cmp.mapping({
+      i = function()
+        if cmp.visible() then
+          require("notify")("visible")
+          cmp.abort()
+        else
+          require("notify")("not visible")
+          cmp.complete()
+        end
+      end,
+      c = function()
+        if cmp.visible() then
+          require("notify")("visible")
+          cmp.close()
+        else
+          require("notify")("not visible")
+          cmp.complete()
+        end
+      end,
     }),
     ["<CR>"] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Replace,
@@ -208,13 +200,13 @@ cmp.setup({
       return vim_item
     end,
   },
-  -- duplicates = {
-  --   nvim_lsp = 1,
-  --   luasnip = 1,
-  --   cmp_tabnine = 1,
-  --   buffer = 1,
-  --   path = 1,
-  -- },
+  duplicates = {
+    nvim_lsp = 1,
+    luasnip = 1,
+    cmp_tabnine = 1,
+    buffer = 1,
+    path = 1,
+  },
   confirm_opts = {
     behavior = cmp.ConfirmBehavior.Replace,
     select = false,
