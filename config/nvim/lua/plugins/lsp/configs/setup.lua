@@ -1,7 +1,7 @@
 vim.diagnostic.config({
   virtual_text = {
     source = "always", -- Or "if_many"
-    prefix = "■",   -- Could be "●", "▎", "x"
+    prefix = "■",    -- Could be "●", "▎", "x"
   },
   float = {
     source = "always", -- Or "if_many"
@@ -107,7 +107,7 @@ local on_attach = function(client, bufnr)
   if client.server_capabilities.document_formatting then
     vim.api.nvim_command [[ augroup Format ]]
     vim.api.nvim_command [[ autocmd! * <buffer> ]]
-    vim.api.nvim_command [[ autocmd BufWritePre <buffer> lua vim.lsp.buf.format() ]]
+    vim.api.nvim_command [[ autocmd BufWritePre <buffer> lua vim.lsp.buf.format { async = true } ]]
     vim.api.nvim_command [[ augroup END ]]
   end
 
@@ -159,6 +159,29 @@ local on_attach = function(client, bufnr)
     end
   })
 
+  local opts = { noremap = true, silent = true }
+  local buf_map = vim.api.nvim_buf_set_keymap
+  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+
+  buf_map(bufnr, "n", "gD", ":lua vim.lsp.buf.declaration()<CR>", opts)
+  buf_map(bufnr, "n", "gd", ":lua vim.lsp.buf.definition()<CR>", opts)
+  buf_map(bufnr, "n", "K", ":lua vim.lsp.buf.hover()<CR>", opts)
+  -- buf_map(bufnr, "n", "gi", ":lua vim.lsp.buf.implementation()<CR>", opts)
+  buf_map(bufnr, "n", "gi", ":lua require('telescope.builtin').lsp_implementations()<CR>", opts)
+  buf_map(bufnr, "n", "<C-;>", ":lua vim.lsp.buf.signature_help()<CR>", opts)
+  buf_map(bufnr, "n", "<leader>wa", ":lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
+  buf_map(bufnr, "n", "<leader>wr", ":lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
+  buf_map(bufnr, "n", "<leader>wl", ":lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", opts)
+  buf_map(bufnr, "n", "<leader>D", ":lua vim.lsp.buf.type_definition()<CR>", opts)
+  buf_map(bufnr, "n", "<leader>rn", ":lua vim.lsp.buf.rename()<CR>", opts)
+  buf_map(bufnr, "n", "<leader>ca", ":lua vim.lsp.buf.code_action()<CR>", opts)
+  buf_map(bufnr, 'v', '<leader>ca', ":lua vim.lsp.buf.range_code_action()", opts)
+  -- buf_map(bufnr, "n", "gr", ":lua vim.lsp.buf.references()<CR>", opts)
+  buf_map(bufnr, "n", "gr", ":lua require('telescope.builtin').lsp_references()<CR>", opts)
+  buf_map(bufnr, "n", "<leader>fa", ":lua vim.lsp.buf.format { async = true }<CR>", opts)
+  buf_map(bufnr, 'v', '<leader>fn', ":lua vim.lsp.buf.range_formatting()", opts)
+  buf_map(bufnr, 'n', '<leader>sa', ":lua vim.lsp.buf.signature_help()<CR>", opts)
+
   -- Enable completion triggered by <c-x><c-o>
   vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
@@ -166,65 +189,66 @@ local on_attach = function(client, bufnr)
     return { buffer = bufnr, silent = true, desc = hint }
   end
 
-  vim.keymap.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts("Add workspace"))
-  vim.keymap.set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts("Remove workspace"))
-  vim.keymap.set("n", "<leader>wl", function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,
-    opts("List workspace folders"))
-  vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts("Project wild rename"))
   vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts("Add diagnostics to the location list"))
   vim.keymap.set('n', '<leader>pd', vim.diagnostic.open_float, opts("Show diagnostics"))
   vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts("Go to previous diagnostic"))
   vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts("Go to next diagnostic"))
   vim.keymap.set('n', 'gk', vim.diagnostic.goto_prev, opts("Go to previous diagnostic"))
   vim.keymap.set('n', 'gj', vim.diagnostic.goto_next, opts("Go to next diagnostic"))
-  vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts("Perform code action"))
-  vim.keymap.set('v', '<leader>ca', vim.lsp.buf.range_code_action, opts("Perform code action"))
 
-  if client.server_capabilities.declarationProvider then
-    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration("Go to declaration"))
-  end
+  -- vim.keymap.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts("Add workspace"))
+  -- vim.keymap.set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts("Remove workspace"))
+  -- vim.keymap.set("n", "<leader>wl", function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,
+  --   opts("List workspace folders"))
+  -- vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts("Project wild rename"))
+  -- vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts("Perform code action"))
+  -- vim.keymap.set('v', '<leader>ca', vim.lsp.buf.range_code_action, opts("Perform code action"))
 
-  if client.server_capabilities.definitionProvider then
+  -- if client.server_capabilities.declarationProvider then
+  --   vim.keymap.set('n', 'gD', vim.lsp.buf.declaration())
+  -- end
+
+  -- if client.server_capabilities.definitionProvider then
     vim.api.nvim_buf_set_option(bufnr, 'tagfunc', 'v:lua.vim.lsp.tagfunc')
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition("Go to definition"))
-  end
+  --   vim.keymap.set('n', 'gd', vim.lsp.buf.definition())
+  -- end
 
-  if client.server_capabilities.typeDefinitionProvider then
-    vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition("Go to type definition"))
-  end
+  -- if client.server_capabilities.typeDefinitionProvider then
+  --   vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition())
+  -- end
 
-  if client.server_capabilities.hoverProvider then
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover("LSP hover"))
-  end
+  -- if client.server_capabilities.hoverProvider then
+  --   vim.keymap.set('n', 'K', vim.lsp.buf.hover())
+  -- end
 
-  if client.server_capabilities.implementationProvider then
-    -- vim.keymap.set('n', 'gi', vim.lsp.buf.implementation("Go to implementation"))
-    vim.keymap.set("n", "gi", require('telescope.builtin').lsp_implementations())
-  end
+  -- if client.server_capabilities.implementationProvider then
+  --   -- vim.keymap.set('n', 'gi', vim.lsp.buf.implementation("Go to implementation"))
+  --   vim.keymap.set("n", "gi", require('telescope.builtin').lsp_implementations())
+  -- end
 
-  if client.server_capabilities.signatureHelpProvider then
-    vim.keymap.set('n', '<leader>sa', vim.lsp.buf.signature_help("Show signature help"))
-  end
+  -- if client.server_capabilities.signatureHelpProvider then
+  --   vim.keymap.set('n', '<leader>sa', vim.lsp.buf.signature_help())
+  -- end
 
-  if client.server_capabilities.referencesProvider then
-    -- vim.keymap.set('n', 'gr', vim.lsp.buf.references("Go to references"))
-    vim.keymap.set("n", "gr", require('telescope.builtin').lsp_references())
-  end
+  -- if client.server_capabilities.referencesProvider then
+  --   -- vim.keymap.set('n', 'gr', vim.lsp.buf.references("Go to references"))
+  --   vim.keymap.set("n", "gr", require('telescope.builtin').lsp_references())
+  -- end
 
-  if client.server_capabilities.documentFormattingProvider then
-    vim.keymap.set('n', '<leader>fa', function()
-      vim.lsp.buf.format { async = true }
-    end, opts("Format buffer"))
+  -- if client.server_capabilities.documentFormattingProvider then
+  --   vim.keymap.set('n', '<leader>fa', function()
+  --     vim.lsp.buf.format { async = true }
+  --   end, opts("Format buffer"))
 
-    -- vim.keymap.set('n', '<leader>fa', vim.lsp.buf.format("Format buffer"))
+  --   -- vim.keymap.set('n', '<leader>fa', vim.lsp.buf.format("Format buffer"))
 
-    -- vim.keymap.set("n", "<leader>fa", vim.lsp.buf.formatting())
-  end
+  --   -- vim.keymap.set("n", "<leader>fa", vim.lsp.buf.formatting())
+  -- end
 
-  if client.server_capabilities.documentRangeFormattingProvider then
+  -- if client.server_capabilities.documentRangeFormattingProvider then
     vim.api.nvim_buf_set_option(bufnr, 'formatexpr', 'v:lua.vim.lsp.formatexpr()')
-    vim.keymap.set('v', '<leader>fn', vim.lsp.buf.range_formatting("Format range"))
-  end
+  --   vim.keymap.set('v', '<leader>fn', vim.lsp.buf.range_formatting())
+  -- end
 end
 
 return {

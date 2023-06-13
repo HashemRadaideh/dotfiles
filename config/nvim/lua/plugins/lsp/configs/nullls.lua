@@ -9,8 +9,16 @@ null_ls.setup({
     -- null_ls.builtins.formatting.stylua,
     -- null_ls.builtins.formatting.rustfmt,
     -- null_ls.builtins.formatting.clang_format,
+    -- null_ls.builtins.diagnostics.sqlfluff.with({
+    --   extra_args = { "--dialect", "mysql" },
+    -- }),
+    -- null_ls.builtins.formatting.sqlformat,
+    -- null_ls.builtins.formatting.sqlfmt,
     null_ls.builtins.formatting.djhtml.with({
       filetypes = { "django", "jinja.html", "htmldjango", "jsp", },
+    }),
+    null_ls.builtins.formatting.sqlfluff.with({
+      extra_args = { "--dialect", "mysql" }, -- change to your dialect
     }),
     null_ls.builtins.formatting.prettier.with({
       filetypes = {
