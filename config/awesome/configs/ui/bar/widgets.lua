@@ -215,8 +215,7 @@ end)
 -- -- Textclock
 Clock = wibox.widget { widget = wibox.widget.textbox, }
 
----@diagnostic disable-next-line: unused-local
-local update_clock = gears.timer {
+gears.timer {
   timeout = 5,
   autostart = true,
   call_now = true,
@@ -427,9 +426,6 @@ Logout = wibox.widget {
   {
     widget = logout_popup.widget {
       onlock = function() awful.spawn.with_shell("lock") end,
-      onsuspend = function()
-        awful.spawn.with_shell("lock && systemctl suspend")
-      end
     },
   },
   margins = { left = dpi(3), right = dpi(3) },

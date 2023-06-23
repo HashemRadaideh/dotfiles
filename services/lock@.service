@@ -1,0 +1,17 @@
+[Unit]
+Description=Lock X session for user %i
+Before=sleep.target
+Before=suspend.target
+
+[Service]
+User=%i
+Type=forking
+Environment=DISPLAY=:0
+ExecStartPre=/usr/bin/xset dpms force suspend
+ExecStart=/home/hashem/.local/bin/scripts/lock
+ExecStartPost=/usr/bin/sleep 5
+TimeoutSec=infinity
+
+[Install]
+WantedBy=sleep.target
+WantedBy=suspend.target

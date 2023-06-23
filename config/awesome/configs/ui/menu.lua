@@ -101,9 +101,6 @@ Main_menu = awful.menu {
         capi.keygrabber.stop()
         logout_popup.launch({
           onlock = function() awful.spawn.with_shell("lock") end,
-          onsuspend = function()
-            awful.spawn.with_shell("lock && systemctl suspend")
-          end
         })
       end
     },

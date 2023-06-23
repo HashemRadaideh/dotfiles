@@ -53,8 +53,20 @@ if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "${DISPLAY+x}" ]; then
     # nitrogen --head="$i" --set-zoom-fill --random "$HOME/Pictures/wallpapers"
     nitrogen --head="$i" --set-zoom-fill "$wallpaper"
   done
+  run xss-lock lock 
 
-  run locker
+  run xidlehook \
+    --not-when-fullscreen \
+    --not-when-audio \
+    --timer 60 \
+      'brightnessctl set 35%-; notify-send -u critical -t 10000 -- "LOCKING screen in 30 seconds"' \
+      'brightnessctl set 35%+' \
+    --timer 30 \
+      'brightnessctl set 35%+; lock' \
+      '' \
+    --timer 600 \
+      'systemctl suspend' \
+      ''
 
   # run /usr/lib/geoclue-2.0/demos/agent &
   # run redshift-gtk

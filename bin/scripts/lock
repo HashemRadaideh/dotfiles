@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
 
-[ -z "${DISPLAY+x}" ] && echo "there is no display" && return -1
+scrot -o /tmp/screenlock.png
 
-\rm -rf /tmp/screenshot.png /tmp/screenshotblur.png /tmp/screenlock.png
+convert /tmp/screenlock.png \
+  -blur 0x10 \
+  /home/hashem/.files/bin/misc/banner.png \
+  -gravity center \
+  -composite \
+  /tmp/screenlock.png
 
-screenshot='scrot'
-screenlock='i3lock'
-flags='\
+exec i3lock -i /tmp/screenlock.png \
   --color "00000000" \
   --screen "0" \
   --ind-pos="x+310:y+h-80" \
@@ -62,19 +65,3 @@ flags='\
   --pass-screen-keys \
   --pass-volume-keys \
   --pass-power-keys
-'
-
-if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
-  screenshot='grim'
-  screenlock='swaylock'
-  flags=''
-fi
-
-$screenshot /tmp/screenshot.png
-
-convert /tmp/screenshot.png -blur 0x20 /tmp/screenshotblur.png
-
-convert /tmp/screenshotblur.png $DOTFILES/bin/misc/banner.png \
-  -gravity center -composite -matte /tmp/screenlock.png
-
-eval "exec $screenlock -i /tmp/screenlock.png $(echo $flags)"

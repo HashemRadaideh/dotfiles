@@ -286,9 +286,6 @@ awful.keyboard.append_global_keybindings(
       function()
         logout_popup.launch({
           onlock = function() awful.spawn.with_shell("lock") end,
-          onsuspend = function()
-            awful.spawn.with_shell("lock && systemctl suspend")
-          end
         })
       end,
       { description = "Show power menu", group = "System" }
