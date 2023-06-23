@@ -1,6 +1,8 @@
 local awful = require('awful')
 local beautiful = require('beautiful')
 local wibox = require('wibox')
+local network = require('configs.ui.bar.network')
+local bluetooth = require('configs.ui.bar.bluetooth')
 
 ---@diagnostic disable-next-line: undefined-global
 local screen, dpi = screen, beautiful.xresources.apply_dpi
@@ -64,6 +66,8 @@ screen.connect_signal("request::desktop_decoration", function(s)
         -- MEMButton,
         -- CPU,
         -- CPUButton,
+        bluetooth,
+        network(),
         Volume,
         Brightness,
         Battery(),
