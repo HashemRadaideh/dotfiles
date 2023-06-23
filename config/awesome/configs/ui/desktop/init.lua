@@ -210,6 +210,70 @@ if Autohide then
   end)
 end
 
+Desktop.Keyboard = wibox {
+  visible = true,
+  ontop   = true,
+  x       = 0,
+  y       = screen.primary.geometry.height - 1,
+  width   = screen.primary.geometry.width,
+  height  = 1,
+  bg      = "#000000",
+}
+
+gears.timer {
+  timeout = 1,
+  autostart = true,
+  call_now = true,
+  callback = function() Desktop.Keyboard.y = screen.primary.geometry.height - 1 end
+}
+
+Desktop.Keyboard:connect_signal('mouse::enter', function(self)
+  local g = 7.0 -- (m^2 / s) sensibility, gravity trigger
+
+  local states = {
+    {
+      check = function(x, y) return y <= -g end,
+      keyboard = true,
+    },
+    {
+      check = function(x, y) return y >= g end,
+      keyboard = false,
+    },
+    {
+      check = function(x, y) return x >= g end,
+      keyboard = false,
+    },
+    {
+      check = function(x, y) return x <= -g end,
+      keyboard = false,
+    },
+  }
+
+  local x = io.open("/sys/bus/iio/devices/iio:device0/in_accel_x_raw"):read("*all")
+  local y = io.open("/sys/bus/iio/devices/iio:device0/in_accel_y_raw"):read("*all")
+
+  local current_state = nil
+
+  local allowed = false
+
+  for i = 1, 5 do
+    if i == current_state then
+      goto continue
+    end
+    if states[i].check(x + 0, y + 0) then
+      current_state = i
+      allowed = states[i].keyboard
+      break
+    end
+    ::continue::
+  end
+
+  if not allowed then
+    os.execute([[killall corekeyboard]])
+    awful.spawn([[corekeyboard]])
+  end
+end)
+
 local function my_button(text, cb)
   local tb = wibox.widget.textbox(text)
   tb.align = "center"
