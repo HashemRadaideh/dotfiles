@@ -12,6 +12,12 @@ configuration{
     display-window: "   Windows";
     display-Network: " 󰤨  Network";
     sidebar-mode: true;
+    filebrowser {
+      // directory: "~";
+      sorting-method: "name";
+      directories-first: true;
+      show-hidden: true;
+    }
 }
 
 @theme "themes/catppuccin-frappe"
@@ -21,7 +27,6 @@ configuration{
 // @theme "themes/launchpad.rasi"
 // @theme "themes/nord-oneline.rasi"
 // @theme "themes/nord-twolines.rasi"
-// @theme "themes/nord.rasi"
 // @theme "themes/nord.rasi"
 // @theme "themes/rounded-blue-dark.rasi"
 // @theme "themes/rounded-common.rasi"
