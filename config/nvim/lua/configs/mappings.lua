@@ -10,6 +10,11 @@ vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = "Go to left window/pane" })
 vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = "Go to left window/pane" })
 vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = "Go to left window/pane" })
 
+vim.keymap.set('n', '<C-S-h>', '<cmd>vertical resize -1<cr>', { desc = "Resize pane" })
+-- vim.keymap.set('n', '<S-NL>', '<C-w>-', { desc = "Resize pane" })
+vim.keymap.set('n', '<C-S-j>', '<cmd>resize -1<cr>', { desc = "Resize pane" })
+vim.keymap.set('n', '<C-S-k>', '<cmd>resize +1<cr>', { desc = "Resize pane" })
+vim.keymap.set('n', '<C-S-l>', '<cmd>vertical resize +1<cr>', { desc = "Resize pane" })
 -- resize panes with Ctrl up, down, left, right
 vim.keymap.set('n', '<C-Up>', '<cmd>resize +2<CR>', { desc = 'Increase window height' })
 vim.keymap.set('n', '<C-Down>', '<cmd>resize -2<CR>', { desc = 'Decrease window height' })

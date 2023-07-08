@@ -2413,4 +2413,8 @@ key_bindings:
   - { key: NumpadAdd,         mods: Alt,   mode: Alt,     chars: "\e\eOk"      }
   - { key: NumpadDecimal,     mods: Alt,   mode: Alt,     chars: "\e\eOn"      }
   - { key: NumpadEquals,      mods: Alt,   mode: Alt,     chars: "\e\eOM"      }
-  - { key: Return,   mods: Control|Shift, action: SpawnNewInstance }
+  - { key: Return,   mods: Control|Shift, action: SpawnNewInstance             }
+  - { key: H,        mods: Control|Shift, chars: "\x1b[72;5u"                  }
+  - { key: J,        mods: Control|Shift, chars: "\x1b[74;5u"                  }
+  - { key: K,        mods: Control|Shift, chars: "\x1b[75;5u"                  }
+  - { key: L,        mods: Control|Shift, chars: "\x1b[76;5u"                  }
