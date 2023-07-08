@@ -24,7 +24,7 @@ client.connect_signal("manage", function(c)
 end)
 
 function Titles()
-  if not Is_titled then
+  if not Titled then
     for _, c in ipairs(client.get()) do
       if not c.maximized then
         awful.titlebar.show(c)
@@ -39,14 +39,14 @@ function Titles()
   ruled.client.append_rule {
     id         = "titlebars",
     rule_any   = { type = { "normal" } },
-    properties = { titlebars_enabled = not Is_titled }
+    properties = { titlebars_enabled = not Titled }
   }
 
-  Is_titled = not Is_titled
+  Titled = not Titled
 end
 
 function ZenSwitch()
-  if not Is_zen then
+  if not Zen then
     for _, t in ipairs(root.tags()) do
       awful.tag.incgap(8, t)
     end
@@ -62,8 +62,10 @@ function ZenSwitch()
   --   ModeToggle.image = beautiful.mode_icon_active
   -- end
 
-  Is_zen = not Is_zen
+  Zen = not Zen
 end
+
+ZenSwitch()
 
 -- Rounded Borders and no border for maximized clients
 local function border_adjust(c)
@@ -73,7 +75,7 @@ local function border_adjust(c)
     c.border_width = 0
   end
 
-  if Is_zen then
+  if Zen then
     if c.maximized or c.fullscreen then
       c.border_width = 0
       c.shape = nil
@@ -85,15 +87,13 @@ local function border_adjust(c)
   end
 end
 
--- Enable sloppy focus, so that focus follows mouse.
-client.connect_signal("mouse::enter", function(c)
-  if Is_sloppy then
-    c:emit_signal("request::activate", "mouse_enter", { raise = true })
-  end
-end)
 client.connect_signal("focus", border_adjust)
 client.connect_signal("property::maximized", border_adjust)
 client.connect_signal("property::fullscreen", border_adjust)
 client.connect_signal("unfocus", border_adjust)
-
 client.connect_signal("property::urgent", function(c) c:jump_to() end)
+client.connect_signal("mouse::enter", function(c)
+  if Sloppy then
+    c:emit_signal("request::activate", "mouse_enter", { raise = true })
+  end
+end)

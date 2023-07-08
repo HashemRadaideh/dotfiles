@@ -203,7 +203,7 @@ ModeToggle:connect_signal("button::press", function(self)
   ZenSwitch()
   Titles()
 
-  if Is_zen then
+  if Zen then
     self.image = beautiful.mode_icon
   else
     self.image = beautiful.mode_icon_active
@@ -385,9 +385,9 @@ local batteryarc_widget = require(
   "awesome-wm-widgets.batteryarc-widget.batteryarc"
 )
 
-local battery_widget = require(
-  "awesome-wm-widgets.battery-widget.battery"
-)
+-- local battery_widget = require(
+--   "awesome-wm-widgets.battery-widget.battery"
+-- )
 
 function Battery()
   local cmd = [[

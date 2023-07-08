@@ -98,71 +98,85 @@ ruled.client.connect_signal("request::rules", function()
   ruled.client.append_rule {
     rule = { class = "DesktopEditors" },
     properties = { tag = screen[1].tags[3], titlebars_enabled = false }
+      tag = Tags[3],
   }
 
   ruled.client.append_rule {
     rule = { class = "firefox" },
     properties = { tag = screen[1].tags[2] }
+      tag    = Tags[2],
   }
 
   ruled.client.append_rule {
     rule = { class = "Brave" },
     properties = { tag = screen[1].tags[2] }
+      tag = Tags[2],
   }
 
   ruled.client.append_rule {
     rule = { class = "Google-chrome" },
     properties = { tag = screen[1].tags[2] }
+      tag    = Tags[2],
   }
 
   ruled.client.append_rule {
     rule       = { class = "discord" },
     properties = { tag = screen[1].tags[9] }
+      tag    = Tags[9],
   }
 
   ruled.client.append_rule {
     rule = { class = "zoom" },
     properties = { tag = screen[1].tags[9] }
+      tag    = Tags[9],
   }
 
   ruled.client.append_rule {
     rule = { class = "Microsoft Teams - Preview" },
     properties = { tag = screen[1].tags[9] }
+      tag    = Tags[9],
   }
 
   ruled.client.append_rule {
     rule = { class = "Steam", name = "Steam" },
     properties = { tag = screen[1].tags[7], titlebars_enabled = false }
+      tag = Tags[7],
   }
 
   ruled.client.append_rule {
     rule = { class = "lutris", name = "lutris" },
     properties = { tag = screen[1].tags[7], titlebars_enabled = false }
+      tag = Tags[7],
   }
 
   ruled.client.append_rule {
     rule = { class = "Spotify" },
     properties = { tag = screen[1].tags[8] }
+      tag    = Tags[8],
   }
 
   ruled.client.append_rule {
     rule = { class = "Xephyr" },
     properties = { tag = screen[1].tags[5] }
+      tag    = Tags[5],
   }
 
   ruled.client.append_rule {
     rule = { class = "Trello" },
     properties = { tag = screen[1].tags[4] }
+      tag    = Tags[4],
   }
 
   ruled.client.append_rule {
     rule = { class = "notion-app" },
     properties = { tag = screen[1].tags[4] }
+      tag    = Tags[4],
   }
 
   ruled.client.append_rule {
     rule = { class = "Evernote" },
     properties = { tag = screen[1].tags[4] }
+      tag    = Tags[4],
   }
 
   ruled.client.append_rule({

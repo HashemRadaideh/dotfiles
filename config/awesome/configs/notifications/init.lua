@@ -3,7 +3,8 @@ local naughty = require("naughty")
 require("configs.notifications.error")
 require("configs.notifications.default")
 
-noti = {}
+local noti = {}
+
 noti.notification = nil
 
 function noti:notify(message, preset)

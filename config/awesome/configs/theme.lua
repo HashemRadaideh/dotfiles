@@ -87,9 +87,9 @@ theme.white               = "#B5BFE2"
 -- General/default Settings
 theme.bg_normal           = theme.background
 theme.bg_transparent      = theme.bg_normal .. "bf"
-theme.bg_focus            = "#333333"
+theme.bg_focus            = theme.black
 theme.bg_urgent           = theme.red
-theme.bg_minimize         = "#444444"
+theme.bg_minimize         = theme.white
 theme.bg_systray          = theme.bg_normal
 
 theme.fg_normal           = theme.foreground
@@ -97,19 +97,19 @@ theme.fg_focus            = theme.bright_foreground
 theme.fg_urgent           = theme.red
 theme.fg_minimize         = theme.dim_foreground
 
-theme.border_normal       = "#000000"
-theme.border_focus        = "#456789"
-theme.border_marked       = "#91231c"
+theme.border_normal       = theme.black
+theme.border_focus        = theme.blue
+theme.border_marked       = theme.red
 
 -- Bar
-theme.bar                 = "#000000"
-theme.bar_alt             = "#222222"
-theme.bg_systray          = "#121212"
+theme.bar                 = theme.background
+theme.bar_alt             = theme.bright_background
+theme.bg_systray          = theme.background
 
-theme.taglist_fg_focus    = "#6A9FB8"
-theme.taglist_fg_occupied = theme.fg_normal
-theme.taglist_fg_empty    = "#404B66"
-theme.taglist_bg_focus    = "#6A9FB8"
+theme.taglist_fg_focus    = theme.blue
+theme.taglist_bg_focus    = theme.blue
+theme.taglist_fg_occupied = theme.bright_background
+theme.taglist_fg_empty    = theme.background
 
 theme.tasklist_fg_focus   = theme.fg_normal
 
@@ -131,10 +131,12 @@ theme.menu_bg_normal      = theme.bg_normal
 rnotification.connect_signal('request=rules', function()
   rnotification.append_rule {
     rule       = { urgency = 'critical' },
-    properties = { bg = '#ff0000', fg = '#ffffff' }
+    properties = { bg = theme.red, fg = theme.foreground }
   }
 end)
 
+theme.notification_shape = function(cr, w, h) gears.shape.rounded_rect(cr, w, h, theme.border_radius) end
+theme.notification_opacity = 75
 theme.notification_font = theme.font
 theme.notification_padding = dpi(5)
 theme.notification_spacing = dpi(5)
@@ -142,17 +144,32 @@ theme.notification_margin = dpi(5)
 theme.notification_border_width = dpi(5)
 theme.notification_position = "top_right"
 
-theme.notification_low_bg = "#303446"
-theme.notification_low_fg = "#C6D0F5"
-theme.notification_low_border = "#C6D0F5"
+theme.notification_low_bg = theme.background
+theme.notification_low_fg = theme.foreground
+theme.notification_low_border_color = theme.bright_background
 
-theme.notification_bg = "#303446"
-theme.notification_fg = "#C6D0F5"
-theme.notification_border = "#C6D0F5"
+theme.notification_bg = theme.background
+theme.notification_fg = theme.foreground
+theme.notification_border_color = theme.bright_background
 
-theme.notification_crit_bg = "#303446"
-theme.notification_crit_fg = "#C6D0F5"
-theme.notification_crit_border = "#EF9F76"
+theme.notification_crit_bg = theme.background
+theme.notification_crit_fg = theme.foreground
+theme.notification_crit_border_color = theme.red
+
+-- theme.notification_width = ""
+-- theme.notification_height = ""
+-- theme.notification_max_width = ""
+-- theme.notification_max_height = ""
+-- theme.notification_icon_size = ""
+
+theme.tooltip_border_color = theme.bright_background
+theme.tooltip_bg = theme.background
+theme.tooltip_fg = theme.foreground
+theme.tooltip_font = theme.font
+theme.tooltip_border_width = dpi(1)
+theme.tooltip_opacity = 75
+theme.tooltip_shape = function(cr, w, h) gears.shape.rounded_rect(cr, w, h, theme.border_radius) end
+-- theme.tooltip_align = ""
 
 theme.layout_fairh = theme.default_dir .. "default/layouts/fairhw.png"
 theme.layout_fairv = theme.default_dir .. "default/layouts/fairvw.png"

@@ -43,27 +43,27 @@ local function switch(case)
   end
 end
 
-local tags = {
+Tags = {
   -- "", "", "", "", "", "", "", "", "ﭮ", "",
   -- "", "", "", "", "", "", "", "", "", "",
-  -- "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-  "Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ",
+  "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+  -- "Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ",
   -- ">_<", "o_O", "~_~", "T-T", "^_^", "._.", ":3", ":')", ":D", "?_?",
 }
 
 function Create_tags(s)
-  for i, _ in ipairs(tags) do
+  for i, _ in ipairs(Tags) do
     switch(i) {
       [1] = function()
         awful.tag(
-          { tags[1] },
+          { Tags[1] },
           s,
           awful.layout.layouts[1]
         )
       end,
       [2] = function()
         awful.tag.add(
-          tags[2],
+          Tags[2],
           {
             layout = awful.layout.layouts[1],
             screen = s,
@@ -72,7 +72,7 @@ function Create_tags(s)
       end,
       [3] = function()
         awful.tag.add(
-          tags[3],
+          Tags[3],
           {
             layout = awful.layout.layouts[1],
             screen = s,
@@ -81,7 +81,7 @@ function Create_tags(s)
       end,
       [4] = function()
         awful.tag.add(
-          tags[4],
+          Tags[4],
           {
             layout = awful.layout.layouts[1],
             screen = s,
@@ -90,7 +90,7 @@ function Create_tags(s)
       end,
       [5] = function()
         awful.tag.add(
-          tags[5],
+          Tags[5],
           {
             layout = awful.layout.layouts[1],
             screen = s,
@@ -99,7 +99,7 @@ function Create_tags(s)
       end,
       [6] = function()
         awful.tag.add(
-          tags[6],
+          Tags[6],
           {
             layout = awful.layout.layouts[1],
             screen = s,
@@ -108,7 +108,7 @@ function Create_tags(s)
       end,
       [7] = function()
         awful.tag.add(
-          tags[7],
+          Tags[7],
           {
             layout = awful.layout.layouts[1],
             screen = s,
@@ -117,7 +117,7 @@ function Create_tags(s)
       end,
       [8] = function()
         awful.tag.add(
-          tags[8],
+          Tags[8],
           {
             layout = awful.layout.layouts[1],
             screen = s,
@@ -126,7 +126,7 @@ function Create_tags(s)
       end,
       [9] = function()
         awful.tag.add(
-          tags[9],
+          Tags[9],
           {
             layout = awful.layout.layouts[1],
             screen = s,
@@ -135,7 +135,7 @@ function Create_tags(s)
       end,
       [10] = function()
         awful.tag.add(
-          tags[10],
+          Tags[10],
           {
             layout = awful.layout.layouts[1],
             screen = s,

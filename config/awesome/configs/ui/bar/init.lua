@@ -60,12 +60,12 @@ screen.connect_signal("request::desktop_decoration", function(s)
         Systray,
         SystrayButton,
         Clock,
-        -- NET,
-        -- NETButton,
-        -- MEM,
-        -- MEMButton,
-        -- CPU,
-        -- CPUButton,
+        NET,
+        NETButton,
+        MEM,
+        MEMButton,
+        CPU,
+        CPUButton,
         bluetooth,
         network(),
         Volume,
@@ -79,7 +79,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
   if Autohide then
     --Auto hide bar
     ---@diagnostic disable-next-line: undefined-global
-    local hide = timer({ timeout = 10 })
+    local hide = gears.timer({ timeout = 10 })
 
     hide:connect_signal("timeout", function()
       s.Bar.visible = not s.Bar.visible

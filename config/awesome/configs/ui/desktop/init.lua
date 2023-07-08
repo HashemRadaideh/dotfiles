@@ -295,6 +295,3 @@ w:setup {
   my_button("restart", function() awesome.restart() end)
 }
 -- w.visible = true
-
-local touchwidget = require('configs.ui.desktop.touchwidgets')
--- touchwidget.toggle()

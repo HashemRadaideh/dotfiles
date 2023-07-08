@@ -1,13 +1,20 @@
-pcall(require, "luarocks.loader")
-require('awful.autofocus')
-
-local gears = require("gears")
-local beautiful = require("beautiful")
-beautiful.init(gears.filesystem.get_configuration_dir() .. "configs/theme.lua")
+Bluetooth_manager = "blueman-manager"
+File_manager = "pcmanfm"
+Graphical_editor = os.getenv("VISUAL")
+Network_manager = "nm-connection-editor"
+Power_manager = "xfce4-power-manager"
+Shell = os.getenv("SHELL")
+Terminal_emulator = os.getenv("TERMINAL")
+Terminal_editor = Terminal_emulator .. " -e " .. Shell .. " -c " .. os.getenv("EDITOR")
+Terminal_file_manager = Terminal_emulator .. " -e " .. Shell .. " -c " .. os.getenv("FILEMANAGER")
+Terminal_multiplexed = Terminal_emulator .. " -e " .. Shell .. " -c " .. "fzt"
+Web_browser = "google-chrome-stable"
 
 Autohide = true
-Is_zen = true
-Is_titled = false
-Is_sloppy = false
+Zen = true
+Sloppy = false
+Titled = false
+
+Theme = "configs/theme.lua"
 
 require('configs')
