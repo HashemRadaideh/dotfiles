@@ -3,9 +3,10 @@ if [ ! -x "$(command -v docker)"  ]; then
 fi
 
 dbuild() {
-  docker build -t "$1" .
+  docker build -t "$(basename "$(pwd)")" .
 }
 
 drun() {
-  docker run -it --rm -v `pwd`:/work "$1"
+  dbuild "$(basename "$(pwd)")"
+  docker run --rm -it --net=host --env="DISPLAY" -v `pwd`:/work $@ "$(basename "$(pwd)")"
 }

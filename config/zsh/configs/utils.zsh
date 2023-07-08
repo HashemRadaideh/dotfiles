@@ -6,7 +6,7 @@ testkey() {
 
 # Window managers testing utility
 testwm() {
-  Xephyr :5 -resizeable  & sleep 1 ; DISPLAY=:5 "$1" # wmctrl -r :5 -e 0,0,0,100,100
+  Xephyr :5 -resizeable  & sleep 1 ; DISPLAY=:5 "$1"; # wmctrl -r :5 -e 0,0,0,100,100
 }
 
 testcolors() {
