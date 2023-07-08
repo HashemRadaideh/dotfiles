@@ -1,15 +1,54 @@
-format = """$directory$character"""
 
 add_newline = true
 
+format = """
+[╭](bold green)\
+$username$hostname\
+$directory\
+$sudo\
+$cmd_duration\
+$time\
+$line_break\
+[╰─](bold green)$character
+"""
+
+[username]
+format = "[$user]($style)"
+show_always = true
+style_root = "bold blue"
+style_user = "bold cyan"
+
+[hostname]
+format = "[@](bold white)[$hostname]($style) in"
+ssh_only = false
+style = "bold dimmed green"
+# trim_at = "-"
+
 [directory]
-format = "[$path]($style)[$read_only]($read_only_style)"
+format = " [$path]($style)[$read_only]($read_only_style)"
 style = "cyan"
 truncate_to_repo = false
 truncation_length = 8
 truncation_symbol = '…/'
 read_only = "  "
 read_only_style = "fg:blue bold"
+
+[sudo]
+format = "[ as $symbol]($style)"
+allow_windows = true
+style = "bold red"
+symbol = "root"
+disabled = false
+
+[cmd_duration]
+format = ' took [$duration](bold yellow)'
+min_time = 1
+
+[time]
+format = ' at [$time](bold green)'
+time_format = "%I:%M %p"
+disabled = false
+use_12hr = true
 
 [character]
 error_symbol = "[](bold red)"

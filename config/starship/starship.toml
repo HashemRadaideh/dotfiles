@@ -1,15 +1,18 @@
-format = """\
-[╭](bold green)\
+
+add_newline = true
+
+format = """
 $username\
 $hostname\
-$sudo\
 $localip\
 $shlvl\
 $singularity\
 $kubernetes\
 $directory\
+$sudo\
 $vcsh\
 (↓ Source control - for right side ↓)\
+$fossil_branch\
 $git_branch\
 $git_commit\
 $git_state\
@@ -17,28 +20,13 @@ $git_metrics\
 $git_status\
 $hg_branch\
 (↑ Source control - for right side ↑)\
-(↓ Package modules ↓)\
-$aws\
-$gcloud\
-$helm\
+$pijul_channel\
 $docker_context\
 $package\
-$cmake\
-$conda\
-$nix_shell\
-$azure\
-$spack\
-$openstack\
-$env_var\
-$crystal\
-$custom\
-(↑ Package modules ↑)\
 (↓ Toolchain version modules ↓)\
-$buf\
 $c\
 $cmake\
 $cobol\
-$container\
 $daml\
 $dart\
 $deno\
@@ -46,70 +34,64 @@ $dotnet\
 $elixir\
 $elm\
 $erlang\
+$fennel\
 $golang\
+$guix_shell\
 $haskell\
+$haxe\
 $helm\
 $java\
 $julia\
 $kotlin\
+$gradle\
 $lua\
 $nim\
 $nodejs\
 $ocaml\
+$opa\
 $perl\
 $php\
 $pulumi\
 $purescript\
 $python\
+$raku\
 $rlang\
 $red\
 $ruby\
 $rust\
 $scala\
+$solidity\
 $swift\
 $terraform\
 $vlang\
 $vagrant\
 $zig\
+$buf\
+$nix_shell\
+$conda\
+$meson\
+$spack\
 (↑ Toolchain version modules ↑)\
+(↓ Package modules ↓)\
+$aws\
+$openstack\
+$azure\
+$env_var\
+$crystal\
+$custom\
+(↑ Package modules ↑)\
 $memory_usage\
-$battery\
 $cmd_duration\
+$battery\
 $status\
-(↑ above input line ↑)\
-$line_break\
-(↓ on input line ↓)\
-[╰─](bold green)\
-$character\
-"""
+$os\
+$container\
+$character"""
 
-right_format = '$shell $jobs at $time '
-
-add_newline = true
-
-command_timeout = 10000
-
-[time]
-format = '[$time](bold green)'
-time_format = "%I:%M %p"
-disabled = false
-use_12hr = true
-
-[jobs]
-format = '[\[$symbol(:$number)\]](cyan)'
-symbol = '⚙'
-symbol_threshold = 1
-number_threshold = 2
-
-[sudo]
-format = "[ as $symbol]($style)"
-allow_windows = true
-style = "bold red"
-symbol = "root"
-disabled = false
+# $gcloud\
 
 [username]
-format = " [$user]($style)"
+format = "[$user]($style)"
 show_always = false
 style_root = "bold blue"
 style_user = "bold cyan"
@@ -120,8 +102,15 @@ ssh_only = true
 style = "bold dimmed green"
 # trim_at = "-"
 
+[sudo]
+format = "[as $symbol ]($style)"
+allow_windows = true
+style = "bold red"
+symbol = "root"
+disabled = false
+
 [directory]
-format = " [$path ]($style)[$read_only]($read_only_style)"
+format = "[$path ]($style)[$read_only]($read_only_style)"
 style = "cyan"
 truncate_to_repo = true
 truncation_length = 0
@@ -133,8 +122,6 @@ read_only_style = "fg:blue bold"
 error_symbol = "[✗](bold red)"
 success_symbol = "[](bold blue)"  # ❱❯
 vicmd_symbol = "[λ](bold magenta)"
-
-# Git settings
 
 [git_branch]
 symbol = " "
@@ -164,74 +151,3 @@ renamed = "  﫦${count} "
 modified = " 凜${count} "
 staged = "  ${count} "
 untracked = "  ${count} "
-
-# Laguage symbols
-
-[aws]
-symbol = "  "
-
-[buf]
-symbol = " "
-
-[c]
-symbol = " "
-
-[conda]
-symbol = " "
-
-[dart]
-symbol = " "
-
-[docker_context]
-symbol = " "
-
-[dotnet]
-symbol = " "
-
-[elixir]
-symbol = " "
-
-[elm]
-symbol = " "
-
-[golang]
-symbol = " "
-
-[haskell]
-symbol = " "
-
-[hg_branch]
-symbol = " "
-
-[java]
-symbol = " "
-
-[julia]
-symbol = " "
-
-[lua]
-symbol = ' '
-
-[memory_usage]
-symbol = " "
-
-[nim]
-symbol = " "
-
-[nix_shell]
-symbol = " "
-
-[nodejs]
-symbol = " "
-
-[package]
-symbol = " "
-
-[python]
-symbol = " "
-
-[spack]
-symbol = "🅢 "
-
-[rust]
-symbol = " "
