@@ -8,9 +8,9 @@ function run {
 
 run mpv --no-video /usr/share/sounds/freedesktop/stereo/service-login.oga
 
-run playerctld daemon
-
 run /usr/bin/polkit-dumb-agent
+
+run playerctld daemon
 
 # run wireplumber
 # run qjwgraph --minimized
@@ -29,10 +29,14 @@ run steam -silent
 # run teams
 # run zoom
 
+run dunst
+
 wallpaper="$(find ~/Pictures/wallpapers/ -type f -exec file {} \; | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)"
 
 if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "${DISPLAY+x}" ]; then
-  run autorotate
+  run setxkbmap -layout us,ara -option grp:win_space_toggle
+  run xmodmap -e "keycode 135 = Super_R"
+  run xset -b
 
   screenCount=$(xrandr | rg " connected" | wc -l)
 
@@ -40,20 +44,21 @@ if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "${DISPLAY+x}" ]; then
     run $DOTFILES/bin/scripts/screenlayout
   fi
 
-  setxkbmap -layout us,ara -option grp:win_space_toggle
-  xmodmap -e "keycode 135 = Super_R"
-  xset -b
+  for (( i = 0; i < $screenCount; i++ )); do
+    nitrogen --head="$i" --set-zoom-fill "$wallpaper"
+  done
 
   run picom  -b --experimental-backends --config "$DOTFILES/config/picom/picom.conf"
 
+  # run plank
   # run polybar
   # run conky -c $HOME/.config/conky/conky.conf
 
-  for (( i = 0; i < $screenCount; i++ )); do
-    # nitrogen --head="$i" --set-zoom-fill --random "$HOME/Pictures/wallpapers"
-    nitrogen --head="$i" --set-zoom-fill "$wallpaper"
-  done
-  run xss-lock lock 
+  run autorotate
+
+  run greenclip daemon
+
+  run xss-lock lock
 
   run xidlehook \
     --not-when-fullscreen \
@@ -68,21 +73,16 @@ if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "${DISPLAY+x}" ]; then
       'systemctl suspend' \
       ''
 
-  # run /usr/lib/geoclue-2.0/demos/agent &
-  # run redshift-gtk
-
-  # run redshift-gtk -l $(curl -s "https://location.services.mozilla.com/v1/geolocate?key=geoclue" | jq -r '"\(.location.lat):\(.location.lng)"')
-
-  run redshift -l `while ! ping -c 1 ipinfo.io >/dev/null 2>&1; do sleep 1; done; curl ipinfo.io/loc | tr ',' ':'`
+  run redshift-gtk -l `while ! ping -c 1 1.1.1.1 >/dev/null 2>&1; do sleep 1; done; curl -s "https://location.services.mozilla.com/v1/geolocate?key=geoclue" | jq -r '"\(.location.lat):\(.location.lng)"'`
 else
-  run waybar
-
   run swww init && swww img \
     $wallpaper \
     --transition-step 255
 
+  run waybar
+
+  # run mako
+
   run wl-paste --type text --watch cliphist store
   # run wl-paste --type image --watch cliphist store
-
-  run mako
 fi
