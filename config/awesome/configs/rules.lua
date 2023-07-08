@@ -6,7 +6,7 @@ local screen_width = awful.screen.focused().geometry.width
 local screen_height = awful.screen.focused().geometry.height
 
 ---@diagnostic disable-next-line: undefined-global
-local client, screen = client, screen
+local client = client
 
 ruled.client.connect_signal("request::rules", function()
   ruled.client.append_rule {
@@ -64,32 +64,49 @@ ruled.client.connect_signal("request::rules", function()
         "dialog",
       },
     },
-    properties = { floating = true }
+    properties = {
+      floating = true,
+      screen   = awful.screen.focused,
+    }
   }
 
   ruled.client.append_rule {
     rule_any   = { type = { "dialog" } },
     properties = {
       titlebars_enabled = true,
-      floating = true,
-      placement = awful.placement.centered +
+      floating          = true,
+      screen            = awful.screen.focused,
+      placement         = awful.placement.centered +
           awful.placement.no_overlap +
           awful.placement.no_offscreen
     }
   }
 
   ruled.client.append_rule {
+    rule_any = { name = { "plank" } },
+    properties = {
+      screen       = awful.screen.focused,
+      ontop        = true,
+      border_width = 0,
+    }
+  }
+
+  ruled.client.append_rule {
     id         = "titlebars",
     rule_any   = { type = { "normal" } },
-    properties = { titlebars_enabled = Is_titled }
+    properties = {
+      titlebars_enabled = Titled,
+      screen            = awful.screen.focused,
+    }
   }
 
   ruled.client.append_rule {
     rule = { class = "Pavucontrol" },
     properties = {
       titlebars_enabled = true,
-      floating = true,
-      placement = awful.placement.centered +
+      floating          = true,
+      screen            = awful.screen.focused,
+      placement         = awful.placement.centered +
           awful.placement.no_overlap +
           awful.placement.no_offscreen
     }
@@ -97,86 +114,142 @@ ruled.client.connect_signal("request::rules", function()
 
   ruled.client.append_rule {
     rule = { class = "DesktopEditors" },
-    properties = { tag = screen[1].tags[3], titlebars_enabled = false }
+    properties = {
+      screen = awful.screen.focused,
       tag = Tags[3],
+      titlebars_enabled = false,
+    }
   }
 
   ruled.client.append_rule {
     rule = { class = "firefox" },
-    properties = { tag = screen[1].tags[2] }
+    properties = {
+      screen = awful.screen.focused,
       tag    = Tags[2],
+    }
   }
 
   ruled.client.append_rule {
     rule = { class = "Brave" },
-    properties = { tag = screen[1].tags[2] }
+    properties = {
+      screen = awful.screen.focused,
       tag = Tags[2],
+    }
   }
 
   ruled.client.append_rule {
     rule = { class = "Google-chrome" },
-    properties = { tag = screen[1].tags[2] }
+    properties = {
+      screen = awful.screen.focused,
       tag    = Tags[2],
+    },
+    callback = function(c)
+      local tags = awful.screen.focused().tags
+      local current_tag = tags[2] -- awful.tag.getidx()
+
+      local function is_empty(tag, clt)
+        local count = 0
+
+        for _, clnt in pairs(tag:clients()) do
+          count = clnt.class == c.class and count + 1 or count
+        end
+
+        return count <= 1
+      end
+
+      if not is_empty(current_tag, c) then
+        for _, tag in pairs(tags) do
+          if #tag:clients() == 0 then
+            current_tag = tag
+            break
+          end
+        end
+      end
+
+      c:move_to_tag(current_tag)
+    end
   }
 
   ruled.client.append_rule {
     rule       = { class = "discord" },
-    properties = { tag = screen[1].tags[9] }
+    properties = {
+      screen = awful.screen.focused,
       tag    = Tags[9],
+    }
   }
 
   ruled.client.append_rule {
     rule = { class = "zoom" },
-    properties = { tag = screen[1].tags[9] }
+    properties = {
+      screen = awful.screen.focused,
       tag    = Tags[9],
+    }
   }
 
   ruled.client.append_rule {
     rule = { class = "Microsoft Teams - Preview" },
-    properties = { tag = screen[1].tags[9] }
+    properties = {
+      screen = awful.screen.focused,
       tag    = Tags[9],
+    }
   }
 
   ruled.client.append_rule {
     rule = { class = "Steam", name = "Steam" },
-    properties = { tag = screen[1].tags[7], titlebars_enabled = false }
+    properties = {
+      titlebars_enabled = false,
       tag = Tags[7],
+      screen = awful.screen.focused,
+    }
   }
 
   ruled.client.append_rule {
     rule = { class = "lutris", name = "lutris" },
-    properties = { tag = screen[1].tags[7], titlebars_enabled = false }
+    properties = {
+      titlebars_enabled = false,
       tag = Tags[7],
+      screen = awful.screen.focused,
+    }
   }
 
   ruled.client.append_rule {
     rule = { class = "Spotify" },
-    properties = { tag = screen[1].tags[8] }
+    properties = {
+      screen = awful.screen.focused,
       tag    = Tags[8],
+    }
   }
 
   ruled.client.append_rule {
     rule = { class = "Xephyr" },
-    properties = { tag = screen[1].tags[5] }
+    properties = {
+      screen = awful.screen.focused,
       tag    = Tags[5],
+    }
   }
 
   ruled.client.append_rule {
     rule = { class = "Trello" },
-    properties = { tag = screen[1].tags[4] }
+    properties = {
+      screen = awful.screen.focused,
       tag    = Tags[4],
+    }
   }
 
   ruled.client.append_rule {
     rule = { class = "notion-app" },
-    properties = { tag = screen[1].tags[4] }
+    properties = {
+      screen = awful.screen.focused,
       tag    = Tags[4],
+    }
   }
 
   ruled.client.append_rule {
     rule = { class = "Evernote" },
-    properties = { tag = screen[1].tags[4] }
+    properties = {
+      screen = awful.screen.focused,
       tag    = Tags[4],
+    }
   }
 
   ruled.client.append_rule({
@@ -190,8 +263,9 @@ ruled.client.connect_signal("request::rules", function()
     },
     properties = {
       floating = true,
-      width = screen_width * 0.7,
-      height = screen_height * 0.75,
+      width    = screen_width * 0.7,
+      height   = screen_height * 0.75,
+      screen   = awful.screen.focused,
     },
     callback = function(c)
       awful.placement.centered(
@@ -203,14 +277,17 @@ ruled.client.connect_signal("request::rules", function()
 
   ruled.client.append_rule {
     rule = { class = "polybar", name = "polybar%-example_HDMI%-1" },
-    properties = { titlebars_enabled = false }
+    properties = {
+      titlebars_enabled = false,
+      screen            = awful.screen.focused,
+    }
   }
 end)
 
-client.connect_signal("property::class", function(c)
+client.connect_signal("request::manage", function(c)
   if c.class == "Spotify" then
-    c:move_to_screen(8)
-    c:move_to_tag(screen[1].tags[8])
+    c:move_to_screen(awful.screen.focused())
+    c:move_to_tag(Tags[8])
     local tag = awful.tag.gettags(2)[3]
     if tag then
       awful.tag.viewonly(tag)
