@@ -337,3 +337,4 @@ ghidra
 macchina
 freshfetch
 opam
+glad
