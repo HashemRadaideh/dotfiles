@@ -7,17 +7,13 @@
     "gtk-layer-shell": true,
     "height": 0,
     // "spacing": 4,
-
     "modules-left": [
         "custom/search",
         // "custom/new",
         "wlr/workspaces",
-        "hyprland/window",
+        "hyprland/window"
     ],
-
-    "modules-center": [
-    ],
-
+    "modules-center": [],
     "modules-right": [
         // "cpu",
         // "memory",
@@ -30,19 +26,16 @@
         "network",
         "battery",
         "battery#bat2",
-        "clock",
+        "clock"
     ],
-
     "custom/search": {
         "format": "",
-        "on-click": "killall rofi || rofi -show drun -theme 'themes/launchpad.rasi'",
+        "on-click": "killall rofi || rofi -show drun -theme 'themes/launchpad.rasi'"
     },
-
     "custom/new": {
         "format": "",
-        "on-click": "hyprctl dispatch workspace empty",
+        "on-click": "hyprctl dispatch workspace empty"
     },
-
     "wlr/workspaces": {
         "disable-scroll": true,
         "all-outputs": true,
@@ -60,11 +53,9 @@
             "10": []
         }
     },
-
     "hyprland/window": {
         "format": "{}"
     },
-
     "pulseaudio": {
         // "scroll-step": 1, // %, can be a float
         "format": "{icon} {volume}%",
@@ -78,11 +69,14 @@
             "phone": "",
             "portable": "",
             "car": "",
-            "default": ["", "", ""]
+            "default": [
+                "",
+                "",
+                ""
+            ]
         },
         "on-click": "pavucontrol"
     },
-
     "pulseaudio#microphone": {
         "format": "{format_source}",
         "format-source": " {volume}%",
@@ -92,7 +86,6 @@
         "on-scroll-down": "pamixer --default-source -d 5",
         "scroll-step": 5
     },
-
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
         "format-wifi": " {signalStrength}%",
@@ -102,17 +95,14 @@
         "format-disconnected": "⚠ Disconnected",
         "format-alt": "{ifname}: {ipaddr}/{cidr}"
     },
-
     "cpu": {
         "format": " {usage}%",
         "tooltip": false
     },
-
     "memory": {
         "format": " {}%",
         "tooltip": false
     },
-
     "temperature": {
         // "thermal-zone": 2,
         // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
@@ -120,15 +110,29 @@
         "critical-threshold": 80,
         "format-critical": "{icon} {temperatureC}°C",
         "format": "{icon} {temperatureC}°C",
-        "format-icons": ["", "", "", "", ""]
+        "format-icons": [
+            "",
+            "",
+            "",
+            "",
+            ""
+        ]
     },
-
     "backlight": {
         "device": "acpi_video1",
         "format": "{percent}% {icon}",
-        "format-icons": ["", "", "", "", "", "", "", "", ""]
+        "format-icons": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ]
     },
-
     "keyboard-state": {
         "numlock": true,
         "capslock": true,
@@ -138,7 +142,6 @@
             "unlocked": ""
         }
     },
-
     "battery": {
         "states": {
             "good": 95,
@@ -151,22 +154,25 @@
         "format-alt": "{time} {icon}",
         // "format-good": "{icon}",
         // "format-full": "{icon}",
-        "format-icons": ["", "", "", "", ""]
+        "format-icons": [
+            "",
+            "",
+            "",
+            "",
+            ""
+        ]
     },
-
     "battery#bat2": {
         "bat": "BAT2"
     },
-
     "clock": {
         // "format": "{: %I:%M %a, %d %b}",
         "format": "{: %H:%M %a, %d %b}",
         "format-alt": "{: %R  %d/%m/%Y}",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
     },
-
     "tray": {
         "icon-size": 21,
         "spacing": 10
-    },
+    }
 }
