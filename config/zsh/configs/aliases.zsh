@@ -40,8 +40,8 @@ alias ll="lsd -lAhF --color=always --group-directories-first | bat"  # paged lon
 alias lt="lsd -aT --color=always --group-directories-first"   # tree listing
 
 # emacs shortcuts
-alias emacs="emacsclient -c -a 'emacs'" # client emacs gui
-alias em="emacs -nw" # terminal emacs editor
+alias emacs="/usr/bin/emacsclient -c -a '/usr/bin/emacs'" # client emacs gui
+alias em="/usr/bin/emacs -nw" # terminal emacs editor
 
 # tmux with unicode shortcut
 alias tmux="tmux -u"
