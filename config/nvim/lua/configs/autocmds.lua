@@ -16,6 +16,8 @@ vim.cmd [[
         hi VertSplit guibg=none ctermbg=none
         hi SignColumn guibg=none ctermbg=none
         hi EndOfBuffer guibg=none ctermbg=none
+        " hi CursorColumn guibg=none ctermbg=none
+        " hi CursorLine guibg=none ctermbg=none
         let g:transparency = 1
       else
         execute 'colorscheme ' . g:colors_name
@@ -23,10 +25,9 @@ vim.cmd [[
       endif
     endif
   endfunction
-  " au VimEnter * call Transparency()
+  au VimEnter * call Transparency()
   nnoremap <silent> <F10> :call Transparency()<CR>
 ]]
-
 
 -- vim.cmd [[
 --   augroup config_change

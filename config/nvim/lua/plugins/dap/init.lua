@@ -145,16 +145,50 @@ virtual_text.setup {
   -- e.g. 80 to position at column 80, see `:h nvim_buf_set_extmark()`
 }
 
+-- -- Basic debugging keymaps, feel free to change to your liking!
+-- vim.keymap.set('n', '<F5>', dap.continue)
+-- vim.keymap.set('n', '<F1>', dap.step_into)
+-- vim.keymap.set('n', '<F2>', dap.step_over)
+-- vim.keymap.set('n', '<F3>', dap.step_out)
+-- vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint)
+-- vim.keymap.set('n', '<leader>B', function()
+--   dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
+-- end)
 
--- Basic debugging keymaps, feel free to change to your liking!
-vim.keymap.set('n', '<F5>', dap.continue)
-vim.keymap.set('n', '<F1>', dap.step_into)
-vim.keymap.set('n', '<F2>', dap.step_over)
-vim.keymap.set('n', '<F3>', dap.step_out)
-vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint)
-vim.keymap.set('n', '<leader>B', function()
-  dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
-end)
+vim.fn.sign_define('DapBreakpoint', {
+  text = '🔴',
+  texthl = 'DapBreakpoint',
+  linhl = 'DapBreakpoint',
+  numhl = 'DapBreakpoint'
+})
+
+-- vim.fn.sign_define('DapBreakpointCondition', {
+--   text = '',
+--   texthl = 'DapBreakpoint',
+--   linhl = 'DapBreakpoint',
+--   numhl = 'DapBreakpoint'
+-- })
+
+-- vim.fn.sign_define('DapBreakpointRejected', {
+--   text = '',
+--   texthl = 'DapBreakpoint',
+--   linhl = 'DapBreakpoint',
+--   numhl = 'DapBreakpoint'
+-- })
+
+-- vim.fn.sign_define('DapLogPoint', {
+--   text = '💬',
+--   texthl = 'DapLogPoint',
+--   linhl = 'DapLogPoint',
+--   numhl = 'DapLogPoint'
+-- })
+
+-- vim.fn.sign_define('DapStopped', {
+--   text = '',
+--   texthl = 'DapStopped',
+--   linhl = 'DapStopped',
+--   numhl = 'DapStopped'
+-- })
 
 -- Install golang specific config
 require('dap-go').setup()

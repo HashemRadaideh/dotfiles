@@ -1,5 +1,5 @@
-vim.keymap.set({ "n", "i", "x", "o", "v" }, "<C-z>", "<nop>")
-vim.keymap.set({ "n", "i", "x", "o", "v" }, "Q", "<nop>")
+vim.keymap.set({ "n", "x", "o", "v" }, "<C-z>", "<nop>")
+vim.keymap.set({ "n", "x", "o", "v" }, "Q", "<nop>")
 
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true })
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
@@ -15,6 +15,7 @@ vim.keymap.set('n', '<C-S-h>', '<cmd>vertical resize -1<cr>', { desc = "Resize p
 vim.keymap.set('n', '<C-S-j>', '<cmd>resize -1<cr>', { desc = "Resize pane" })
 vim.keymap.set('n', '<C-S-k>', '<cmd>resize +1<cr>', { desc = "Resize pane" })
 vim.keymap.set('n', '<C-S-l>', '<cmd>vertical resize +1<cr>', { desc = "Resize pane" })
+
 -- resize panes with Ctrl up, down, left, right
 vim.keymap.set('n', '<C-Up>', '<cmd>resize +2<CR>', { desc = 'Increase window height' })
 vim.keymap.set('n', '<C-Down>', '<cmd>resize -2<CR>', { desc = 'Decrease window height' })
@@ -197,13 +198,13 @@ vim.keymap.set('n', '<C-8>', '<cmd>BufferLineGoToBuffer 8<CR>')
 vim.keymap.set('n', '<C-9>', '<cmd>BufferLineGoToBuffer 9<CR>')
 
 -- DAP mappings
-vim.keymap.set("n", "<F2>", "<cmd>lua require('dap').step_over()<CR>")
-vim.keymap.set("n", "<F3>", "<cmd>lua require('dap').step_into()<CR>")
-vim.keymap.set("n", "<F4>", "<cmd>lua require('dap').step_out()<CR>")
-vim.keymap.set("n", "<F5>", "<cmd>lua require('dap').continue()<CR>")
-
-vim.keymap.set("n", "<F6>", "<cmd>lua require('dapui').toggle()<CR>")
+vim.keymap.set("n", "<F5>", "<cmd>lua require('dapui').toggle()<CR>")
 vim.keymap.set('n', '<leader>;', '<cmd>lua require"dap".toggle_breakpoint()<cr>')
+
+vim.keymap.set("n", "<F1>", "<cmd>lua require('dap').step_over()<CR>")
+vim.keymap.set("n", "<F2>", "<cmd>lua require('dap').step_into()<CR>")
+vim.keymap.set("n", "<F3>", "<cmd>lua require('dap').step_out()<CR>")
+vim.keymap.set("n", "<F4>", "<cmd>lua require('dap').continue()<CR>")
 
 vim.keymap.set("n", "<Leader>dhh", "<cmd>lua require('dap.ui.variables').hover()<CR>")
 vim.keymap.set("v", "<Leader>dhv", "<cmd>lua require('dap.ui.variables').visual_hover()<CR>")

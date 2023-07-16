@@ -90,55 +90,6 @@ require('lazy').setup({
   },
 
   {
-    "jackMort/ChatGPT.nvim",
-    event = "VeryLazy",
-    cmd = {
-      "ChatGPT",
-    },
-    keys = {
-      { "<leader>ch", desc = "toggle chatgpt" },
-    },
-    config = function()
-      require("chatgpt").setup({
-        api_key_cmd = "gpg --decrypt ~/secret.txt.gpg 2>/dev/null"
-      })
-    end,
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim"
-    }
-  },
-
-  {
-    "Bryley/neoai.nvim",
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-    },
-    cmd = {
-      "NeoAI",
-      "NeoAIOpen",
-      "NeoAIClose",
-      "NeoAIToggle",
-      "NeoAIContext",
-      "NeoAIContextOpen",
-      "NeoAIContextClose",
-      "NeoAIInject",
-      "NeoAIInjectCode",
-      "NeoAIInjectContext",
-      "NeoAIInjectContextCode",
-    },
-    keys = {
-      { "<leader>as", desc = "summarize text" },
-      { "<leader>ag", desc = "generate git message" },
-      { "<leader>ai", desc = "toggle ai" },
-    },
-    config = function()
-      require("neoai").setup()
-    end,
-  },
-
-  {
     'codota/tabnine-nvim',
     build = tabnine_build_path(),
     -- cmd = {
@@ -163,11 +114,60 @@ require('lazy').setup({
     end
   },
 
-  {
-    'github/copilot.vim',
-    cmd = "Copilot",
-    keys = { { "<leader>co", desc = "toggle copilot" } }
-  },
+  -- {
+  --   "jackMort/ChatGPT.nvim",
+  --   event = "VeryLazy",
+  --   cmd = {
+  --     "ChatGPT",
+  --   },
+  --   keys = {
+  --     { "<leader>ch", desc = "toggle chatgpt" },
+  --   },
+  --   config = function()
+  --     require("chatgpt").setup({
+  --       api_key_cmd = "gpg --decrypt ~/secret.txt.gpg 2>/dev/null"
+  --     })
+  --   end,
+  --   dependencies = {
+  --     "MunifTanjim/nui.nvim",
+  --     "nvim-lua/plenary.nvim",
+  --     "nvim-telescope/telescope.nvim"
+  --   }
+  -- },
+
+  -- {
+  --   "Bryley/neoai.nvim",
+  --   dependencies = {
+  --     "MunifTanjim/nui.nvim",
+  --   },
+  --   cmd = {
+  --     "NeoAI",
+  --     "NeoAIOpen",
+  --     "NeoAIClose",
+  --     "NeoAIToggle",
+  --     "NeoAIContext",
+  --     "NeoAIContextOpen",
+  --     "NeoAIContextClose",
+  --     "NeoAIInject",
+  --     "NeoAIInjectCode",
+  --     "NeoAIInjectContext",
+  --     "NeoAIInjectContextCode",
+  --   },
+  --   keys = {
+  --     { "<leader>as", desc = "summarize text" },
+  --     { "<leader>ag", desc = "generate git message" },
+  --     { "<leader>ai", desc = "toggle ai" },
+  --   },
+  --   config = function()
+  --     require("neoai").setup()
+  --   end,
+  -- },
+
+  -- {
+  --   'github/copilot.vim',
+  --   cmd = "Copilot",
+  --   keys = { { "<leader>co", desc = "toggle copilot" } }
+  -- },
 
   {
     'AckslD/nvim-gfold.lua',
