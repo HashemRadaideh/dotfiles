@@ -47,7 +47,9 @@ alias em="/usr/bin/emacs -nw" # terminal emacs editor
 alias tmux="tmux -u"
 
 # colored bat with paging
-alias bat="bat --decorations=always --color=always --paging=always"
+alias bat="bat --decorations=always --color=always"
+
+alias paru="paru --bottomup"
 
 # Clear
 # alias clear="clear && pfetch" # | lolcat"
