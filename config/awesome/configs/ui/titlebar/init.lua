@@ -1,11 +1,10 @@
+---@diagnostic disable-next-line: undefined-global
+local client, double_click_timer = client, double_click_timer
 local wibox = require('wibox')
 local gears = require('gears')
 local awful = require('awful')
 local beautiful = require('beautiful')
 local dpi = beautiful.xresources.apply_dpi
-
----@diagnostic disable-next-line: undefined-global
-local client, double_click_timer = client, double_click_timer
 
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
 client.connect_signal("request::titlebars", function(c)
@@ -14,7 +13,7 @@ client.connect_signal("request::titlebars", function(c)
     forced_width = dpi(15),
     forced_height = dpi(15),
     bg = (client.focus and c == client.focus) and
-    beautiful.red or beautiful.taglist_fg_empty,
+        beautiful.red or beautiful.taglist_fg_empty,
     shape = function(cr, w, h) gears.shape.circle(cr, w, h) end,
     widget = wibox.container.background,
   }
@@ -27,7 +26,7 @@ client.connect_signal("request::titlebars", function(c)
     forced_height = dpi(15),
     forced_width = dpi(15),
     bg = (client.focus and c == client.focus) and
-    beautiful.green or beautiful.taglist_fg_empty,
+        beautiful.green or beautiful.taglist_fg_empty,
     shape = function(cr, w, h) gears.shape.circle(cr, w, h) end,
     widget = wibox.container.background,
   }
@@ -43,7 +42,7 @@ client.connect_signal("request::titlebars", function(c)
     forced_height = dpi(15),
     forced_width = dpi(15),
     bg = (client.focus and c == client.focus) and
-    beautiful.blue or beautiful.taglist_fg_empty,
+        beautiful.blue or beautiful.taglist_fg_empty,
     shape = function(cr, w, h) gears.shape.circle(cr, w, h) end,
     widget = wibox.container.background,
   }
@@ -61,7 +60,7 @@ client.connect_signal("request::titlebars", function(c)
     forced_height = dpi(15),
     forced_width = dpi(15),
     bg = (client.focus and c == client.focus) and
-    beautiful.magenta or beautiful.taglist_fg_empty,
+        beautiful.magenta or beautiful.taglist_fg_empty,
     shape = function(cr, w, h) gears.shape.circle(cr, w, h) end,
     widget = wibox.container.background,
   }

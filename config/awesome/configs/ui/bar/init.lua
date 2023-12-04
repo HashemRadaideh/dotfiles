@@ -1,17 +1,18 @@
+---@diagnostic disable-next-line: undefined-global
+local screen = screen
 local awful = require('awful')
 local beautiful = require('beautiful')
 local wibox = require('wibox')
+local gears = require('gears')
+
 local network = require('configs.ui.bar.network')
 local bluetooth = require('configs.ui.bar.bluetooth')
 
----@diagnostic disable-next-line: undefined-global
-local screen, dpi = screen, beautiful.xresources.apply_dpi
-
--- Widgets
-require("configs.ui.bar.widgets")
-
 -- Set up the bar
 screen.connect_signal("request::desktop_decoration", function(s)
+  -- Widgets
+  require("configs.ui.bar.widgets")
+
   s.mypromptbox = awful.widget.prompt()
 
   Create_tags(s)
@@ -19,15 +20,19 @@ screen.connect_signal("request::desktop_decoration", function(s)
   Task = Tasks(s)
 
   s.Bar = awful.wibar {
-    visible      = true,
-    screen       = s,
-    bg           = beautiful.bg_transparent,
-    height       = s.geometry.height / dpi(40),
-    -- height       = dpi(35),
-    width        = s.geometry.width - dpi(0),
-    position     = "top",
-    stretch      = false,
     type         = "dock",
+    screen       = s,
+    visible      = true,
+    hide         = gears.timer({ timeout = 5 }),
+    hover        = false,
+    -- ontop        = true,
+    bg           = beautiful.bg_transparent,
+    x            = 0,
+    y            = 0,
+    height       = s.geometry.height / 40,
+    width        = s.geometry.width,
+    -- stretch      = false,
+    position     = "top",
     border_width = 0,
     border_color = beautiful.black,
     align        = "center",
@@ -51,7 +56,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
         layout = wibox.layout.fixed.horizontal,
         Shape(beautiful.arrow_left),
         Layoutbox,
-        Tags(s),
+        Tagslist(s),
         ModeToggle,
         Shape(beautiful.arrow_right),
       },
@@ -73,19 +78,36 @@ screen.connect_signal("request::desktop_decoration", function(s)
         Battery(),
         Logout,
       },
-    }
+    },
   }
 
   if Autohide then
-    --Auto hide bar
-    ---@diagnostic disable-next-line: undefined-global
-    local hide = gears.timer({ timeout = 10 })
+    s.Bar.hide:start()
+  end
 
-    hide:connect_signal("timeout", function()
-      s.Bar.visible = not s.Bar.visible
-      hide:stop()
+  s.Bar:connect_signal('mouse::enter', function(self)
+    s.Bar.visible = true
+    s.Bar.hover = true
+    s.Bar.hide:stop()
+  end)
+
+  s.Bar:connect_signal('mouse::leave', function(self)
+    s.Bar.hover = false
+
+    s.Bar.hide:connect_signal("timeout", function()
+      if not s.Bar.hover then
+        s.Bar.visible = not Autohide
+      end
+      s.Bar.hide:stop()
     end)
 
-    hide:start()
-  end
+    s.Bar.hide:start()
+  end)
+
+  s.Bar.hide:connect_signal("timeout", function()
+    if not s.Bar.hover then
+      s.Bar.visible = not Autohide
+    end
+    s.Bar.hide:stop()
+  end)
 end)

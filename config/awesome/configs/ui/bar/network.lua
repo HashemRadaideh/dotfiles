@@ -1,12 +1,11 @@
+---@diagnostic disable-next-line: undefined-global
+local awesome = awesome
 local awful = require('awful')
 local wibox = require('wibox')
 local gears = require('gears')
 local naughty = require('naughty')
 local dpi = require('beautiful').xresources.apply_dpi
 local clickable_container = require('configs.ui.bar.clickable-container')
-
----@diagnostic disable-next-line: undefined-global
-local awesome = awesome
 
 local wifi_strength = 100
 local wifi_strength_rounded = math.floor(wifi_strength / 25 + 0.5)

@@ -1,7 +1,6 @@
-local naughty = require('naughty')
-
 ---@diagnostic disable-next-line: undefined-global
 local awesome = awesome
+local naughty = require('naughty')
 
 -- Error handling
 -- Check if awesome encountered an error during startup and fell back to

@@ -1,32 +1,44 @@
-local awful                        = require('awful')
-local beautiful                    = require('beautiful')
-local dpi                          = beautiful.xresources.apply_dpi
+---@diagnostic disable-next-line: undefined-global
+local tag                    = tag
+local awful                  = require('awful')
+local beautiful              = require('beautiful')
+local dpi                    = beautiful.xresources.apply_dpi
 
-beautiful.master_fill_policy       = "master_width_factor"
-beautiful.master_fill_policy       = "expand"
+beautiful.master_fill_policy = "master_width_factor"
+beautiful.master_fill_policy = "expand"
 -- beautiful.master_width_factor = 0.53
-beautiful.useless_gap              = dpi(0)
-beautiful.border_width             = dpi(1)
-beautiful.gap_single_client        = true
-beautiful.master_count             = 1
-beautiful.column_count             = 1
+beautiful.useless_gap        = dpi(0)
+beautiful.border_width       = dpi(1)
+beautiful.gap_single_client  = true
+beautiful.master_count       = 1
+beautiful.column_count       = 1
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
-awful.layout.suit.tile.left.mirror = true
-awful.layout.layouts               = {
-  awful.layout.suit.tile,
-  awful.layout.suit.tile.left,
-  awful.layout.suit.tile.bottom,
-  awful.layout.suit.tile.top,
-  awful.layout.suit.fair,
-  awful.layout.suit.fair.horizontal,
-  awful.layout.suit.spiral,
-  awful.layout.suit.spiral.dwindle,
-  awful.layout.suit.max,
-  awful.layout.suit.max.fullscreen,
-  awful.layout.suit.magnifier,
-  awful.layout.suit.corner.nw,
-  awful.layout.suit.floating,
+tag.connect_signal("request::default_layouts", function()
+  awful.layout.append_default_layouts({
+    awful.layout.suit.tile,
+    awful.layout.suit.tile.left,
+    awful.layout.suit.tile.bottom,
+    awful.layout.suit.tile.top,
+    awful.layout.suit.fair,
+    awful.layout.suit.fair.horizontal,
+    awful.layout.suit.spiral,
+    awful.layout.suit.spiral.dwindle,
+    awful.layout.suit.max,
+    awful.layout.suit.max.fullscreen,
+    awful.layout.suit.magnifier,
+    awful.layout.suit.corner.nw,
+    awful.layout.suit.floating,
+  })
+  awful.layout.suit.tile.left.mirror = true
+end)
+
+Tags = {
+  -- "", "", "", "", "", "", "", "", "ﭮ", "",
+  -- "", "", "", "", "", "", "", "", "", "",
+  "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+  -- "Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ",
+  -- ">_<", "o_O", "~_~", "T-T", "^_^", "._.", ":3", ":')", ":D", "?_?",
 }
 
 local function switch(case)
@@ -43,13 +55,6 @@ local function switch(case)
   end
 end
 
-Tags = {
-  -- "", "", "", "", "", "", "", "", "ﭮ", "",
-  -- "", "", "", "", "", "", "", "", "", "",
-  "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-  -- "Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ",
-  -- ">_<", "o_O", "~_~", "T-T", "^_^", "._.", ":3", ":')", ":D", "?_?",
-}
 
 function Create_tags(s)
   for i, _ in ipairs(Tags) do

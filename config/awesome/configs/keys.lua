@@ -1,9 +1,9 @@
+---@diagnostic disable-next-line: undefined-global
+local awesome, client, screen = awesome, client, screen
 local awful                   = require('awful')
 local hotkeys_popup           = require('awful.hotkeys_popup')
 local beautiful               = require('beautiful')
-
----@diagnostic disable-next-line: undefined-global
-local awesome, client, screen = awesome, client, screen
+local gears                   = require('gears')
 
 -- Default modkey.
 Ctrl                          = "Control"
@@ -70,20 +70,21 @@ awful.keyboard.append_global_keybindings(
     awful.key(
       { Super }, "b",
       function()
-        -- if Autohide then
-        for s in screen do
-          s.Bar.visible = true
-          ---@diagnostic disable-next-line: undefined-global
-          local hide = timer({ timeout = 5 })
+        if Autohide then
+          for s in screen do
+            s.Bar.visible = Autohide
+            s.Bar.hide = gears.timer({ timeout = 5 })
 
-          hide:connect_signal("timeout", function()
-            s.Bar.visible = false
-            hide:stop()
-          end)
+            s.Bar.hide:connect_signal("timeout", function()
+              if not s.Bar.hover then
+                s.Bar.visible = not Autohide
+              end
+              s.Bar.hide:stop()
+            end)
 
-          hide:start()
+            s.Bar.hide:start()
+          end
         end
-        -- end
       end,
       { description = "Toggle bar visibility", group = "awesome" }
     ),
@@ -92,8 +93,9 @@ awful.keyboard.append_global_keybindings(
       { Super, Shift }, "b",
       function()
         -- if Autohide then
+        Autohide = not Autohide
         for s in screen do
-          s.Bar.visible = not s.Bar.visible
+          s.Bar.visible = not Autohide
         end
         -- end
       end,
@@ -115,11 +117,12 @@ awful.keyboard.append_global_keybindings(
     awful.key(
       { Super, Shift }, "s",
       function()
-        if Is_sloppy then
-          Is_sloppy = false
-        else
-          Is_sloppy = true
-        end
+        Is_sloppy = not Is_sloppy
+        -- if Is_sloppy then
+        --   Is_sloppy = false
+        -- else
+        --   Is_sloppy = true
+        -- end
       end,
       { description = "Toggle sloppy focus", group = "System" }
     ),
@@ -137,11 +140,12 @@ awful.keyboard.append_global_keybindings(
       function()
         Task.visible = not Task.visible
 
-        if Task.visible then
-          TaskButton.image = beautiful.arrow_left
-        else
-          TaskButton.image = beautiful.arrow_right
-        end
+        TaskButton.image = Task.visible and beautiful.arrow_left or beautiful.arrow_right
+        -- if Task.visible then
+        --   TaskButton.image = beautiful.arrow_left
+        -- else
+        --   TaskButton.image = beautiful.arrow_right
+        -- end
       end,
       { description = "Toggle active apps list visibility", group = "System" }
     ),
@@ -151,11 +155,12 @@ awful.keyboard.append_global_keybindings(
       function()
         Systray.visible = not Systray.visible
 
-        if Systray.visible then
-          SystrayButton.image = beautiful.arrow_right
-        else
-          SystrayButton.image = beautiful.arrow_left
-        end
+        SystrayButton.image = Systray.visible and beautiful.arrow_right or beautiful.arrow_left
+        -- if Systray.visible then
+        --   SystrayButton.image = beautiful.arrow_right
+        -- else
+        --   SystrayButton.image = beautiful.arrow_left
+        -- end
       end,
       { description = "Toggle systray visibility", group = "System" }
     ),
@@ -206,7 +211,7 @@ awful.keyboard.append_global_keybindings(
       { Super }, "v",
       function()
         awful.spawn(
-          'cliphist list | rofi -dmenu -theme "themes/clipboard.rasi" | cliphist decode | wl-copy')
+          [[rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}' ; sleep 0.5; xdotool type $(xclip -o -selection clipboard)]])
       end,
       { description = "Open rofi run prompt", group = "Launch" }
     ),
@@ -215,7 +220,7 @@ awful.keyboard.append_global_keybindings(
       { Super }, "c",
       function()
         awful.spawn(
-          'rofi -show calc -modi calc -no-show-match -no-sort -theme "themes/calculator.rasi" | wl-copy')
+          'rofi -show calc -modi calc -no-show-match -no-sort -theme "themes/calculator.rasi" | xclip')
       end,
       { description = "Open rofi run prompt", group = "Launch" }
 
@@ -320,8 +325,7 @@ awful.keyboard.append_global_keybindings(
     --   function()
     --     Desktop.Tasks.visible = not Desktop.Tasks.visible
 
-    --     ---@diagnostic disable-next-line: undefined-global
-    --     local hide = timer({ timeout = 1 })
+    --     local hide = gears.timer({ timeout = 1 })
 
     --     hide:connect_signal("timeout", function()
     --       Desktop.Tasks.visible = not Desktop.Tasks.visible
@@ -360,7 +364,7 @@ awful.keyboard.append_global_keybindings(
     ),
 
     awful.key(
-      { Super, Ctrl }, "n",
+      { Super, Ctrl, Shift }, "n",
       function()
         local c = awful.client.restore()
         if c then
@@ -574,7 +578,7 @@ awful.keyboard.append_global_keybindings(
     awful.key(
       { Super }, "i",
       function()
-        awful.util.spawn([[ playerctl play-pause ]])
+        awful.util.spawn([[playerctl play-pause ]])
       end,
       { description = "Increase volume", group = "Media" }
     ),
@@ -618,7 +622,7 @@ awful.keyboard.append_global_keybindings(
     awful.key(
       {}, "XF86AudioPrev",
       function()
-        awful.util.spawn([[ playerctl previous ]])
+        awful.util.spawn([[playerctl previous ]])
       end,
       { description = "Increase volume", group = "Media" }
     ),
@@ -627,7 +631,7 @@ awful.keyboard.append_global_keybindings(
       {}, "XF86Calculator",
       function()
         awful.spawn(
-          'rofi -show calc -modi calc -no-show-match -no-sort -theme "themes/calculator.rasi" | wl-copy')
+          'rofi -show calc -modi calc -no-show-match -no-sort -theme "themes/calculator.rasi" | xclip')
       end,
       { description = "Increase volume", group = "Media" }
     ),
@@ -663,10 +667,10 @@ awful.keyboard.append_global_keybindings(
       group = "Workflow",
       on_press = function(index)
         local scrn = awful.screen.focused()
-        local tag = scrn.tags[index]
-        if index == 0 then
-          tag = scrn.tags[10]
-        end
+        local tag = index == 0 and scrn.tags[10] or scrn.tags[index]
+        -- if index == 0 then
+        --   tag = scrn.tags[10]
+        -- end
         if tag then
           tag:view_only()
         end
@@ -680,10 +684,10 @@ awful.keyboard.append_global_keybindings(
       group = "Workflow",
       on_press = function(index)
         local scrn = awful.screen.focused()
-        local tag = scrn.tags[index]
-        if index == 0 then
-          tag = scrn.tags[10]
-        end
+        local tag = index == 0 and scrn.tags[10] or scrn.tags[index]
+        -- if index == 0 then
+        --   tag = scrn.tags[10]
+        -- end
         if tag then
           awful.tag.viewtoggle(tag)
         end
@@ -697,10 +701,10 @@ awful.keyboard.append_global_keybindings(
       group = "Workflow",
       on_press = function(index)
         if client.focus then
-          local tag = client.focus.screen.tags[index]
-          if index == 0 then
-            tag = client.focus.screen.tags[10]
-          end
+          local tag = index == 0 and client.focus.screen.tags[10] or client.focus.screen.tags[index]
+          -- if index == 0 then
+          --   tag = client.focus.screen.tags[10]
+          -- end
           if tag then
             client.focus:move_to_tag(tag)
           end
@@ -715,10 +719,10 @@ awful.keyboard.append_global_keybindings(
       group = "Workflow",
       on_press = function(index)
         if client.focus then
-          local tag = client.focus.screen.tags[index]
-          if index == 0 then
-            tag = client.focus.screen.tags[10]
-          end
+          local tag = index == 0 and client.focus.screen.tags[10] or client.focus.screen.tags[index]
+          -- if index == 0 then
+          --   tag = client.focus.screen.tags[10]
+          -- end
           if tag then
             client.focus:toggle_tag(tag)
           end
@@ -828,13 +832,13 @@ client.connect_signal("request::default_mousebindings", function()
       ),
 
       awful.key(
-        { Super }, "n",
+        { Super, Ctrl }, "n",
         function(c) c.minimized = true end,
         { description = "Minimize focused client", group = "System" }
       ),
 
       awful.key(
-        { Super }, "m",
+        { Super, Ctrl }, "m",
         function(c)
           c.maximized = not c.maximized
           c:raise()

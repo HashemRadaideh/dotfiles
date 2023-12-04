@@ -1,12 +1,11 @@
+---@diagnostic disable-next-line: undefined-global
+local client    = client
 local awful     = require('awful')
 local beautiful = require('beautiful')
 local gears     = require('gears')
 local wibox     = require('wibox')
 
 local dpi       = beautiful.xresources.apply_dpi
-
----@diagnostic disable-next-line: undefined-global
-local client    = client
 
 function Shape(img)
   return wibox.widget.imagebox(img)
@@ -137,7 +136,7 @@ Layoutbox = wibox.widget {
 }
 
 -- Taglist/Workspaces
-function Tags(s)
+function Tagslist(s)
   return awful.widget.taglist {
     screen          = s,
     filter          = awful.widget.taglist.filter.all,

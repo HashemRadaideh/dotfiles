@@ -1,10 +1,9 @@
+---@diagnostic disable-next-line: undefined-global
+local awesome, client, root = awesome, client, root
 local gears = require('gears')
 local awful = require('awful')
 local beautiful = require('beautiful')
 local ruled = require("ruled")
-
----@diagnostic disable-next-line: undefined-global
-local awesome, client, root = awesome, client, root
 
 -- Fix window snapping
 awful.mouse.snap.edge_enabled = true
@@ -85,14 +84,26 @@ local function border_adjust(c)
   else
     c.shape = nil
   end
+
+  if Autohide and c.fullscreen and c == client.focus then
+    c.screen.Bartoggle.ontop = false
+    c.screen.Bar.visible = false
+    c.screen.Bar.hide:stop()
+  else
+    c.screen.Bartoggle.ontop = true
+  end
 end
 
 client.connect_signal("focus", border_adjust)
+client.connect_signal("unfocus", border_adjust)
 client.connect_signal("property::maximized", border_adjust)
 client.connect_signal("property::fullscreen", border_adjust)
-client.connect_signal("unfocus", border_adjust)
-client.connect_signal("property::urgent", function(c) c:jump_to() end)
+client.connect_signal("property::urgent", function(c)
+  border_adjust(c)
+  c:jump_to()
+end)
 client.connect_signal("mouse::enter", function(c)
+  border_adjust(c)
   if Sloppy then
     c:emit_signal("request::activate", "mouse_enter", { raise = true })
   end

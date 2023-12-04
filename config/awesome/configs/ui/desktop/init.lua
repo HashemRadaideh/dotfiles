@@ -1,297 +1,105 @@
-local awful                        = require('awful')
-local beautiful                    = require('beautiful')
-local gears                        = require('gears')
-local wibox                        = require('wibox')
-local naughty                      = require('naughty')
-
 ---@diagnostic disable-next-line: undefined-global
-local screen, dpi, awesome, client = screen, beautiful.xresources.apply_dpi, awesome, client
+local screen = screen
+local awful  = require('awful')
+local wibox  = require('wibox')
+local gears  = require('gears')
 
-Desktop                            = {}
+local function getRandPic(directory)
+  local lfs   = require("lfs")
 
-Desktop.Tasks                      = awful.popup {
-  widget       = awful.widget.tasklist {
-    screen          = screen[1],
-    filter          = awful.widget.tasklist.filter.currenttags,
-    style           = {
-      shape = gears.shape.rounded_bar,
-    },
-    layout          = {
-      spacing = 5,
-      forced_num_rows = 2,
-      layout = wibox.layout.grid.horizontal
-    },
-    widget_template = {
-      {
-        {
-          id     = 'clienticon',
-          widget = awful.widget.clienticon,
-        },
-        margins = 4,
-        widget  = wibox.container.margin,
-      },
-      id              = 'background_role',
-      forced_width    = 48,
-      forced_height   = 48,
-      widget          = wibox.container.background,
-      create_callback = function(self, c, index, objects) --luacheck: no unused
-        self:get_children_by_id('clienticon')[1].client = c
-      end,
-    },
-    buttons         = {
-      awful.button(
-        {}, 1,
-        function(c)
-          c:activate {
-            context = "tasklist",
-            action = "toggle_minimization"
-          }
+  local files = {}
+  local function exploreDirectory(dir)
+    for file in lfs.dir(dir) do
+      if file ~= "." and file ~= ".." then
+        local filePath = dir .. '/' .. file
+        local attr = lfs.attributes(filePath)
+        if attr.mode == 'file' then
+          table.insert(files, filePath)
+        elseif attr.mode == 'directory' then
+          exploreDirectory(filePath)
         end
-      ),
-      awful.button(
-        {}, 3,
-        function()
-          awful.menu.client_list {
-            theme = {
-              width = 200,
-              height = 20
-            }
-          }
-        end
-      ),
-      awful.button(
-        {}, 4,
-        function() awful.client.focus.byidx(-1) end
-      ),
-      awful.button(
-        {}, 5,
-        function() awful.client.focus.byidx(1) end
-      ),
-    },
-  },
-  border_color = '#777777',
-  border_width = 2,
-  ontop        = true,
-  placement    = awful.placement.centered,
-  shape        = gears.shape.rounded_rect,
-  visible      = false
-}
-
-Desktop.Clock                      = wibox {
-  visible = false,
-  x       = screen.primary.geometry.width / 2 - 275,
-  y       = 69,
-  width   = 550,
-  height  = 225,
-  bg      = "#000000" .. "00",
-  fg      = "#ffffff",
-  shape   = gears.shape.rounded_rect,
-  widget  = wibox.widget.textclock(
-    (
-      [[         <span font="Anurati 69"> %s </span>
-            <span font="Monospace 21"> %s %s, %s </span>
-                      <span font="Monospace 16"> - %s:%s %s - </span>]]
-    ):format(
-      os.date('%A'):upper(),
-      os.date('%d'),
-      os.date('%B'),
-      os.date('%Y'),
-      os.date('%I'),
-      os.date('%M'),
-      os.date('%p')
-    )
-  ),
-}
-
-Desktop.Side_Panel                 = wibox {
-  screen = screen.primary,
-  visible = false,
-  width = screen.primary.geometry.height - 400,
-  height = screen.primary.geometry.height - screen.primary.Bar.height,
-  x = screen.primary.geometry.width - 400,
-  y = screen.primary.Bar.height,
-  bg = beautiful.bg_transparent,
-  fg = "#ffffff",
-  ontop = true,
-  shape = gears.shape.rounded_rect,
-  buttons = {
-    awful.button(
-      {}, 1,
-      function()
-        Desktop.Side_Panel.visible = not Desktop.Side_Panel.visible
-      end,
-      { description = 'Toggle Side Panel', group = 'awesome' }
-    ),
-    awful.button(
-      {}, 3,
-      function()
-        Desktop.Side_Panel.visible = not Desktop.Side_Panel.visible
-      end,
-      { description = 'Toggle Side Panel', group = 'awesome' }
-    )
-  },
-  widget = {
-    layout = wibox.layout.align.vertical,
-    {
-      layout = wibox.layout.align.vertical,
-      {
-        widget = wibox.container.margin,
-        left   = 10,
-        top    = 10,
-        bottom = 10,
-        right  = 10,
-        shape  = gears.shape.rounded_rect,
-        {
-          forced_width  = dpi(380),
-          forced_height = dpi(380),
-          image         = beautiful.pfp,
-          resize        = true,
-          widget        = wibox.widget.imagebox,
-        }
-      },
-      {
-        widget = wibox.container.margin,
-        left   = 60,
-        top    = 2,
-        bottom = 2,
-        right  = 10,
-        {
-          markup = '' ..
-              '<span font="Monospace 21">' ..
-              beautiful.user .. "@" .. beautiful.hostname ..
-              '</span>',
-          forced_width = dpi(400),
-          widget = wibox.widget.textbox,
-        }
-      },
-    },
-  },
-}
-
-if Autohide then
-  Desktop.Bartoggle = wibox {
-    visible = true,
-    ontop   = true,
-    x       = 0,
-    y       = 0,
-    width   = screen.primary.geometry.width,
-    height  = 1,
-    bg      = "#000000",
-  }
-
-  Desktop.Bartoggle:connect_signal('mouse::enter', function(self)
-    for s in screen do
-      s.Bar.visible = true
-      ---@diagnostic disable-next-line: undefined-global
-      local hide = timer({ timeout = 5 })
-
-      hide:connect_signal("timeout", function()
-        s.Bar.visible = false
-        hide:stop()
-      end)
-
-      hide:start()
+      end
     end
-  end)
+  end
+  exploreDirectory(directory)
 
-  Desktop.Bartoggle:connect_signal('mouse::leave', function(self)
-    for s in screen do
-      s.Bar.visible = true
-      ---@diagnostic disable-next-line: undefined-global
-      local hide = timer({ timeout = 5 })
-
-      hide:connect_signal("timeout", function()
-        s.Bar.visible = false
-        hide:stop()
-      end)
-
-      hide:start()
-    end
-  end)
+  local index = math.random(#files)
+  return files[index]
 end
 
-Desktop.Keyboard = wibox {
-  visible = true,
-  ontop   = true,
-  x       = 0,
-  y       = screen.primary.geometry.height - 1,
-  width   = screen.primary.geometry.width,
-  height  = 1,
-  bg      = "#000000",
-}
+local wallpaper = getRandPic(os.getenv("HOME") .. "/Pictures/wallpapers")
 
-gears.timer {
-  timeout = 1,
-  autostart = true,
-  call_now = true,
-  callback = function() Desktop.Keyboard.y = screen.primary.geometry.height - 1 end
-}
-
-Desktop.Keyboard:connect_signal('mouse::enter', function(self)
-  local g = 7.0 -- (m^2 / s) sensibility, gravity trigger
-
-  local states = {
-    {
-      check = function(x, y) return y <= -g end,
-      keyboard = true,
-    },
-    {
-      check = function(x, y) return y >= g end,
-      keyboard = false,
-    },
-    {
-      check = function(x, y) return x >= g end,
-      keyboard = false,
-    },
-    {
-      check = function(x, y) return x <= -g end,
-      keyboard = false,
-    },
+screen.connect_signal("request::wallpaper", function(s)
+  awful.wallpaper {
+    screen = s,
+    widget = {
+      {
+        image                 = wallpaper,
+        resize                = true,
+        upscale               = true,
+        downscale             = true,
+        horizontal_fit_policy = "fit",
+        vertical_fit_policy   = "fit",
+        widget                = wibox.widget.imagebox,
+      },
+      valign = "center",
+      halign = "center",
+      tiled  = false,
+      widget = wibox.container.background,
+    }
   }
-
-  local x = io.open("/sys/bus/iio/devices/iio:device0/in_accel_x_raw"):read("*all")
-  local y = io.open("/sys/bus/iio/devices/iio:device0/in_accel_y_raw"):read("*all")
-
-  local current_state = nil
-
-  local allowed = false
-
-  for i = 1, 5 do
-    if i == current_state then
-      goto continue
-    end
-    if states[i].check(x + 0, y + 0) then
-      current_state = i
-      allowed = states[i].keyboard
-      break
-    end
-    ::continue::
-  end
-
-  if not allowed then
-    os.execute([[killall corekeyboard]])
-    awful.spawn([[corekeyboard]])
-  end
 end)
 
-local function my_button(text, cb)
-  local tb = wibox.widget.textbox(text)
-  tb.align = "center"
-  tb.valign = "center"
-  tb:buttons(awful.button({}, 1, cb))
-  return tb
-end
+screen.connect_signal("request::desktop_decoration", function(s)
+  s.Bartoggle = wibox {
+    screen  = s,
+    visible = true,
+    ontop   = true,
+    bg      = "#000000",
+    x       = s.geometry.x,
+    y       = 0,
+    width   = s.geometry.width,
+    height  = 1,
+    stretch = true,
+  }
 
-local w = wibox { x = 30, y = 30, width = 300, height = 300, ontop = false }
-w:setup {
-  forced_num_cols = 2,
-  forced_num_rows = 2,
-  homogeneous = true,
-  expand = true,
-  layout = wibox.layout.grid,
-  my_button("notify", function() naughty.notify { text = "Notify!" } end),
-  my_button("close", function() if client.focus then client.focus:kill() end end),
-  my_button("quit", function() awesome.quit() end),
-  my_button("restart", function() awesome.restart() end)
-}
--- w.visible = true
+  s.Bar.hide = gears.timer({ timeout = 5 })
+
+  s.Bartoggle:connect_signal('mouse::enter', function(self)
+    s.Bar.visible = true
+    s.Bar.hover = true
+    s.Bar.hide:stop()
+  end)
+
+  s.Bartoggle:connect_signal('mouse::leave', function(self)
+    s.Bar.hover = false
+
+    s.Bar.hide:connect_signal("timeout", function()
+      if not s.Bar.hover then
+        s.Bar.visible = not Autohide
+      end
+      s.Bar.hide:stop()
+    end)
+
+    s.Bar.hide:start()
+  end)
+
+  s.Keyboard = wibox {
+    screen  = s,
+    visible = true,
+    ontop   = true,
+    bg      = "#000000",
+    x       = s.geometry.x,
+    y       = s.geometry.height - 1,
+    width   = s.geometry.width,
+    height  = 1,
+    stretch = true,
+  }
+
+  s.Keyboard:connect_signal('mouse::enter', function(self)
+    local _, _, status = os.execute('virtkey')
+    if status == 1 then
+      awful.util.spawn([[corekeyboard]])
+    end
+  end)
+end)

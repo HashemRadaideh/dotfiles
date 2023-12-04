@@ -1,12 +1,11 @@
+---@diagnostic disable-next-line: undefined-global
+local client                            = client
 local awful                             = require("awful")
 local gears                             = require("gears")
 local beautiful                         = require("beautiful")
 local naughty                           = require("naughty")
 local menubar                           = require("menubar")
 local dpi                               = beautiful.xresources.apply_dpi
-
----@diagnostic disable-next-line: undefined-global
-local client                            = client
 
 -- Defaults
 naughty.config.defaults.shape           = function(cr, w, h) gears.shape.rounded_rect(cr, w, h, beautiful.border_radius) end

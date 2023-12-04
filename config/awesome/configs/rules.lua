@@ -1,12 +1,11 @@
+---@diagnostic disable-next-line: undefined-global
+local client = client
 local awful = require("awful")
 local ruled = require("ruled")
 
 -- Get screen geometry
 local screen_width = awful.screen.focused().geometry.width
 local screen_height = awful.screen.focused().geometry.height
-
----@diagnostic disable-next-line: undefined-global
-local client = client
 
 ruled.client.connect_signal("request::rules", function()
   ruled.client.append_rule {
@@ -72,6 +71,18 @@ ruled.client.connect_signal("request::rules", function()
 
   ruled.client.append_rule {
     rule_any   = { type = { "dialog" } },
+    properties = {
+      titlebars_enabled = true,
+      floating          = true,
+      screen            = awful.screen.focused,
+      placement         = awful.placement.centered +
+          awful.placement.no_overlap +
+          awful.placement.no_offscreen
+    }
+  }
+
+  ruled.client.append_rule {
+    rule_any   = { name = { "Emulator" } },
     properties = {
       titlebars_enabled = true,
       floating          = true,
