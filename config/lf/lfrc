@@ -21,7 +21,7 @@ set hidden false
 set drawbox false
 set icons true
 
-set ratios 1:2:2
+set ratios 1:2
 set info size:time
 
 # Functions
@@ -42,8 +42,8 @@ cmd unarchive ${{
 }}
 
 cmd find_files ${{
-	printf "File name: "
-	read name
+  printf "File name: "
+  read name
   temp=$(sudo find / -iname $name)
   echo $temp | fzf
 }}

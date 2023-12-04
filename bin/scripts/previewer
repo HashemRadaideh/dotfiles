@@ -20,4 +20,11 @@ if [[ "$filetype" =~ ^video ]]; then
     exit 1
 fi
 
-pistol "$file"
+case "$1" in
+    *.tar*) tar tf "$1";;
+    *.zip) unzip -l "$1";;
+    *.rar) unrar l "$1";;
+    *.7z) 7z l "$1";;
+    *.pdf) pdftotext "$1" -;;
+    *) \bat --decorations=always --color=always "$1" ;;
+esac
