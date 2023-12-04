@@ -26,13 +26,27 @@ zrc() {
   # opam configuration
   [[ ! -r /home/hashem/.opam/opam-init/init.zsh ]] || source /home/hashem/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
-  python_venv() {
-    MYVENV=./.venv
-    # when you cd into a folder that contains $MYVENV
-    [[ -d $MYVENV ]] && source $MYVENV/bin/activate > /dev/null 2>&1
-    # when you cd into a folder that doesn't
-    [[ ! -d $MYVENV ]] && deactivate > /dev/null 2>&1
+  python-venv() {
+    local MYVENV=
+    local current_dir="$(pwd)"
+
+    while [ "$current_dir" != "/" ]; do
+      while IFS= read -r -d '' dir; do
+        if [ -f "$dir/pyvenv.cfg" ]; then
+          MYVENV="$dir"
+          break
+        fi
+      done < <(find "$current_dir" -maxdepth 1 -type d -print0)
+
+      [[ -d $MYVENV ]] && break
+
+      current_dir="$(dirname "$current_dir")"
+    done
+
+    [[ -d "$MYVENV" ]] && source "$MYVENV/bin/activate" > /dev/null 2>&1
+
+    [[ ! -d "$MYVENV" ]] && deactivate > /dev/null 2>&1
   }
   autoload -U add-zsh-hook
-  add-zsh-hook chpwd python_venv
+  add-zsh-hook chpwd python-venv
 }
