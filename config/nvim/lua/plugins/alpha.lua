@@ -27,7 +27,7 @@ local function get_greeting()
   elseif (hour >= 21) then
     greetingIndex = 5
   end
-  return greetingsTable[greetingIndex] .. ", " .. os.getenv("USER") .. "."
+  return greetingsTable[greetingIndex] .. ", " .. 'os.getenv("USER")' .. "."
 end
 
 local function get_info()

@@ -425,9 +425,16 @@ require('lazy').setup({
 
   {
     'lukas-reineke/indent-blankline.nvim',
-    event = { "BufReadPost", "BufNewFile" },
+    -- event = { "BufReadPost", "BufNewFile" },
     config = function()
       require('plugins.indent')
+    end
+  },
+
+  {
+    'HiPhish/rainbow-delimiters.nvim',
+    config = function()
+      require('plugins.delimiters')
     end
   },
 
