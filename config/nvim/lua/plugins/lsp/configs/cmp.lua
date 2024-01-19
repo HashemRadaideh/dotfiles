@@ -73,9 +73,10 @@ cmp.setup({
   sources = {
     { name = "nvim_lsp" },
     { name = "luasnip" },
-    { name = "buffer" },
     { name = "path" },
-    { name = "nvim_lua" },
+    { name = "codeium" },
+    -- { name = "buffer" },
+    -- { name = "nvim_lua" },
   },
   mapping = {
     ["<C-j>"] = cmp.mapping(function(fallback)
@@ -183,39 +184,50 @@ cmp.setup({
     completion = cmp.config.window.bordered(),
     documentation = cmp.config.window.bordered(),
   },
+  -- formatting = {
+  --   fields = { "kind", "abbr", "menu" },
+  --   format = function(entry, vim_item)
+  --     -- vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
+  --     vim_item.kind = ("%s %s"):format(kind_icons[vim_item.kind], vim_item.kind)
+
+  --     vim_item.menu = ({
+  --       nvim_lsp = "[LSP]",
+  --       luasnip = "[Snippet]",
+  --       buffer = "[Buffer]",
+  --       path = "[Path]",
+  --       codeium = "[Codeium]",
+  --       nvim_lua = "[NVIM_LUA]",
+  --     })[entry.source.name]
+
+  --     return vim_item
+  --   end,
+  -- },
   formatting = {
-    fields = { "kind", "abbr", "menu" },
-    format = function(entry, vim_item)
-      -- vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
-      vim_item.kind = ("%s %s"):format(kind_icons[vim_item.kind], vim_item.kind)
-
-      vim_item.menu = ({
-        nvim_lsp = "[LSP]",
-        luasnip = "[Snippet]",
-        buffer = "[Buffer]",
-        path = "[Path]",
-        -- nvim_lua = "[NVIM_LUA]",
-      })[entry.source.name]
-
-      return vim_item
-    end,
+    format = require('lspkind').cmp_format({
+      mode = "symbol",
+      maxwidth = 50,
+      ellipsis_char = '...',
+      symbol_map = { Codeium = "", path = "/", nvim_lsp = "🤖", luasnip = "🆘", nvim_lua = "🌚", buffer = "🔄" }
+    })
   },
-  duplicates = {
-    nvim_lsp = 1,
-    luasnip = 1,
-    cmp_tabnine = 1,
-    buffer = 1,
-    path = 1,
-  },
+  -- duplicates = {
+  --   nvim_lsp = 1,
+  --   luasnip = 1,
+  --   cmp_tabnine = 1,
+  --   buffer = 1,
+  --   path = 1,
+  -- },
   confirm_opts = {
     behavior = cmp.ConfirmBehavior.Replace,
     select = false,
   },
   preselect = cmp.PreselectMode.None,
   experimental = {
-    ghost_text = false,
-    native_menu = false,
+    ghost_text = true,
   },
+  -- view = {
+  --   entries = "native",
+  -- },
 })
 
 -- Set configuration for specific filetype.
