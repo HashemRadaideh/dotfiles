@@ -286,6 +286,13 @@ require('lazy').setup({
   },
 
   {
+    'https://github.com/aserowy/tmux.nvim',
+    config = function()
+      require("plugins.tmux")
+    end
+  },
+
+  {
     'nvim-neo-tree/neo-tree.nvim',
     -- cmd = "Neotree",
     branch = 'v2.x',
