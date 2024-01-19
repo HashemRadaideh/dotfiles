@@ -73,7 +73,6 @@ awful.keyboard.append_global_keybindings(
         if Autohide then
           for s in screen do
             s.Bar.visible = Autohide
-            s.Bar.hide = gears.timer({ timeout = 5 })
 
             s.Bar.hide:connect_signal("timeout", function()
               if not s.Bar.hover then
@@ -324,8 +323,6 @@ awful.keyboard.append_global_keybindings(
     --   { Super }, "i",
     --   function()
     --     Desktop.Tasks.visible = not Desktop.Tasks.visible
-
-    --     local hide = gears.timer({ timeout = 1 })
 
     --     hide:connect_signal("timeout", function()
     --       Desktop.Tasks.visible = not Desktop.Tasks.visible
