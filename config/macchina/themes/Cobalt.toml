@@ -1,0 +1,27 @@
+# Cobalt
+
+spacing         = 3
+hide_ascii      = false
+prefer_small_ascii = false
+key_color       = "Cyan"
+separator       = ">"
+
+[custom_ascii]
+path = "/tmp/ascii"
+
+[box]
+border          = "plain"
+visible         = false
+
+[box.inner_margin]
+x               = 0
+y               = 0
+
+[bar]
+glyph           = "○"
+hide_delimiters = true
+visible         = true
+
+[palette]
+glyph           = "○  "
+visible         = true
