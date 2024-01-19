@@ -18,9 +18,13 @@ zrc() {
     # Use the starship prompt.
     export STARSHIP_CONFIG="$DOTFILES/config/starship/starship.toml"
     eval "$(starship init zsh)"
+    eval "$(flutter bash-completion)"
 
-    # Fetch machine's specs.
-    [ -x "$(command -v neofetch)"  ] && macchina
+    # # Fetch machine's specs.
+    [ -x "$(command -v macchina)"  ] && ~/art > /tmp/ascii && macchina
+    # [ -x "$(command -v macchina)"  ] && macchina
+
+    # kitty +kitten icat --place "50x50@-1x-1" "$(find ~/Pictures/wallpapers/ -type f -exec file -- {} + | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)"
   fi
 
   # opam configuration

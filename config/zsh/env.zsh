@@ -26,6 +26,10 @@ export SAVEHIST=10000000
 # $EDITOR use nvim
 export EDITOR="nvim"
 
+visudo() {
+  sudo EDITOR=$EDITOR visudo
+}
+
 # $FILEMANAGER
 export FILEMANAGER="lf"
 
@@ -64,7 +68,7 @@ export XDG_TEMPLATES_DIR="$HOME/Templates"
 export XDG_VIDEOS_DIR="$HOME/Videos"
 
 # home directory clean up
-export ANDROID_HOME="$XDG_DATA_HOME"/android
+# export ANDROID_HOME="$XDG_DATA_HOME"/android
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export GNUPGHOME="$XDG_DATA_HOME/gnupm"
 export GOPATH="$XDG_DATA_HOME/go"
@@ -84,11 +88,11 @@ export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
 export XCURSOR_PATH=/usr/share/icons:$XDG_DATA_HOME/icons
 export WINEPREFIX="$HOME/wine"
 export JAVA_HOME=/usr/lib/jvm/default
-export _JAVA_OPTIONS='-Djava.io.tmpdir="$XDG_CONFIG_HOME"/java -Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java'
+export _JAVA_OPTIONS="-Djava.io.tmpdir=$XDG_CONFIG_HOME/java -Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java"
 export _JAVA_AWT_WM_NONREPARENTING=1
 export QSYS_ROOTDIR="$XDG_CACHE_HOME/paru/clone/quartus-free/pkg/quartus-free-quartus/opt/intelFPGA/21.1/quartus/sopc_builder/bin"
 
-export PATH="$PATH:$XDG_DATA_HOME:$XDG_DATA_HOME/scripts:$XDG_DATA_HOME/sessions:$XDG_DATA_HOME/cargo/bin:$GOPATH/bin/:$XDG_CONFIG_HOME/doom/bin:$XDG_CONFIG_HOME/emacs/bin:/usr/lib/jvm/default/bin:$ANDROID_HOME/platform-tools"
+export PATH="$PATH:$XDG_DATA_HOME:$XDG_DATA_HOME/scripts:$XDG_DATA_HOME/sessions:$XDG_DATA_HOME/cargo/bin:$GOPATH/bin/:$XDG_CONFIG_HOME/doom/bin:$XDG_CONFIG_HOME/emacs/bin:/usr/lib/jvm/default/bin:$ANDROID_HOME/platform-tools:$XDG_DATA_HOME/nvim/mason/bin:$HOME/.yarn/bin/"
 
 alias mysql-workbench=mysql-workbench --configdir="$XDG_DATA_HOME/mysql/workbench"
 alias yarn='yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config'
