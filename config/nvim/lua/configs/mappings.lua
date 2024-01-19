@@ -5,16 +5,24 @@ vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true })
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
 
 -- move between panes with Ctrl hjkl
-vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = "Go to left window/pane" })
-vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = "Go to left window/pane" })
-vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = "Go to left window/pane" })
-vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = "Go to left window/pane" })
+-- vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = "Go to left window/pane" })
+-- vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = "Go to left window/pane" })
+-- vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = "Go to left window/pane" })
+-- vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = "Go to left window/pane" })
+vim.keymap.set('n', '<M-h>', [[<cmd>lua require("tmux").move_left()<cr>]], { desc = "Go to left window/pane" })
+vim.keymap.set('n', '<M-j>', [[<cmd>lua require("tmux").move_bottom()<cr>]], { desc = "Go to left window/pane" })
+vim.keymap.set('n', '<M-k>', [[<cmd>lua require("tmux").move_top()<cr>]], { desc = "Go to left window/pane" })
+vim.keymap.set('n', '<M-l>', [[<cmd>lua require("tmux").move_right()<cr>]], { desc = "Go to left window/pane" })
 
-vim.keymap.set('n', '<C-S-h>', '<cmd>vertical resize -1<cr>', { desc = "Resize pane" })
--- vim.keymap.set('n', '<S-NL>', '<C-w>-', { desc = "Resize pane" })
-vim.keymap.set('n', '<C-S-j>', '<cmd>resize -1<cr>', { desc = "Resize pane" })
-vim.keymap.set('n', '<C-S-k>', '<cmd>resize +1<cr>', { desc = "Resize pane" })
-vim.keymap.set('n', '<C-S-l>', '<cmd>vertical resize +1<cr>', { desc = "Resize pane" })
+-- vim.keymap.set('n', '<C-S-h>', '<cmd>vertical resize -1<cr>', { desc = "Resize pane" })
+-- -- vim.keymap.set('n', '<S-NL>', '<C-w>-', { desc = "Resize pane" })
+-- vim.keymap.set('n', '<C-S-j>', '<cmd>resize -1<cr>', { desc = "Resize pane" })
+-- vim.keymap.set('n', '<C-S-k>', '<cmd>resize +1<cr>', { desc = "Resize pane" })
+-- vim.keymap.set('n', '<C-S-l>', '<cmd>vertical resize +1<cr>', { desc = "Resize pane" })
+vim.keymap.set('n', '<M-S-h>', [[<cmd>lua require("tmux").resize_left()<cr>]], { desc = 'Increase window height' })
+vim.keymap.set('n', '<M-S-j>', [[<cmd>lua require("tmux").resize_bottom()<cr>]], { desc = 'Decrease window height' })
+vim.keymap.set('n', '<M-S-k>', [[<cmd>lua require("tmux").resize_top()<cr>]], { desc = 'Increase window width' })
+vim.keymap.set('n', '<M-S-l>', [[<cmd>lua require("tmux").resize_right()<cr>]], { desc = 'Decrease window height' })
 
 -- resize panes with Ctrl up, down, left, right
 vim.keymap.set('n', '<C-Up>', '<cmd>resize +2<CR>', { desc = 'Increase window height' })
@@ -85,6 +93,7 @@ vim.keymap.set('i', ';', ';<C-g>u')
 
 vim.keymap.set('i', '<C-z>', '<C-o>u', { desc = "Undo last move" })
 
+vim.keymap.set("i", "<C-a>", "<Esc>ggVG", { desc = "Select all" })
 vim.keymap.set({ 'n', 'v', 'i', 's' }, '<C-s>', '<cmd>w<CR><Esc>', { desc = 'Save file' })
 
 vim.keymap.set('n', '-', '<cmd>sp .<CR>')
@@ -97,6 +106,7 @@ vim.keymap.set("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
 -- Packer mappings
 vim.keymap.set('n', '<leader>ps', '<cmd>Lazy<CR>')
 
+vim.keymap.set({ 'n', 'v' }, '<leader>]', ':Gen<CR>')
 vim.keymap.set("n", '<leader>ghc', "<cmd>Copilot<CR>")
 vim.keymap.set("n", '<leader>ai', "<cmd>NeoAIToggle<CR>")
 vim.keymap.set("n", '<leader>gpt', "<cmd>ChatGPT<CR>")
