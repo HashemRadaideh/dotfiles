@@ -13,14 +13,6 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
-local function tabnine_build_path()
-  if vim.loop.os_uname().sysname == "Windows_NT" then
-    return "pwsh.exe -file .\\dl_binaries.ps1"
-  else
-    return "./dl_binaries.sh"
-  end
-end
-
 require('lazy').setup({
   {
     'neovim/nvim-lspconfig',
@@ -47,6 +39,7 @@ require('lazy').setup({
       'ray-x/lsp_signature.nvim',
       'folke/trouble.nvim',
       'RRethy/vim-illuminate',
+      'onsails/lspkind.nvim',
 
       -- 'simrat39/inlay-hints.nvim',
       'lvimuser/lsp-inlayhints.nvim',
@@ -91,7 +84,13 @@ require('lazy').setup({
 
   {
     'codota/tabnine-nvim',
-    build = tabnine_build_path(),
+    build = function()
+      if vim.loop.os_uname().sysname == "Windows_NT" then
+        return "pwsh.exe -file .\\dl_binaries.ps1"
+      else
+        return "./dl_binaries.sh"
+      end
+    end,
     -- cmd = {
     --   "TabnineStatus",
     --   "TabnineDisable",
@@ -111,6 +110,17 @@ require('lazy').setup({
         exclude_filetypes = { "TelescopePrompt" },
         log_file_path = nil, -- absolute path to Tabnine log file
       })
+    end
+  },
+
+  {
+    "Exafunction/codeium.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "hrsh7th/nvim-cmp",
+    },
+    config = function()
+      require("codeium").setup()
     end
   },
 
