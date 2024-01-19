@@ -76,7 +76,6 @@ ruled.client.connect_signal("request::rules", function()
       floating          = true,
       screen            = awful.screen.focused,
       placement         = awful.placement.centered +
-          awful.placement.no_overlap +
           awful.placement.no_offscreen
     }
   }
@@ -87,8 +86,7 @@ ruled.client.connect_signal("request::rules", function()
       titlebars_enabled = true,
       floating          = true,
       screen            = awful.screen.focused,
-      placement         = awful.placement.centered +
-          awful.placement.no_overlap +
+      placement         = awful.placement.no_overlap +
           awful.placement.no_offscreen
     }
   }
@@ -149,7 +147,7 @@ ruled.client.connect_signal("request::rules", function()
   }
 
   ruled.client.append_rule {
-    rule = { class = "Google-chrome" },
+    rule = { class = "Sidekick-browser" },
     properties = {
       screen = awful.screen.focused,
       tag    = Tags[2],
