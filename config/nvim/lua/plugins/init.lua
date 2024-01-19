@@ -63,6 +63,10 @@ require('lazy').setup({
   },
 
   {
+    "nvim-treesitter/nvim-treesitter-context"
+  },
+
+  {
     'mfussenegger/nvim-dap',
     -- NOTE: And you can specify dependencies as well
     dependencies = {
