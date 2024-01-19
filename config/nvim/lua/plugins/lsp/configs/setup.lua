@@ -1,7 +1,7 @@
 vim.diagnostic.config({
   virtual_text = {
     source = "always", -- Or "if_many"
-    prefix = "■",    -- Could be "●", "▎", "x"
+    prefix = "■", -- Could be "●", "▎", "x"
   },
   float = {
     source = "always", -- Or "if_many"
@@ -209,7 +209,7 @@ local on_attach = function(client, bufnr)
   -- end
 
   -- if client.server_capabilities.definitionProvider then
-    vim.api.nvim_buf_set_option(bufnr, 'tagfunc', 'v:lua.vim.lsp.tagfunc')
+  vim.api.nvim_buf_set_option(bufnr, 'tagfunc', 'v:lua.vim.lsp.tagfunc')
   --   vim.keymap.set('n', 'gd', vim.lsp.buf.definition())
   -- end
 
@@ -246,7 +246,7 @@ local on_attach = function(client, bufnr)
   -- end
 
   -- if client.server_capabilities.documentRangeFormattingProvider then
-    vim.api.nvim_buf_set_option(bufnr, 'formatexpr', 'v:lua.vim.lsp.formatexpr()')
+  vim.api.nvim_buf_set_option(bufnr, 'formatexpr', 'v:lua.vim.lsp.formatexpr()')
   --   vim.keymap.set('v', '<leader>fn', vim.lsp.buf.range_formatting())
   -- end
 end
