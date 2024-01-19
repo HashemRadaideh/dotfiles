@@ -74,16 +74,16 @@ local function border_adjust(c)
     c.border_width = 0
   end
 
-  if Zen then
-    if c.maximized or c.fullscreen then
-      c.border_width = 0
-      c.shape = nil
-    else
-      c.shape = function(cr, w, h) gears.shape.rounded_rect(cr, w, h, 15) end
-    end
-  else
-    c.shape = nil
-  end
+  -- if Zen then
+  --   if c.maximized or c.fullscreen then
+  --     c.border_width = 0
+  --     c.shape = nil
+  --   else
+  --     c.shape = function(cr, w, h) gears.shape.rounded_rect(cr, w, h, 15) end
+  --   end
+  -- else
+  --   c.shape = nil
+  -- end
 
   if Autohide and c.fullscreen and c == client.focus then
     c.screen.Bartoggle.ontop = false
