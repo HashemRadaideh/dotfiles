@@ -10,9 +10,6 @@ require("awful.autofocus")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
--- autostart applications
-require("awful").spawn.with_shell("autostart")
-
 Bluetooth_manager     = "blueman-manager"
 File_manager          = "pcmanfm"
 Network_manager       = "nm-connection-editor"
