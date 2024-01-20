@@ -1,4 +1,5 @@
-vim.cmd [[let &scrolloff=999-&scrolloff]]
+-- vim.cmd [[let &scrolloff=999-&scrolloff]]
+vim.cmd [[set scrolloff=8]]
 vim.cmd [[let &colorcolumn="80,100,".join(range(120,999),",")]]
 
 vim.cmd [[ highlight CursorColumn guibg=#ff0000 ]]
@@ -115,6 +116,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
+
 local lastplace = vim.api.nvim_create_augroup("LastPlace", {})
 vim.api.nvim_clear_autocmds({ group = lastplace })
 vim.api.nvim_create_autocmd("BufReadPost", {
