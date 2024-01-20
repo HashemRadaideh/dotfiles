@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+level=${2:-5}
+
 brightness_file="/tmp/brightness_previous"
 
 get_brightness() {
@@ -38,13 +40,15 @@ set_brightness_max() {
   set_brightness "$max_brightness"
 }
 
-case "$1" in 
+case "$1" in
   "up")
-    brightnessctl set 5%+
+    brightnessctl set $level%+
+    ddcutil setvcp 10 + $level
     send_notification
     ;;
   "down")
-    brightnessctl set 5%-
+    brightnessctl set $level%-
+    ddcutil setvcp 10 - $level
     send_notification
     ;;
   "BAT")
