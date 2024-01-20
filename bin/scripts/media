@@ -27,25 +27,27 @@ send_notification() {
 
 case "$1" in
   "up")
-    amixer -D pulse set Master on > /dev/null
-    amixer -D pulse sset Master 5%+ > /dev/null
+    # amixer -D pulse sset Master on > /dev/null
+    pactl set-sink-volume 0 +5%
+    # amixer -D pulse sset Master 5%+ > /dev/null
+    pactl set-sink-mute 0 0
 
-    # pactl set-sink-volume 0 +5%
 
     send_notification
     ;;
   "down")
-    amixer -D pulse set Master on > /dev/null
-    amixer -D pulse sset Master 5%- > /dev/null
+    # amixer -D pulse sset Master on > /dev/null
+    pactl set-sink-volume 0 -5%
+    # amixer -D pulse sset Master 5%- > /dev/null
+    pactl set-sink-mute 0 0
 
-    # pactl set-sink-volume 0 -5%
 
     send_notification
     ;;
   "mute")
-    amixer -D pulse set Master 1+ toggle > /dev/null
+    # amixer -D pulse sset Master 1+ toggle > /dev/null
 
-    # pactl set-sink-mute 0 toggle
+    pactl set-sink-mute 0 toggle
 
     if is_mute ; then
       notify-send  -a "media" -r 1001 "Audio muted"
@@ -54,8 +56,9 @@ case "$1" in
     fi
     ;;
   "micmute") 
-    amixer -D pulse sset Capture toggle
-    if is_micmute ; then 
+    # amixer -D pulse sset Capture toggle
+    pactl set-source-mute 0 toggle
+    if is_micmute ; then
       notify-send -a "media" -r 1002 "MIC switched OFF"
     else
       notify-send -a "media" -r 1002 "MIC switched ON"
