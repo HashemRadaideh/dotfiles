@@ -6,9 +6,69 @@ function run {
   fi
 }
 
+run dunst
+
 run mpv --no-video /usr/share/sounds/freedesktop/stereo/service-login.oga
 
-run /usr/bin/polkit-dumb-agent
+run /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+
+if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "$DISPLAY" ]; then
+  run setxkbmap -layout us,ara -option grp:win_space_toggle
+  run xmodmap -e "keycode 135 = Super_R"
+  run xset -b
+
+  run picom --config "$DOTFILES/config/picom/picom.conf"
+
+  run greenclip daemon
+
+  # run xss-lock lock
+
+  run xidlehook \
+    --not-when-fullscreen \
+    --not-when-audio \
+    --timer 60 \
+      'brightnessctl set 35%-; notify-send -u critical -t 10000 -- "LOCKING screen in 30 seconds"' \
+      'brightnessctl set 35%+' \
+    --timer 30 \
+      'brightnessctl set 35%+; lock' \
+      '' \
+    --timer 600 \
+      'systemctl suspend' \
+      ''
+
+  # run plank
+  # run polybar
+  # run conky -c $HOME/.config/conky/conky.conf
+
+  # screenCount=$(xrandr | rg " connected" | wc -l)
+
+  # if [ $screenCount -gt 1 ]; then
+    # run $XDG_DATA_HOME/scripts/screenlayout.sh
+  # fi
+
+  # run autorotate
+
+  # wallpaper="$(find ~/Pictures/wallpapers/ -type f -exec file -- {} + | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)"
+
+  # for (( i = 0; i < $screenCount; i++ )); do
+  #   run nitrogen --head="$i" --set-zoom-fill "$wallpaper"
+  # done
+
+  run redshift-gtk -l manual:`while ! ping -c 1 1.1.1.1 >/dev/null 2>&1; do sleep 1; done; curl -s "https://location.services.mozilla.com/v1/geolocate?key=geoclue" | jq -r '"\(.location.lat):\(.location.lng)"'`
+else
+  wallpaper="$(find ~/Pictures/wallpapers/ -type f -exec file -- {} + | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)"
+
+  run swww init && swww img \
+    $wallpaper \
+    --transition-step 255
+
+  run waybar
+
+  # run mako
+
+  run wl-paste --type text --watch cliphist store
+  # run wl-paste --type image --watch cliphist store
+fi
 
 run playerctld daemon
 
@@ -24,65 +84,7 @@ run udiskie -s
 
 run /usr/bin/emacs --daemon
 run discord --start-minimized
-run steam -silent
+# run steam -silent
 # run spotify --minimized
 # run teams
 # run zoom
-
-run dunst
-
-wallpaper="$(find ~/Pictures/wallpapers/ -type f -exec file {} \; | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)"
-
-if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "${DISPLAY+x}" ]; then
-  run setxkbmap -layout us,ara -option grp:win_space_toggle
-  run xmodmap -e "keycode 135 = Super_R"
-  run xset -b
-
-  screenCount=$(xrandr | rg " connected" | wc -l)
-
-  if [ $screenCount -gt 1 ] && [ -f $DOTFILES/bin/scripts/screenlayout ]; then
-    run $DOTFILES/bin/scripts/screenlayout
-  fi
-
-  for (( i = 0; i < $screenCount; i++ )); do
-    nitrogen --head="$i" --set-zoom-fill "$wallpaper"
-  done
-
-  run picom  -b --experimental-backends --config "$DOTFILES/config/picom/picom.conf"
-
-  # run plank
-  # run polybar
-  # run conky -c $HOME/.config/conky/conky.conf
-
-  run autorotate
-
-  run greenclip daemon
-
-  run xss-lock lock
-
-  run xidlehook \
-    --not-when-fullscreen \
-    --not-when-audio \
-    --timer 60 \
-      'brightnessctl set 35%-; notify-send -u critical -t 10000 -- "LOCKING screen in 30 seconds"' \
-      'brightnessctl set 35%+' \
-    --timer 30 \
-      'brightnessctl set 35%+; lock' \
-      '' \
-    --timer 600 \
-      'systemctl suspend' \
-      ''
-
-  run redshift-gtk -l `while ! ping -c 1 1.1.1.1 >/dev/null 2>&1; do sleep 1; done; curl -s "https://location.services.mozilla.com/v1/geolocate?key=geoclue" | jq -r '"\(.location.lat):\(.location.lng)"'`
-else
-  run swww init && swww img \
-    $wallpaper \
-    --transition-step 255
-
-  run waybar
-
-  # run mako
-
-  run wl-paste --type text --watch cliphist store
-  # run wl-paste --type image --watch cliphist store
-fi

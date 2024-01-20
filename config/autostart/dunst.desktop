@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Exec=/usr/bin/dunst
+X-GNOME-Autostart-enabled=false
+NoDisplay=false
+Hidden=false
+Name=dunst
+Comment=notification daemon
+X-GNOME-Autostart-Delay=0

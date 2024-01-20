@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Exec=/usr/bin/xidlehook --not-when-fullscreen --not-when-audio --timer 240 'brightness down 40; notify-send -u critical -t 10000 -- "LOCKING screen in 1 minute"' 'brightness up 40' --timer 60 'brightness up 40; lock' '' --timer 300 'systemctl suspend' ''
+X-GNOME-Autostart-enabled=false
+NoDisplay=false
+Hidden=false
+Name=xidlehook
+Comment=idle hook for x display server
+X-GNOME-Autostart-Delay=0

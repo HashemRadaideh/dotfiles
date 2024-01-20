@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Exec=autorotate
+X-GNOME-Autostart-enabled=false
+NoDisplay=false
+Hidden=false
+Name=autorotate
+Comment=auto rotate script
+X-GNOME-Autostart-Delay=0

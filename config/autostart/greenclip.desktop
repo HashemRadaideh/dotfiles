@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Exec=/usr/bin/greenclip daemon
+X-GNOME-Autostart-enabled=false
+NoDisplay=false
+Hidden=false
+Name=greenclip
+Comment=clipboard manager
+X-GNOME-Autostart-Delay=0

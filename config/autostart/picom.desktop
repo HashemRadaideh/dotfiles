@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=picom
+GenericName=X compositor
+Comment=An X compositor
+Version=1.0
+Type=Application
+Categories=Utility;
+Keywords=compositor;composite manager;window effects;transparency;opacity;
+Icon=picom
+Exec=/usr/bin/picom --config "/home/hashem/.config/picom/picom.conf"
+StartupNotify=false
+NoDisplay=false
+Terminal=false
+X-GNOME-Autostart-enabled=false

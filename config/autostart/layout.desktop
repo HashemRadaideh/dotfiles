@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Exec=setxkbmap -layout us,ara -option grp:win_space_toggle
+X-GNOME-Autostart-enabled=false
+NoDisplay=false
+Hidden=false
+Name=setxkbmap
+Comment=set default keyboard layout for xorg
+X-GNOME-Autostart-Delay=0

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Exec=playerctld daemon
+X-GNOME-Autostart-enabled=false
+NoDisplay=false
+Hidden=false
+Name=playerctl
+Comment=media daemon
+X-GNOME-Autostart-Delay=0

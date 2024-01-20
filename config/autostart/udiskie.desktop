@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Exec=/usr/bin/udiskie -s
+X-GNOME-Autostart-enabled=false
+NoDisplay=false
+Hidden=false
+Name=udiskie
+Comment=disk auto mount utility
+X-GNOME-Autostart-Delay=0

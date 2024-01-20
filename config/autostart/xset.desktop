@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Exec=screensaver
+X-GNOME-Autostart-enabled=false
+NoDisplay=false
+Hidden=false
+Name=xset
+Comment=xorg commands
+X-GNOME-Autostart-Delay=0
