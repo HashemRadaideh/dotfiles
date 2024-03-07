@@ -1,18 +1,20 @@
 ---@diagnostic disable-next-line: undefined-global
-local screen = screen
-local awful = require('awful')
+local screen    = screen
+local awful     = require('awful')
 local beautiful = require('beautiful')
-local wibox = require('wibox')
-local gears = require('gears')
+local wibox     = require('wibox')
+local gears     = require('gears')
 
-local network = require('configs.ui.bar.network')
+-- Widgets
+require("configs.ui.bar.widgets")
+
+local network   = require('configs.ui.bar.network')
 local bluetooth = require('configs.ui.bar.bluetooth')
 
--- Set up the bar
-screen.connect_signal("request::desktop_decoration", function(s)
-  -- Widgets
-  require("configs.ui.bar.widgets")
+local net       = network()
+local bat       = Battery()
 
+screen.connect_signal("request::desktop_decoration", function(s)
   s.mypromptbox = awful.widget.prompt()
 
   Create_tags(s)
@@ -25,13 +27,13 @@ screen.connect_signal("request::desktop_decoration", function(s)
     visible      = true,
     hide         = gears.timer({ timeout = 5 }),
     hover        = false,
-    -- ontop        = true,
+    ontop        = false,
     bg           = beautiful.bg_transparent,
     x            = 0,
     y            = 0,
     height       = s.geometry.height / 40,
     width        = s.geometry.width,
-    -- stretch      = false,
+    stretch      = false,
     position     = "top",
     border_width = 0,
     border_color = beautiful.black,
@@ -48,7 +50,6 @@ screen.connect_signal("request::desktop_decoration", function(s)
       {
         layout = wibox.layout.fixed.horizontal,
         Menu,
-        -- Shape(beautiful.arrow_right),
         TaskButton,
         Task,
       },
@@ -65,17 +66,17 @@ screen.connect_signal("request::desktop_decoration", function(s)
         Systray,
         SystrayButton,
         Clock,
-        NET,
-        NETButton,
-        MEM,
-        MEMButton,
-        CPU,
-        CPUButton,
+        -- NET,
+        -- NETButton,
+        -- MEM,
+        -- MEMButton,
+        -- CPU,
+        -- CPUButton,
         bluetooth,
-        network(),
+        net,
         Volume,
         Brightness,
-        Battery(),
+        bat,
         Logout,
       },
     },
@@ -85,13 +86,13 @@ screen.connect_signal("request::desktop_decoration", function(s)
     s.Bar.hide:start()
   end
 
-  s.Bar:connect_signal('mouse::enter', function(self)
+  s.Bar:connect_signal('mouse::enter', function()
     s.Bar.visible = true
     s.Bar.hover = true
     s.Bar.hide:stop()
   end)
 
-  s.Bar:connect_signal('mouse::leave', function(self)
+  s.Bar:connect_signal('mouse::leave', function()
     s.Bar.hover = false
 
     s.Bar.hide:connect_signal("timeout", function()
