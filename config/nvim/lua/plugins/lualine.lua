@@ -99,7 +99,7 @@ lualine.setup({
   sections = {
     lualine_a = { mode },
     lualine_b = { "gfold", branch, diff, diagnostics },
-    lualine_c = { "filename" },
+    lualine_c = { require('auto-session.lib').current_session_name, "filename" },
     lualine_x = {},
     lualine_y = { progress, location },
     lualine_z = { "fileformat", spaces, encoding, filetype },

@@ -34,7 +34,7 @@ require('lazy').setup({
       'rafamadriz/friendly-snippets',
       'L3MON4D3/LuaSnip',
 
-      'jose-elias-alvarez/null-ls.nvim',
+      "nvimtools/none-ls.nvim",
       { 'j-hui/fidget.nvim',       tag = 'legacy' },
       'ray-x/lsp_signature.nvim',
       'folke/trouble.nvim',
@@ -76,7 +76,6 @@ require('lazy').setup({
 
       "nvim-neotest/neotest",
 
-      'williamboman/mason.nvim',
       'jay-babu/mason-nvim-dap.nvim',
 
       'leoluz/nvim-dap-go',
@@ -333,7 +332,7 @@ require('lazy').setup({
   },
 
   {
-    'https://github.com/aserowy/tmux.nvim',
+    'aserowy/tmux.nvim',
     config = function()
       require("plugins.tmux")
     end
@@ -384,9 +383,15 @@ require('lazy').setup({
     end
   },
 
+  -- {
+  --   'Shatur/neovim-session-manager',
+  --   event = "BufReadPre",
+  --   config = function()
+  --     require('plugins.session')
+  --   end
+
   {
-    'Shatur/neovim-session-manager',
-    event = "BufReadPre",
+    'rmagatti/auto-session',
     config = function()
       require('plugins.session')
     end
@@ -564,12 +569,15 @@ require('lazy').setup({
         override = {
           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
           ["vim.lsp.util.stylize_markdown"] = true,
+          ["cmp.entry.get_documentation"] = true,
         },
       },
       presets = {
         bottom_search = true,
         command_palette = true,
         long_message_to_split = true,
+        inc_rename = false,
+        lsp_doc_border = false,
       },
     },
     keys = {
@@ -600,8 +608,7 @@ require('lazy').setup({
         expr = true,
         desc =
         "Scroll forward",
-        mode = {
-          "i", "n", "s" }
+        mode = { "i", "n", "s" }
       },
       {
         "<c-b>",
@@ -610,8 +617,7 @@ require('lazy').setup({
         expr = true,
         desc =
         "Scroll backward",
-        mode = {
-          "i", "n", "s" }
+        mode = { "i", "n", "s" }
       },
     },
   },
