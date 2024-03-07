@@ -21,6 +21,7 @@ Terminal_editor       = Terminal_emulator .. " -e " .. Shell .. " -c " .. os.get
 Terminal_file_manager = Terminal_emulator .. " -e " .. Shell .. " -c " .. os.getenv("FILEMANAGER")
 Terminal_multiplexed  = Terminal_emulator .. " -e " .. Shell .. " -c fzt"
 Web_browser           = "google-chrome-stable"
+Web_browser = "floorp"
 
 Autohide              = true
 Zen                   = true
