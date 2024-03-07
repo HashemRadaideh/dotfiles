@@ -10,24 +10,27 @@ require("awful.autofocus")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
-Bluetooth_manager     = "blueman-manager"
-File_manager          = "pcmanfm"
-Network_manager       = "nm-connection-editor"
-Power_manager         = "xfce4-power-manager"
-Graphical_editor      = os.getenv("VISUAL")
-Terminal_emulator     = os.getenv("TERMINAL")
-Shell                 = os.getenv("SHELL")
-Terminal_editor       = Terminal_emulator .. " -e " .. Shell .. " -c " .. os.getenv("EDITOR")
+Bluetooth_manager = "cinnamon-settings blueberry"
+File_manager = "thunar"
+Network_manager = "cinnamon-settings network"
+Power_manager = "cinnamon-settings power"
+Graphical_editor = os.getenv("VISUAL")
+Terminal_emulator = os.getenv("TERMINAL")
+Shell = os.getenv("SHELL")
+Terminal_editor = Terminal_emulator .. " -e " .. Shell .. " -c " .. os.getenv("EDITOR")
 Terminal_file_manager = Terminal_emulator .. " -e " .. Shell .. " -c " .. os.getenv("FILEMANAGER")
-Terminal_multiplexed  = Terminal_emulator .. " -e " .. Shell .. " -c fzt"
-Web_browser           = "google-chrome-stable"
+Terminal_multiplexed = Terminal_emulator .. " -e " .. Shell .. " -c fzt"
 Web_browser = "floorp"
 
-Autohide              = true
-Zen                   = true
-Sloppy                = false
-Titled                = false
+Autohide = true
+Zen = true
+Sloppy = false
+Titled = false
 
-Theme                 = "configs/theme.lua"
+Theme = "configs/theme.lua"
 
-require('configs')
+require("configs")
+
+-- autostart applications
+require("awful").spawn.easy_async_with_shell("autostart")
+-- require("awful").spawn.easy_async_with_shell("dex -as $XDG_CONFIG_HOME/autostart")

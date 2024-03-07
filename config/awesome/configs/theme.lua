@@ -86,7 +86,7 @@ theme.white               = "#B5BFE2"
 
 -- General/default Settings
 theme.bg_normal           = theme.background
-theme.bg_transparent      = theme.bg_normal .. "bf"
+theme.bg_transparent      = theme.bg_normal
 theme.bg_focus            = theme.black
 theme.bg_urgent           = theme.red
 theme.bg_minimize         = theme.white
