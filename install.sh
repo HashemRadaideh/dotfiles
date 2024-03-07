@@ -46,15 +46,12 @@ mk_symln() {
   sudo rmmod snd_pcsp
 
   sudo mkbackup /etc/modprobe.d/nobeep.conf
-  sudo ln -s "$DOTFILES/bin/confs/nobeep.conf" /etc/modprobe.d/nobeep.conf
+  sudo cp "$DOTFILES/bin/confs/nobeep.conf" /etc/modprobe.d/nobeep.conf
 
   sudo mkbackup /etc/X11/xorg.conf.d/30-touchpad.conf
-  sudo ln -s "$DOTFILES/bin/confs/30-touchpad.conf" /etc/X11/xorg.conf.d
+  sudo cp "$DOTFILES/bin/confs/30-touchpad.conf" /etc/X11/xorg.conf.d
 
-  sudo mkbackup /etc/pacman.conf
-  sudo ln -s "$DOTFILES/bin/confs/pacman.conf" /etc
-
-  sudo ln -s "$DOTFILES/bin/desktop/"* /usr/share/applications
+  sudo cp "$DOTFILES/bin/desktop/"* /usr/share/applications
 
   mkbackup "$XDG_DATA_HOME/scripts"
   ln -s "$DOTFILES/bin/scripts" "$XDG_DATA_HOME"
@@ -156,20 +153,20 @@ emacs_setup() {
   fi
 }
 
-sudo pacman -S git zsh rustup
+# sudo pacman -S git zsh rustup
 
-git submodule init
-git submodule update
+# git submodule init
+# git submodule update
 
-rustup default stable
+# rustup default stable
 
 default_shell
 
 mk_symln
 
-install_pkgs
+# install_pkgs
 
-sudo systemctl enable NetworkManager.service
-sudo systemctl enable bluetooth.service
+# sudo systemctl enable NetworkManager.service
+# sudo systemctl enable bluetooth.service
 
-emacs_setup
+# emacs_setup
