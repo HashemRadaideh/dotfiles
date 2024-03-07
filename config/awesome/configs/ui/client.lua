@@ -3,16 +3,15 @@ local awesome, client, root = awesome, client, root
 local gears = require('gears')
 local awful = require('awful')
 local beautiful = require('beautiful')
-local ruled = require("ruled")
 
--- Fix window snapping
 awful.mouse.snap.edge_enabled = true
 
--- Signal function to execute when a new client appears.
 client.connect_signal("manage", function(c)
   -- Set the windows at the stack,
   -- i.e. put it at the end of others instead of setting it master.
-  if not awesome.startup then awful.client.setslave(c) end
+  if not awesome.startup then
+    awful.client.setslave(c)
+  end
 
   -- Prevent clients from being unreachable after screen count changes.
   if awesome.startup and not
@@ -34,12 +33,6 @@ function Titles()
       awful.titlebar.hide(c)
     end
   end
-
-  ruled.client.append_rule {
-    id         = "titlebars",
-    rule_any   = { type = { "normal" } },
-    properties = { titlebars_enabled = not Titled }
-  }
 
   Titled = not Titled
 end
@@ -68,6 +61,18 @@ ZenSwitch()
 
 -- Rounded Borders and no border for maximized clients
 local function border_adjust(c)
+  if Autohide and c.fullscreen then
+    c.screen.Bartoggle.ontop = false
+    if c.screen.Bar.hide then
+      c.screen.Bar.hide:stop()
+    end
+  else
+    c.screen.Bartoggle.ontop = true
+    if c.screen.Bar.hide then
+      c.screen.Bar.hide:start()
+    end
+  end
+
   if #awful.screen.focused().clients > 1 then
     c.border_width = beautiful.border_width
   else
@@ -84,14 +89,6 @@ local function border_adjust(c)
   -- else
   --   c.shape = nil
   -- end
-
-  if Autohide and c.fullscreen and c == client.focus then
-    c.screen.Bartoggle.ontop = false
-    c.screen.Bar.visible = false
-    c.screen.Bar.hide:stop()
-  else
-    c.screen.Bartoggle.ontop = true
-  end
 end
 
 client.connect_signal("focus", border_adjust)
