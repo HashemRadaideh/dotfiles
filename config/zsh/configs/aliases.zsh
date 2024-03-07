@@ -6,6 +6,7 @@ export DISTRO="$(hostnamectl | grep 'Operating System' | awk '{ print substr($0,
 
 # IPv4 address.
 export IPv4="${$(ip a | grep -P '^.*(?=.*inet )(?=.*dynamic).*$' | awk '{print $2}')//\/*}"
+export IPv6="${$(ip a | grep -P '^.*(?=.*inet6 )(?=.*dynamic).*$' | awk '{print $2}')//\/*}"
 
 # xkb
 # alias lsxkbmodels="sed '/^! model$/,/^ *$/!d;//d' /usr/share/X11/xkb/rules/base.lst"

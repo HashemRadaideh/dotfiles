@@ -9,7 +9,7 @@ plugins=(
 zrc() {
   [ -x "$(command -v gh)"  ] && eval "$(gh completion -s zsh)"
 
-  [ -x "$(command -v zoxide)"  ] && eval "$(zoxide init zsh)"
+  [ -x "$(command -v zoxide)"  ] && eval "$(zoxide init --cmd cd zsh)"
 
   if [[ -z "$DISPLAY" ]] ; then
     # Fetch machine's specs.
@@ -21,8 +21,8 @@ zrc() {
     eval "$(flutter bash-completion)"
 
     # # Fetch machine's specs.
-    [ -x "$(command -v macchina)"  ] && ~/art > /tmp/ascii && macchina
-    # [ -x "$(command -v macchina)"  ] && macchina
+    # [ -x "$(command -v macchina)"  ] && ~/art > /tmp/ascii && macchina
+    [ -x "$(command -v macchina)"  ] && touch /tmp/ascii && macchina
 
     # kitty +kitten icat --place "50x50@-1x-1" "$(find ~/Pictures/wallpapers/ -type f -exec file -- {} + | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)"
   fi
