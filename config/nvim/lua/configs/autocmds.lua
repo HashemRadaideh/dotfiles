@@ -1,6 +1,7 @@
 -- vim.cmd [[let &scrolloff=999-&scrolloff]]
 vim.cmd [[set scrolloff=8]]
 vim.cmd [[let &colorcolumn="80,100,".join(range(120,999),",")]]
+vim.cmd [[autocmd BufRead,BufNewFile * setlocal signcolumn=yes:2]]
 
 vim.cmd [[ highlight CursorColumn guibg=#ff0000 ]]
 
@@ -26,9 +27,17 @@ vim.cmd [[
       endif
     endif
   endfunction
-  au VimEnter * call Transparency()
+  " au VimEnter * call Transparency()
   nnoremap <silent> <F10> :call Transparency()<CR>
 ]]
+
+vim.api.nvim_create_autocmd("FocusLost", {
+  group = vim.api.nvim_create_augroup("FocusAway", { clear = true }),
+  pattern = { "*" },
+  callback = function()
+    vim.cmd(":wa")
+  end
+})
 
 -- vim.cmd [[
 --   augroup config_change
@@ -37,12 +46,12 @@ vim.cmd [[
 --   augroup end
 -- ]]
 
-vim.cmd [[
-  augroup plugin_change
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerSync
-  augroup end
-]]
+-- vim.cmd [[
+--   augroup plugin_change
+--     autocmd!
+--     autocmd BufWritePost plugins.lua source <afile> | PackerSync
+--   augroup end
+-- ]]
 
 vim.cmd [[
     autocmd BufReadPost *
@@ -50,8 +59,6 @@ vim.cmd [[
     \   exe "normal! g`\"" |
     \ endif
 ]]
-
-vim.cmd [[autocmd BufRead,BufNewFile * setlocal signcolumn=yes:2]]
 
 -- vim.cmd [[behave mswin]]
 
