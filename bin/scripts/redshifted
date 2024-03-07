@@ -7,8 +7,7 @@ function run {
 }
 
 coord=`while ! ping -c 1 1.1.1.1 >/dev/null 2>&1; do sleep 1; done; curl -s "https://location.services.mozilla.com/v1/geolocate?key=geoclue" | jq -r '"\\(.location.lat):\\(.location.lng)"'`
-IFS=':' read -r lat lon <<< "$coord"
-awk -v lat="$lat" -v lon="$lon" '{gsub(/latitude = [0-9.]*/, "latitude = " lat); gsub(/longitude = [0-9.]*/, "longitude = " lon)} 1' /etc/clight/modules.conf.d/daytime.conf > /tmp/daytime.conf
-# run redshift-gtk -l manual:$coord
-run clight --no-kbd --lat $lat --lon $lon --night-temp 3000
-
+# IFS=':' read -r lat lon <<< "$coord"
+# awk -v lat="$lat" -v lon="$lon" '{gsub(/latitude = [0-9.]*/, "latitude = " lat); gsub(/longitude = [0-9.]*/, "longitude = " lon)} 1' /etc/clight/modules.conf.d/daytime.conf > /tmp/daytime.conf
+# run clight --no-kbd --lat $lat --lon $lon --night-temp 3000
+run redshift-gtk -l manual:$coord

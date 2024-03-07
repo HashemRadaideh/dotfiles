@@ -11,6 +11,7 @@ run dunst
 run mpv --no-video /usr/share/sounds/freedesktop/stereo/service-login.oga
 
 run /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+run gnome-keyring-daemon --start --components=ssh
 
 if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "$DISPLAY" ]; then
   run setxkbmap -layout us,ara -option grp:win_space_toggle
@@ -21,7 +22,12 @@ if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "$DISPLAY" ]; then
 
   run greenclip daemon
 
-  # run xss-lock lock
+  xset s off
+  xset s noblank
+  xset -dpms
+  xset -b
+
+  run xss-lock lock
 
   run xidlehook \
     --not-when-fullscreen \
@@ -46,8 +52,6 @@ if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "$DISPLAY" ]; then
     # run $XDG_DATA_HOME/scripts/screenlayout.sh
   # fi
 
-  # run autorotate
-
   # wallpaper="$(find ~/Pictures/wallpapers/ -type f -exec file -- {} + | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)"
 
   # for (( i = 0; i < $screenCount; i++ )); do
@@ -55,6 +59,10 @@ if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "$DISPLAY" ]; then
   # done
 
   run redshift-gtk -l manual:`while ! ping -c 1 1.1.1.1 >/dev/null 2>&1; do sleep 1; done; curl -s "https://location.services.mozilla.com/v1/geolocate?key=geoclue" | jq -r '"\(.location.lat):\(.location.lng)"'`
+
+  run autorandr -c --default default
+
+  run autorotate
 else
   wallpaper="$(find ~/Pictures/wallpapers/ -type f -exec file -- {} + | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)"
 
@@ -70,19 +78,19 @@ else
   # run wl-paste --type image --watch cliphist store
 fi
 
+run udiskie -s
+
 run playerctld daemon
 
 # run wireplumber
 # run qjwgraph --minimized
-
-run udiskie -s
 
 # run flameshot
 # run blueman-applet
 # run nm-applet --indicator
 # run volumeicon
 
-run /usr/bin/emacs --daemon
+# run /usr/bin/emacs --daemon
 run discord --start-minimized
 # run steam -silent
 # run spotify --minimized

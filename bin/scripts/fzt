@@ -2,41 +2,27 @@
 
 local session="default"
 
-# if ! tmux -u has -t "$session" 2>/dev/null; then
-if [[ -z "$(tmux ls 2>/dev/null | grep -i "windows")" ]]; then
-  tmux -u new -d -s "$session" &
-else
-  # local list=$(echo "exit\nnew\n$(tmux -u ls)")
-  # session=$(fzf --prompt="Session: " <<< "$list" | awk '{print $1}')
-
-  # local list=( "exit" "new" "$(tmux -u ls | sort)" )
-  # session=$(printf "%s\n" "${list[@]}" | fzf --prompt="Session: " | awk '{print $1}')
-
-  # local list=$(echo "exit\nnew\n$(tmux -u ls -F "#S")")
-  # session=$(fzf --prompt="Session: " <<< "$list")
-
-  local list=$(tmux -u ls -F "#S")
-  session=$(printf "exit\nnew\n%s" "${list[@]}" | fzf --prompt="Session: ")
+if ! [[ -z "$(tmux ls 2>/dev/null | grep -i "windows")" ]]; then
+  session=$(
+    tmux ls -F "#S" |
+    fzf --prompt="Session: " --print-query |
+    awk -v RS="\n" '
+    NR==1 { sub1=$0 }
+    NR==2 { sub2=$0 }
+    END   { print index(sub2, sub1) ? sub2 : sub1 }'
+  )
 fi
 
-local input() {
-  read -r "name?Enter new session name: "
-  echo "$name"
-}
-
-if [ -z "$TMUX" ]; then
-  case "$session" in
-    "exit") return ;;
-    "new")  exec tmux -u new -s "$(input)" ;;
-    *)
-      while ! tmux has -t "$session" 2>/dev/null; do ; done
-      exec tmux -u attach -t "$session"
-      ;;
-  esac
+if tmux has -t "$session" 2>/dev/null; then
+  if [ -z "$TMUX" ]; then
+    exec tmux -u attach -t "$session"
+  else
+    tmux -u switch -t "$session"
+  fi
 else
-  case "$session" in
-    "exit") return ;;
-    "new")  name="$(input)" && tmux -u new -d -s "$name" && tmux -u switch -t "$name" ;;
-    *)      tmux -u switch -t "$session" ;;
-  esac
+  if [ -z "$TMUX" ]; then
+    exec tmux -u new -s "$session"
+  else
+    tmux new -d -s "$session" && tmux -u switch -t "$session"
+  fi
 fi
