@@ -105,15 +105,65 @@ local on_attach = function(client, bufnr)
 
   -- Auto-formatting
   if client.server_capabilities.document_formatting then
-    vim.api.nvim_command [[ augroup Format ]]
-    vim.api.nvim_command [[ autocmd! * <buffer> ]]
-    vim.api.nvim_command [[ autocmd BufWritePre <buffer> lua vim.lsp.buf.format { async = true } ]]
-    vim.api.nvim_command [[ augroup END ]]
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      group = vim.api.nvim_create_augroup("Format", { clear = true }),
+      pattern = { "*" },
+      callback = function()
+        vim.lsp.buf.format({ async = true })
+      end,
+    })
+  end
+
+  local function find(table, value)
+    for _, v in ipairs(table) do
+      if v == value then
+        return true
+      end
+    end
+    return false
+  end
+
+  if find(client.server_capabilities.codeActionProvider.codeActionKinds, "source.fixAll") then
+    -- lua print(vim.inspect(vim.lsp.buf_get_clients(0)[1].server_capabilities))
+    -- lua =vim.lsp.get_clients()[1].server_capabilities
+    vim.api.nvim_create_autocmd('BufWritePre', {
+      group = vim.api.nvim_create_augroup("FixAllCodeAction", { clear = true }),
+      pattern = { "*" },
+      callback = function()
+        vim.lsp.buf.code_action(
+          {
+            context = {
+              diagnostics = {},
+              only = { 'source.fixAll' },
+              triggerKind = 1,
+            },
+            apply = true,
+          },
+          vim.api.nvim_get_current_buf(),
+          {
+            start = {
+              line = vim.api.nvim_win_get_cursor(0)[1] - 1,
+              character = 0
+            },
+            ["end"] = {
+              line = vim.api.nvim_win_get_cursor(0)[1],
+              character = 0
+            }
+          }
+        )
+      end,
+    })
   end
 
   -- codelens
   if client.server_capabilities.code_lens then
-    vim.api.nvim_command [[autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]]
+    -- vim.api.nvim_command [[autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]]
+    vim.api.nvim_command_autocmd({ "CursorHold", "CursorHoldI", "InsertLeave" }, {
+      pattern = "<buffer>",
+      callback = function()
+        vim.lsp.codelens.refresh()
+      end,
+    })
     vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>cl", "<Cmd>lua vim.lsp.codelens.run()<CR>", { silent = true, })
   end
 
@@ -139,12 +189,13 @@ local on_attach = function(client, bufnr)
 
   vim.g.Illuminate_ftblacklist = { "neo-tree", }
 
-  vim.cmd([[
-        augroup illuminate_augroup
-            autocmd!
-            autocmd VimEnter * hi illuminatedWord cterm=underline gui=underline
-        augroup END
-    ]])
+  vim.api.nvim_create_autocmd("VimEnter", {
+    group = vim.api.nvim_create_augroup("Illuminate", { clear = true }),
+    pattern = "*",
+    callback = function()
+      vim.command [[ hi illuminatedWord cterm=underline gui=underline ]]
+    end
+  })
 
   vim.api.nvim_command [[ hi def link LspReferenceText CursorLine ]]
   vim.api.nvim_command [[ hi def link LspReferenceWrite CursorLine ]]
@@ -168,7 +219,7 @@ local on_attach = function(client, bufnr)
   buf_map(bufnr, "n", "K", ":lua vim.lsp.buf.hover()<CR>", opts)
   -- buf_map(bufnr, "n", "gi", ":lua vim.lsp.buf.implementation()<CR>", opts)
   buf_map(bufnr, "n", "gi", ":lua require('telescope.builtin').lsp_implementations()<CR>", opts)
-  buf_map(bufnr, "n", "<C-;>", ":lua vim.lsp.buf.signature_help()<CR>", opts)
+  buf_map(bufnr, "n", "<C-k>", ":lua vim.lsp.buf.signature_help()<CR>", opts)
   buf_map(bufnr, "n", "<leader>wa", ":lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
   buf_map(bufnr, "n", "<leader>wr", ":lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
   buf_map(bufnr, "n", "<leader>wl", ":lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", opts)
@@ -185,16 +236,16 @@ local on_attach = function(client, bufnr)
   -- Enable completion triggered by <c-x><c-o>
   vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
-  local opts = function(hint)
+  local options = function(hint)
     return { buffer = bufnr, silent = true, desc = hint }
   end
 
-  vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts("Add diagnostics to the location list"))
-  vim.keymap.set('n', '<leader>pd', vim.diagnostic.open_float, opts("Show diagnostics"))
-  vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts("Go to previous diagnostic"))
-  vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts("Go to next diagnostic"))
-  vim.keymap.set('n', 'gk', vim.diagnostic.goto_prev, opts("Go to previous diagnostic"))
-  vim.keymap.set('n', 'gj', vim.diagnostic.goto_next, opts("Go to next diagnostic"))
+  vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, options("Add diagnostics to the location list"))
+  vim.keymap.set('n', '<leader>pd', vim.diagnostic.open_float, options("Show diagnostics"))
+  vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, options("Go to previous diagnostic"))
+  vim.keymap.set('n', ']d', vim.diagnostic.goto_next, options("Go to next diagnostic"))
+  vim.keymap.set('n', 'gk', vim.diagnostic.goto_prev, options("Go to previous diagnostic"))
+  vim.keymap.set('n', 'gj', vim.diagnostic.goto_next, options("Go to next diagnostic"))
 
   -- vim.keymap.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts("Add workspace"))
   -- vim.keymap.set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts("Remove workspace"))
