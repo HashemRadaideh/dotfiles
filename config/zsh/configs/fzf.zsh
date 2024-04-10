@@ -1,5 +1,5 @@
 if [ ! -x "$(command -v fzf)"  ]; then
-  return
+    return
 fi
 
 source /usr/share/fzf/completion.zsh
@@ -9,18 +9,18 @@ export FZF_DEFAULT_OPTS='--height=~50% --layout=reverse --border --cycle --previ
 export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git --exclude node_modules --exclude .cache'
 
 ff() {
-  temp=`fzf --prompt='Edit:'`
-  if [[ "$temp" == "." ]]; then
-    cd
-  fi
-
-  if [[ -n "$temp" ]]; then
-    if  [ -d "$temp" ]; then
-      cd "$temp"
-    else
-      cd "$(sed 's/\(.*\)\/.*/\1/' <<< "$temp")" && "$EDITOR" "$(sed 's/.*\/\(.*\)/\1/' <<< "$temp")"
+    temp=`fzf --prompt='Edit:'`
+    if [[ "$temp" == "." ]]; then
+        cd
     fi
-  fi
+
+    if [[ -n "$temp" ]]; then
+        if  [ -d "$temp" ]; then
+            cd "$temp"
+        else
+            cd "$(sed 's/\(.*\)\/.*/\1/' <<< "$temp")" && "$EDITOR" "$(sed 's/.*\/\(.*\)/\1/' <<< "$temp")"
+        fi
+    fi
 }
 
 bindkey -s '^f' '^uff^m'

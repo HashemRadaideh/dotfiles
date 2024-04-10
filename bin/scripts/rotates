@@ -1,59 +1,67 @@
 #!/bin/luajit
 
 local function notify(notification)
-  local text = notification.text or ""
-  local id = notification.id or 0
-  os.execute([[notify-send "]] .. text .. [[" -r ]] .. id)
+	local text = notification.text or ""
+	local id = notification.id or 0
+	os.execute([[notify-send "]] .. text .. [[" -r ]] .. id)
 end
 
 local threshold = 9.81 -- threshold is approximately equal to gravity (m/s^2)
 
 local rotations = {
-  LANDSCAPE = 1,
-  PORTRAIT = 2,
+	LANDSCAPE = 1,
+	PORTRAIT = 2,
 }
 
 local orientations = {
-  {
-    label = "normal",
-    rotation = rotations.LANDSCAPE,
-    flipped = false,
-    check = function(x, y, z) return y <= -threshold end
-  },
-  {
-    label = "inverted",
-    rotation = rotations.LANDSCAPE,
-    flipped = true,
-    check = function(x, y, z) return y >= threshold end
-  },
-  {
-    label = "left",
-    rotation = rotations.PORTRAIT,
-    flipped = false,
-    check = function(x, y, z) return x >= threshold end
-  },
-  {
-    label = "right",
-    rotation = rotations.PORTRAIT,
-    flipped = true,
-    check = function(x, y, z) return x <= -threshold end
-  },
+	{
+		label = "normal",
+		rotation = rotations.LANDSCAPE,
+		flipped = false,
+		check = function(x, y, z)
+			return y <= -threshold
+		end,
+	},
+	{
+		label = "inverted",
+		rotation = rotations.LANDSCAPE,
+		flipped = true,
+		check = function(x, y, z)
+			return y >= threshold
+		end,
+	},
+	{
+		label = "left",
+		rotation = rotations.PORTRAIT,
+		flipped = false,
+		check = function(x, y, z)
+			return x >= threshold
+		end,
+	},
+	{
+		label = "right",
+		rotation = rotations.PORTRAIT,
+		flipped = true,
+		check = function(x, y, z)
+			return x <= -threshold
+		end,
+	},
 }
 
 local previous = {
-  rotation = rotations.LANDSCAPE,
-  flipped = false
+	rotation = rotations.LANDSCAPE,
+	flipped = false,
 }
 
 local function is_changed(new)
-  return previous.rotation ~= new.rotation and previous.flipped ~= new.flipped
+	return previous.rotation ~= new.rotation and previous.flipped ~= new.flipped
 end
 
 local rotation = rotations.LANDSCAPE
 local flipped = false
 
 local read = function(file_name)
-  return tonumber(io.open("/sys/bus/iio/devices/iio:device0/" .. file_name):read("*all"))
+	return tonumber(io.open("/sys/bus/iio/devices/iio:device0/" .. file_name):read("*all"))
 end
 
 local scale = read("in_accel_scale")
@@ -62,7 +70,7 @@ local y = nil
 local z = nil
 
 local function is_different(newX, newY, newZ)
-  return x ~= newX and y ~= newY and z ~= newZ
+	return x ~= newX and y ~= newY and z ~= newZ
 end
 
 local newX = nil
@@ -70,43 +78,43 @@ local newY = nil
 local newZ = nil
 
 while true do
-  newX = read("in_accel_x_raw") * scale
-  newY = read("in_accel_y_raw") * scale
-  newZ = read("in_accel_z_raw") * scale
+	newX = read("in_accel_x_raw") * scale
+	newY = read("in_accel_y_raw") * scale
+	newZ = read("in_accel_z_raw") * scale
 
-  if not is_different(newX, newY, newZ) then
-    goto continue
-  end
+	if not is_different(newX, newY, newZ) then
+		goto continue
+	end
 
-  x, y, z = newX, newY, newZ
-  -- notify({ text = "IMU at (" .. x .. ", " .. y .. ", " .. z .. ")", id = 999 })
+	x, y, z = newX, newY, newZ
+	-- notify({ text = "IMU at (" .. x .. ", " .. y .. ", " .. z .. ")", id = 999 })
 
-  for _, orientation in ipairs(orientations) do
-    if orientation.check(x, y, z) then
-      rotation = orientation.rotation
-      flipped = orientation.flipped
-      break
-    end
-  end
+	for _, orientation in ipairs(orientations) do
+		if orientation.check(x, y, z) then
+			rotation = orientation.rotation
+			flipped = orientation.flipped
+			break
+		end
+	end
 
-  if not is_changed({ rotation, flipped }) then
-    goto continue
-  end
+	if not is_changed({ rotation, flipped }) then
+		goto continue
+	end
 
-  previous = { rotation = rotation, flipped = flipped }
+	previous = { rotation = rotation, flipped = flipped }
 
-  if rotation == rotations.LANDSCAPE and not flipped then
-    -- notify({ text = "normal", id = 997 })
-    os.execute([[xrandr --output eDP-1 --rotate normal]])
-  elseif rotation == rotations.LANDSCAPE and flipped then
-    -- notify({ text = "inverted", id = 997 })
-    os.execute([[xrandr --output eDP-1 --rotate inverted]])
-  elseif rotation == rotations.PORTRAIT and not flipped then
-    -- notify({ text = "left", id = 997 })
-    os.execute([[xrandr --output eDP-1 --rotate left]])
-  elseif rotation == rotations.PORTRAIT and flipped then
-    -- notify({ text = "right", id = 997 })
-    os.execute([[xrandr --output eDP-1 --rotate right]])
-  end
-  ::continue::
+	if rotation == rotations.LANDSCAPE and not flipped then
+		-- notify({ text = "normal", id = 997 })
+		os.execute([[xrandr --output eDP-1 --rotate normal]])
+	elseif rotation == rotations.LANDSCAPE and flipped then
+		-- notify({ text = "inverted", id = 997 })
+		os.execute([[xrandr --output eDP-1 --rotate inverted]])
+	elseif rotation == rotations.PORTRAIT and not flipped then
+		-- notify({ text = "left", id = 997 })
+		os.execute([[xrandr --output eDP-1 --rotate left]])
+	elseif rotation == rotations.PORTRAIT and flipped then
+		-- notify({ text = "right", id = 997 })
+		os.execute([[xrandr --output eDP-1 --rotate right]])
+	end
+	::continue::
 end

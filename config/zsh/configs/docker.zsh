@@ -1,12 +1,12 @@
 if [ ! -x "$(command -v docker)"  ]; then
-  return
+    return
 fi
 
 dbuild() {
-  docker build -t "$(basename "$(pwd)")" .
+    docker build -t "$(basename "$(pwd)")" .
 }
 
 drun() {
-  dbuild "$(basename "$(pwd)")"
-  docker run --rm -it --net=host --env="DISPLAY" -v `pwd`:/work $@ "$(basename "$(pwd)")"
+    dbuild "$(basename "$(pwd)")"
+    docker run --rm -it --net=host --env="DISPLAY" -v `pwd`:/work $@ "$(basename "$(pwd)")"
 }

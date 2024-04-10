@@ -1,65 +1,64 @@
 if [ ! -x "$(command -v paru)"  ]; then
-  return
+    return
 fi
 
 # Paru shortcut
 clean() {
-  paru -Rcnsdd $(pacman -Qdtq)
-  paru -Scc
+    yay -Rcnsdd $(yay -Qdtq) && yay -Scc
 }
 
 download() {
-  local pkgman='pacman'
-  [ -x "$(command -v paru)" ] && pkgman='paru'
+    local pkgman='pacman'
+    [ -x "$(command -v paru)" ] && pkgman='paru'
 
-  $pkgman -S $@
+    $pkgman -S $@
 
-  touch "$DOTFILES/scripts/packages.txt" 2> /dev/null
+    touch "$DOTFILES/scripts/packages.txt" 2> /dev/null
 
-  if [ $? -eq 0 ]; then
-    for item in "$@"; do
-      if ! rg -q "^$item$" "$DOTFILES/scripts/packages.txt" ; then
-        echo "$item" >> "$DOTFILES/scripts/packages.txt"
-      fi
-    done
-  fi
+    if [ $? -eq 0 ]; then
+        for item in "$@"; do
+            if ! rg -q "^$item$" "$DOTFILES/scripts/packages.txt" ; then
+                echo "$item" >> "$DOTFILES/scripts/packages.txt"
+            fi
+        done
+    fi
 }
 
 delete() {
-  local pkgman='pacman'
-  [ -x "$(command -v paru)" ] && pkgman='paru'
+    local pkgman='pacman'
+    [ -x "$(command -v paru)" ] && pkgman='paru'
 
-  $pkgman -Rnsdd $@
+    $pkgman -Rnsdd $@
 
-  if [ $? -eq 0 ] && [ -f "$DOTFILES/scripts/packages.txt" ]; then
-    for item in "$@"; do
-      if rg -q "^$item$" "$DOTFILES/scripts/packages.txt"; then
-        sed -i "/^$item$/d" "$DOTFILES/scripts/packages.txt"
-      fi
-    done
-  fi
+    if [ $? -eq 0 ] && [ -f "$DOTFILES/scripts/packages.txt" ]; then
+        for item in "$@"; do
+            if rg -q "^$item$" "$DOTFILES/scripts/packages.txt"; then
+                sed -i "/^$item$/d" "$DOTFILES/scripts/packages.txt"
+            fi
+        done
+    fi
 }
 
 update() {
-  local pkgman='pacman'
-  [ -x "$(command -v paru)" ] && pkgman='paru'
+    local pkgman='pacman'
+    [ -x "$(command -v paru)" ] && pkgman='paru'
 
-  $pkgman -Syu
+    $pkgman -Syu
 
-  [ -x "$(command -v paru)" ] && $pkgman -Sua
+    [ -x "$(command -v paru)" ] && $pkgman -Sua
 
-  reposync  ~/.files/ ~/
+    reposync  ~/.files/ ~/
 
-  # nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' 
-  nvim --headless "+Lazy! sync" +qa
+    # nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+    nvim --headless "+Lazy! sync" +qa
 
-  doom sync
+    doom sync
 
-  ~/.config/tmux/plugins/tpm/scripts/install_plugins.sh
+    ~/.config/tmux/plugins/tpm/scripts/install_plugins.sh
 
-  rustup self upgrade-data
+    rustup self upgrade-data
 
-  clean
+    clean
 
-  sort "$DOTFILES/packages.txt" | uniq --unique > "$DOTFILES/packages.txt"
+    sort "$DOTFILES/packages.txt" | uniq --unique > "$DOTFILES/packages.txt"
 }

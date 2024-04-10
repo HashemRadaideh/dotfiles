@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 function run {
-  if ! pgrep -u "$USER" -f "$1" > /dev/null; then
-    "$@" &
-  fi
+    if ! pgrep -u "$USER" -f "$1" >/dev/null; then
+        "$@" &
+    fi
 }
 
 run dunst
@@ -14,68 +14,69 @@ run /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 run gnome-keyring-daemon --start --components=ssh
 
 if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "$DISPLAY" ]; then
-  run setxkbmap -layout us,ara -option grp:win_space_toggle
-  run xmodmap -e "keycode 135 = Super_R"
-  run xset -b
+    run setxkbmap -layout us,ara -option grp:win_space_toggle
+    run setxkbmap -option caps:escape
+    run xmodmap -e "keycode 135 = Super_R"
+    run xset -b
 
-  run picom --config "$DOTFILES/config/picom/picom.conf"
+    run picom --config "$DOTFILES/config/picom/picom.conf"
 
-  run greenclip daemon
+    run greenclip daemon
 
-  xset s off
-  xset s noblank
-  xset -dpms
-  xset -b
+    xset s off
+    xset s noblank
+    xset -dpms
+    xset -b
 
-  run xss-lock lock
+    run xss-lock lock
 
-  run xidlehook \
-    --not-when-fullscreen \
-    --not-when-audio \
-    --timer 60 \
-      'brightnessctl set 35%-; notify-send -u critical -t 10000 -- "LOCKING screen in 30 seconds"' \
-      'brightnessctl set 35%+' \
-    --timer 30 \
-      'brightnessctl set 35%+; lock' \
-      '' \
-    --timer 600 \
-      'systemctl suspend' \
-      ''
+    run xidlehook \
+        --not-when-fullscreen \
+        --not-when-audio \
+        --timer 60 \
+        'brightnessctl set 35%-; notify-send -u critical -t 10000 -- "LOCKING screen in 30 seconds"' \
+        'brightnessctl set 35%+' \
+        --timer 30 \
+        'brightnessctl set 35%+; lock' \
+        '' \
+        --timer 600 \
+        'systemctl suspend' \
+        ''
 
-  # run plank
-  # run polybar
-  # run conky -c $HOME/.config/conky/conky.conf
+    # run plank
+    # run polybar
+    # run conky -c $HOME/.config/conky/conky.conf
 
-  # screenCount=$(xrandr | rg " connected" | wc -l)
+    # screenCount=$(xrandr | rg " connected" | wc -l)
 
-  # if [ $screenCount -gt 1 ]; then
+    # if [ $screenCount -gt 1 ]; then
     # run $XDG_DATA_HOME/scripts/screenlayout.sh
-  # fi
+    # fi
 
-  # wallpaper="$(find ~/Pictures/wallpapers/ -type f -exec file -- {} + | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)"
+    # wallpaper="$(find ~/Pictures/wallpapers/ -type f -exec file -- {} + | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)"
 
-  # for (( i = 0; i < $screenCount; i++ )); do
-  #   run nitrogen --head="$i" --set-zoom-fill "$wallpaper"
-  # done
+    # for (( i = 0; i < $screenCount; i++ )); do
+    #   run nitrogen --head="$i" --set-zoom-fill "$wallpaper"
+    # done
 
-  run redshift-gtk -l manual:`while ! ping -c 1 1.1.1.1 >/dev/null 2>&1; do sleep 1; done; curl -s "https://location.services.mozilla.com/v1/geolocate?key=geoclue" | jq -r '"\(.location.lat):\(.location.lng)"'`
+    run redshift-gtk -l manual:"$(while ! ping -c 1 1.1.1.1 >/dev/null 2>&1; do sleep 1; done && curl -s "https://location.services.mozilla.com/v1/geolocate?key=geoclue" | jq -r '"\(.location.lat):\(.location.lng)"')"
 
-  run autorandr -c --default default
+    run autorandr -c --default default
 
-  run autorotate
+    run autorotate
 else
-  wallpaper="$(find ~/Pictures/wallpapers/ -type f -exec file -- {} + | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)"
+    wallpaper="$(find ~/Pictures/wallpapers/ -type f -exec file -- {} + | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)"
 
-  run swww init && swww img \
-    $wallpaper \
-    --transition-step 255
+    run swww init && swww img \
+        "$wallpaper" \
+        --transition-step 255
 
-  run waybar
+    run waybar
 
-  # run mako
+    # run mako
 
-  run wl-paste --type text --watch cliphist store
-  # run wl-paste --type image --watch cliphist store
+    run wl-paste --type text --watch cliphist store
+    # run wl-paste --type image --watch cliphist store
 fi
 
 run udiskie -s
@@ -91,7 +92,7 @@ run playerctld daemon
 # run volumeicon
 
 # run /usr/bin/emacs --daemon
-run discord --start-minimized
+run discord
 # run steam -silent
 # run spotify --minimized
 # run teams

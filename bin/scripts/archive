@@ -18,19 +18,22 @@ else
 fi
 
 case "$2" in
-  rar)       rar a "$1.rar" "$1"         ;;
-  zip)       zip -r "$1.zip" "$1"        ;;
-  7z)        7z a "$1.7z" "$1"           ;;
-  gz)        tar cvfz "$1.tar.gz" "$1"   ;;
-  bz2)       tar cvfj "$1.tar.bz2" "$1"  ;;
-  tar)       tar cvf "$1.tar" "$1"       ;;
-  tgz)       tar cvfz "$1.tgz" "$1"      ;;
-  tbz2)      tar cvfj "$1.tbz2" "$1"     ;;
-  txz)       tar cvfJ "$1.tar.xz" "$1"   ;;
-  tar.gz)    tar cvfz "$1.tar.gz" "$1"   ;;
-  tar.bz2)   tar cvfj "$1.tar.bz2" "$1"  ;;
-  tar.xz)    tar cvfJ "$1.tar.xz" "$1"   ;;
-  *) echo "Unsupported format"; exit 1 ;;
+    rar) rar a "$1.rar" "$1" ;;
+    zip) zip -r "$1.zip" "$1" ;;
+    7z) 7z a "$1.7z" "$1" ;;
+    gz) tar cvfz "$1.tar.gz" "$1" ;;
+    bz2) tar cvfj "$1.tar.bz2" "$1" ;;
+    tar) tar cvf "$1.tar" "$1" ;;
+    tgz) tar cvfz "$1.tgz" "$1" ;;
+    tbz2) tar cvfj "$1.tbz2" "$1" ;;
+    txz) tar cvfJ "$1.tar.xz" "$1" ;;
+    tar.gz) tar cvfz "$1.tar.gz" "$1" ;;
+    tar.bz2) tar cvfj "$1.tar.bz2" "$1" ;;
+    tar.xz) tar cvfJ "$1.tar.xz" "$1" ;;
+    *)
+        echo "Unsupported format"
+        exit 1
+        ;;
 esac
 
 echo "Archive created successfully."

@@ -1,13 +1,13 @@
 configs=(
-  aliases
-  cmake
-  docker
-  fzf
-  lf
-  nvim
-  pacman
-  utils
-  wine
+    aliases
+    cmake
+    docker
+    fzf
+    lf
+    nvim
+    pacman
+    utils
+    wine
 )
 
 export TERMINAL="kitty"
@@ -27,7 +27,7 @@ export SAVEHIST=10000000
 export EDITOR="nvim"
 
 visudo() {
-  sudo EDITOR=$EDITOR visudo
+    sudo EDITOR=$EDITOR visudo
 }
 
 # $FILEMANAGER
@@ -45,7 +45,7 @@ export OPENER="xdg-open"
 # $PAGER uses bat with colors enabled
 export PAGER="bat --decorations=always --color=always --paging=always"
 
-# fix for wierd characters in man pages when using bat
+# fix for weird characters in man pages when using bat
 export MANROFFOPT='-c'
 
 # $VISUAL uses Emacs in GUI mode
@@ -69,15 +69,16 @@ export XDG_VIDEOS_DIR="$HOME/Videos"
 
 # home directory clean up
 # export ANDROID_HOME="$XDG_DATA_HOME"/android
+export ANDROID_SDK_HOME="$HOME"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export GNUPGHOME="$XDG_DATA_HOME/gnupm"
 export GOPATH="$XDG_DATA_HOME/go"
-export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle                                                
+export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
 export GTK_2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 export MINIKUBE_HOME="$XDG_DATA_HOME/minikube"
 export MPLAYER_HOME="$XDG_CONFIG_HOME/mplayer"
-export MYSQL_HISTFILE="$XDG_DATA_HOME"/mysql_history                                         
+export MYSQL_HISTFILE="$XDG_DATA_HOME"/mysql_history
 export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
 export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/pythonrc"
 export QT_QPA_PLATFORMTHEME="qt5ct"
