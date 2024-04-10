@@ -1,4 +1,3 @@
-local config = require('plugins.lsp.configs.setup')
+local config = require("plugins.lsp.config")
 
-require('lspconfig')
-    .vimls.setup(config)
+require("lspconfig").vimls.setup(config)

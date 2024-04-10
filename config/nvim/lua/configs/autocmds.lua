@@ -1,11 +1,11 @@
 -- vim.cmd [[let &scrolloff=999-&scrolloff]]
-vim.cmd [[set scrolloff=8]]
-vim.cmd [[let &colorcolumn="80,100,".join(range(120,999),",")]]
-vim.cmd [[autocmd BufRead,BufNewFile * setlocal signcolumn=yes:2]]
+vim.cmd([[set scrolloff=8]])
+vim.cmd([[let &colorcolumn="80,100,".join(range(120,999),",")]])
+vim.cmd([[autocmd BufRead,BufNewFile * setlocal signcolumn=yes:2]])
 
-vim.cmd [[ highlight CursorColumn guibg=#ff0000 ]]
+vim.cmd([[ highlight CursorColumn guibg=#ff0000 ]])
 
-vim.cmd [[
+vim.cmd([[
   let g:transparency = 0
   function Transparency()
     if !exists("g:neovide")
@@ -27,16 +27,16 @@ vim.cmd [[
       endif
     endif
   endfunction
-  " au VimEnter * call Transparency()
+  au VimEnter * call Transparency()
   nnoremap <silent> <F10> :call Transparency()<CR>
-]]
+]])
 
 vim.api.nvim_create_autocmd("FocusLost", {
   group = vim.api.nvim_create_augroup("FocusAway", { clear = true }),
   pattern = { "*" },
   callback = function()
     vim.cmd(":wa")
-  end
+  end,
 })
 
 -- vim.cmd [[
@@ -53,12 +53,12 @@ vim.api.nvim_create_autocmd("FocusLost", {
 --   augroup end
 -- ]]
 
-vim.cmd [[
+vim.cmd([[
     autocmd BufReadPost *
     \ if line("'\"") > 0 && line("'\"") <= line("$") |
     \   exe "normal! g`\"" |
     \ endif
-]]
+]])
 
 -- vim.cmd [[behave mswin]]
 
@@ -89,39 +89,39 @@ vim.cmd [[
 -- })
 
 -- https://vi.stackexchange.com/questions/24898/autocmd-with-a-python-file-not-working
-vim.cmd [[
+vim.cmd([[
   augroup vimrc_python
     au!
     au FileType python nnoremap <buffer> <F10> :w <bar> !python3 %<CR>
   augroup END
-]]
+]])
 
 --  Auto start Codi
 --  to get file type, use :set ft?
-vim.cmd [[
+vim.cmd([[
   augroup codi_autostart
     au!
     au FileType python,lua,javascript,typescript nnoremap <buffer> <F9> :Codi<CR>
   augroup END
-]]
+]])
 
-vim.cmd [[
+vim.cmd([[
   augroup kitty_mp
     au!
     au VimLeave * :silent !kitty @ set-spacing padding=20 margin=10
     au VimEnter * :silent !kitty @ set-spacing padding=0 margin=0
   augroup END
-]]
+]])
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
-local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
-vim.api.nvim_create_autocmd('TextYankPost', {
+local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
+vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()
     vim.highlight.on_yank()
   end,
   group = highlight_group,
-  pattern = '*',
+  pattern = "*",
 })
 
 local lastplace = vim.api.nvim_create_augroup("LastPlace", {})

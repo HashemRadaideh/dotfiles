@@ -1,4 +1,3 @@
-local config = require('plugins.lsp.configs.setup')
+local config = require("plugins.lsp.config")
 
-require('lspconfig')
-    .zls.setup(config)
+require("lspconfig").zls.setup(config)

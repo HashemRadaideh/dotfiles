@@ -1,6 +1,16 @@
-local ok, twilight = pcall(require, "twilight")
-if not ok then
-  return
-end
-
-twilight.setup()
+return {
+  "folke/twilight.nvim",
+  cmd = "Twilight",
+  opts = {
+    context = 0,
+    expand = {
+      "function",
+      "method",
+      "table",
+      "if_statement",
+      "function_declaration",
+      "method_declaration",
+      "pair",
+    },
+  },
+}

@@ -1,3 +1,3 @@
-require('configs.options')
-require('configs.mappings')
-require('configs.autocmds')
+require("configs.options")
+require("configs.mappings")
+require("configs.autocmds")

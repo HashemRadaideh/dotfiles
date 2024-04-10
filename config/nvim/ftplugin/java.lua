@@ -1,0 +1,13 @@
+-- put this in ftplugin/java.lua
+-- require("jdtls").start_or_attach({
+--   capabilities = config.capabilities,
+--   on_attach = config.on_attach,
+--   handlers = config.handlers,
+--   flags = config.flags,
+--   -- flags = {
+--   --   debounce_text_changes = 100,
+--   --   allow_incremental_sync = true,
+--   -- },
+--   cmd = { vim.fn.stdpath("data") .. "/mason/bin/jdtls" },
+--   root_dir = vim.fs.dirname(vim.fs.find({ ".gradlew", ".git", "mvnw" }, { upward = true })[1]),
+-- })
