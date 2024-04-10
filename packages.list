@@ -79,6 +79,7 @@ wireplumber
 sof-firmware
 mkinitcpio-firmware
 plymouth
+plymouth-theme-archlinux
 plymouth-theme-arch-logo
 plymouth-theme-arch-charge-big
 plymouth-theme-dark-arch
@@ -86,7 +87,6 @@ plymouth-theme-arch-charge
 plymouth-theme-arch-glow
 plymouth-theme-arch-logo-gnomish
 plymouth-theme-arch-breeze-git
-plymouth-theme-monoarch
 plymouth-theme-arch-solarized-git
 plymouth-theme-arch-charge-gdm-spinner
 plymouth-theme-arch-logo-new
@@ -94,7 +94,6 @@ plymouth-theme-arch10
 plymouth-theme-arch-charge-gdm
 plymouth-theme-arch-darwin
 plymouth-theme-arch-beat
-plymouth-theme-archlinux
 plymouth-theme-blackarch-glow
 plymouth-theme-sweet-arch-git
 plymouth-i_use_arch_btw-git
