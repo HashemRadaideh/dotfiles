@@ -4,12 +4,12 @@ if ok then
     local files = {}
     local function exploreDirectory(dir)
       for file in lfs.dir(dir) do
-        if file ~= "." and file ~= ".." then
-          local filePath = dir .. '/' .. file
+        if file ~= "." and file ~= ".." and file ~= ".git" then
+          local filePath = dir .. "/" .. file
           local attr = lfs.attributes(filePath)
-          if attr.mode == 'file' then
+          if attr.mode == "file" then
             table.insert(files, filePath)
-          elseif attr.mode == 'directory' then
+          elseif attr.mode == "directory" then
             exploreDirectory(filePath)
           end
         end
@@ -28,50 +28,50 @@ end
 
 ---@diagnostic disable-next-line: undefined-global
 local screen = screen
-local awful  = require('awful')
-local wibox  = require('wibox')
+local awful = require("awful")
+local wibox = require("wibox")
 
 screen.connect_signal("request::wallpaper", function(s)
-  awful.wallpaper {
+  awful.wallpaper({
     screen = s,
     widget = {
       {
-        image                 = Wallpaper,
-        resize                = true,
-        upscale               = true,
-        downscale             = true,
+        image = Wallpaper,
+        resize = true,
+        upscale = true,
+        downscale = true,
         horizontal_fit_policy = "fit",
-        vertical_fit_policy   = "fit",
-        widget                = wibox.widget.imagebox,
+        vertical_fit_policy = "fit",
+        widget = wibox.widget.imagebox,
       },
       valign = "center",
       halign = "center",
-      tiled  = false,
+      tiled = false,
       widget = wibox.container.background,
-    }
-  }
+    },
+  })
 end)
 
 screen.connect_signal("request::desktop_decoration", function(s)
-  s.Bartoggle = wibox {
-    screen  = s,
+  s.Bartoggle = wibox({
+    screen = s,
     visible = true,
-    ontop   = true,
-    bg      = "#000000",
-    x       = s.geometry.x,
-    y       = 0,
-    width   = s.geometry.width,
-    height  = 1,
+    ontop = true,
+    bg = "#000000",
+    x = s.geometry.x,
+    y = 0,
+    width = s.geometry.width,
+    height = 1,
     stretch = true,
-  }
+  })
 
-  s.Bartoggle:connect_signal('mouse::enter', function(_)
+  s.Bartoggle:connect_signal("mouse::enter", function(_)
     s.Bar.visible = true
     s.Bar.hover = true
     s.Bar.hide:stop()
   end)
 
-  s.Bartoggle:connect_signal('mouse::leave', function(_)
+  s.Bartoggle:connect_signal("mouse::leave", function(_)
     s.Bar.hover = false
 
     s.Bar.hide:connect_signal("timeout", function()
@@ -84,19 +84,19 @@ screen.connect_signal("request::desktop_decoration", function(s)
     s.Bar.hide:start()
   end)
 
-  s.Keyboard = wibox {
-    screen  = s,
+  s.Keyboard = wibox({
+    screen = s,
     visible = true,
-    ontop   = true,
-    bg      = "#000000",
-    x       = s.geometry.x,
-    y       = s.geometry.height - 1,
-    width   = s.geometry.width,
-    height  = 1,
+    ontop = true,
+    bg = "#000000",
+    x = s.geometry.x,
+    y = s.geometry.height - 1,
+    width = s.geometry.width,
+    height = 1,
     stretch = true,
-  }
+  })
 
-  s.Keyboard:connect_signal('mouse::enter', function(_)
+  s.Keyboard:connect_signal("mouse::enter", function(_)
     -- local _, _, status = os.execute('virtkey')
     -- if status == 1 then
     --   awful.util.spawn([[corekeyboard]])
@@ -105,19 +105,27 @@ screen.connect_signal("request::desktop_decoration", function(s)
 
     local states = {
       {
-        check = function(_, y) return y <= -g end,
+        check = function(_, y)
+          return y <= -g
+        end,
         keyboard = true,
       },
       {
-        check = function(_, y) return y >= g end,
+        check = function(_, y)
+          return y >= g
+        end,
         keyboard = false,
       },
       {
-        check = function(x, _) return x >= g end,
+        check = function(x, _)
+          return x >= g
+        end,
         keyboard = false,
       },
       {
-        check = function(x, _) return x <= -g end,
+        check = function(x, _)
+          return x <= -g
+        end,
         keyboard = false,
       },
     }
