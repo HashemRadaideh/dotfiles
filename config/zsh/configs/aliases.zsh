@@ -59,8 +59,9 @@ alias paru="paru --bottomup"
 # alias start="xdg-open"
 # alias open="xdg-open"
 
-# Lazygit shortcut
+# Lazy shortcuts
 alias lg="lazygit"
+alias ld="lazydocker"
 
 # Glow shortcut
 # alias gl="glow"

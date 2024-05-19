@@ -93,7 +93,7 @@ export _JAVA_OPTIONS="-Djava.io.tmpdir=$XDG_CONFIG_HOME/java -Djava.util.prefs.u
 export _JAVA_AWT_WM_NONREPARENTING=1
 export QSYS_ROOTDIR="$XDG_CACHE_HOME/paru/clone/quartus-free/pkg/quartus-free-quartus/opt/intelFPGA/21.1/quartus/sopc_builder/bin"
 
-export PATH="$PATH:$XDG_DATA_HOME:$XDG_DATA_HOME/scripts:$XDG_DATA_HOME/sessions:$XDG_DATA_HOME/cargo/bin:$GOPATH/bin/:$XDG_CONFIG_HOME/doom/bin:$XDG_CONFIG_HOME/emacs/bin:/usr/lib/jvm/default/bin:$ANDROID_HOME/platform-tools:$XDG_DATA_HOME/nvim/mason/bin:$HOME/.yarn/bin/"
+export PATH="$PATH:$XDG_DATA_HOME:$XDG_DATA_HOME/scripts:$XDG_DATA_HOME/sessions:$XDG_DATA_HOME/cargo/bin:$GOPATH/bin/:$XDG_CONFIG_HOME/doom/bin:$XDG_CONFIG_HOME/emacs/bin:/usr/lib/jvm/default/bin:$ANDROID_HOME/platform-tools:$XDG_DATA_HOME/nvim/mason/bin:$HOME/.yarn/bin/:$HOME/.cache/.bun/bin/:$HOME/.ghcup/bin/"
 
 alias mysql-workbench=mysql-workbench --configdir="$XDG_DATA_HOME/mysql/workbench"
 alias yarn='yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config'
