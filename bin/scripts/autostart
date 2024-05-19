@@ -15,7 +15,7 @@ run gnome-keyring-daemon --start --components=ssh
 
 if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "$DISPLAY" ]; then
     run setxkbmap -layout us,ara -option grp:win_space_toggle
-    run setxkbmap -option caps:escape
+    # run setxkbmap -option caps:escape
     run xmodmap -e "keycode 135 = Super_R"
     run xset -b
 
