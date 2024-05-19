@@ -96,7 +96,7 @@ local handlers = {
     update_in_insert = true,
     virtual_text = {
       spacing = 5,
-      severity_limit = "Warning",
+      -- severity_limit = "Warning",
     },
   }),
   ["textDocument/definition"] = goto_definition("vsplit"),
@@ -288,46 +288,46 @@ local on_attach = function(client, bufnr)
   --   vim.keymap.set('v', '<leader>fn', vim.lsp.buf.range_formatting())
   -- end
 
-  local function find(table, value)
-    for _, v in ipairs(table) do
-      if v == value then
-        return true
-      end
-    end
-    return false
-  end
+  -- local function find(table, value)
+  --   for _, v in ipairs(table) do
+  --     if v == value then
+  --       return true
+  --     end
+  --   end
+  --   return false
+  -- end
 
-  if find(client.server_capabilities.codeActionProvider.codeActionKinds, "source.fixAll") then
-    -- lua print(vim.inspect(vim.lsp.buf_get_clients(0)[1].server_capabilities))
-    -- lua =vim.lsp.get_clients()[1].server_capabilities
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      group = vim.api.nvim_create_augroup("FixAllCodeAction", { clear = true }),
-      pattern = { "*" },
-      callback = function()
-        vim.lsp.buf.code_action(
-          {
-            context = {
-              diagnostics = {},
-              only = { "source.fixAll" },
-              triggerKind = 1,
-            },
-            apply = true,
-          },
-          vim.api.nvim_get_current_buf(),
-          {
-            start = {
-              line = vim.api.nvim_win_get_cursor(0)[1] - 1,
-              character = 0,
-            },
-            ["end"] = {
-              line = vim.api.nvim_win_get_cursor(0)[1],
-              character = 0,
-            },
-          }
-        )
-      end,
-    })
-  end
+  -- if find(client.server_capabilities.codeActionProvider.codeActionKinds, "source.fixAll") then
+  --   -- lua print(vim.inspect(vim.lsp.buf_get_clients(0)[1].server_capabilities))
+  --   -- lua =vim.lsp.get_clients()[1].server_capabilities
+  --   vim.api.nvim_create_autocmd("BufWritePre", {
+  --     group = vim.api.nvim_create_augroup("FixAllCodeAction", { clear = true }),
+  --     pattern = { "*" },
+  --     callback = function()
+  --       vim.lsp.buf.code_action(
+  --         {
+  --           context = {
+  --             diagnostics = {},
+  --             only = { "source.fixAll" },
+  --             triggerKind = 1,
+  --           },
+  --           apply = true,
+  --         },
+  --         vim.api.nvim_get_current_buf(),
+  --         {
+  --           start = {
+  --             line = vim.api.nvim_win_get_cursor(0)[1] - 1,
+  --             character = 0,
+  --           },
+  --           ["end"] = {
+  --             line = vim.api.nvim_win_get_cursor(0)[1],
+  --             character = 0,
+  --           },
+  --         }
+  --       )
+  --     end,
+  --   })
+  -- end
 end
 
 return {
