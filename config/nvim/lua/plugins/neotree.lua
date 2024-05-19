@@ -13,12 +13,17 @@ return {
   },
   keys = {
     {
-      "<leader>fe",
-      [[<cmd>Neotree toggle<cr>]],
+      "<leader>ft",
+      [[<cmd>Neotree toggle right reveal_force_cwd<cr>]],
+      { noremap = true, silent = true, desc = "Explorer NeoTree (root dir)" },
+    },
+    {
+      "<leader>fc",
+      [[<cmd>Neotree toggle current reveal_force_cwd<cr>]],
       { noremap = true, silent = true, desc = "Explorer NeoTree (root dir)" },
     },
     -- {
-    --   "<leader>fE",
+    --   "<leader>fT",
     --   function()
     --     require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() })
     --   end,
@@ -26,12 +31,12 @@ return {
     -- },
     {
       "<leader>ge",
-      [[<cmd>Neotree toggle git_status<CR>]],
+      [[<cmd>Neotree toggle git_status float<CR>]],
       { noremap = true, silent = true, desc = "Git explorer" },
     },
     {
       "<leader>be",
-      [[<cmd>Neotree toggle buffers<CR>]],
+      [[<cmd>Neotree toggle buffers float<CR>]],
       { noremap = true, silent = true, desc = "Buffer explorer" },
     },
   },
