@@ -7,31 +7,30 @@ ruled.client.connect_signal("request::rules", function()
   local screen_width = awful.screen.focused().geometry.width
   local screen_height = awful.screen.focused().geometry.height
 
-  ruled.client.append_rule {
-    id         = "global",
-    rule       = {},
+  ruled.client.append_rule({
+    id = "global",
+    rule = {},
     properties = {
       titlebars_enabled = Titled,
-      focus             = awful.client.focus.filter,
-      raise             = true,
-      screen            = awful.screen.focused,
-      placement         = awful.placement.no_overlap +
-          awful.placement.no_offscreen,
-      size_hints_honor  = false,
-      honor_workarea    = true,
-      honor_padding     = true,
-    }
-  }
+      focus = awful.client.focus.filter,
+      raise = true,
+      screen = awful.screen.focused,
+      placement = awful.placement.no_overlap + awful.placement.no_offscreen,
+      size_hints_honor = false,
+      honor_workarea = true,
+      honor_padding = true,
+    },
+  })
 
-  ruled.client.append_rule {
-    id         = "floating",
-    rule_any   = {
+  ruled.client.append_rule({
+    id = "floating",
+    rule_any = {
       instance = {
         "copyq",
         "pinentry",
         "Devtools",
       },
-      class    = {
+      class = {
         "Arandr",
         "Blueman-manager",
         "Gpick",
@@ -49,31 +48,30 @@ ruled.client.connect_signal("request::rules", function()
         "blueberry.py",
         "Blueberry",
         "Blueberry.py",
-        "Pavucontrol"
+        "Pavucontrol",
       },
-      name     = {
+      name = {
         "Event Tester", -- xev.
         "Emulator",
       },
-      role     = {
-        "AlarmWindow",   -- Thunderbird's calendar.
+      role = {
+        "AlarmWindow", -- Thunderbird's calendar.
         "ConfigManager", -- Thunderbird's about:config.
-        "pop-up",        -- e.g. Google Chrome's (detached) Developer Tools.
+        "pop-up", -- e.g. Google Chrome's (detached) Developer Tools.
         "GtkFileChooserDialog",
-        "devtools",      ---Google Chrome's (detached) Developer Tools.
+        "devtools", ---Google Chrome's (detached) Developer Tools.
       },
-      type     = {
+      type = {
         "dialog",
       },
     },
     properties = {
       titlebars_enabled = true,
-      floating          = true,
-      screen            = awful.screen.focused,
-      placement         = awful.placement.centered +
-          awful.placement.no_offscreen
-    }
-  }
+      floating = true,
+      screen = awful.screen.focused,
+      placement = awful.placement.centered + awful.placement.no_offscreen,
+    },
+  })
 
   ruled.client.append_rule({
     rule_any = {
@@ -86,19 +84,16 @@ ruled.client.connect_signal("request::rules", function()
     },
     properties = {
       floating = true,
-      width    = screen_width * 0.7,
-      height   = screen_height * 0.75,
-      screen   = awful.screen.focused,
+      width = screen_width * 0.7,
+      height = screen_height * 0.75,
+      screen = awful.screen.focused,
     },
     callback = function(c)
-      awful.placement.centered(
-        c,
-        { honor_padding = true, honor_workarea = true }
-      )
+      awful.placement.centered(c, { honor_padding = true, honor_workarea = true })
     end,
   })
 
-  ruled.client.append_rule {
+  ruled.client.append_rule({
     rule_any = {
       class = {
         "firefox",
@@ -106,7 +101,7 @@ ruled.client.connect_signal("request::rules", function()
         "Brave",
         "Google-chrome",
         "Sidekick-browser",
-      }
+      },
     },
     properties = {
       screen = awful.screen.focused,
@@ -135,56 +130,56 @@ ruled.client.connect_signal("request::rules", function()
       end
 
       c:move_to_tag(current_tag)
-    end
-  }
+    end,
+  })
 
-  ruled.client.append_rule {
+  ruled.client.append_rule({
     rule_any = { class = "DesktopEditors" },
     properties = {
       screen = awful.screen.focused,
       tag = Tags[3],
       titlebars_enabled = false,
-    }
-  }
+    },
+  })
 
-  ruled.client.append_rule {
+  ruled.client.append_rule({
     rule_any = {
       class = {
         "Trello",
         "notion-app",
         "Evernote",
-      }
+      },
     },
     properties = {
       screen = awful.screen.focused,
-      tag    = Tags[4],
-    }
-  }
+      tag = Tags[4],
+    },
+  })
 
-  ruled.client.append_rule {
+  ruled.client.append_rule({
     rule_any = { class = "Xephyr" },
     properties = {
       screen = awful.screen.focused,
-      tag    = Tags[5],
-    }
-  }
+      tag = Tags[5],
+    },
+  })
 
-  ruled.client.append_rule {
+  ruled.client.append_rule({
     rule_any = {
       class = {
         "lutris",
       },
       name = {
-        "lutris"
+        "lutris",
       },
     },
     properties = {
       tag = Tags[7],
       screen = awful.screen.focused,
-    }
-  }
+    },
+  })
 
-  ruled.client.append_rule {
+  ruled.client.append_rule({
     rule_any = {
       class = {
         "Steam",
@@ -197,25 +192,25 @@ ruled.client.connect_signal("request::rules", function()
       tag = Tags[7],
       screen = awful.screen.focused,
       titlebars_enabled = false,
-    }
-  }
+    },
+  })
 
-  ruled.client.append_rule {
+  ruled.client.append_rule({
     rule_any = {
       class = {
         "Spotify",
         "spotify",
         "Spotube",
-        "spotube"
-      }
+        "spotube",
+      },
     },
     properties = {
       screen = awful.screen.focused,
-      tag    = Tags[8],
-    }
-  }
+      tag = Tags[8],
+    },
+  })
 
-  ruled.client.append_rule {
+  ruled.client.append_rule({
     rule_any = {
       class = {
         "discord",
@@ -225,16 +220,13 @@ ruled.client.connect_signal("request::rules", function()
     },
     properties = {
       screen = awful.screen.focused,
-      tag    = Tags[9],
-    }
-  }
+      tag = Tags[9],
+    },
+  })
 end)
 
 client.connect_signal("request::manage", function(c)
-  if c.class == "Spotify"
-      or c.class == "spotify"
-      or c.class == "Spotube"
-      or c.class == "spotube" then
+  if c.class == "Spotify" or c.class == "spotify" or c.class == "Spotube" or c.class == "spotube" then
     c:move_to_screen(awful.screen.focused())
     c:move_to_tag(Tags[8])
     local tag = awful.tag.gettags(2)[3]

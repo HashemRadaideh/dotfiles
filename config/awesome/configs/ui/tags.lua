@@ -1,17 +1,17 @@
 ---@diagnostic disable-next-line: undefined-global
-local tag                    = tag
-local awful                  = require('awful')
-local beautiful              = require('beautiful')
-local dpi                    = beautiful.xresources.apply_dpi
+local tag = tag
+local awful = require("awful")
+local beautiful = require("beautiful")
+local dpi = beautiful.xresources.apply_dpi
 
 beautiful.master_fill_policy = "master_width_factor"
 beautiful.master_fill_policy = "expand"
 -- beautiful.master_width_factor = 0.53
-beautiful.useless_gap        = dpi(0)
-beautiful.border_width       = dpi(3)
-beautiful.gap_single_client  = true
-beautiful.master_count       = 1
-beautiful.column_count       = 1
+beautiful.useless_gap = dpi(0)
+beautiful.border_width = dpi(3)
+beautiful.gap_single_client = true
+beautiful.master_count = 1
+beautiful.column_count = 1
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 tag.connect_signal("request::default_layouts", function()
@@ -36,7 +36,16 @@ end)
 Tags = {
   -- "", "", "", "", "", "", "", "", "ﭮ", "",
   -- "", "", "", "", "", "", "", "", "", "",
-  "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "10",
   -- "Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ",
   -- ">_<", "o_O", "~_~", "T-T", "^_^", "._.", ":3", ":')", ":D", "?_?",
 }
@@ -55,107 +64,72 @@ local function switch(case)
   end
 end
 
-
 function Create_tags(s)
   for i, _ in ipairs(Tags) do
-    switch(i) {
+    switch(i)({
       [1] = function()
-        awful.tag(
-          { Tags[1] },
-          s,
-          awful.layout.layouts[1]
-        )
+        awful.tag({ Tags[1] }, s, awful.layout.layouts[1])
       end,
       [2] = function()
-        awful.tag.add(
-          Tags[2],
-          {
-            layout = awful.layout.layouts[1],
-            screen = s,
-          }
-        )
+        awful.tag.add(Tags[2], {
+          layout = awful.layout.layouts[1],
+          screen = s,
+        })
       end,
       [3] = function()
-        awful.tag.add(
-          Tags[3],
-          {
-            layout = awful.layout.layouts[1],
-            screen = s,
-          }
-        )
+        awful.tag.add(Tags[3], {
+          layout = awful.layout.layouts[1],
+          screen = s,
+        })
       end,
       [4] = function()
-        awful.tag.add(
-          Tags[4],
-          {
-            layout = awful.layout.layouts[1],
-            screen = s,
-          }
-        )
+        awful.tag.add(Tags[4], {
+          layout = awful.layout.layouts[1],
+          screen = s,
+        })
       end,
       [5] = function()
-        awful.tag.add(
-          Tags[5],
-          {
-            layout = awful.layout.layouts[1],
-            screen = s,
-          }
-        )
+        awful.tag.add(Tags[5], {
+          layout = awful.layout.layouts[1],
+          screen = s,
+        })
       end,
       [6] = function()
-        awful.tag.add(
-          Tags[6],
-          {
-            layout = awful.layout.layouts[1],
-            screen = s,
-          }
-        )
+        awful.tag.add(Tags[6], {
+          layout = awful.layout.layouts[1],
+          screen = s,
+        })
       end,
       [7] = function()
-        awful.tag.add(
-          Tags[7],
-          {
-            layout = awful.layout.layouts[1],
-            screen = s,
-          }
-        )
+        awful.tag.add(Tags[7], {
+          layout = awful.layout.layouts[1],
+          screen = s,
+        })
       end,
       [8] = function()
-        awful.tag.add(
-          Tags[8],
-          {
-            layout = awful.layout.layouts[1],
-            screen = s,
-          }
-        )
+        awful.tag.add(Tags[8], {
+          layout = awful.layout.layouts[1],
+          screen = s,
+        })
       end,
       [9] = function()
-        awful.tag.add(
-          Tags[9],
-          {
-            layout = awful.layout.layouts[1],
-            screen = s,
-          }
-        )
+        awful.tag.add(Tags[9], {
+          layout = awful.layout.layouts[1],
+          screen = s,
+        })
       end,
       [10] = function()
-        awful.tag.add(
-          Tags[10],
-          {
-            layout = awful.layout.layouts[1],
-            screen = s,
-          }
-        )
+        awful.tag.add(Tags[10], {
+          layout = awful.layout.layouts[1],
+          screen = s,
+        })
       end,
       default = function()
-        awful.tag.add(
-          "",
-          {
-            layout = awful.layout.layouts[-1],
-            screen = s,
-          }
-        )
+        awful.tag.add("", {
+          layout = awful.layout.layouts[-1],
+          screen = s,
+        })
       end,
-    }
+    })
   end
 end

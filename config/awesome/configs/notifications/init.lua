@@ -14,9 +14,9 @@ function noti:notify(message, preset)
     if not preset then
       preset = naughty.config.presets.low
     end
-    self.notification = naughty.notification {
+    self.notification = naughty.notification({
       preset = preset,
       message = tostring(message),
-    }
+    })
   end
 end

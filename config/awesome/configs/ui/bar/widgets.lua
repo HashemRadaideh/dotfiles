@@ -1,11 +1,11 @@
 ---@diagnostic disable-next-line: undefined-global
-local client    = client
-local awful     = require('awful')
-local beautiful = require('beautiful')
-local gears     = require('gears')
-local wibox     = require('wibox')
+local client = client
+local awful = require("awful")
+local beautiful = require("beautiful")
+local gears = require("gears")
+local wibox = require("wibox")
 
-local dpi       = beautiful.xresources.apply_dpi
+local dpi = beautiful.xresources.apply_dpi
 
 function Shape(img)
   return wibox.widget.imagebox(img)
@@ -16,35 +16,35 @@ end
 Menu = wibox.widget.imagebox(beautiful.menu_icon)
 
 Menu:connect_signal("button::press", function()
-  Main_menu:toggle { coords = { x = 0, y = 0 } }
+  Main_menu:toggle({ coords = { x = 0, y = 0 } })
 end)
 
 -- Tasklist
 function Tasks(s)
-  return wibox.widget {
+  return wibox.widget({
     visible = false,
-    widget  = awful.widget.tasklist {
-      visible         = false,
-      screen          = s,
-      filter          = awful.widget.tasklist.filter.currenttags,
-      style           = {
+    widget = awful.widget.tasklist({
+      visible = false,
+      screen = s,
+      filter = awful.widget.tasklist.filter.currenttags,
+      style = {
         shape_border_width = 1,
-        shape_border_color = '#777777',
-        shape              = gears.shape.rounded_bar,
+        shape_border_color = "#777777",
+        shape = gears.shape.rounded_bar,
       },
-      layout          = {
-        spacing        = 10,
+      layout = {
+        spacing = 10,
         spacing_widget = {
           {
             forced_width = 5,
-            shape        = gears.shape.circle,
-            widget       = wibox.widget.separator
+            shape = gears.shape.circle,
+            widget = wibox.widget.separator,
           },
-          valign = 'center',
-          halign = 'center',
+          valign = "center",
+          halign = "center",
           widget = wibox.container.place,
         },
-        layout         = wibox.layout.flex.horizontal
+        layout = wibox.layout.flex.horizontal,
       },
       -- Notice that there is *NO* wibox.wibox prefix, it is a template,
       -- not a widget instance.
@@ -53,11 +53,11 @@ function Tasks(s)
           {
             {
               {
-                id     = 'icon_role',
+                id = "icon_role",
                 widget = wibox.widget.imagebox,
               },
               margins = 2,
-              widget  = wibox.container.margin,
+              widget = wibox.container.margin,
             },
             -- {
             --   id     = 'text_role',
@@ -65,45 +65,37 @@ function Tasks(s)
             -- },
             layout = wibox.layout.fixed.horizontal,
           },
-          left   = 10,
-          right  = 10,
-          widget = wibox.container.margin
+          left = 10,
+          right = 10,
+          widget = wibox.container.margin,
         },
-        id     = 'background_role',
+        id = "background_role",
         widget = wibox.container.background,
       },
-      buttons         = {
-        awful.button(
-          {}, 1,
-          function(c)
-            c:activate {
-              context = "tasklist",
-              action = "toggle_minimization"
-            }
-          end
-        ),
-        awful.button(
-          {}, 3,
-          function()
-            awful.menu.client_list {
-              theme = {
-                width = 200,
-                height = 20
-              }
-            }
-          end
-        ),
-        awful.button(
-          {}, 4,
-          function() awful.client.focus.byidx(-1) end
-        ),
-        awful.button(
-          {}, 5,
-          function() awful.client.focus.byidx(1) end
-        ),
+      buttons = {
+        awful.button({}, 1, function(c)
+          c:activate({
+            context = "tasklist",
+            action = "toggle_minimization",
+          })
+        end),
+        awful.button({}, 3, function()
+          awful.menu.client_list({
+            theme = {
+              width = 200,
+              height = 20,
+            },
+          })
+        end),
+        awful.button({}, 4, function()
+          awful.client.focus.byidx(-1)
+        end),
+        awful.button({}, 5, function()
+          awful.client.focus.byidx(1)
+        end),
       },
-    },
-  }
+    }),
+  })
 end
 
 TaskButton = wibox.widget.imagebox(beautiful.arrow_right)
@@ -121,41 +113,59 @@ end)
 -- Center region widgets
 
 -- layoutBox
-Layoutbox = wibox.widget {
+Layoutbox = wibox.widget({
   {
     widget = awful.widget.layoutbox,
   },
   margins = { left = dpi(5), right = dpi(5) },
   widget = wibox.container.margin,
   buttons = {
-    awful.button({}, 1, function() awful.layout.inc(1) end),
-    awful.button({}, 3, function() awful.layout.inc(-1) end),
-    awful.button({}, 4, function() awful.layout.inc(1) end),
-    awful.button({}, 5, function() awful.layout.inc(-1) end),
+    awful.button({}, 1, function()
+      awful.layout.inc(1)
+    end),
+    awful.button({}, 3, function()
+      awful.layout.inc(-1)
+    end),
+    awful.button({}, 4, function()
+      awful.layout.inc(1)
+    end),
+    awful.button({}, 5, function()
+      awful.layout.inc(-1)
+    end),
   },
-}
+})
 
 -- Taglist/Workspaces
 function Tagslist(s)
-  return awful.widget.taglist {
-    screen          = s,
-    filter          = awful.widget.taglist.filter.all,
-    buttons         = gears.table.join(
-      awful.button({}, 1, function(t) t:view_only() end),
+  return awful.widget.taglist({
+    screen = s,
+    filter = awful.widget.taglist.filter.all,
+    buttons = gears.table.join(
+      awful.button({}, 1, function(t)
+        t:view_only()
+      end),
       awful.button({ Super }, 1, function(t)
-        if client.focus then client.focus:move_to_tag(t) end
+        if client.focus then
+          client.focus:move_to_tag(t)
+        end
       end),
       awful.button({}, 3, awful.tag.viewtoggle),
       awful.button({ Super }, 3, function(t)
-        if client.focus then client.focus:toggle_tag(t) end
+        if client.focus then
+          client.focus:toggle_tag(t)
+        end
       end),
-      awful.button({}, 4, function(t) awful.tag.viewnext(t.screen) end),
-      awful.button({}, 5, function(t) awful.tag.viewprev(t.screen) end)
+      awful.button({}, 4, function(t)
+        awful.tag.viewnext(t.screen)
+      end),
+      awful.button({}, 5, function(t)
+        awful.tag.viewprev(t.screen)
+      end)
     ),
     widget_template = {
-      id = 'text_role',
+      id = "text_role",
       forced_width = dpi(35),
-      align = 'center',
+      align = "center",
       widget = wibox.widget.textbox,
       -- create_callback = function(self, c3)
       --   self:connect_signal("button::press", function()
@@ -193,7 +203,7 @@ function Tagslist(s)
       --   end
       -- end,
     },
-  }
+  })
 end
 
 ModeToggle = wibox.widget.imagebox(beautiful.mode_icon)
@@ -212,45 +222,44 @@ end)
 -- Right region widgets
 
 -- -- Textclock
-Clock = wibox.widget { widget = wibox.widget.textbox, }
+Clock = wibox.widget({ widget = wibox.widget.textbox })
 
-gears.timer {
+gears.timer({
   timeout = 5,
   autostart = true,
   call_now = true,
   callback = function()
-    Clock.markup = "<span foreground='" .. "#ffffff" .. "'>" ..
-        os.date("%H:%M %a, %d %b ") .. "</span>" -- 24 hour
+    Clock.markup = "<span foreground='" .. "#ffffff" .. "'>" .. os.date("%H:%M %a, %d %b ") .. "</span>" -- 24 hour
     -- os.date("%a %d %b, %I:%M %p ") .. "</span>" -- 12 hours
-  end
-}
+  end,
+})
 
 -- local mytextclock = wibox.widget.textclock()
 
 ---@diagnostic disable-next-line: unused-local
-local clock_tooltip = awful.tooltip {
-  objects        = { Clock },
+local clock_tooltip = awful.tooltip({
+  objects = { Clock },
   timer_function = function()
-    return os.date('Today is %A %B %d %Y\nThe time is %T')
+    return os.date("Today is %A %B %d %Y\nThe time is %T")
   end,
   -- delay_show     = 1,
-}
+})
 
-Systray = wibox.widget {
+Systray = wibox.widget({
   {
     widget = wibox.container.margin,
     wibox.widget.systray(),
-    left   = 10,
-    top    = 2,
+    left = 10,
+    top = 2,
     bottom = 2,
-    right  = 10,
+    right = 10,
   },
-  widget     = wibox.container.background,
-  bg         = beautiful.bg_transparent,
-  shape      = gears.shape.rounded_rect,
+  widget = wibox.container.background,
+  bg = beautiful.bg_transparent,
+  shape = gears.shape.rounded_rect,
   shape_clip = true,
-  visible    = false,
-}
+  visible = false,
+})
 
 SystrayButton = wibox.widget.imagebox(beautiful.arrow_left)
 
@@ -264,125 +273,113 @@ SystrayButton:connect_signal("button::press", function(self)
   end
 end)
 
-local cpu_widget = require(
-  "awesome-wm-widgets.cpu-widget.cpu-widget"
-)
+local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
 
-CPU = wibox.widget {
-  widget  = wibox.container.margin,
+CPU = wibox.widget({
+  widget = wibox.container.margin,
   visible = false,
-  left    = 10,
-  top     = 2,
-  bottom  = 2,
-  right   = 10,
+  left = 10,
+  top = 2,
+  bottom = 2,
+  right = 10,
   cpu_widget({
     width = 70,
     step_width = 2,
     step_spacing = 0,
-    color = '#434c5e'
-  })
-}
+    color = "#434c5e",
+  }),
+})
 
-CPUButton = wibox.widget {
+CPUButton = wibox.widget({
   {
-    widget = wibox.widget.imagebox(beautiful.cpu_icon)
+    widget = wibox.widget.imagebox(beautiful.cpu_icon),
   },
   margins = { left = dpi(5), right = dpi(5) },
   widget = wibox.container.margin,
-}
+})
 
 CPUButton:connect_signal("button::press", function()
   CPU.visible = not CPU.visible
 end)
 
-local ram_widget = require(
-  "awesome-wm-widgets.ram-widget.ram-widget"
-)
+local ram_widget = require("awesome-wm-widgets.ram-widget.ram-widget")
 
-MEM = wibox.widget {
-  widget  = wibox.container.margin,
+MEM = wibox.widget({
+  widget = wibox.container.margin,
   visible = false,
-  left    = 10,
-  top     = 2,
-  bottom  = 2,
-  right   = 10,
+  left = 10,
+  top = 2,
+  bottom = 2,
+  right = 10,
   ram_widget(),
-}
+})
 
-MEMButton = wibox.widget {
+MEMButton = wibox.widget({
   {
-    widget = wibox.widget.imagebox(beautiful.mem_icon)
+    widget = wibox.widget.imagebox(beautiful.mem_icon),
   },
   margins = { left = dpi(5), right = dpi(5) },
   widget = wibox.container.margin,
-}
+})
 
 MEMButton:connect_signal("button::press", function()
   MEM.visible = not MEM.visible
 end)
 
-local net_speed_widget = require(
-  "awesome-wm-widgets.net-speed-widget.net-speed"
-)
+local net_speed_widget = require("awesome-wm-widgets.net-speed-widget.net-speed")
 
-NET = wibox.widget {
-  widget  = wibox.container.margin,
+NET = wibox.widget({
+  widget = wibox.container.margin,
   visible = false,
-  left    = 10,
-  top     = 2,
-  bottom  = 2,
-  right   = 10,
+  left = 10,
+  top = 2,
+  bottom = 2,
+  right = 10,
   net_speed_widget(),
-}
+})
 
-NETButton = wibox.widget {
+NETButton = wibox.widget({
   {
-    widget = wibox.widget.imagebox(beautiful.net_icon)
+    widget = wibox.widget.imagebox(beautiful.net_icon),
   },
   margins = { left = dpi(5), right = dpi(5) },
   widget = wibox.container.margin,
-}
+})
 
 NETButton:connect_signal("button::press", function()
   NET.visible = not NET.visible
 end)
 
-local volume_widget = require(
-  'awesome-wm-widgets.volume-widget.volume'
-)
+local volume_widget = require("awesome-wm-widgets.volume-widget.volume")
 
-Volume = wibox.widget {
+Volume = wibox.widget({
   {
     widget = volume_widget({
       -- widget_type = 'icon_and_text'
-      widget_type = 'arc',
+      widget_type = "arc",
       step = 1,
     }),
   },
   margins = { left = dpi(5), right = dpi(3) },
   widget = wibox.container.margin,
-}
+})
 
-local brightness_widget = require(
-  "awesome-wm-widgets.brightness-widget.brightness"
-)
+local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
 
-Brightness = wibox.widget {
+Brightness = wibox.widget({
   {
-    widget = brightness_widget {
+    widget = brightness_widget({
       -- type = 'icon_and_text',
-      type = 'arc',
-      program = 'brightnessctl',
+      type = "arc",
+      program = "brightnessctl",
       step = 1,
-    }
+    }),
   },
   margins = { left = dpi(5), right = dpi(5) },
   widget = wibox.container.margin,
-}
+})
 
-local batteryarc_widget = require(
-  "awesome-wm-widgets.batteryarc-widget.batteryarc"
-)
+local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
 
 -- local battery_widget = require(
 --   "awesome-wm-widgets.battery-widget.battery"
@@ -400,7 +397,7 @@ function Battery()
   ]]
 
   if os.execute(cmd) then
-    return wibox.widget {
+    return wibox.widget({
       {
         -- widget = battery_widget({
         --   show_current_level = true,
@@ -413,20 +410,20 @@ function Battery()
       },
       margins = { left = dpi(3), right = dpi(5) },
       widget = wibox.container.margin,
-    }
+    })
   end
 end
 
-local logout_popup = require(
-  "awesome-wm-widgets.logout-popup-widget.logout-popup"
-)
+local logout_popup = require("awesome-wm-widgets.logout-popup-widget.logout-popup")
 
-Logout = wibox.widget {
+Logout = wibox.widget({
   {
-    widget = logout_popup.widget {
-      onlock = function() awful.spawn.with_shell("lock") end,
-    },
+    widget = logout_popup.widget({
+      onlock = function()
+        awful.spawn.with_shell("lock")
+      end,
+    }),
   },
   margins = { left = dpi(3), right = dpi(3) },
   widget = wibox.container.margin,
-}
+})

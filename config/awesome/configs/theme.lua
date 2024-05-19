@@ -23,34 +23,34 @@ local function getHostname()
 end
 
 -- Side panel profile
-theme.pfp                 = theme.icons_dir .. "pfp.png"
-theme.user                = os.getenv("USER")
-theme.hostname            = getHostname()
+theme.pfp = theme.icons_dir .. "pfp.png"
+theme.user = os.getenv("USER")
+theme.hostname = getHostname()
 
 -- Font
-theme.font_name           = "CaskaydiaCove Nerd Font"
-theme.font                = theme.font_name .. "12"
+theme.font_name = "CaskaydiaCove Nerd Font"
+theme.font = theme.font_name .. "12"
 -- theme.font                = "JetBrainsMono Nerd Font 11"
 -- theme.font                = "FiraCode Nerd Font 11"
 -- theme.font                = "SauceCodePro Nerd Font 11"
 -- theme.font                = "DejaVuSansMono Nerd Font 11"
 
 -- Colors
-theme.background          = "#303446"
-theme.bright_background   = "#A5ADCE"
+theme.background = "#303446"
+theme.bright_background = "#A5ADCE"
 
-theme.foreground          = "#C6D0F5"
-theme.dim_foreground      = "#F2D5CF"
-theme.bright_foreground   = "#BABBF1"
+theme.foreground = "#C6D0F5"
+theme.dim_foreground = "#F2D5CF"
+theme.bright_foreground = "#BABBF1"
 
-theme.black               = "#51576D"
-theme.red                 = "#E78284"
-theme.green               = "#A6D189"
-theme.yellow              = "#E5C890"
-theme.blue                = "#8CAAEE"
-theme.magenta             = "#F4B8E4"
-theme.cyan                = "#81C8BE"
-theme.white               = "#B5BFE2"
+theme.black = "#51576D"
+theme.red = "#E78284"
+theme.green = "#A6D189"
+theme.yellow = "#E5C890"
+theme.blue = "#8CAAEE"
+theme.magenta = "#F4B8E4"
+theme.cyan = "#81C8BE"
+theme.white = "#B5BFE2"
 
 -- theme.background          = '#1e2127'
 -- theme.foreground          = '#abb2bf'
@@ -85,57 +85,59 @@ theme.white               = "#B5BFE2"
 -- theme.white               = "#abb2bf"
 
 -- General/default Settings
-theme.bg_normal           = theme.background
-theme.bg_transparent      = theme.bg_normal
-theme.bg_focus            = theme.black
-theme.bg_urgent           = theme.red
-theme.bg_minimize         = theme.white
-theme.bg_systray          = theme.bg_normal
+theme.bg_normal = theme.background
+theme.bg_transparent = theme.bg_normal
+theme.bg_focus = theme.black
+theme.bg_urgent = theme.red
+theme.bg_minimize = theme.white
+theme.bg_systray = theme.bg_normal
 
-theme.fg_normal           = theme.foreground
-theme.fg_focus            = theme.bright_foreground
-theme.fg_urgent           = theme.red
-theme.fg_minimize         = theme.dim_foreground
+theme.fg_normal = theme.foreground
+theme.fg_focus = theme.bright_foreground
+theme.fg_urgent = theme.red
+theme.fg_minimize = theme.dim_foreground
 
-theme.border_normal       = theme.black
-theme.border_focus        = theme.blue
-theme.border_marked       = theme.red
+theme.border_normal = theme.black
+theme.border_focus = theme.blue
+theme.border_marked = theme.red
 
 -- Bar
-theme.bar                 = theme.background
-theme.bar_alt             = theme.bright_background
-theme.bg_systray          = theme.background
+theme.bar = theme.background
+theme.bar_alt = theme.bright_background
+theme.bg_systray = theme.background
 
-theme.taglist_fg_focus    = theme.blue
-theme.taglist_bg_focus    = theme.blue
+theme.taglist_fg_focus = theme.blue
+theme.taglist_bg_focus = theme.blue
 theme.taglist_fg_occupied = theme.bright_background
-theme.taglist_fg_empty    = theme.background
+theme.taglist_fg_empty = theme.background
 
-theme.tasklist_fg_focus   = theme.fg_normal
+theme.tasklist_fg_focus = theme.fg_normal
 
-theme.titlebar_bg_normal  = theme.bar
-theme.titlebar_bg_focus   = theme.bar
+theme.titlebar_bg_normal = theme.bar
+theme.titlebar_bg_focus = theme.bar
 
 -- Main menu
-theme.menu_icon           = theme.icons_dir .. "menu.png"
+theme.menu_icon = theme.icons_dir .. "menu.png"
 
-theme.menu_font           = theme.font
-theme.menu_height         = dpi(10)
-theme.menu_width          = dpi(100)
-theme.menu_fg_focus       = theme.fg_normal
-theme.menu_fg_normal      = theme.fg_focus
-theme.menu_bg_focus       = theme.bg_focus
-theme.menu_bg_normal      = theme.bg_normal
+theme.menu_font = theme.font
+theme.menu_height = dpi(10)
+theme.menu_width = dpi(100)
+theme.menu_fg_focus = theme.fg_normal
+theme.menu_fg_normal = theme.fg_focus
+theme.menu_bg_focus = theme.bg_focus
+theme.menu_bg_normal = theme.bg_normal
 
 -- Set different colors for urgent notifications.
-rnotification.connect_signal('request=rules', function()
-  rnotification.append_rule {
-    rule       = { urgency = 'critical' },
-    properties = { bg = theme.red, fg = theme.foreground }
-  }
+rnotification.connect_signal("request=rules", function()
+  rnotification.append_rule({
+    rule = { urgency = "critical" },
+    properties = { bg = theme.red, fg = theme.foreground },
+  })
 end)
 
-theme.notification_shape = function(cr, w, h) gears.shape.rounded_rect(cr, w, h, theme.border_radius) end
+theme.notification_shape = function(cr, w, h)
+  gears.shape.rounded_rect(cr, w, h, theme.border_radius)
+end
 theme.notification_opacity = 75
 theme.notification_font = theme.font
 theme.notification_padding = dpi(5)
@@ -168,7 +170,9 @@ theme.tooltip_fg = theme.foreground
 theme.tooltip_font = theme.font
 theme.tooltip_border_width = dpi(1)
 theme.tooltip_opacity = 75
-theme.tooltip_shape = function(cr, w, h) gears.shape.rounded_rect(cr, w, h, theme.border_radius) end
+theme.tooltip_shape = function(cr, w, h)
+  gears.shape.rounded_rect(cr, w, h, theme.border_radius)
+end
 -- theme.tooltip_align = ""
 
 theme.layout_fairh = theme.default_dir .. "default/layouts/fairhw.png"
@@ -189,9 +193,7 @@ theme.layout_cornersw = theme.default_dir .. "default/layouts/cornersww.png"
 theme.layout_cornerse = theme.default_dir .. "default/layouts/cornersew.png"
 
 -- Generate Awesome icon:
-theme.awesome_icon = theme_assets.awesome_icon(
-  theme.menu_height, theme.bg_focus, theme.fg_focus
-)
+theme.awesome_icon = theme_assets.awesome_icon(theme.menu_height, theme.bg_focus, theme.fg_focus)
 
 theme.transparent_bg = theme.icons_dir .. "bg.png"
 

@@ -1,63 +1,65 @@
 ---@diagnostic disable-next-line: undefined-global
-local client                            = client
-local awful                             = require("awful")
-local gears                             = require("gears")
-local beautiful                         = require("beautiful")
-local naughty                           = require("naughty")
-local menubar                           = require("menubar")
-local dpi                               = beautiful.xresources.apply_dpi
+local client = client
+local awful = require("awful")
+local gears = require("gears")
+local beautiful = require("beautiful")
+local naughty = require("naughty")
+local menubar = require("menubar")
+local dpi = beautiful.xresources.apply_dpi
 
 -- Defaults
-naughty.config.defaults.shape           = function(cr, w, h) gears.shape.rounded_rect(cr, w, h, beautiful.border_radius) end
+naughty.config.defaults.shape = function(cr, w, h)
+  gears.shape.rounded_rect(cr, w, h, beautiful.border_radius)
+end
 
 -- Apply theme variables
 -- naughty.config.padding                  = beautiful.notification_padding
-naughty.config.padding                  = dpi(8)
+naughty.config.padding = dpi(8)
 -- naughty.config.defaults.margin          = beautiful.notification_margin
-naughty.config.defaults.margin          = dpi(20)
+naughty.config.defaults.margin = dpi(20)
 -- naughty.config.spacing                  = beautiful.notification_spacing
-naughty.config.spacing                  = dpi(8)
+naughty.config.spacing = dpi(8)
 -- naughty.config.defaults.border_width    = beautiful.notification_border_width
-naughty.persistence_enabled             = true
-naughty.config.defaults.ontop           = true
+naughty.persistence_enabled = true
+naughty.config.defaults.ontop = true
 -- naughty.config.position                 = beautiful.notification_position
 -- naughty.config.font                     = beautiful.notification_font
 
-naughty.config.icon_formats             = { "png", "svg", "jpg" }
+naughty.config.icon_formats = { "png", "svg", "jpg" }
 
 -- Icon size
-naughty.config.defaults['icon_size']    = beautiful.notification_icon_size
+naughty.config.defaults["icon_size"] = beautiful.notification_icon_size
 
 -- Timeouts
-naughty.config.timeouts                 = 5
-naughty.config.defaults.timeout         = 5
-naughty.config.defaults.hover_timeout   = 1
-naughty.config.presets.low.timeout      = 3
+naughty.config.timeouts = 5
+naughty.config.defaults.timeout = 5
+naughty.config.defaults.hover_timeout = 1
+naughty.config.presets.low.timeout = 3
 naughty.config.presets.critical.timeout = 0
 
-naughty.config.presets.low              = {
-  fg           = beautiful.notification_fg,
-  bg           = beautiful.notification_bg,
+naughty.config.presets.low = {
+  fg = beautiful.notification_fg,
+  bg = beautiful.notification_bg,
   border_color = beautiful.notification_border_color,
 }
 
-naughty.config.presets.info             = naughty.config.presets.low
+naughty.config.presets.info = naughty.config.presets.low
 
-naughty.config.presets.normal           = {
-  fg           = beautiful.notification_fg,
-  bg           = beautiful.notification_bg,
+naughty.config.presets.normal = {
+  fg = beautiful.notification_fg,
+  bg = beautiful.notification_bg,
   border_color = beautiful.notification_border_color,
 }
 
-naughty.config.presets.ok               = naughty.config.presets.low
+naughty.config.presets.ok = naughty.config.presets.low
 
-naughty.config.presets.critical         = {
-  fg           = beautiful.notification_crit_fg,
-  bg           = beautiful.notification_crit_bg,
+naughty.config.presets.critical = {
+  fg = beautiful.notification_crit_fg,
+  bg = beautiful.notification_crit_bg,
   border_color = beautiful.notification_border_color,
 }
 
-naughty.config.presets.warn             = naughty.config.presets.normal
+naughty.config.presets.warn = naughty.config.presets.normal
 
 local function focus_window_for_notification(pid, appname)
   for _, c in ipairs(client.get()) do
@@ -78,12 +80,17 @@ local function focus_window_for_notification(pid, appname)
 end
 
 -- Notification callback to style monitoring notification
-local real_notify              = naughty.notify
+local real_notify = naughty.notify
 naughty.config.notify_callback = function(args)
-  if args.freedesktop_hints and args.freedesktop_hints["desktop-entry"] and args.icon == nil and
-      args.freedesktop_hints["image_path"] == nil and args.freedesktop_hints["image-data"] == nil then
-    local path = menubar.utils.lookup_icon(args.freedesktop_hints["desktop-entry"]) or
-        menubar.utils.lookup_icon(args.freedesktop_hints["desktop-entry"]:lower())
+  if
+    args.freedesktop_hints
+    and args.freedesktop_hints["desktop-entry"]
+    and args.icon == nil
+    and args.freedesktop_hints["image_path"] == nil
+    and args.freedesktop_hints["image-data"] == nil
+  then
+    local path = menubar.utils.lookup_icon(args.freedesktop_hints["desktop-entry"])
+      or menubar.utils.lookup_icon(args.freedesktop_hints["desktop-entry"]:lower())
     if path then
       args.icon = path
     end
@@ -130,10 +137,11 @@ naughty.config.notify_callback = function(args)
 end
 
 naughty.connect_signal("request::icon", function(n, context, hints)
-  if context ~= "app_icon" then return end
+  if context ~= "app_icon" then
+    return
+  end
 
-  local path = menubar.utils.lookup_icon(hints.app_icon) or
-      menubar.utils.lookup_icon(hints.app_icon:lower())
+  local path = menubar.utils.lookup_icon(hints.app_icon) or menubar.utils.lookup_icon(hints.app_icon:lower())
 
   if path then
     n.icon = path
