@@ -43,6 +43,11 @@ return {
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("UserLspConfig", {}),
         callback = function(ev)
+          -- local client = vim.lsp.get_client_by_id(ev.data.client_id)
+          -- if client.server_capabilities.inlayHintProvider then
+          --   vim.lsp.inlay_hint.enable(ev.buf, true)
+          -- end
+
           -- Enable completion triggered by <c-x><c-o>
           vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
 
@@ -65,6 +70,9 @@ return {
           vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
           -- vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
           vim.keymap.set("n", "gr", require("telescope.builtin").lsp_references, opts)
+          vim.keymap.set("n", "<leader>uh", function()
+            vim.lsp.inlay_hint(0, nil)
+          end, opts)
           -- vim.keymap.set("n", "<leader>fn", function()
           --   vim.lsp.buf.format({ async = false })
           -- end, opts)

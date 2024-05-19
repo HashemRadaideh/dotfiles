@@ -4,20 +4,40 @@ return {
     "BufReadPost",
     "BufNewFile",
   },
+  -- opts = {
+  --   linters = {
+  --     eslint_d = {
+  --       args = {
+  --         "--no-warn-ignored",
+  --         "--format",
+  --         "json",
+  --         "--stdin",
+  --         "--stdin-filename",
+  --         function()
+  --           return vim.api.nvim_buf_get_name(0)
+  --         end,
+  --       },
+  --     },
+  --   },
+  -- },
   config = function()
     local lint = require("lint")
 
     lint.linters_by_ft = {
-      javascript = { "eslint_d" },
-      typescript = { "eslint_d" },
-      javascriptreact = { "eslint_d" },
-      typescriptreact = { "eslint_d" },
-      svelte = { "eslint_d" },
+      -- javascript = { "eslint_d" },
+      -- typescript = { "eslint_d" },
+      -- javascriptreact = { "eslint_d" },
+      -- typescriptreact = { "eslint_d" },
+      -- svelte = { "eslint_d" },
       kotlin = { "ktlint" },
       terraform = { "tflint" },
       ruby = { { "standardrb", "rubocop" } },
-      python = { "pylint" },
+      python = {
+        "ruff" --[[ , "mypy", "pylint" ]],
+      },
       cmake = { "cmakelint" },
+      protobuf = { "protolint" },
+      ["*"] = { "codespell", "misspell", "cspell", "trivy", "ast-grep" },
     }
 
     local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
