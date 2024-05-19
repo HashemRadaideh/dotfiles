@@ -1,5 +1,6 @@
 return {
   "vuki656/package-info.nvim",
+  event = { "BufReadPost", "BufNewFile" },
   ft = "json",
   dependencies = { "MunifTanjim/nui.nvim" },
   opts = {
