@@ -89,8 +89,8 @@ return {
         -- component_separators = { left = "", right = "" },
         -- section_separators = { left = "", right = "" },
         disabled_filetypes = {
-          statusline = { "alpha", "dashboard", "NvimTree", "Outline", "neo-tree" },
-          winbar = { "alpha", "dashboard", "NvimTree", "Outline" },
+          statusline = { "alpha", "dashboard", "NvimTree", "Outline", "neo-tree", "oil" },
+          winbar = { "alpha", "dashboard", "NvimTree", "Outline", "neo-tree", "oil" },
         },
         ignore_focus = {},
         always_divide_middle = true,
@@ -103,17 +103,29 @@ return {
       },
       sections = {
         lualine_a = { mode },
-        lualine_b = { branch, diff, diagnostics }, --[[ "gfold", ]]
-        lualine_c = {}, -- "filename", require("auto-session.lib").current_session_name,
+        lualine_b = {
+          -- require("auto-session.lib").current_session_name,
+          branch,
+          diff,
+          -- "gfold",
+          diagnostics,
+        },
+        lualine_c = {
+          -- require("venv-selector").get_active_path(),
+          -- require("venv-selector").get_active_venv(),
+          -- require("venv-selector").retrieve_from_cache(),
+          -- "swenv",
+          -- "filename",
+        },
         lualine_x = {},
         lualine_y = { progress, location },
-        lualine_z = { "fileformat", spaces, encoding, filetype },
+        lualine_z = { spaces, encoding }, --, "fileformat"
       },
       inactive_sections = {
-        lualine_a = {},
+        lualine_a = { "filename", filetype },
         lualine_b = {},
-        lualine_c = { "filename" },
-        lualine_x = { "location" },
+        lualine_c = {},
+        lualine_x = {},
         lualine_y = {},
         lualine_z = {},
       },
