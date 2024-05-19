@@ -1,4 +1,4 @@
-﻿Homedir = os.getenv("HOME")
+Homedir = os.getenv("HOME")
 Sessiondir = vim.fn.stdpath("data") .. "/sessions"
 
 vim.cmd("silent call mkdir(stdpath('data').'/backups', 'p', '0700')")
