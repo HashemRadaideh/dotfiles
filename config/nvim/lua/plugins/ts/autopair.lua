@@ -1,5 +1,6 @@
 return {
-  'windwp/nvim-autopairs',
+  "windwp/nvim-autopairs",
+  event = { "BufReadPost", "BufNewFile" },
   opts = {
     check_ts = true,
     ts_config = {

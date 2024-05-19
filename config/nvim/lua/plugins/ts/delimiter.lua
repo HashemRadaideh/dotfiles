@@ -1,5 +1,6 @@
 return {
-  'HiPhish/rainbow-delimiters.nvim',
+  "HiPhish/rainbow-delimiters.nvim",
+  event = { "BufReadPost", "BufNewFile" },
   config = function()
     local ok, rainbow_delimiters = pcall(require, 'rainbow-delimiters')
     if not ok then

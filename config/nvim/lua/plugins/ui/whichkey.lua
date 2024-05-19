@@ -1,5 +1,6 @@
 return {
   "folke/which-key.nvim",
+  event = { "VimEnter" },
   opts = {
     plugins = {
       marks = true, -- shows a list of your marks on ' and `

@@ -18,6 +18,7 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
+    event = { "BufReadPost", "BufNewFile" },
     config = function()
       -- require("neoconf").setup({
       --   -- override any of the default settings here

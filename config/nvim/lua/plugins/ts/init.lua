@@ -149,9 +149,13 @@ return {
       vim.treesitter.language.register("markdown", "mdx")
     end,
   },
-  { "nvim-treesitter/playground" },
+  {
+    "nvim-treesitter/playground",
+    event = { "BufReadPost", "BufNewFile" },
+  },
   {
     "windwp/nvim-ts-autotag",
+    event = { "BufReadPost", "BufNewFile" },
     -- event = "LazyFile",
     opts = {},
   },

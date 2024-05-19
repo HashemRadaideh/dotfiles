@@ -1,5 +1,6 @@
 return {
   "williamboman/mason-lspconfig.nvim",
+  -- event = { "LspAttach" },
   opts = {
     ensure_installed = {
       "arduino_language_server",

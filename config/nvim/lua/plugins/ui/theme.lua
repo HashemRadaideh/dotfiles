@@ -1,6 +1,7 @@
 return {
   -- the colorscheme should be available when starting Neovim
   "catppuccin/nvim",
+  -- event = { "VimEnter", "BufEnter" },
   name = "catppuccin",
   lazy = false,
   priority = 1000,

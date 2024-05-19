@@ -1,5 +1,6 @@
 return {
   "WhoIsSethDaniel/mason-tool-installer.nvim",
+  -- event = { "LspAttach" },
   opts = {
     -- a list of all tools you want to ensure are installed upon
     -- start
