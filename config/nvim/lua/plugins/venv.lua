@@ -1,0 +1,74 @@
+return {
+  -- {
+  --   "linux-cultist/venv-selector.nvim",
+  --   ft = { "python" },
+  --   dependencies = { "neovim/nvim-lspconfig", "nvim-telescope/telescope.nvim", "mfussenegger/nvim-dap-python" },
+  --   opts = {
+  --     -- Your options go here
+  --     -- name = "venv",
+  --     -- auto_refresh = false
+  --   },
+  --   event = "VeryLazy", -- Optional: needed only if you want to type `:VenvSelect` without a keymapping
+  --   keys = {
+  --     -- Keymap to open VenvSelector to pick a venv.
+  --     { "<leader>vs", "<cmd>VenvSelect<cr>" },
+  --     -- Keymap to retrieve the venv from a cache (the one previously used for the same project directory).
+  --     { "<leader>vc", "<cmd>VenvSelectCached<cr>" },
+  --   },
+  --   config = function()
+  --     vim.api.nvim_create_autocmd("VimEnter", {
+  --       desc = "Auto select virtualenv Nvim open",
+  --       pattern = "*",
+  --       callback = function()
+  --         local venv = vim.fn.findfile("pyproject.toml", vim.fn.getcwd() .. ";")
+  --         if venv ~= "" then
+  --           require("venv-selector").retrieve_from_cache()
+  --         end
+  --       end,
+  --       once = true,
+  --     })
+  --   end,
+  -- },
+  -- {
+  --   "AckslD/swenv.nvim",
+  --   ft = { "python" },
+  --   opts = {
+  --     -- -- Should return a list of tables with a `name` and a `path` entry each.
+  --     -- -- Gets the argument `venvs_path` set below.
+  --     -- -- By default just lists the entries in `venvs_path`.
+  --     -- get_venvs = function(venvs_path)
+  --     --   return require("swenv.api").get_venvs(venvs_path)
+  --     -- end,
+  --     -- -- Path passed to `get_venvs`.
+  --     -- venvs_path = vim.fn.expand("~/venvs"),
+  --     -- -- Something to do after setting an environment, for example call vim.cmd.LspRestart
+  --     -- post_set_venv = nil,
+  --   },
+  --   config = function()
+  --     vim.api.nvim_create_autocmd("FileType", {
+  --       pattern = { "python" },
+  --       callback = function()
+  --         require("swenv.api").auto_venv()
+  --       end,
+  --     })
+  --   end,
+  -- },
+  -- {
+  --   "ahmedkhalf/project.nvim",
+  --   event = { "VimEnter" },
+  --   config = function()
+  --     require("project_nvim").setup({
+  --       -- your configuration comes here
+  --       -- or leave it empty to use the default settings
+  --       -- refer to the configuration section below
+  --     })
+  --   end,
+  --   keys = {
+  --     {
+  --       "<leader>pm",
+  --       "<cmd>lua require'telescope'.extensions.projects.projects{}<cr>",
+  --       desc = "Open Project Manager",
+  --     },
+  --   },
+  -- },
+}
