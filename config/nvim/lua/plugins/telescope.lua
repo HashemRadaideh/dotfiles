@@ -118,12 +118,8 @@ return {
     --   desc = "Goto Symbol (Workspace)",
     -- },
   },
-  config = function()
-    local ok, telescope = pcall(require, "telescope")
-    if not ok then
-      return
-    end
-
+  opts = function()
+    local telescope = require("telescope")
     local actions = require("telescope.actions")
 
     local notify_present, _ = pcall(require, "notify")
@@ -131,9 +127,14 @@ return {
       telescope.load_extension("notify")
     end
 
-    -- local trouble = require("trouble.providers.telescope")
+    -- telescope.load_extension("toggletasks")
+    -- telescope.load_extension("fzf")
+    -- telescope.load_extension("lazygit")
+    telescope.load_extension("ui-select")
+    telescope.load_extension("file_browser")
+    -- telescope.load_extension("projects")
 
-    telescope.setup({
+    return {
       defaults = {
         sorting_strategy = "ascending", -- display results top->bottom
         layout_config = {
@@ -182,14 +183,14 @@ return {
           theme = "ivy",
           -- disables netrw and use telescope-file-browser in its place
           hijack_netrw = false,
-          mappings = {
-            ["i"] = {
-              -- your custom insert mode mappings
-            },
-            ["n"] = {
-              -- your custom normal mode mappings
-            },
-          },
+          -- mappings = {
+          -- ["i"] = {
+          -- your custom insert mode mappings
+          -- },
+          -- ["n"] = {
+          -- your custom normal mode mappings
+          -- },
+          -- },
         },
         ["ui-select"] = {
           require("telescope.themes").get_ivy({}),
@@ -244,12 +245,6 @@ return {
           ["<PageDown>"] = actions.results_scrolling_down,
         },
       },
-    })
-
-    -- telescope.load_extension("toggletasks")
-    -- telescope.load_extension("fzf")
-    -- telescope.load_extension("lazygit")
-    telescope.load_extension("ui-select")
-    telescope.load_extension("file_browser")
+    }
   end,
 }
