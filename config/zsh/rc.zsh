@@ -55,4 +55,12 @@ zrc() {
     }
     autoload -U add-zsh-hook
     add-zsh-hook chpwd python-venv
+
+    if type clipcat-menu >/dev/null 2>&1; then
+        alias clipedit=' clipcat-menu --finder=builtin edit'
+        alias clipdel=' clipcat-menu --finder=builtin remove'
+
+        bindkey -s '^\' "^Q clipcat-menu --finder=builtin insert ^m"
+        bindkey -s '^]' "^Q clipcat-menu --finder=builtin remove ^m"
+    fi
 }

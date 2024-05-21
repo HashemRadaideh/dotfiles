@@ -141,16 +141,20 @@ awful.keyboard.append_global_keybindings({
     awful.spawn('rofi -show emoji -modi emoji -theme "themes/emojis.rasi"')
   end, { description = "Open rofi run prompt", group = "Launch" }),
 
+  awful.key({ Super }, "f", function()
+    awful.spawn('rofi -show filebrowser -modi filebrowser -theme "themes/launchpad.rasi"')
+  end, { description = "Open rofi run prompt", group = "Launch" }),
+
   awful.key({ Super }, "v", function()
-    awful.spawn(
-      [[rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}' ; sleep 0.5; xdotool type $(xclip -o -selection clipboard)]]
-    )
+    -- awful.spawn(
+    --   [[rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}' ; sleep 0.5; xdotool type $(xclip -o -selection clipboard)]]
+    -- )
+    awful.spawn([[clipcat-menu]])
   end, { description = "Open rofi run prompt", group = "Launch" }),
 
   awful.key({ Super }, "c", function()
     awful.spawn('rofi -show calc -modi calc -no-show-match -no-sort -theme "themes/calculator.rasi" | xclip')
-  end, { description = "Open rofi run prompt", group = "Launch" }
-),
+  end, { description = "Open rofi run prompt", group = "Launch" }),
 
   awful.key({ Super }, "d", function()
     awful.spawn.with_shell("dmenu_run")
@@ -168,15 +172,15 @@ awful.keyboard.append_global_keybindings({
   --   { description = "Open emacs", group = "Launch" }
   -- ),
 
-  awful.key({ Super }, "e", function()
-    awful.spawn.with_shell(Terminal_editor)
-  end, { description = "Open nvim", group = "Launch" }),
+  -- awful.key({ Super }, "e", function()
+  --   awful.spawn.with_shell(Terminal_editor)
+  -- end, { description = "Open nvim", group = "Launch" }),
 
   awful.key({ Super }, "o", function()
     awful.spawn.with_shell(Terminal_file_manager)
   end, { description = "Open lf", group = "Launch" }),
 
-  awful.key({ Super }, "f", function()
+  awful.key({ Super }, "e", function()
     awful.spawn.with_shell(File_manager)
   end, { description = "Open file manger", group = "Launch" }),
 
