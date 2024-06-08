@@ -141,6 +141,7 @@ return {
       "nvim-java/nvim-java-test",
       "nvim-java/nvim-java-dap",
       "MunifTanjim/nui.nvim",
+      "nvim-java/nvim-java-refactor",
     },
     config = function()
       local config = require("plugins.lsp.config")
