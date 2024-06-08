@@ -10,6 +10,7 @@ require("configs.ui.bar.widgets")
 
 local network = require("configs.ui.bar.network")
 local bluetooth = require("configs.ui.bar.bluetooth")
+local volume_widget = require("awesome-wm-widgets.pactl-widget.volume")
 
 local net = network()
 local bat = Battery()
@@ -25,7 +26,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
     type = "dock",
     screen = s,
     visible = true,
-    hide = gears.timer({ timeout = 5 }),
+    hide = gears.timer({ timeout = 1 }),
     hover = false,
     ontop = false,
     bg = beautiful.bg_transparent,
@@ -74,7 +75,13 @@ screen.connect_signal("request::desktop_decoration", function(s)
         -- CPUButton,
         bluetooth,
         net,
-        Volume,
+        -- Volume,
+        volume_widget({
+          widget_type = "arc", -- icon_and_text
+          -- width = s.geometry.width / 15,
+          -- margins = { top = 0, bottom = 0, left = 0, right = 0 },
+          -- margins = 0,
+        }),
         Brightness,
         bat,
         Logout,

@@ -48,7 +48,7 @@ ruled.client.connect_signal("request::rules", function()
         "blueberry.py",
         "Blueberry",
         "Blueberry.py",
-        "Pavucontrol",
+        "pavucontrol",
       },
       name = {
         "Event Tester", -- xev.

@@ -3,6 +3,7 @@ local awesome, client, root = awesome, client, root
 local gears = require("gears")
 local awful = require("awful")
 local beautiful = require("beautiful")
+local dpi = beautiful.xresources.apply_dpi
 
 awful.mouse.snap.edge_enabled = true
 
@@ -36,21 +37,9 @@ function Titles()
 end
 
 function ZenSwitch()
-  if not Zen then
-    for _, t in ipairs(root.tags()) do
-      awful.tag.incgap(8, t)
-    end
-  else
-    for _, t in ipairs(root.tags()) do
-      awful.tag.incgap(-8, t)
-    end
+  for _, t in ipairs(root.tags()) do
+    awful.tag.incgap(Zen and 8 or -8, t)
   end
-
-  -- if Is_zen then
-  --   ModeToggle.image = beautiful.mode_icon
-  -- else
-  --   ModeToggle.image = beautiful.mode_icon_active
-  -- end
 
   Zen = not Zen
 end
