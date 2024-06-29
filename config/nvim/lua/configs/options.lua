@@ -6,6 +6,13 @@ vim.cmd("silent call mkdir(stdpath('data').'/undos', 'p', '0700')")
 vim.cmd("silent call mkdir(stdpath('data').'/swaps', 'p', '0700')")
 vim.cmd("silent call mkdir(stdpath('data').'/sessions', 'p', '0700')")
 
+vim.filetype.add({
+	pattern = {
+		[".*/hypr/.*%.conf"] = "hyprlang",
+		[".*%.hl"] = "hyprlang"
+	},
+})
+
 local settings = {
   g = {
     mapleader = " ",
