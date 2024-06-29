@@ -1,0 +1,88 @@
+general {
+    gaps_in = 5
+    gaps_out = 12
+    border_size = 1
+    no_border_on_floating = true
+    col.active_border = rgba($greenAlphaaa) rgba($tealAlphaaa) rgba($skyAlphaaa) rgba($sapphireAlphaaa) rgba($blueAlphaaa) rgba($lavenderAlphaaa)
+    col.inactive_border = rgba($surface2Alphaaa)
+
+    layout = master # dwindle
+
+    apply_sens_to_raw=0 # whether to apply the sensitivity to raw input (e.g. used by games where you aim using your mouse)
+}
+
+misc {
+    # disable_autoreload = true
+    disable_hyprland_logo = true
+    disable_splash_rendering = true
+    always_follow_on_dnd = true
+    layers_hog_keyboard_focus = true
+    mouse_move_enables_dpms = true
+    enable_swallow = true
+    swallow_regex = ^(alacritty)$
+    animate_manual_resizes = false
+    focus_on_activate = true
+    vfr = 1
+}
+
+decoration {
+    rounding = 4
+    # multisample_edges = true
+    active_opacity = 1.0
+    inactive_opacity = 1.0
+    fullscreen_opacity = 1.0
+
+    # blurls = gtk-layer-shell
+    # blurls = waybar
+    # blurls = lockscreen
+
+    blur {
+        enabled = true
+        size = 5
+        passes = 3 # more passes = more resource intensive.
+        new_optimizations = true
+        xray = true
+        ignore_opacity = false
+    }
+
+
+    drop_shadow = yes
+    shadow_ignore_window = true
+    shadow_offset = 2 2
+    shadow_range = 8
+    shadow_render_power = 1
+    col.shadow = rgba($baseAlphaaa)
+    dim_inactive = false
+}
+
+# Some default animations, see https://wiki.hyprland.org/Configuring/Animations/ for more
+animations {
+    enabled = yes
+    # bezier = wind, 0.05, 0.9, 0.1, 1.05
+    # bezier = winIn, 0.1, 1.1, 0.1, 1.1
+    # bezier = winOut, 0.3, -0.3, 0, 1
+    # bezier = liner, 1, 1, 1, 1
+    # animation = windows, 1, 6, wind, slide
+    # animation = windowsIn, 1, 6, winIn, slide
+    # animation = windowsOut, 1, 5, winOut, slide
+    # animation = windowsMove, 1, 5, wind, slide
+    # animation = border, 1, 1, liner
+    # animation = borderangle, 1, 30, liner, loop
+    # animation = fade, 1, 10, default
+    # animation = workspaces, 1, 5, wind
+
+    # bezier = myBezier, 0.05, 0.9, 0.1, 1.05
+
+    bezier = overshot, 0.13, 0.99, 0.29, 1.1
+    animation = windows, 1, 4, overshot, slide
+    animation = windowsOut, 1, 5, default, popin 80%
+    animation = border, 1, 5, default
+    animation = fade, 1, 8, default
+    animation = workspaces, 1, 6, overshot, slide
+
+    #animation = windows, 1, 7, myBezier
+    #animation = windowsOut, 1, 7, default, popin 80%
+    #animation = fade, 1, 7, default
+    #animation = border, 1, 10, default
+    #animation = workspaces, 1, 6, default
+}

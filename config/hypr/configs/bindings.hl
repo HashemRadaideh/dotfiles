@@ -1,0 +1,195 @@
+# For all categories, see https://wiki.hyprland.org/Configuring/Variables/
+input {
+    kb_layout = us,ara
+    kb_variant =
+    kb_model =
+    # kb_options = grp:caps_toggle,grp_led:caps,altwin:swap_alt_win,ctrl:rctrl_ralt
+    kb_options = grp:win_space_toggle
+    kb_rules =
+
+    follow_mouse = 1
+    mouse_refocus = false
+    float_switch_override_focus = 0
+
+    touchpad {
+        natural_scroll = yes
+        disable_while_typing = true
+        tap-to-click = yes
+    }
+
+    sensitivity = 0
+}
+
+device {
+   name = epic-mouse-v1
+   sensitivity = -0.5
+}
+
+bind = SUPER, Return, exec, $TERMINAL -e fzt
+bind = SUPER SHIFT, Return, exec, $TERMINAL
+bind = SUPER, Q, killactive
+bind = SUPER, code:47, killactive
+bind = SUPER CTRL, Q, exit
+bind = SUPER CTRL, code:47, exit
+
+bind = SUPER, B, exec, killall waybar || waybar
+bind = SUPER, code:48, exec, swaync-client -t -sw
+bind = SUPER, E, exec, thunar
+bind = SUPER, P, exec, killall wlogout || wlogout --protocol layer-shell -b 5 -T 400 -B 400
+bind = SUPER, R, exec, killall rofi || rofi -show drun -theme "themes/launchpad.rasi"
+bind = SUPER, code:61, exec, killall rofi || rofi -show drun -theme "themes/launchpad.rasi"
+bind = SUPER, G, exec, killall rofi || rofi -show emoji -modi emoji -theme "themes/emojis.rasi"
+bind = SUPER, V, exec, killall rofi || cliphist list | rofi -dmenu -theme "themes/launchpad.rasi" | cliphist decode | wl-copy
+bind = SUPER, C, exec, killall rofi || rofi -show calc -modi calc -no-show-match -no-sort -theme "themes/calculator.rasi" | wl-copy
+bind = SUPER, F, exec, killall rofi || rofi -show filebrowser -modi filebrowser -theme "themes/launchpad.rasi"
+# bind = SUPER, F, exec, rofi -modi file-browser-extended -show file-browser-extended -theme "themes/launchpad.rasi" \
+# -file-browser-show-hidden                     \
+# -file-browser-resume                          \
+# -file-browser-depth 1                         \
+# -file-browser-cmd "xdg-open"
+
+# to switch between windows in a floating workspace
+bind = SUPER, Tab, cyclenext
+bind = SUPER, Tab, bringactivetotop
+
+# bind = SUPER SHIFT, Tab, cycleprev
+bind = SUPER SHIFT, Tab, layoutmsg, cycleprev # Master layout binding
+
+bind = SUPER, Comma, focusmonitor,+1
+bind = SUPER, Period, focusmonitor,-1
+
+bind = SUPER CTRL, Comma, movewindow,mon:+1
+bind = SUPER CTRL, Period, movewindow,mon:-1
+
+# Move window focus
+bind = SUPER, H, movefocus, l
+bind = SUPER, J, movefocus, d
+bind = SUPER, K, movefocus, u
+bind = SUPER, L, movefocus, r
+
+# Move focused window
+bind = SUPER CTRL, H, movewindow, l
+bind = SUPER CTRL, J, movewindow, d
+bind = SUPER CTRL, K, movewindow, u
+bind = SUPER CTRL, L, movewindow, r
+
+# Resize active window
+binde = SUPER SHIFT, H, resizeactive, -10 0
+binde = SUPER SHIFT, J, resizeactive, 0 10
+binde = SUPER SHIFT, K, resizeactive, 0 -10
+binde = SUPER SHIFT, L, resizeactive, 10 0
+
+# Resize mode (submap)
+bind = SUPER SHIFT, R, submap, resize
+
+submap = resize
+
+binde =, H, resizeactive, -10 0
+binde =, J, resizeactive, 0 10
+binde =, K, resizeactive, 0 -10
+binde =, L, resizeactive, 10 0
+
+bind =, Escape, submap, reset
+bind =, I, submap, reset
+
+submap = reset
+
+# Switch workspaces with super + [0-9]
+bind = SUPER, 1, workspace, 1
+bind = SUPER, 2, workspace, 2
+bind = SUPER, 3, workspace, 3
+bind = SUPER, 4, workspace, 4
+bind = SUPER, 5, workspace, 5
+bind = SUPER, 6, workspace, 6
+bind = SUPER, 7, workspace, 7
+bind = SUPER, 8, workspace, 8
+bind = SUPER, 9, workspace, 9
+bind = SUPER, 0, workspace, 10
+
+# bind = SUPER, 1, split-workspace, 1
+# bind = SUPER, 2, split-workspace, 2
+# bind = SUPER, 3, split-workspace, 3
+# bind = SUPER, 4, split-workspace, 4
+# bind = SUPER, 5, split-workspace, 5
+# bind = SUPER, 6, split-workspace, 6
+# bind = SUPER, 7, split-workspace, 7
+# bind = SUPER, 8, split-workspace, 8
+# bind = SUPER, 9, split-workspace, 9
+# bind = SUPER, 0, split-workspace, 10
+
+# Move active window to a workspace with super + SHIFT + [0-9]
+bind = SUPER CTRL SHIFT, 1, movetoworkspace, 1
+bind = SUPER CTRL SHIFT, 2, movetoworkspace, 2
+bind = SUPER CTRL SHIFT, 3, movetoworkspace, 3
+bind = SUPER CTRL SHIFT, 4, movetoworkspace, 4
+bind = SUPER CTRL SHIFT, 5, movetoworkspace, 5
+bind = SUPER CTRL SHIFT, 6, movetoworkspace, 6
+bind = SUPER CTRL SHIFT, 7, movetoworkspace, 7
+bind = SUPER CTRL SHIFT, 8, movetoworkspace, 8
+bind = SUPER CTRL SHIFT, 9, movetoworkspace, 9
+bind = SUPER CTRL SHIFT, 0, movetoworkspace, 10
+
+# bind = SUPER CTRL SHIFT, 1, split-movetoworkspace, 1
+# bind = SUPER CTRL SHIFT, 2, split-movetoworkspace, 2
+# bind = SUPER CTRL SHIFT, 3, split-movetoworkspace, 3
+# bind = SUPER CTRL SHIFT, 4, split-movetoworkspace, 4
+# bind = SUPER CTRL SHIFT, 5, split-movetoworkspace, 5
+# bind = SUPER CTRL SHIFT, 6, split-movetoworkspace, 6
+# bind = SUPER CTRL SHIFT, 7, split-movetoworkspace, 7
+# bind = SUPER CTRL SHIFT, 8, split-movetoworkspace, 8
+# bind = SUPER CTRL SHIFT, 9, split-movetoworkspace, 9
+# bind = SUPER CTRL SHIFT, 0, split-movetoworkspace, 10
+
+# Move active window to a workspace with super + SHIFT + [0-9]
+bind = SUPER CTRL, 1, movetoworkspacesilent, 1
+bind = SUPER CTRL, 2, movetoworkspacesilent, 2
+bind = SUPER CTRL, 3, movetoworkspacesilent, 3
+bind = SUPER CTRL, 4, movetoworkspacesilent, 4
+bind = SUPER CTRL, 5, movetoworkspacesilent, 5
+bind = SUPER CTRL, 6, movetoworkspacesilent, 6
+bind = SUPER CTRL, 7, movetoworkspacesilent, 7
+bind = SUPER CTRL, 8, movetoworkspacesilent, 8
+bind = SUPER CTRL, 9, movetoworkspacesilent, 9
+bind = SUPER CTRL, 0, movetoworkspacesilent, 10
+
+# bind = SUPER CTRL, 1, split-movetoworkspacesilent, 1
+# bind = SUPER CTRL, 2, split-movetoworkspacesilent, 2
+# bind = SUPER CTRL, 3, split-movetoworkspacesilent, 3
+# bind = SUPER CTRL, 4, split-movetoworkspacesilent, 4
+# bind = SUPER CTRL, 5, split-movetoworkspacesilent, 5
+# bind = SUPER CTRL, 6, split-movetoworkspacesilent, 6
+# bind = SUPER CTRL, 7, split-movetoworkspacesilent, 7
+# bind = SUPER CTRL, 8, split-movetoworkspacesilent, 8
+# bind = SUPER CTRL, 9, split-movetoworkspacesilent, 9
+# bind = SUPER CTRL, 0, split-movetoworkspacesilent, 10
+
+# Scroll through existing workspaces with super + scroll
+bind = SUPER, mouse_down, workspace, e+1
+bind = SUPER, mouse_up, workspace, e-1
+
+# Move/resize windows with super + LMB/RMB and dragging
+bindm = SUPER, mouse:272, movewindow
+bindm = SUPER, mouse:273, resizewindow
+
+bind = SUPER, O, pseudo, # dwindle
+bind = SUPER, S, togglesplit, # dwindle
+bind = SUPER CTRL, Return, layoutmsg, swapwithmaster
+bind = SUPER ALT, Return, togglefloating
+# bind = SUPER SHIFT, M, minimize
+bind = , F11, fullscreen, 0
+bind = SUPER, M, fullscreen, 1
+bind = SUPER CTRL, F, fullscreen, 2
+
+# Media keys
+bind = ,XF86AudioNext, exec, playerctl next
+bind = ,XF86AudioRaiseVolume, exec, media up
+bind = ,XF86AudioLowerVolume, exec, media down
+bind = ,XF86AudioMute, exec, media mute
+bind = ,XF86AudioMicMute, exec, media micmute
+bind = ,XF86MonBrightnessUp, exec, brightness up
+bind = ,XF86MonBrightnessDown, exec, brightness down
+bind = ,XF86AudioPrev, exec, playerctl previous
+bind = ,XF86AudioPlay, exec, playerctl play-pause
+bind = ,XF86AudioNext, exec, playerctl next
+bind = ,XF86AudioStop, exec, playerctl stop
+bind = ,XF86Calculator, exec, rofi -show calc -modi calc -no-show-match -no-sort -theme "themes/calculator.rasi" | wl-copy
