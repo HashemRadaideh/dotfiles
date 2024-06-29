@@ -6,35 +6,9 @@ function run {
     fi
 }
 
-run dunst
-
-# run mpv --no-video /usr/share/sounds/freedesktop/stereo/service-login.oga
-
-run /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-run gnome-keyring-daemon --start --components=ssh
-
-run udiskie -s
-
-run playerctld daemon
-
-run showkey
-
-# run wireplumber
-# run qjwgraph --minimized
-
-# run flameshot
-# run blueman-applet
-# run nm-applet --indicator
-# run volumeicon
-
-# run /usr/bin/emacs --daemon
-run discord
-# run steam -silent
-# run spotify --minimized
-# run teams
-# run zoom
-
 if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "$DISPLAY" ]; then
+    run dunst
+
     setxkbmap -layout us,ara -option grp:win_space_toggle
     # run setxkbmap -option caps:escape
     xmodmap -e "keycode 135 = Super_R"
@@ -88,18 +62,61 @@ if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "$DISPLAY" ]; then
     # xrandr --output HDMI-1 --primary --mode 2560x1080 --rate 100 --output eDP-1 --mode 1920x1200 --rotate right --right-of HDMI-1 && autorandr --save verical-right
     run autorandr -c
 
-    run redshift-gtk -l manual:"$(while ! ping -c 1 1.1.1.1 >/dev/null 2>&1; do sleep 1; done && curl -s "https://location.services.mozilla.com/v1/geolocate?key=geoclue" | jq -r '"\(.location.lat):\(.location.lng)"')"
+    # run redshift-gtk -l manual:"$(while ! ping -c 1 1.1.1.1 >/dev/null 2>&1; do sleep 1; done && curl -s "https://location.services.mozilla.com/v1/geolocate?key=geoclue" | jq -r '"\(.location.lat):\(.location.lng)"')"
+    run redshift-gtk -l manual:"$(while ! ping -c 1 1.1.1.1 >/dev/null 2>&1; do sleep 1; done && curl -s https://ipinfo.io | jq -r '.loc' | tr ',' ':')"
 else
-    wallpaper="$(find ~/Pictures/wallpapers/ -type f -exec file -- {} + | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)"
+    # run systemctl --user import-environment
+    run systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP # for XDPH
+    run hash dbus-update-activation-environment 2>/dev/null
+    # run dbus-update-activation-environment --systemd
+    run dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP # for XDPH
 
-    run swww init && swww img \
-        "$wallpaper" \
-        --transition-step 255
+    run xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
+
+    #run swayidle -w timeout 300 'swaylock -f -c 000000' before-sleep 'swaylock -f -c 000000'
+    run hypridle -c ~/.config/hypr/apps/hypridle.hl
+
+    # run mako
+    run swaync
 
     run waybar
 
-    # run mako
-
     run wl-paste --type text --watch cliphist store
     # run wl-paste --type image --watch cliphist store
+
+    run swww init && swww img \
+        "$(find ~/Pictures/wallpapers/ -type f -exec file -- {} + | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)" \
+        --transition-step 255
+
+    # run gammastep -l "$(while ! ping -c 1 1.1.1.1 >/dev/null 2>&1; do sleep 1; done && curl -s "https://location.services.mozilla.com/v1/geolocate?key=geoclue" | jq -r '"\(.location.lat):\(.location.lng)"')"
+    run gammastep -l "$(while ! ping -c 1 1.1.1.1 >/dev/null 2>&1; do sleep 1; done && curl -s https://ipinfo.io | jq -r '.loc' | tr ',' ':')"
 fi
+
+run mpv --no-video --mute=yes /usr/share/sounds/freedesktop/stereo/service-login.oga && sleep 1 && mpv --no-video /usr/share/sounds/freedesktop/stereo/service-login.oga
+
+run /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+run gnome-keyring-daemon --start --components=ssh
+
+run udiskie -s
+
+run playerctld daemon
+
+run showkey
+
+run battery
+
+# run wireplumber
+# run qjwgraph --minimized
+
+# run flameshot
+# run blueman-applet
+# run nm-applet --indicator
+# run volumeicon
+
+# run /usr/bin/emacs --daemon
+run discord
+# run webcord
+# run steam -silent
+# run spotify --minimized
+# run teams
+# run zoom
