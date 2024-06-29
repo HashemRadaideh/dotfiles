@@ -1,15 +1,20 @@
 #!/usr/bin/env bash
 
-scrot -o /tmp/screenlock.png
+if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "$DISPLAY" ]; then
+  scrot /tmp/screenlock.png
+else
+  grim /tmp/screenlock.png
+fi
 
-convert /tmp/screenlock.png \
-    -blur 0x10 \
-    /home/hashem/.files/bin/misc/banner.png \
-    -gravity center \
-    -composite \
-    /tmp/screenlock.png
+magick /tmp/screenlock.png \
+  -blur 0x10 \
+  /home/hashem/.files/bin/misc/banner.png \
+  -gravity center \
+  -composite \
+  /tmp/screenlock.png
 
-exec i3lock -i /tmp/screenlock.png \
+if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "$DISPLAY" ]; then
+  exec i3lock -i /tmp/screenlock.png \
     --color "00000000" \
     --screen "0" \
     --ind-pos="x+310:y+h-80" \
@@ -65,3 +70,6 @@ exec i3lock -i /tmp/screenlock.png \
     --pass-screen-keys \
     --pass-volume-keys \
     --pass-power-keys
+else
+	exec hyprlock -c ~/.config/hypr/apps/hyprlock.hl --immediate -q
+fi

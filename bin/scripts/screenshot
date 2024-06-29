@@ -6,10 +6,18 @@ mkdir -p "$dir"
 
 screenshot="$dir/screenshot_$(date +%Y-%m-%d_%H-%M-%S).png"
 
-case "$1" in
-    "selected") scrot --select --line mode=edge "$screenshot" ;;
-    "focused") scrot --focused --border "$screenshot" ;;
-    *) scrot $screenshot ;;
-esac
+if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "$DISPLAY" ]; then
+	case "$1" in
+		"selected") scrot --select --line mode=edge "$screenshot" ;;
+		"focused") scrot --focused --border "$screenshot" ;;
+		*) scrot "$screenshot" ;;
+	esac
+else
+	case "$1" in
+		"selected") grim -g "$(slurp)" "$screenshot" ;;
+		"focused") grim "$screenshot" ;;
+		*) grim "$screenshot" ;;
+	esac
+fi
 
 notify-send "Screenshot taken." "Saved to $dir"

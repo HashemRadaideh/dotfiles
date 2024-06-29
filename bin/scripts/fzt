@@ -1,16 +1,22 @@
 #!/usr/bin/env bash
 
-session="default"
+session=""
 
-if ! [[ -z "$(tmux ls 2>/dev/null | grep -i "windows")" ]]; then
+if [ -n "$(tmux ls 2>/dev/null)" ]; then
     session=$(
         tmux ls -F "#S" |
         fzf --prompt="Session: " --print-query |
         awk -v RS="\n" '
-    NR==1 { sub1=$0 }
-    NR==2 { sub2=$0 }
+        NR==1 { sub1=$0 }
+        NR==2 { sub2=$0 }
         END   { print index(sub2, sub1) ? sub2 : sub1 }'
     )
+else
+	exec tmux -u new -s "default"
+fi
+
+if [ "$session" = "" ]; then
+	exit
 fi
 
 if tmux has -t "$session" 2>/dev/null; then

@@ -1,7 +1,5 @@
 #!/usr/bin/env zsh
 
-level=${2:-5}
-
 brightness_file="/tmp/brightness_previous"
 
 get_brightness() {
@@ -17,38 +15,54 @@ save_brightness() {
 }
 
 send_notification() {
-    brightness=$(($(get_brightness) * 20 / 255))
-    echo $brightness
+    brightness=$(($(get_brightness) * 100 / 255))
 
-    bar=$(printf '%.0s▇' {0..$brightness})
+    if (( brightness > 65 )); then
+        symbol="high"
+    elif (( brightness > 35 )); then
+        symbol="medium"
+    elif (( brightness > 10 )); then
+        symbol="low"
+    else
+        symbol="off"
+    fi
 
-    dunstify -a "brightness" -r 1004 "$bar"
+    icon="/usr/share/icons/Papirus-Dark/symbolic/status/display-brightness-$symbol-symbolic.svg"
+
+    notify-send \
+      -u low \
+      -i "$icon"
+      -h int:value:"$brightness" \
+      -h string:synchronous:my-progress \
+      -a "Brightness Monitor" \
+      "Brightness: $brightness"
 }
 
 restore_brightness() {
-    set_brightness 102
-    # if [[ -f "$brightness_file" ]]; then
-    #   brightness=$(cat "$brightness_file")
-    #   set_brightness "$brightness"
-    # fi
+    if [[ -f "$brightness_file" ]]; then
+      brightness=$(cat "$brightness_file")
+      set_brightness "$brightness"
+    fi
 }
 
 set_brightness_max() {
-    # save_brightness
+    save_brightness
 
     max_brightness=$(cat /sys/class/backlight/*/max_brightness)
     set_brightness "$max_brightness"
 }
 
+level=${2:-5}
+
 case "$1" in
     "up")
-        brightnessctl set "$level"%+
-        ddcutil setvcp 10 + "$level"
+        ddcutil setvcp 10 + "$level" && \
+        brightnessctl set "$level"%+ && \
         send_notification
         ;;
     "down")
-        brightnessctl set "$level"%-
-        ddcutil setvcp 10 - "$level"
+        ddcutil setvcp 10 - "$level" && \
+        brightnessctl set "$level"%- && \
         send_notification
         ;;
     "BAT")

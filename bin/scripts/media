@@ -13,53 +13,77 @@ is_micmute() {
 }
 
 send_notification() {
-    volume=$(($(get_volume) / 5))
+    volume=$(get_volume)
 
-    bar=$(printf '%.0s▇' {0..$volume})
+    if (( volume > 100 )); then
+        symbol="overamplified"
+    elif (( volume > 66 )); then
+        symbol="high"
+    elif (( volume > 35 )); then
+        symbol="medium"
+    elif (( volume > 10 )); then
+        symbol="low"
+    else
+        symbol="muted"
+    fi
 
-    notify-send -a "media" -r 1000 "$bar"
-    # id=$(
-    # awesome-client "return require('naughty').notify{ message = '$bar', replaces_id = '1000' }"
-    # )
-    # id=$(awesome-client "return require('naughty').notify{ replaces_id = 1, text = '$bar' }.id")
-    # notify-send -a "media" -r 1000 "$id"
+    icon="/usr/share/icons/Papirus-Dark/symbolic/status/audio-volume-$symbol-symbolic.svg"
+
+    notify-send \
+      -u low \
+      -i "$icon" \
+      -h int:value:"$volume" \
+      -h string:synchronous:my-progress \
+      -a "Volume Monitor" \
+      "Volume: $volume"
 }
 
 case "$1" in
     "up")
-        # amixer -D pulse sset Master on > /dev/null
-        pactl set-sink-volume 0 +5%
-        # amixer -D pulse sset Master 5%+ > /dev/null
-        pactl set-sink-mute 0 0
+        amixer sset Master 5%+ > /dev/null
+        # pactl set-sink-mute 0 0
+
+        amixer sset Master on > /dev/null
+        # pactl set-sink-volume 0 +5%
 
         send_notification
         ;;
     "down")
-        # amixer -D pulse sset Master on > /dev/null
-        pactl set-sink-volume 0 -5%
-        # amixer -D pulse sset Master 5%- > /dev/null
-        pactl set-sink-mute 0 0
+        amixer sset Master 5%- > /dev/null
+        # pactl set-sink-mute 0 0
+
+        amixer sset Master on > /dev/null
+        # pactl set-sink-volume 0 -5%
 
         send_notification
         ;;
     "mute")
-        # amixer -D pulse sset Master 1+ toggle > /dev/null
-
-        pactl set-sink-mute 0 toggle
+        amixer sset Master 1+ toggle > /dev/null
+        # pactl set-sink-mute 0 toggle
 
         if is_mute; then
-            notify-send -a "media" -r 1001 "Audio muted"
+            notify-send \
+            	-a "media" \
+            	-r 1001 "Audio muted" \
+            	-i /usr/share/icons/Papirus-Dark/symbolic/status/audio-volume-muted-symbolic.svg
         else
-            notify-send -a "media" -r 1001 "Audio unmuted"
+            send_notification
         fi
         ;;
     "micmute")
-        # amixer -D pulse sset Capture toggle
-        pactl set-source-mute 0 toggle
+        amixer sset Capture toggle
+        # pactl set-source-mute 0 toggle
+
         if is_micmute; then
-            notify-send -a "media" -r 1002 "MIC switched OFF"
+            notify-send \
+            	-a "media" \
+            	-r 1002 "MIC switched OFF" \
+            	-i /usr/share/icons/Papirus-Dark/symbolic/status/audio-input-microphone-muted-symbolic.svg
         else
-            notify-send -a "media" -r 1002 "MIC switched ON"
+            notify-send \
+            	-a "media" \
+            	-r 1002 "MIC switched ON" \
+            	-i /usr/share/icons/Papirus-Dark/symbolic/status/audio-input-microphone-high-symbolic.svg
         fi
         ;;
 esac
