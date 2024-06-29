@@ -1,178 +1,340 @@
 {
-    "layer": "top",
-    "position": "top",
-    "mod": "dock",
-    "exclusive": true,
-    "passthrough": false,
-    "gtk-layer-shell": true,
-    "height": 0,
-    // "spacing": 4,
-    "modules-left": [
-        "custom/search",
-        // "custom/new",
-        "wlr/workspaces",
-        "hyprland/window"
-    ],
-    "modules-center": [],
-    "modules-right": [
-        // "cpu",
-        // "memory",
-        // "temperature",
-        // "backlight",
-        // "keyboard-state",
-        "tray",
-        "pulseaudio",
-        "pulseaudio#microphone",
-        "network",
-        "battery",
-        "battery#bat2",
-        "clock"
-    ],
-    "custom/search": {
-        "format": "",
-        "on-click": "killall rofi || rofi -show drun -theme 'themes/launchpad.rasi'"
-    },
-    "custom/new": {
-        "format": "",
-        "on-click": "hyprctl dispatch workspace empty"
-    },
-    "wlr/workspaces": {
-        "disable-scroll": true,
-        "all-outputs": true,
-        "on-click": "activate",
-        "persistent_workspaces": {
-            "1": [],
-            "2": [],
-            "3": [],
-            "4": [],
-            "5": [],
-            "6": [],
-            "7": [],
-            "8": [],
-            "9": [],
-            "10": []
-        }
-    },
-    "hyprland/window": {
-        "format": "{}"
-    },
-    "pulseaudio": {
-        // "scroll-step": 1, // %, can be a float
-        "format": "{icon} {volume}%",
-        "format-muted": "",
-        "format-bluetooth": "{icon} {volume}%",
-        "format-bluetooth-muted": "{icon} ",
-        "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
-            "default": [
-                "",
-                "",
-                ""
-            ]
-        },
-        "on-click": "pavucontrol"
-    },
-    "pulseaudio#microphone": {
-        "format": "{format_source}",
-        "format-source": " {volume}%",
-        "format-source-muted": " muted",
-        "on-click": "pamixer --default-source -t",
-        "on-scroll-up": "pamixer --default-source -i 5",
-        "on-scroll-down": "pamixer --default-source -d 5",
-        "scroll-step": 5
-    },
-    "network": {
-        // "interface": "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": " {signalStrength}%",
-        "format-ethernet": "󰈁 {ipaddr}/{cidr}",
-        "tooltip-format": "{ifname} via {gwaddr}",
-        "format-linked": "{ifname} (No IP)",
-        "format-disconnected": "⚠ Disconnected",
-        "format-alt": "{ifname}: {ipaddr}/{cidr}"
-    },
-    "cpu": {
-        "format": " {usage}%",
-        "tooltip": false
-    },
-    "memory": {
-        "format": " {}%",
-        "tooltip": false
-    },
-    "temperature": {
-        // "thermal-zone": 2,
-        // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
-        "tooltip": false,
-        "critical-threshold": 80,
-        "format-critical": "{icon} {temperatureC}°C",
-        "format": "{icon} {temperatureC}°C",
-        "format-icons": [
-            "",
-            "",
-            "",
-            "",
-            ""
-        ]
-    },
-    "backlight": {
-        "device": "acpi_video1",
-        "format": "{percent}% {icon}",
-        "format-icons": [
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
-        ]
-    },
-    "keyboard-state": {
-        "numlock": true,
-        "capslock": true,
-        "format": "{name} {icon}",
-        "format-icons": {
-            "locked": "",
-            "unlocked": ""
-        }
-    },
-    "battery": {
-        "states": {
-            "good": 95,
-            "warning": 30,
-            "critical": 15
-        },
-        "format": "{icon} {capacity}%",
-        "format-charging": " {capacity}%",
-        "format-plugged": " {capacity}%",
-        "format-alt": "{time} {icon}",
-        // "format-good": "{icon}",
-        // "format-full": "{icon}",
-        "format-icons": [
-            "",
-            "",
-            "",
-            "",
-            ""
-        ]
-    },
-    "battery#bat2": {
-        "bat": "BAT2"
-    },
-    "clock": {
-        // "format": "{: %I:%M %a, %d %b}",
-        "format": "{: %H:%M %a, %d %b}",
-        "format-alt": "{: %R  %d/%m/%Y}",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
-    },
-    "tray": {
-        "icon-size": 21,
-        "spacing": 10
-    }
+	"layer": "bottom",
+	"position": "top",
+	"reload_style_on_change": true,
+	"mod": "dock",
+	"exclusive": true,
+	"passthrough": false,
+	"gtk-layer-shell": true,
+	"height": 20,
+	"margin-bottom": 5,
+	"margin-left": 5,
+	"margin-right": 5,
+	"margin-top": 5,
+	"modules-left": [
+		"group/settings",
+		"hyprland/submap",
+		"group/management"
+		// "hyprland/workspaces",
+		// "wlr/taskbar",
+		// "hyprland/window"
+	],
+	"modules-center": [
+		"clock"
+	],
+	"modules-right": [
+		"network",
+		"bluetooth",
+		"wireplumber",
+		"pulseaudio#microphone",
+		"backlight",
+		"group/hardware",
+		// "hyprland/language",
+		// "tray",
+		// "custom/notification"
+		"group/background"
+	],
+	"group/settings": {
+		"orientation": "inherit",
+		"drawer": {
+			"transition-duration": 500,
+			"transition-left-to-right": true
+		},
+		"modules": [
+			"custom/launcher",
+			"custom/calculator",
+			"custom/clipboard",
+			"custom/wallpaper",
+			"idle_inhibitor",
+			"custom/new",
+			"custom/power"
+		]
+	},
+	"custom/launcher": {
+		"format": "<span color='#1793d1'>  </span>",
+		"on-click": "killall rofi || rofi -show drun -theme \"themes/calculator.rasi\"",
+		"on-click-right": "killall rofi",
+		"tooltip": false
+	},
+	"custom/calculator": {
+		"format": "<span color='#ef9f76'>  </span>",
+		"on-click": "killall rofi || rofi -show calc -modi calc -no-show-match -no-sort -theme \"themes/calculator.rasi\" | wl-copy",
+		"on-click-right": "killall rofi",
+		"tooltip": false
+	},
+	"custom/clipboard": {
+		"format": "<span color='#e5c890'>  </span>",
+		"on-click": "killall rofi || cliphist list | rofi -dmenu -theme \"themes/launchpad.rasi\" | cliphist decode | wl-copy",
+		"on-click-right": "killall rofi",
+		"tooltip": false
+	},
+	"custom/wallpaper": {
+		"format": "<span color='#eebebe'>  </span>",
+		"on-click": "swww img \"$(find ~/Pictures/wallpapers/ -type f -exec file -- {} + | awk -F':' '/\\w+ image/{print $1}' | shuf -n 1)\" --transition-type fade || swww init",
+		"on-click-right": "swww init",
+		"tooltip": false
+	},
+	"idle_inhibitor": {
+		"tooltip": false,
+		"format": "{icon} ",
+		"format-icons": {
+			"activated": "<span color='#85c1dc'></span>",
+			"deactivated": "<span color='#ea999c'></span>"
+		}
+	},
+	"custom/power": {
+		"format": "<span color='#e78284'> </span>",
+		"on-click": "wlogout --protocol layer-shell -b 5 -T 400 -B 400",
+		"tooltip": false
+	},
+	"custom/new": {
+		"format": "<span color='#ca9ee6'>  </span>",
+		"on-click": "hyprctl dispatch workspace empty"
+	},
+	"hyprland/submap": {
+		"format": "{}",
+		"max-length": 8,
+		"tooltip": false
+	},
+	"group/management": {
+		"orientation": "inherit",
+		"drawer": {
+			"transition-duration": 500,
+			"transition-left-to-right": true
+		},
+		"modules": [
+			"hyprland/workspaces",
+			"hyprland/window",
+			"wlr/taskbar"
+		]
+	},
+	"hyprland/workspaces": {
+		"all-outputs": false,
+		"format": "{icon}",
+		"on-scroll-up": "hyprctl dispatch workspace e+1 1>/dev/null",
+		"on-scroll-down": "hyprctl dispatch workspace e-1 1>/dev/null",
+		"sort-by-number": true,
+		"active-only": false
+		// "persistent_workspaces": {
+		// 	"1": [],
+		// 	"2": [],
+		// 	"3": [],
+		// 	"4": [],
+		// 	"5": [],
+		// 	"6": [],
+		// 	"7": [],
+		// 	"8": [],
+		// 	"9": [],
+		// 	"10": []
+		// }
+	},
+	"wlr/taskbar": {
+		"all-outputs": false,
+		"format": "{icon}",
+		"icon-size": 14,
+		"icon-theme": "Numix-Circle",
+		"tooltip-format": "{title}",
+		"on-click": "activate",
+		"on-click-middle": "close",
+		"active-first": true,
+		"srot-by-app-id": false,
+		"ignore-list": [],
+		"app_ids-mapping": {
+			"firefoxdeveloperedition": "firefox-developer-edition"
+		},
+		"rewrite": {
+			"Firefox Web Browser": "Firefox",
+			"Foot Server": "Terminal"
+		}
+	},
+	"hyprland/window": {
+		"format": "{title}",
+		"max-length": 200,
+		"separate-outputs": true
+	},
+	"clock": {
+		"interval": 1,
+		"format": "<span color='#ea999c'>  </span> {:%a %d %b, %H:%M}",
+		"format-alt": "<span color='#ea999c'>  </span> {:%A %d/%m/%Y, %H:%M:%S}",
+		// "tooltip-format": "<big><span color='#99d1db'> </span><span color='#c6d0f5'>{:%Y}</span></big>\n<span size='8pt'><tt>{calendar}</tt></span>",
+		"tooltip-format": "<span size='8pt'><tt>{calendar}</tt></span>",
+		"calendar": {
+			"mode": "year",
+			"mode-mon-col": 3,
+			"weeks-pos": "right",
+			"on-scroll": 1,
+			"format": {
+				"months": "<span color='#f2d5cf'><b>{}</b></span>",
+				"days": "<span color='#f4b8e4'><b>{}</b></span>",
+				"weeks": "<span color='#99d1db'><b>W{}</b></span>",
+				"weekdays": "<span color='#ef9f76'><b>{}</b></span>",
+				"today": "<span color='#ea999c'><b><u>{}</u></b></span>"
+			}
+		},
+		"actions": {
+			"on-click-right": "mode",
+			"on-click-forward": "tz_up",
+			"on-click-backward": "tz_down",
+			"on-scroll-up": "shift_up",
+			"on-scroll-down": "shift_down"
+		}
+	},
+	"tray": {
+		"icon-size": 18,
+		"spacing": 10
+	},
+	"network": {
+		"interval": 1,
+		"format": "<span color='#e78284'>⚠ </span>",
+		"format-wifi": "<span color='#85c1dc'> </span>",
+		"format-ethernet": "<span color='#85c1dc'> </span>",
+		"format-linked": "<span color='#85c1dc'> </span>  (No IP)",
+		"format-disconnected": "<span color='#e78284'>⚠ </span>  Disconnected",
+		"tooltip-format": "Network off",
+		"tooltip-format-wifi": "Network: {essid} ({frequency})\nBandwidth: {bandwidthTotalBytes} (  {bandwidthUpBytes}|  {bandwidthDownBytes}) {signalStrength}%\nNIC: {ifname} addresss {ipaddr}/{cidr} gateway {gwaddr}",
+		"tooltip-format-ethernet": "Network: {essid} ({frequency})\nSignal strength: {signalStrength}%\nBandwidth: {bandwidthTotalBytes} (  {bandwidthUpBytes}|  {bandwidthDownBytes})\nNIC: {ifname} addresss {ipaddr}/{cidr} gateway {gwaddr}",
+		"tooltip-format-disconnected": "Disconnected",
+		"on-click": "cinnamon-settings network",
+		"on-click-right": "~/.config/rofi/rofi-wifi-menu.sh"
+	},
+	"bluetooth": {
+		"interval": 1,
+		"format": "<span color='#e78284'> </span> Disabled",
+		"format-on": "<span color='#8caaee'> </span>",
+		"format-off": "<span color='#e78284'> </span>",
+		"format-disabled": "<span color='#e78284'> </span>",
+		"format-connected": "<span color='#8caaee'> </span>",
+		"tooltip-format": "{controller_address}\t{controller_alias}\nDevices connected {num_connections}",
+		"tooltip-format-connected": "{controller_address}\t{controller_alias}\nDevices connected {num_connections}\n{device_enumerate}",
+		"tooltip-format-enumerate-connected": "{device_address}\t{device_alias}",
+		"tooltip-format-enumerate-connected-battery": "{device_address}\t{device_alias}\t{device_battery_percentage}%",
+		"tooltip-format-disabled": "Bluetooth is disabled",
+		"tooltip-format-off": "Bluetooth is off",
+		"on-click": "blueman-manager"
+	},
+	"wireplumber": {
+		"on-click": "pavucontrol",
+		"on-click-right": "amixer sset Master toggle 1>/dev/null",
+		"format": "<span foreground='#e5c890'>{icon}</span> {volume}%",
+		"format-muted": "<span foreground='#e5c890'> </span> Muted",
+		"format-icons": {
+			"headphone": " ",
+			"hands-free": " ",
+			"headset": " ",
+			"phone": " ",
+			"portable": " ",
+			"car": " ",
+			"default": [
+				" ",
+				" ",
+				" "
+			]
+		}
+	},
+	"pulseaudio#microphone": {
+		"format": "{format_source}",
+		"format-source": "<span foreground='#e5c890'></span> {volume}%",
+		"format-source-muted": "<span foreground='#e5c890'> </span>  muted",
+		"on-click": "pavucontrol",
+		"on-click-right": "media micmute",
+		"on-scroll-up": "pamixer --default-source -i 1",
+		"on-scroll-down": "pamixer --default-source -d 1"
+	},
+	"backlight": {
+		"format": "<span color='#f2d5cf'>{icon} </span> {percent}%",
+		"tooltip-format": "{name}",
+		"device": "intel_backlight",
+		"on-scroll-up": "ddcutil setvcp 10 + 1 && brightnessctl set 1%+",
+		"on-scroll-down": "ddcutil setvcp 10 - 1 && brightnessctl set 1%-",
+		"on-click": "ddcutil setvcp 10 + 5 && brightnessctl set 5%+",
+		"on-click-right": "ddcutil setvcp 10 - 5 && brightnessctl set 5%-",
+		"format-icons": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"group/hardware": {
+		"orientation": "inherit",
+		"drawer": {
+			"transition-duration": 500,
+			"transition-left-to-right": false
+		},
+		"modules": [
+			"battery",
+			"cpu",
+			"memory",
+			"temperature"
+		]
+	},
+	"battery": {
+		"interval": 1,
+		"states": {
+			"good": 75,
+			"warning": 30,
+			"critical": 15
+		},
+		"format": "{icon}   {capacity}%",
+		"format-charging": "<span color='#99d1db'> </span>  {capacity}%",
+		"format-plugged": "<span color='#8caaee'> </span>",
+		"tooltip-format": "{timeTo}\nPower consumption: {power}W\nCharge cycles: {cycles}\nBattery Health: {health}",
+		"tooltip-format-plugged": "",
+		"format-icons": [
+			"<span color='#e78284'></span>",
+			"<span color='#ea999c'></span>",
+			"<span color='#ef9f76'></span>",
+			"<span color='#e5c890'></span>",
+			"<span color='#a6d189'></span>"
+		]
+	},
+	"cpu": {
+		"interval": 1,
+		"format": "<span color='#85c1dc'> </span>  {usage}%"
+	},
+	"memory": {
+		"interval": 1,
+		"format": "<span color='#81c8be'> </span> {}%",
+		"format-alt": "<span color='#81c8be'> </span> {used:0.1f}G/{total:0.1f}G"
+	},
+	"temperature": {
+		"interval": 1,
+		"tooltip": false,
+		"critical-threshold": 80,
+		"format-critical": "{icon} <span color='#e78284'>{temperatureC}°C</span>",
+		"format": "{icon} {temperatureC}°C",
+		"format-icons": [
+			"<span color='#a6d189'></span>",
+			"<span color='#e5c890'></span>",
+			"<span color='#ef9f76'></span>",
+			"<span color='#ea999c'></span>",
+			"<span color='#e78284'></span>"
+		]
+	},
+	"hyprland/language": {
+		"interval": 1,
+		"format": "{}",
+		"keyboard-name": "at-translated-set-2-keyboard"
+	},
+	"group/background": {
+		"orientation": "inherit",
+		"drawer": {
+			"transition-duration": 500,
+			"transition-left-to-right": false
+		},
+		"modules": [
+			"custom/notification",
+			"tray"
+		]
+	},
+	"custom/notification": {
+		"format": "<span color='#ca9ee6'> 󱅫 </span>",
+		"on-click": "swaync-client -t -sw",
+		"tooltip": false
+	}
 }
