@@ -1,0 +1,27 @@
+general {
+    lock_cmd = pidof hyprlock || lock
+    before_sleep_cmd = loginctl lock-session
+    after_sleep_cmd = hyprctl dispatch dpms on
+}
+
+listener {
+    timeout = 150  # 02:30 mins
+    on-timeout = brightness down 95
+    on-resume = brightness up 95
+}
+
+listener {
+    timeout = 300  # 05:00 mins
+    on-timeout = loginctl lock-session
+}
+
+listener {
+    timeout = 450  # 07:30 mins
+    on-timeout = hyprctl dispatch dpms off
+    on-resume = hyprctl dispatch dpms on
+}
+
+listener {
+    timeout = 600  # 12:30 mins
+    on-timeout = systemctl suspend
+}

@@ -1,0 +1,6 @@
+preload = ~/Pictures/wallpapers/wallpaperflare.com_wallpaper.jpg
+
+wallpaper = monitor1,~/Pictures/wallpapers/wallpaperflare.com_wallpaper.jpg
+
+splash = true
+
