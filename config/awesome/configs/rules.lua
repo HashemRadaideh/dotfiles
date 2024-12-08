@@ -107,9 +107,7 @@ ruled.client.connect_signal("request::rules", function()
       screen = awful.screen.focused,
     },
     callback = function(c)
-      local tags = awful.screen.focused().tags
-      local current_tag = tags[awful.tag.getidx()]
-
+      ---@diagnostic disable-next-line: unused-local
       local function is_empty(tag, clt)
         local count = 0
 
@@ -119,6 +117,14 @@ ruled.client.connect_signal("request::rules", function()
 
         return count <= 1
       end
+
+      if c.transient_for then
+        c:move_to_tag(c.transient_for.first_tag)
+        return
+      end
+
+      local tags = awful.screen.focused().tags
+      local current_tag = tags[awful.tag.getidx()]
 
       if not is_empty(current_tag, c) then
         for _, tag in pairs(tags) do
@@ -134,7 +140,16 @@ ruled.client.connect_signal("request::rules", function()
   })
 
   ruled.client.append_rule({
-    rule_any = { class = "DesktopEditors" },
+    rule_any = {
+      class = {
+        "DesktopEditors",
+        "Zathura",
+        "org.pwmt.zathura",
+        "libreoffice",
+        "freeoffice",
+        "[oO]pen[oO]ffice.*",
+      },
+    },
     properties = {
       screen = awful.screen.focused,
       tag = Tags[3],
@@ -147,6 +162,7 @@ ruled.client.connect_signal("request::rules", function()
       class = {
         "Trello",
         "notion-app",
+        "obsidian",
         "Evernote",
       },
     },
@@ -167,29 +183,16 @@ ruled.client.connect_signal("request::rules", function()
   ruled.client.append_rule({
     rule_any = {
       class = {
+        "Steam",
         "lutris",
       },
       name = {
+        "Steam",
         "lutris",
       },
     },
     properties = {
-      tag = Tags[7],
-      screen = awful.screen.focused,
-    },
-  })
-
-  ruled.client.append_rule({
-    rule_any = {
-      class = {
-        "Steam",
-      },
-      name = {
-        "Steam",
-      },
-    },
-    properties = {
-      tag = Tags[7],
+      tag = Tags[8],
       screen = awful.screen.focused,
       titlebars_enabled = false,
     },
@@ -206,7 +209,7 @@ ruled.client.connect_signal("request::rules", function()
     },
     properties = {
       screen = awful.screen.focused,
-      tag = Tags[8],
+      tag = Tags[9],
     },
   })
 
@@ -220,7 +223,7 @@ ruled.client.connect_signal("request::rules", function()
     },
     properties = {
       screen = awful.screen.focused,
-      tag = Tags[9],
+      tag = Tags[10],
     },
   })
 end)
