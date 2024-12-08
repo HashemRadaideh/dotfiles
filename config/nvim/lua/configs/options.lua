@@ -7,10 +7,10 @@ vim.cmd("silent call mkdir(stdpath('data').'/swaps', 'p', '0700')")
 vim.cmd("silent call mkdir(stdpath('data').'/sessions', 'p', '0700')")
 
 vim.filetype.add({
-	pattern = {
-		[".*/hypr/.*%.conf"] = "hyprlang",
-		[".*%.hl"] = "hyprlang"
-	},
+  pattern = {
+    [".*/hypr/.*%.conf"] = "hyprlang",
+    [".*%.hl"] = "hyprlang",
+  },
 })
 
 local settings = {
@@ -62,11 +62,13 @@ local settings = {
     timeout = true,
     timeoutlen = 300,
     foldenable = true,
+    -- foldmethod = "expr",
+    -- foldexpr = "v:lua.vim.treesitter.foldexpr()", -- "nvim_treesitter#foldexpr()",
+    -- foldtext = "",
+    foldcolumn = "0",
     foldlevel = 99,
     foldlevelstart = 99,
-    foldcolumn = "0",
-    -- foldmethod = "expr",
-    -- foldexpr = "nvim_treesitter#foldexpr()",
+    -- foldnestmax = 4,
     sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions",
     undofile = true,
     undolevels = 10000,
