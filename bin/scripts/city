@@ -1,11 +1,20 @@
 #!/bin/bash
 
+if ! command -v curl >/dev/null 2>&1 || ! command -v awk >/dev/null 2>&1 ; then
+    if ! command -v notify-send >/dev/null 2>&1 ; then
+        echo "Screenshot Failed" "The 'curl', 'notify-send' and 'awk' tools are required but not installed for Wayland."
+    else
+        notify-send -u critical "Screenshot Failed" "The 'curl' and 'awk' tools are required but not installed for Wayland."
+    fi
+    exit 1
+fi
+
 # Make the API request to ip-api.com
 response=$(curl -s "http://ip-api.com/json")
 
 # Parse the city and region from the JSON response
-city=$(echo $response | jq -r '.city')
-region=$(echo $response | jq -r '.region')
+city=$(echo "$response" | jq -r '.city')
+region=$(echo "$response" | jq -r '.region')
 
 # Check if the city is in the Delhi region
 if [[ "$region" == "DL" ]]; then

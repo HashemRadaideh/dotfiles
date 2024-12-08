@@ -12,11 +12,11 @@ if [ -n "$(tmux ls 2>/dev/null)" ]; then
         END   { print index(sub2, sub1) ? sub2 : sub1 }'
     )
 else
-	exec tmux -u new -s "default"
+    exec tmux -u new -s "default"
 fi
 
 if [ "$session" = "" ]; then
-	exit
+    exit
 fi
 
 if tmux has -t "$session" 2>/dev/null; then

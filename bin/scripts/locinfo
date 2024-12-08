@@ -1,0 +1,42 @@
+#!/usr/bin/env python
+
+import csv
+from ipaddress import ip_address
+
+import requests
+
+CSV_PATH = '/home/hashem/.files/bin/misc/IP2LOCATION-LITE-DB11.CSV'
+
+ip = requests.get('https://ipinfo.io/ip').text.strip()
+
+
+def get_lat_lon(ip):
+    with open(CSV_PATH, 'r') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            ip_range_start = int(row[0])  # 'IP From'
+            ip_range_end = int(row[1])    # 'IP To'
+            if ip_range_start <= int(ip_address(ip)) <= ip_range_end:
+                return {
+                    'country': row[3],
+                    'region': row[4],
+                    'city': row[5],
+                    'latitude': row[6],
+                    'longitude': row[7],
+                    'zipcode': row[8],
+                    'timezone': row[9],
+                }
+
+
+data = get_lat_lon(ip)
+
+if data:
+    print(f"Country: {data['country']}")
+    print(f"Region: {data['region']}")
+    print(f"City: {data['city']}")
+    print(f"Zipcode: {data['zipcode']}")
+    print(f"Latitude: {data['latitude']}")
+    print(f"Longitude: {data['longitude']}")
+    print(f"Timezone: {data['timezone']}")
+else:
+    print('Location not found.')
