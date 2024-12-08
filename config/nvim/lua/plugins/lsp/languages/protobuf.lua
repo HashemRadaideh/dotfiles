@@ -1,3 +1,3 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").bufls.setup(config)
+require("lspconfig").buf_ls.setup(config)

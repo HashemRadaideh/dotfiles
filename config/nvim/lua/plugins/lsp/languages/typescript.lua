@@ -1,6 +1,6 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").tsserver.setup({
+require("lspconfig").ts_ls.setup({
   capabilities = config.capabilities,
   flags = config.flags,
   handlers = config.handlers,
