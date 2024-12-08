@@ -31,14 +31,14 @@ alias v="$VISUAL"
 # alias la="exa -aF --icons --color=always --group-directories-first"   # all files and dirs
 # alias l="exa -lahF --icons --color=always --group-directories-first"  # long format
 # alias ll="exa -lahF --icons --color=always --group-directories-first | bat"  # paged long format
-# alias lt="exa -aT --icons --color=always --group-directories-first"   # tree listing
+alias lt="exa -aT --icons --color=always --group-directories-first"   # tree listing
 
 # Changing "ls" to "lsd"
 alias ls="lsd -F --color=always --group-directories-first"    # my preferred listing
 alias la="lsd -AF --color=always --group-directories-first"   # all files and dirs
 alias l="lsd -lAhF --color=always --group-directories-first"  # long format
 alias ll="lsd -lAhF --color=always --group-directories-first | bat"  # paged long format
-alias lt="lsd -aT --color=always --group-directories-first"   # tree listing
+# alias lt="lsd -aT --color=always --group-directories-first"   # tree listing
 
 # emacs shortcuts
 alias emacs="/usr/bin/emacsclient -c -a '/usr/bin/emacs'" # client emacs gui
