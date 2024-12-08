@@ -246,15 +246,7 @@ local clock_tooltip = awful.tooltip({
 })
 
 Systray = wibox.widget({
-  {
-    widget = wibox.container.margin,
-    wibox.widget.systray(),
-    left = 10,
-    top = 2,
-    bottom = 2,
-    right = 10,
-  },
-  widget = wibox.container.background,
+  widget = wibox.widget.systray(),
   bg = beautiful.bg_transparent,
   shape = gears.shape.rounded_rect,
   shape_clip = true,
@@ -266,11 +258,7 @@ SystrayButton = wibox.widget.imagebox(beautiful.arrow_left)
 SystrayButton:connect_signal("button::press", function(self)
   Systray.visible = not Systray.visible
 
-  if Systray.visible then
-    self.image = beautiful.arrow_right
-  else
-    self.image = beautiful.arrow_left
-  end
+  self.image = Systray.visible and beautiful.arrow_right or beautiful.arrow_left
 end)
 
 local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
@@ -413,6 +401,36 @@ function Battery()
     })
   end
 end
+
+IdleInhibitor = wibox.widget({
+  margins = { left = dpi(3), right = dpi(3) },
+  halign = "center",
+  valign = "center",
+  text = Idle and " " or " ",
+  widget = wibox.widget.textbox,
+})
+
+local tooltip = awful.tooltip({
+  objects = { IdleInhibitor },
+  text = Idle and "Currently keeping the system active. Click to allow sleep."
+    or "Currently allowing the system to sleep. Click to keep active.",
+  mode = "outside", -- Optional, you can use "outside" to make it appear outside the widget
+  align = "right", -- Optional, aligns the tooltip
+})
+
+IdleInhibitor:connect_signal("button::press", function(self)
+  awful.spawn.with_shell("toggleidle")
+
+  Idle = not Idle
+
+  if Idle then
+    self.text = " "
+    tooltip.text = "Currently keeping the system active. Click to allow sleep."
+  else
+    self.text = " "
+    tooltip.text = "Currently allowing the system to sleep. Click to keep active."
+  end
+end)
 
 local logout_popup = require("awesome-wm-widgets.logout-popup-widget.logout-popup")
 
