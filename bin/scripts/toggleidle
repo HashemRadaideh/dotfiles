@@ -1,0 +1,16 @@
+#!/bin/bash
+
+PID=$(pgrep xidlehook)
+
+if [ -z "$PID" ]; then
+    echo "xidlehook is not running."
+    exit 1
+fi
+
+if ps -o state= -p "$PID" | grep -q 'T'; then
+    kill -CONT "$PID"
+    echo "xidlehook resumed."
+else
+    kill -STOP "$PID"
+    echo "xidlehook paused."
+fi
