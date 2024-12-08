@@ -1,155 +1,163 @@
 #!/bin/python
 
-import psutil
-from subprocess import check_call
-import time
-import threading
-import pystray
-from pystray import MenuItem as item
-from PIL import Image, ImageOps
 import argparse
 import os
-import cairosvg
+import threading
+import time
+from subprocess import check_call
 
-ICON_PATH = "/usr/share/icons/Papirus-Dark/symbolic/status"
+import cairosvg
+import psutil
+import pystray
+from PIL import Image, ImageOps
+from pystray import MenuItem as item
+
+ICON_PATH = '/usr/share/icons/Papirus-Dark/symbolic/status'
 
 ICONS = {
-    "charged": "battery-full-charged-symbolic.svg",
-    "simple": {
-        "charging": {
-            "empty": "battery-empty-charging-symbolic.svg",
-            "low": "battery-low-charging-symbolic.svg",
-            "medium": "battery-medium-charging-symbolic.svg",
-            "good": "battery-good-charging-symbolic.svg",
-            "full": "battery-full-charging-symbolic.svg",
+    'charged': 'battery-full-charged-symbolic.svg',
+    'simple': {
+        'charging': {
+            'empty': 'battery-empty-charging-symbolic.svg',
+            'low': 'battery-low-charging-symbolic.svg',
+            'medium': 'battery-medium-charging-symbolic.svg',
+            'good': 'battery-good-charging-symbolic.svg',
+            'full': 'battery-full-charging-symbolic.svg',
         },
-        "discharging": {
-            "empty": "battery-empty-symbolic.svg",
-            "low": "battery-low-symbolic.svg",
-            "medium": "battery-medium-symbolic.svg",
-            "good": "battery-good-symbolic.svg",
-            "full": "battery-full-symbolic.svg"
-        },
-    },
-    "level": {
-        "charging": {
-            "0": "battery-level-0-charging-symbolic.svg",
-            "10": "battery-level-10-charging-symbolic.svg",
-            "20": "battery-level-20-charging-symbolic.svg",
-            "30": "battery-level-30-charging-symbolic.svg",
-            "40": "battery-level-40-charging-symbolic.svg",
-            "50": "battery-level-50-charging-symbolic.svg",
-            "60": "battery-level-60-charging-symbolic.svg",
-            "70": "battery-level-70-charging-symbolic.svg",
-            "80": "battery-level-80-charging-symbolic.svg",
-            "90": "battery-level-90-charging-symbolic.svg",
-            "100": "battery-level-100-charged-symbolic.svg"
-        },
-        "discharging": {
-            "0": "battery-level-0-symbolic.svg",
-            "10": "battery-level-10-symbolic.svg",
-            "20": "battery-level-20-symbolic.svg",
-            "30": "battery-level-30-symbolic.svg",
-            "40": "battery-level-40-symbolic.svg",
-            "50": "battery-level-50-symbolic.svg",
-            "60": "battery-level-60-symbolic.svg",
-            "70": "battery-level-70-symbolic.svg",
-            "80": "battery-level-80-symbolic.svg",
-            "90": "battery-level-90-symbolic.svg",
-            "100": "battery-level-100-symbolic.svg"
+        'discharging': {
+            'empty': 'battery-empty-symbolic.svg',
+            'low': 'battery-low-symbolic.svg',
+            'medium': 'battery-medium-symbolic.svg',
+            'good': 'battery-good-symbolic.svg',
+            'full': 'battery-full-symbolic.svg',
         },
     },
-    "caution": {
-        "charging": "battery-caution-charging-symbolic.svg",
-        "discharging": "battery-caution-symbolic.svg",
+    'level': {
+        'charging': {
+            '0': 'battery-level-0-charging-symbolic.svg',
+            '10': 'battery-level-10-charging-symbolic.svg',
+            '20': 'battery-level-20-charging-symbolic.svg',
+            '30': 'battery-level-30-charging-symbolic.svg',
+            '40': 'battery-level-40-charging-symbolic.svg',
+            '50': 'battery-level-50-charging-symbolic.svg',
+            '60': 'battery-level-60-charging-symbolic.svg',
+            '70': 'battery-level-70-charging-symbolic.svg',
+            '80': 'battery-level-80-charging-symbolic.svg',
+            '90': 'battery-level-90-charging-symbolic.svg',
+            '100': 'battery-level-100-charged-symbolic.svg',
+        },
+        'discharging': {
+            '0': 'battery-level-0-symbolic.svg',
+            '10': 'battery-level-10-symbolic.svg',
+            '20': 'battery-level-20-symbolic.svg',
+            '30': 'battery-level-30-symbolic.svg',
+            '40': 'battery-level-40-symbolic.svg',
+            '50': 'battery-level-50-symbolic.svg',
+            '60': 'battery-level-60-symbolic.svg',
+            '70': 'battery-level-70-symbolic.svg',
+            '80': 'battery-level-80-symbolic.svg',
+            '90': 'battery-level-90-symbolic.svg',
+            '100': 'battery-level-100-symbolic.svg',
+        },
     },
-    "missing": "battery-missing-symbolic.svg"
+    'caution': {
+        'charging': 'battery-caution-charging-symbolic.svg',
+        'discharging': 'battery-caution-symbolic.svg',
+    },
+    'missing': 'battery-missing-symbolic.svg',
 }
 
-icon_preference = "simple"
+icon_preference = 'simple'
 tray_icon = None
 
 
 def notify(title, message, percent, plugged):
     global icon_preference
 
-    if icon_preference == "simple":
+    if icon_preference == 'simple':
         if plugged:
             if percent >= 95:
-                symbol = ICONS["simple"]["charging"]["full"]
+                symbol = ICONS['simple']['charging']['full']
             elif percent >= 60:
-                symbol = ICONS["simple"]["charging"]["good"]
+                symbol = ICONS['simple']['charging']['good']
             elif percent >= 30:
-                symbol = ICONS["simple"]["charging"]["medium"]
+                symbol = ICONS['simple']['charging']['medium']
             elif percent >= 15:
-                symbol = ICONS["simple"]["charging"]["low"]
+                symbol = ICONS['simple']['charging']['low']
             else:
-                symbol = ICONS["simple"]["charging"]["empty"]
+                symbol = ICONS['simple']['charging']['empty']
         else:
             if percent >= 95:
-                symbol = ICONS["simple"]["discharging"]["full"]
+                symbol = ICONS['simple']['discharging']['full']
             elif percent >= 60:
-                symbol = ICONS["simple"]["discharging"]["good"]
+                symbol = ICONS['simple']['discharging']['good']
             elif percent >= 30:
-                symbol = ICONS["simple"]["discharging"]["medium"]
+                symbol = ICONS['simple']['discharging']['medium']
             elif percent >= 15:
-                symbol = ICONS["simple"]["discharging"]["low"]
+                symbol = ICONS['simple']['discharging']['low']
             else:
-                symbol = ICONS["simple"]["discharging"]["empty"]
+                symbol = ICONS['simple']['discharging']['empty']
     else:
         if plugged:
-            symbol = ICONS["level"]["charging"][str((percent // 10) * 10)]
+            symbol = ICONS['level']['charging'][str((percent // 10) * 10)]
         else:
-            symbol = ICONS["level"]["discharging"][str((percent // 10) * 10)]
+            symbol = ICONS['level']['discharging'][str((percent // 10) * 10)]
 
-    icon = f"{ICON_PATH}/{symbol}"
+    icon = f'{ICON_PATH}/{symbol}'
 
-    check_call([
-        "notify-send",
-        "-u", "critical",
-        "-i", icon,
-        "-h", f"int:value:{percent}",
-        "-h", "string:synchronous:my-progress",
-        "-a", "Battery Monitor",
-        title,
-        message,
-    ])
+    check_call(
+        [
+            'notify-send',
+            '-u',
+            'critical',
+            '-i',
+            icon,
+            '-h',
+            f'int:value:{percent}',
+            '-h',
+            'string:synchronous:my-progress',
+            '-a',
+            'Battery Monitor',
+            title,
+            message,
+        ]
+    )
 
 
 def update_tray_icon(percent, plugged):
     global tray_icon, icon_preference
 
-    if icon_preference == "simple":
+    if icon_preference == 'simple':
         if plugged:
             if percent >= 95:
-                symbol = ICONS["simple"]["charging"]["full"]
+                symbol = ICONS['simple']['charging']['full']
             elif percent >= 60:
-                symbol = ICONS["simple"]["charging"]["good"]
+                symbol = ICONS['simple']['charging']['good']
             elif percent >= 30:
-                symbol = ICONS["simple"]["charging"]["medium"]
+                symbol = ICONS['simple']['charging']['medium']
             elif percent >= 15:
-                symbol = ICONS["simple"]["charging"]["low"]
+                symbol = ICONS['simple']['charging']['low']
             else:
-                symbol = ICONS["simple"]["charging"]["empty"]
+                symbol = ICONS['simple']['charging']['empty']
         else:
             if percent >= 95:
-                symbol = ICONS["simple"]["discharging"]["full"]
+                symbol = ICONS['simple']['discharging']['full']
             elif percent >= 60:
-                symbol = ICONS["simple"]["discharging"]["good"]
+                symbol = ICONS['simple']['discharging']['good']
             elif percent >= 30:
-                symbol = ICONS["simple"]["discharging"]["medium"]
+                symbol = ICONS['simple']['discharging']['medium']
             elif percent >= 15:
-                symbol = ICONS["simple"]["discharging"]["low"]
+                symbol = ICONS['simple']['discharging']['low']
             else:
-                symbol = ICONS["simple"]["discharging"]["empty"]
+                symbol = ICONS['simple']['discharging']['empty']
     else:
         if plugged:
-            symbol = ICONS["level"]["charging"][str((percent // 10) * 10)]
+            symbol = ICONS['level']['charging'][str((percent // 10) * 10)]
         else:
-            symbol = ICONS["level"]["discharging"][str((percent // 10) * 10)]
+            symbol = ICONS['level']['discharging'][str((percent // 10) * 10)]
 
     icon_path = os.path.join(ICON_PATH, symbol)
-    png_path = "/tmp/tray_icon.png"
+    png_path = '/tmp/tray_icon.png'
 
     cairosvg.svg2png(url=icon_path, write_to=png_path)
 
@@ -172,10 +180,10 @@ def battery_monitor():
 
         if percent == 100 and plugged and not notified_full:
             notify(
-                "Battery Full",
-                "Your battery is full. You can unplug the charger.",
+                'Battery Full',
+                'Your battery is full. You can unplug the charger.',
                 percent,
-                plugged
+                plugged,
             )
             notified_full = True
 
@@ -183,11 +191,13 @@ def battery_monitor():
             for level in range(30, -1, -5):
                 if percent <= level and level not in notified_levels:
                     notify(
-                        "Battery Low",
-                        (f"Battery level is at {percent}%." +
-                            " Please plug in the charger."),
+                        'Battery Low',
+                        (
+                            f'Battery level is at {percent}%.'
+                            + ' Please plug in the charger.'
+                        ),
                         percent,
-                        plugged
+                        plugged,
                     )
                     notified_levels.add(level)
         else:
@@ -201,28 +211,21 @@ def battery_monitor():
 def setup_tray_icon():
     global tray_icon
 
-    tray_icon = pystray.Icon("Battery Monitor")
+    tray_icon = pystray.Icon('Battery Monitor')
     tray_icon.menu = pystray.Menu(
+        item('Info', lambda icon, item: None),
         item(
-            'Info',
-            lambda icon, item: None
-        ),
-        item(
-            'Simple Icons',
-            lambda icon, item: switch_icon_preference("simple")
+            'Simple Icons', lambda icon, item: switch_icon_preference('simple')
         ),
         item(
             'Detailed Icons',
-            lambda icon, item: switch_icon_preference("level")
+            lambda icon, item: switch_icon_preference('level'),
         ),
-        item(
-            'Exit',
-            lambda icon, item: icon.stop()
-        )
+        item('Exit', lambda icon, item: icon.stop()),
     )
 
-    default_icon_path = os.path.join(ICON_PATH, ICONS["missing"])
-    png_path = "/tmp/tray_icon_default.png"
+    default_icon_path = os.path.join(ICON_PATH, ICONS['missing'])
+    png_path = '/tmp/tray_icon_default.png'
     cairosvg.svg2png(url=default_icon_path, write_to=png_path)
     default_image = Image.open(png_path)
     default_image = ImageOps.pad(default_image, (64, 64))
@@ -241,13 +244,13 @@ def start_monitoring():
     monitor_thread.start()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Battery Monitor Script')
     parser.add_argument(
         '--icon-set',
         choices=['simple', 'level'],
         default='simple',
-        help='Icon set to use (simple or level)'
+        help='Icon set to use (simple or level)',
     )
     args = parser.parse_args()
     icon_preference = args.icon_set

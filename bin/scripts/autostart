@@ -36,8 +36,8 @@ if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "$DISPLAY" ]; then
         'systemctl suspend' \
         ''
 
-    run clipcatd
-    # run greenclip daemon
+    # run clipcatd
+    run greenclip daemon
 
     # run plank
     # run polybar
@@ -63,7 +63,8 @@ if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "$DISPLAY" ]; then
     run autorandr -c
 
     # run redshift-gtk -l manual:"$(while ! ping -c 1 1.1.1.1 >/dev/null 2>&1; do sleep 1; done && curl -s "https://location.services.mozilla.com/v1/geolocate?key=geoclue" | jq -r '"\(.location.lat):\(.location.lng)"')"
-    run redshift-gtk -l manual:"$(while ! ping -c 1 1.1.1.1 >/dev/null 2>&1; do sleep 1; done && curl -s https://ipinfo.io | jq -r '.loc' | tr ',' ':')"
+    # run redshift-gtk -l manual:"$(while ! ping -c 1 1.1.1.1 >/dev/null 2>&1; do sleep 1; done && curl -s https://ipinfo.io | jq -r '.loc' | tr ',' ':')"
+    run redshift-gtk -l manual:"$(locinfo | awk -F'[:,]' '/Latitude/ {lat=$2; gsub(/^[ \t]+|[ \t]+$/, "", lat)} /Longitude/ {lon=$2; gsub(/^[ \t]+|[ \t]+$/, "", lon)} END {print lat ":" lon}')"
 else
     # run systemctl --user import-environment
     run systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP # for XDPH
@@ -103,7 +104,7 @@ run playerctld daemon
 
 run showkey
 
-run battery
+# run battery
 
 # run wireplumber
 # run qjwgraph --minimized
@@ -114,9 +115,9 @@ run battery
 # run volumeicon
 
 # run /usr/bin/emacs --daemon
-run discord
 # run webcord
-# run steam -silent
+run discord --start-minimized
+run steam -silent
 # run spotify --minimized
-# run teams
-# run zoom
+# run teams --minimized
+# run zoom --start minimized
