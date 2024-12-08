@@ -1,23 +1,53 @@
 #!/usr/bin/env bash
 
-dir="$XDG_PICTURES_DIR/Screenshots/"
+option=${1:-"fullscreen"}
 
-mkdir -p "$dir"
+destination="${XDG_PICTURES_DIR:-$HOME/Pictures}/Screenshots/"
+mkdir -p "$destination"
+default="$destination/screenshot_$(date +%Y-%m-%d_%H-%M-%S).png"
 
-screenshot="$dir/screenshot_$(date +%Y-%m-%d_%H-%M-%S).png"
+screenshot=${2:-$default}
 
-if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "$DISPLAY" ]; then
-	case "$1" in
-		"selected") scrot --select --line mode=edge "$screenshot" ;;
-		"focused") scrot --focused --border "$screenshot" ;;
-		*) scrot "$screenshot" ;;
-	esac
-else
-	case "$1" in
-		"selected") grim -g "$(slurp)" "$screenshot" ;;
-		"focused") grim "$screenshot" ;;
-		*) grim "$screenshot" ;;
-	esac
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+if ! command_exists notify-send; then
+    echo "Error: 'notify-send' is required but not installed."
+    exit 1
 fi
 
-notify-send "Screenshot taken." "Saved to $dir"
+if ! command_exists notify-send; then
+    echo "Error: 'notify-send' is required but not installed."
+    exit 1
+fi
+
+if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "$DISPLAY" ]; then
+    if ! command_exists scrot; then
+        notify-send -u critical "Screenshot Failed" "The 'scrot' tool is required but not installed."
+        exit 1
+    fi
+
+    case "$option" in
+        "selected") scrot --select --line mode=edge "$screenshot" ;;
+        "focused") scrot --focused --border "$screenshot" ;;
+        "fullscreen") scrot "$screenshot" ;;
+    esac
+else
+    if ! command_exists grim || ! command_exists slurp; then
+        notify-send -u critical "Screenshot Failed" "The 'grim' and 'slurp' tools are required but not installed for Wayland."
+        exit 1
+    fi
+
+    case "$option" in
+        "selected") grim -g "$(slurp)" "$screenshot" ;;
+        "focused") grim "$screenshot" ;;
+        "fullscreen") grim "$screenshot" ;;
+    esac
+fi
+
+if [ -f "$screenshot" ]; then
+    notify-send -u low -i "$screenshot" "Screenshot taken" "Saved as $screenshot"
+else
+    notify-send -u critical -i dialog-error "Screenshot Failed" "Could not save the screenshot."
+fi
