@@ -157,7 +157,12 @@ local on_attach = function(client, bufnr)
   -- inlay hints
   if client.server_capabilities.inlayHintProvider then
     -- require("inlay-hints").on_attach(client, bufnr)
-    require("lsp-inlayhints").on_attach(client, bufnr)
+    -- require("lsp-inlayhints").on_attach(client, bufnr)
+    -- vim.lsp.buf.inlay_hint(bufnr, true)
+    -- vim.lsp.inlay_hint(bufnr, true)
+    -- vim.lsp.inlay_hint.enable(bufnr, true)
+    -- vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ 0 }), { 0 })
+    vim.lsp.inlay_hint.enable(true, { bufnr })
   end
 
   if client.server_capabilities.documentSymbolProvider then

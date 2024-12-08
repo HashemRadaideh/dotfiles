@@ -11,7 +11,7 @@ return {
     { "ray-x/lsp_signature.nvim", event = "LspAttach" },
     -- { "onsails/lspkind.nvim", event = "LspAttach" },
     { "j-hui/fidget.nvim", event = "LspAttach", tag = "legacy", opts = {} },
-    { "lvimuser/lsp-inlayhints.nvim", event = "LspAttach", opts = {} },
+    -- { "lvimuser/lsp-inlayhints.nvim", event = "LspAttach", opts = {} },
     -- { "folke/trouble.nvim", event = "LspAttach", opts = {} },
     -- { "folke/neoconf.nvim" },
     -- { "folke/neodev.nvim" },
@@ -82,7 +82,15 @@ return {
   },
   {
     "mrcjkb/rustaceanvim",
-    version = "^4",
+    version = "^5",
+    config = function()
+      local config = require("plugins.lsp.config")
+      vim.g.rustaceanvim = {
+        server = {
+          on_attach = config.on_attach,
+        },
+      }
+    end,
     ft = { "rust" },
   },
   {

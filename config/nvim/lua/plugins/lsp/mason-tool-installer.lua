@@ -40,6 +40,14 @@ return {
       "prettierd",
       "ktlint",
       "pylint",
+      "mypy",
+      "ruff",
+      "clj-kondo",
+      "google-java-format",
+      "gersemi",
+      "buf",
+      "standardrb",
+      "yamlfix",
     },
 
     -- if set to true this will check each tool for updates. If updates

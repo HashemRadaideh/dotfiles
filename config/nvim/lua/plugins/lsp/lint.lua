@@ -30,6 +30,7 @@ return {
       -- typescriptreact = { "eslint_d" },
       -- svelte = { "eslint_d" },
       kotlin = { "ktlint" },
+      clojure = { "clj-kondo" },
       terraform = { "tflint" },
       ruby = { { "standardrb", "rubocop" } },
       python = {

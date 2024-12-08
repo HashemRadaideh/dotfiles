@@ -4,7 +4,7 @@ return {
   opts = {
     formatters_by_ft = {
       lua = { "stylua" },
-      rust = { "rustfmt" },
+      rust = { "rustfmt", lsp_format = "fallback" },
       toml = { "taplo" },
       go = { "goimports", "gofmt" },
       svelte = { { "prettierd", "prettier" } },
@@ -19,7 +19,16 @@ return {
       yaml = { "yamlfix" },
       liquid = { "prettierd", "prettier" },
       ruby = { { "standardrb", "rubocop" } },
-      python = { "isort", "blue" },
+      -- python = { "isort", "ruff_format", { "blue", "black" } },
+      python = function(bufnr)
+        if require("conform").get_formatter_info("blue", bufnr).available then
+          return { "isort", "blue" }
+        elseif require("conform").get_formatter_info("ruff_format", bufnr).available then
+          return { "isort", "ruff_format" }
+        else
+          return { "isort", "black" }
+        end
+      end,
       kotlin = { "ktlint" },
       java = { "google-java-format" },
       markdown = { { "prettierd", "prettier" } },
@@ -36,21 +45,20 @@ return {
       cmake = { "gersemi" },
       ["_"] = { "trim_whitespace" },
     },
-    format_on_save = {
-      lsp_fallback = true,
-      async = false,
-      timeout_ms = 1000,
+    -- format_on_save = {
+    --   lsp_fallback = true,
+    --   async = false,
+    --   timeout_ms = 10000,
+    -- },
+    format_after_save = {
+      lsp_format = "fallback",
     },
   },
   keys = {
     {
       "<leader>fn",
       function()
-        require("conform").format({
-          lsp_fallback = true,
-          async = false,
-          timeout_ms = 1000,
-        })
+        require("conform").format({ async = true })
       end,
       mode = { "n", "v" },
       desc = "Format file or range (in visual mode)",
