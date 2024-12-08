@@ -2,11 +2,6 @@ return {
   "lukas-reineke/indent-blankline.nvim",
   event = { "BufReadPost", "BufNewFile" },
   config = function()
-    local ok, indent_blankline = pcall(require, "ibl")
-    if not ok then
-      return
-    end
-
     vim.opt.list = true
     vim.opt.listchars:append("tab:│ ")
     -- vim.opt.listchars:append("space:⋅")
@@ -41,7 +36,7 @@ return {
 
     vim.g.rainbow_delimiters = { highlight = highlight }
 
-    indent_blankline.setup({
+    require("ibl").setup({
       indent = {
         highlight = highlight,
         char = "▏", -- "▏" "│" "║"

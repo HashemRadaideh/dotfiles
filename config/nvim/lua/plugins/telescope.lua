@@ -7,6 +7,7 @@ return {
     -- "kdheepak/lazygit.nvim",
     "nvim-telescope/telescope-ui-select.nvim",
     "nvim-telescope/telescope-file-browser.nvim",
+    "debugloop/telescope-undo.nvim",
   },
   keys = {
     -- {
@@ -14,6 +15,11 @@ return {
     --   '<cmd>lua require("telescope").extensions.lazygit.lazygit()<CR>',
     --   { noremap = true, silent = true },
     -- },
+    {
+      "<leader>tu",
+      "<cmd>Telescope undo<CR>",
+      { noremap = true, silent = true },
+    },
     {
       "<leader>.",
       "<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>",
@@ -132,6 +138,8 @@ return {
     -- telescope.load_extension("lazygit")
     telescope.load_extension("ui-select")
     telescope.load_extension("file_browser")
+    telescope.load_extension("persisted")
+    telescope.load_extension("undo")
     -- telescope.load_extension("projects")
 
     return {
@@ -179,6 +187,29 @@ return {
         },
       },
       extensions = {
+        persisted = {
+          layout_config = { width = 0.55, height = 0.55 },
+        },
+        undo = {
+          side_by_side = true,
+          layout_strategy = "vertical",
+          -- layout_config = {
+          --   preview_height = 0.8,
+          -- },
+          mappings = {
+            i = {
+              ["<C-y>"] = require("telescope-undo.actions").yank_additions,
+              ["<C-d>"] = require("telescope-undo.actions").yank_deletions,
+              ["<C-r>"] = require("telescope-undo.actions").restore,
+              ["<CR>"] = require("telescope-undo.actions").restore,
+            },
+            n = {
+              ["y"] = require("telescope-undo.actions").yank_additions,
+              ["Y"] = require("telescope-undo.actions").yank_deletions,
+              ["u"] = require("telescope-undo.actions").restore,
+            },
+          },
+        },
         file_browser = {
           theme = "ivy",
           -- disables netrw and use telescope-file-browser in its place
