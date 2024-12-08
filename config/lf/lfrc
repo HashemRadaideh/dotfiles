@@ -21,7 +21,7 @@ set hidden false
 set drawbox false
 set icons true
 
-set ratios 1:2
+set ratios 1:2:3
 set info size:time
 
 # Functions
@@ -71,7 +71,7 @@ cmd create_file ${{
   fi
 
   if echo "$name" | grep -q "/"; then
-    mkdir -p $(sed 's/\(.*\)\/.*/\1/' <<< $name) && touch $name 
+    mkdir -p $(sed 's/\(.*\)\/.*/\1/' <<< $name) && touch $name
     exit
   fi
 

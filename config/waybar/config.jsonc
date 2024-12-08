@@ -248,6 +248,7 @@
 		"on-scroll-down": "ddcutil setvcp 10 - 1 && brightnessctl set 1%-",
 		"on-click": "ddcutil setvcp 10 + 5 && brightnessctl set 5%+",
 		"on-click-right": "ddcutil setvcp 10 - 5 && brightnessctl set 5%-",
+		"on-click-middle": "ddcutil setvcp 10 + 100 && brightnessctl set 100%+",
 		"format-icons": [
 			"",
 			"",
