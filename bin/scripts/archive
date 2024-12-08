@@ -1,39 +1,84 @@
 #!/usr/bin/env bash
 
+check_dependency() {
+    if ! command -v "$1" >/dev/null 2>&1; then
+        echo "ERROR: '$1' is not installed. Please install it to continue."
+        exit 1
+    fi
+}
+
 if [ $# -ne 2 ]; then
     echo "Invalid number of arguments."
-    echo "Usage: ./archive <file/folder> <format>"
+    echo "Usage: $0 <source> <format> <destination>"
     exit 1
 fi
 
-if [ ! -e "$1" ]; then
-    echo "ERROR: File or folder does not exist."
+input="$1"
+
+if [ ! -e "$input" ]; then
+    echo "ERROR: File or folder does not exist: $input"
     exit 1
 fi
 
-if [ -f "$1" ]; then
-    echo "Archiving file: $1"
-else
-    echo "Archiving folder: $1"
-fi
+format="${2:-zip}"
+destination="${3:-.}"
 
-case "$2" in
-    rar) rar a "$1.rar" "$1" ;;
-    zip) zip -r "$1.zip" "$1" ;;
-    7z) 7z a "$1.7z" "$1" ;;
-    gz) tar cvfz "$1.tar.gz" "$1" ;;
-    bz2) tar cvfj "$1.tar.bz2" "$1" ;;
-    tar) tar cvf "$1.tar" "$1" ;;
-    tgz) tar cvfz "$1.tgz" "$1" ;;
-    tbz2) tar cvfj "$1.tbz2" "$1" ;;
-    txz) tar cvfJ "$1.tar.xz" "$1" ;;
-    tar.gz) tar cvfz "$1.tar.gz" "$1" ;;
-    tar.bz2) tar cvfj "$1.tar.bz2" "$1" ;;
-    tar.xz) tar cvfJ "$1.tar.xz" "$1" ;;
+filename=$(basename "$input")
+archive="$destination/$filename.$format"
+
+case "$format" in
+    rar)
+        check_dependency rar
+        rar a "$archive" "$input"
+        ;;
+    zip)
+        check_dependency zip
+        zip -r "$archive" "$input"
+        ;;
+    7z)
+        check_dependency 7z
+        7z a "$archive" "$input"
+        ;;
+    gz)
+        check_dependency tar
+        tar cvfz "$archive" "$input"
+        ;;
+    bz2)
+        check_dependency tar
+        tar cvfj "$archive" "$input"
+        ;;
+    tar)
+        check_dependency tar
+        tar cvf "$archive" "$input"
+        ;;
+    tgz)
+        check_dependency tar
+        tar cvfz "$archive" "$input"
+        ;;
+    tbz2)
+        check_dependency tar
+        tar cvfj "$archive" "$input"
+        ;;
+    txz)
+        check_dependency tar
+        tar cvfJ "$archive" "$input"
+        ;;
+    tar.gz)
+        check_dependency tar
+        tar cvfz "$archive" "$input"
+        ;;
+    tar.bz2)
+        check_dependency tar
+        tar cvfj "$archive" "$input"
+        ;;
+    tar.xz)
+        check_dependency tar
+        tar cvfJ "$archive" "$input"
+        ;;
     *)
-        echo "Unsupported format"
+        echo "Unsupported format: $format"
         exit 1
         ;;
 esac
 
-echo "Archive created successfully."
+echo "Archive created successfully: $archive"

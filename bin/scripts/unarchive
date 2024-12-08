@@ -1,33 +1,81 @@
 #!/usr/bin/env bash
 
+check_dependency() {
+    if ! command -v "$1" >/dev/null 2>&1; then
+        echo "ERROR: '$1' is not installed. Please install it to continue."
+        exit 1
+    fi
+}
+
 if [ $# -eq 0 ]; then
     echo "No file specified."
-    echo "Usage: ./unarchive <file>"
+    echo "Usage: $0 <source> <destination>"
     exit 1
 fi
 
-if [[ ! -f $1 ]]; then
-    echo "ERROR: $1 is not a file"
+input="$1"
+
+if [[ ! -f $input ]]; then
+    echo "ERROR: $input is not a file."
     exit 1
 fi
 
-case "$1" in
-    *.rar) unrar x "$1" ;;
-    *.zip) unzip "$1" ;;
-    *.Z) uncompress "$1" ;;
-    *.7z) 7z x "$1" ;;
-    *.tar.gz) tar xvfz "$1" ;;
-    *.tar.bz2) tar xvfj "$1" ;;
-    *.tar.xz) tar xf "$1" ;;
-    *.gz) gunzip "$1" ;;
-    *.bz2) bunzip2 "$1" ;;
-    *.tar) tar xvf "$1" ;;
-    *.tgz) tar xvfz "$1" ;;
-    *.tbz2) tar xvfj "$1" ;;
+filename=$(basename "$input")
+dirname="${filename%.*}"
+destination="${2:-$dirname}"
+
+if [ -d "$destination" ]; then
+    echo "ERROR: Directory '$destination' already exists. Aborting."
+    exit 1
+fi
+
+mkdir -p "$destination"
+
+case "$input" in
+    *.rar)
+        check_dependency unrar
+        unrar x "$input" "$destination"
+        ;;
+    *.zip)
+        check_dependency unzip
+        unzip -d "$destination" "$input"
+        ;;
+    *.Z)
+        check_dependency uncompress
+        uncompress -c "$input" > "$destination/${input%.*}"
+        ;;
+    *.7z)
+        check_dependency 7z
+        7z x "$input" -o"$destination"
+        ;;
+    *.tar.gz | *.tgz)
+        check_dependency tar
+        tar xvzf "$input" -C "$destination"
+        ;;
+    *.tar.bz2 | *.tbz2)
+        check_dependency tar
+        tar xvjf "$input" -C "$destination"
+        ;;
+    *.tar.xz | *.txz)
+        check_dependency tar
+        tar xvJf "$input" -C "$destination"
+        ;;
+    *.gz)
+        check_dependency gunzip
+        gunzip -c "$input" > "$destination/${input%.gz}"
+        ;;
+    *.bz2)
+        check_dependency bunzip2
+        bunzip2 -c "$input" > "$destination/${input%.bz2}"
+        ;;
+    *.tar)
+        check_dependency tar
+        tar xvf "$input" -C "$destination"
+        ;;
     *)
-        echo "Unsupported format"
+        echo "Unsupported format: $input"
         exit 1
         ;;
 esac
 
-echo "Unarchived successfully."
+echo "Unarchived successfully to directory '$dirname'"
