@@ -10,18 +10,17 @@ configs=(
     wine
 )
 
-export TERMINAL="kitty"
-
-# History in cache directory:
-export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
-export HISTSIZE=10000000
-export SAVEHIST=10000000
-
 # export CC=`which clang`
 # alias cc=`which clang`
 
 # export CXX=`which clang++`
 # alias cpp=`which clang++`
+
+function conda-open() {
+    eval "$($XDG_DATA_HOME/miniforge3/bin/conda shell.zsh hook)"
+}
+
+export TERMINAL="kitty"
 
 # $EDITOR use nvim
 export EDITOR="nvim"
@@ -68,8 +67,16 @@ export XDG_TEMPLATES_DIR="$HOME/Templates"
 export XDG_VIDEOS_DIR="$HOME/Videos"
 
 # home directory clean up
-# export ANDROID_HOME="$XDG_DATA_HOME"/android
-export ANDROID_SDK_HOME="$HOME"
+# export _JAVA_OPTIONS="-Djava.io.tmpdir=$XDG_CONFIG_HOME/java -Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java"
+export _JAVA_AWT_WM_NONREPARENTING=1
+# export JAVA_HOME=/opt/android-studio/jbr/bin/
+export JAVA_HOME=/usr/lib/jvm/default
+export ANDROID_HOME=/opt/android-sdk
+export ANDROID_SDK_ROOT=$ANDROID_HOME
+export ANDROID_USER_HOME=$HOME/.android
+export ANDROID_AVD_HOME=$ANDROID_USER_HOME/avd
+export ANDROID_NDK_HOME=$ANDROID_HOME/ndk-bundle
+export NDK_HOME=$ANDROID_NDK_HOME
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export GNUPGHOME="$XDG_DATA_HOME/gnupm"
 export GOPATH="$XDG_DATA_HOME/go"
@@ -81,19 +88,18 @@ export MPLAYER_HOME="$XDG_CONFIG_HOME/mplayer"
 export MYSQL_HISTFILE="$XDG_DATA_HOME"/mysql_history
 export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
 export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/pythonrc"
+export QT_QPA_PLATFORM="xcb"
 export QT_QPA_PLATFORMTHEME="qt5ct"
-export QT_STYLE_OVERRIDE="kvantum"
+# export QT_STYLE_OVERRIDE="kvantum"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 export SSB_HOME="$XDG_DATA_HOME"/zoom
 export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
 export XCURSOR_PATH=/usr/share/icons:$XDG_DATA_HOME/icons
 export WINEPREFIX="$HOME/wine"
-export JAVA_HOME=/usr/lib/jvm/default
-export _JAVA_OPTIONS="-Djava.io.tmpdir=$XDG_CONFIG_HOME/java -Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java"
-export _JAVA_AWT_WM_NONREPARENTING=1
 export QSYS_ROOTDIR="$XDG_CACHE_HOME/paru/clone/quartus-free/pkg/quartus-free-quartus/opt/intelFPGA/21.1/quartus/sopc_builder/bin"
 
-export PATH="$PATH:$XDG_DATA_HOME:$XDG_DATA_HOME/scripts:$XDG_DATA_HOME/sessions:$XDG_DATA_HOME/cargo/bin:$GOPATH/bin/:$XDG_CONFIG_HOME/doom/bin:$XDG_CONFIG_HOME/emacs/bin:/usr/lib/jvm/default/bin:$ANDROID_HOME/platform-tools:$XDG_DATA_HOME/nvim/mason/bin:$HOME/.yarn/bin/:$HOME/.cache/.bun/bin/:$HOME/.ghcup/bin/"
+
+export PATH="$PATH:$XDG_DATA_HOME:$XDG_DATA_HOME/scripts:$XDG_DATA_HOME/sessions:$XDG_DATA_HOME/cargo/bin:$GOPATH/bin/:$XDG_CONFIG_HOME/doom/bin:$XDG_CONFIG_HOME/emacs/bin:/usr/lib/jvm/default/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$ANDROID_NDK_HOME:$XDG_DATA_HOME/nvim/mason/bin:$HOME/.yarn/bin/:$HOME/.cache/.bun/bin/:$HOME/.ghcup/bin/"
 
 alias mysql-workbench=mysql-workbench --configdir="$XDG_DATA_HOME/mysql/workbench"
 alias yarn='yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config'

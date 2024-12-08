@@ -22,7 +22,9 @@ zrc() {
     fi
 
     # opam configuration
-    [[ ! -r /home/hashem/.opam/opam-init/init.zsh ]] || source /home/hashem/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+    [[ ! -r ~/.opam/opam-init/init.zsh ]] || source ~/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+
+    [[ ! -r ~/export-esp.sh ]] && source ~/export-esp.sh
 
     [ -x "$(command -v gh)" ] && eval "$(gh completion -s zsh)"
 

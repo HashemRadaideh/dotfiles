@@ -1,23 +1,66 @@
-# Zsh config file (zshrc without oh-my-zsh)
-source "$ZDOTDIR/rc.zsh"
+# Set the directory we want to store zinit and plugins
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 
-zrc
+# Download Zinit, if it's not there yet
+if [ ! -d "$ZINIT_HOME" ]; then
+   mkdir -p "$(dirname $ZINIT_HOME)"
+   git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+fi
 
-# Completion engine setup
-zstyle ':completion:*' menu select
-zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
-zstyle ':completion:*' glob 'x == 2'
-zstyle ':completion:*' matcher-list '+m:{[:lower:]}={[:upper:]} m:{[:lower:][:upper:]}={[:upper:][:lower:]} r:|[._-]=** r:|=** l:|=*' '+m:{[:lower:]}={[:upper:]} m:{[:lower:][:upper:]}={[:upper:][:lower:]} r:|[._-]=** r:|=** l:|=*' '+m:{[:lower:]}={[:upper:]} m:{[:lower:][:upper:]}={[:upper:][:lower:]} r:|[._-]=** r:|=** l:|=*' '+m:{[:lower:]}={[:upper:]} m:{[:lower:][:upper:]}={[:upper:][:lower:]} r:|[._-]=** r:|=** l:|=*'
-zstyle ':completion:*' max-errors 5 numeric
-zstyle :compinstall filename "$ZDOTDIR/.zshrc"
+# Source/Load zinit
+source "${ZINIT_HOME}/zinit.zsh"
 
-zmodload zsh/complist
-_comp_options+=(globdots) # Include hidden files.
+# Add in zsh plugins
+zinit light zsh-users/zsh-syntax-highlighting
+zinit light zsh-users/zsh-completions
+zinit light zsh-users/zsh-autosuggestions
+zinit light Aloxaf/fzf-tab
 
-autoload -Uz compinit
-compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
+# Add in snippets
+zinit snippet OMZP::git
+zinit snippet OMZP::sudo
+zinit snippet OMZP::archlinux
+zinit snippet OMZP::aws
+zinit snippet OMZP::kubectl
+zinit snippet OMZP::kubectx
+zinit snippet OMZP::command-not-found
 
-setopt autocd beep extendedglob nomatch notify
+# Load completions
+autoload -Uz compinit && compinit
+
+zinit cdreplay -q
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# History
+HISTSIZE=5000
+HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
+SAVEHIST=$HISTSIZE
+HISTDUP=erase
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_find_no_dups
+
+# Completion styling
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
+
+export FZF_DEFAULT_OPTS='--height=~50% --layout=reverse --border --cycle --preview="bat --decorations=always --color=always {} 2>/dev/null" --bind ctrl-u:preview-page-up,ctrl-d:preview-page-down --exit-0'
+export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git --exclude node_modules --exclude .cache'
+
+# Shell integrations
+eval "$(fzf --zsh)"
+eval "$(zoxide init --cmd cd zsh)"
+
+setopt beep extendedglob nomatch notify
 
 setopt autocd		# Automatically cd into typed directory.
 stty stop undef		# Disable ctrl-s to freeze terminal.
@@ -27,12 +70,12 @@ setopt interactive_comments
 bindkey -v
 export KEYTIMEOUT=1
 
-# Use vim keys in tab complete menu:
-bindkey -M menuselect 'h' vi-backward-char
-bindkey -M menuselect 'k' vi-up-line-or-history
-bindkey -M menuselect 'l' vi-forward-char
-bindkey -M menuselect 'j' vi-down-line-or-history
-bindkey -v '^?' backward-delete-char
+# # Use vim keys in tab complete menu:
+# bindkey -M menuselect 'h' vi-backward-char
+# bindkey -M menuselect 'k' vi-up-line-or-history
+# bindkey -M menuselect 'l' vi-forward-char
+# bindkey -M menuselect 'j' vi-down-line-or-history
+# bindkey -v '^?' backward-delete-char
 
 # Change cursor shape for different vi modes.
 zle-keymap-select () {
@@ -137,11 +180,55 @@ bindkey -M viins '^[[3;5~' kill-word
 bindkey -M vicmd '^[[3;5~' kill-word
 # use showkey -a or Ctrl-v to get key code for binding
 
-for plugin in $plugins; do
-  require "plugins/$plugin/$plugin.plugin"
-done
+if [[ -z "$DISPLAY" ]] ; then
+    # Fetch machine's specs.
+    [ -x "$(command -v pfetch)"  ] && pfetch
+else
+    # Use the starship prompt.
+    export STARSHIP_CONFIG="$DOTFILES/config/starship/starship.toml"
+    eval "$(starship init zsh)"
 
-require "plugins/conf"
+    # # Fetch machine's specs.
+    # kitty +kitten icat --place "50x50@-1x-1" "$(find ~/Pictures/wallpapers/ -type f -exec file -- {} + | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)"
+    # [ -x "$(command -v neofetch)"  ] && neofetch
+    # [ -x "$(command -v macchina)"  ] && ~/art > /tmp/ascii && macchina
+    [ -x "$(command -v macchina)"  ] && touch /tmp/ascii && macchina
+fi
+
+# opam configuration
+[[ ! -r /home/hashem/.opam/opam-init/init.zsh ]] || source /home/hashem/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+
+python-venv() {
+    local MYVENV=
+    local current_dir="$(pwd)"
+
+    while [ "$current_dir" != "/" ]; do
+        while IFS= read -r -d '' dir; do
+            if [ -f "$dir/pyvenv.cfg" ]; then
+                MYVENV="$dir"
+                break
+            fi
+        done < <(find "$current_dir" -maxdepth 1 -type d -print0)
+
+        [[ -d $MYVENV ]] && break
+
+        current_dir="$(dirname "$current_dir")"
+    done
+
+    [[ -d "$MYVENV" ]] && source "$MYVENV/bin/activate" > /dev/null 2>&1
+
+    [[ ! -d "$MYVENV" ]] && deactivate > /dev/null 2>&1
+}
+autoload -U add-zsh-hook
+add-zsh-hook chpwd python-venv
+
+if type clipcat-menu >/dev/null 2>&1; then
+    alias clipedit=' clipcat-menu --finder=builtin edit'
+    alias clipdel=' clipcat-menu --finder=builtin remove'
+
+    bindkey -s '^\' "^Q clipcat-menu --finder=builtin insert ^m"
+    bindkey -s '^]' "^Q clipcat-menu --finder=builtin remove ^m"
+fi
 
 if [[ -z "$DISPLAY" ]] ; then
   # Use the custom zsh prompt.
@@ -161,7 +248,7 @@ if [[ -z "$DISPLAY" ]] ; then
 
     local saved_prompt=$PROMPT
     local saved_rprompt=$RPROMPT
-    
+
     PROMPT='%~>'
     RPROMPT=''
     zle .reset-prompt
