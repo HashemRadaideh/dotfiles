@@ -3,13 +3,13 @@
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
 pcall(require, "luarocks.loader")
 
--- Standard awesome library
-require("awful.autofocus")
-
 -- autostart applications
 -- require("awful").spawn.easy_async_with_shell("autostart")
 -- require("awful").spawn.easy_async_with_shell("dex -as $XDG_CONFIG_HOME/autostart")
 require("awful").spawn.with_shell("autostart")
+
+-- Standard awesome library
+require("awful.autofocus")
 
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
@@ -32,6 +32,7 @@ Autohide = true
 Zen = true
 Sloppy = false
 Titled = false
+Idle = os.execute([[ps -o state= -p $(pgrep xidlehook) | grep -q 'T']])
 
 Theme = "configs/theme.lua"
 

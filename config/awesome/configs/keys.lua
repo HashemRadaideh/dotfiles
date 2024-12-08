@@ -74,11 +74,6 @@ awful.keyboard.append_global_keybindings({
 
   awful.key({ Super, Shift }, "s", function()
     Is_sloppy = not Is_sloppy
-    -- if Is_sloppy then
-    --   Is_sloppy = false
-    -- else
-    --   Is_sloppy = true
-    -- end
   end, { description = "Toggle sloppy focus", group = "System" }),
 
   -- awful.key(
@@ -93,29 +88,13 @@ awful.keyboard.append_global_keybindings({
     Task.visible = not Task.visible
 
     TaskButton.image = Task.visible and beautiful.arrow_left or beautiful.arrow_right
-    -- if Task.visible then
-    --   TaskButton.image = beautiful.arrow_left
-    -- else
-    --   TaskButton.image = beautiful.arrow_right
-    -- end
   end, { description = "Toggle active apps list visibility", group = "System" }),
 
   awful.key({ Super }, "s", function()
     Systray.visible = not Systray.visible
 
     SystrayButton.image = Systray.visible and beautiful.arrow_right or beautiful.arrow_left
-    -- if Systray.visible then
-    --   SystrayButton.image = beautiful.arrow_right
-    -- else
-    --   SystrayButton.image = beautiful.arrow_left
-    -- end
   end, { description = "Toggle systray visibility", group = "System" }),
-
-  -- awful.key(
-  --   { Meta }, "b",
-  --   function() awful.spawn.with_shell("browsers") end,
-  --   { description = "Select browser", group = "Launch" }
-  -- ),
 
   awful.key({ Super }, "'", function()
     Main_menu:toggle({ coords = { x = 0, y = 0 } })
@@ -141,15 +120,15 @@ awful.keyboard.append_global_keybindings({
     awful.spawn('rofi -show emoji -modi emoji -theme "themes/emojis.rasi"')
   end, { description = "Open rofi run prompt", group = "Launch" }),
 
-  awful.key({ Super }, "f", function()
+  awful.key({ Super, Shift }, "f", function()
     awful.spawn('rofi -show filebrowser -modi filebrowser -theme "themes/launchpad.rasi"')
   end, { description = "Open rofi run prompt", group = "Launch" }),
 
   awful.key({ Super }, "v", function()
-    -- awful.spawn(
-    --   [[rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}' ; sleep 0.5; xdotool type $(xclip -o -selection clipboard)]]
-    -- )
-    awful.spawn([[clipcat-menu]])
+    awful.spawn(
+      [[rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}' -theme "themes/clipboard.rasi"]]
+    )
+    -- awful.spawn([[clipcat-menu]])
   end, { description = "Open rofi run prompt", group = "Launch" }),
 
   awful.key({ Super }, "c", function()
@@ -160,22 +139,6 @@ awful.keyboard.append_global_keybindings({
     awful.spawn.with_shell("dmenu_run")
   end, { description = "Open dmenu run prompt", group = "Launch" }),
 
-  -- awful.key(
-  --   { Super }, "c",
-  --   function() awful.spawn.with_shell("code") end,
-  --   { description = "Open vscode", group = "Launch" }
-  -- ),
-
-  -- awful.key(
-  --   { Super }, "v",
-  --   function() awful.spawn.with_shell(Graphical_editor) end,
-  --   { description = "Open emacs", group = "Launch" }
-  -- ),
-
-  -- awful.key({ Super }, "e", function()
-  --   awful.spawn.with_shell(Terminal_editor)
-  -- end, { description = "Open nvim", group = "Launch" }),
-
   awful.key({ Super }, "o", function()
     awful.spawn.with_shell(Terminal_file_manager)
   end, { description = "Open lf", group = "Launch" }),
@@ -184,7 +147,7 @@ awful.keyboard.append_global_keybindings({
     awful.spawn.with_shell(File_manager)
   end, { description = "Open file manger", group = "Launch" }),
 
-  awful.key({ Ctrl }, "Print", function()
+  awful.key({}, "Print", function()
     awful.spawn.with_shell("screenshot")
   end, { description = "Screenshot whole screen", group = "System" }),
 
@@ -199,6 +162,17 @@ awful.keyboard.append_global_keybindings({
   awful.key({ Super }, "x", function()
     awful.spawn.with_shell("lock")
   end, { description = "Lock screen", group = "System" }),
+
+  awful.key({ Super, Shift }, "x", function()
+    IdleInhibitor:emit_signal("button::press")
+  end, { description = "Toggle screen idle", group = "System" }),
+
+  awful.key({ Super }, "f", function()
+    if client.focus then
+      client.focus.fullscreen = not client.focus.fullscreen
+      client.focus:raise()
+    end
+  end, { description = "Toggle fullscreen", group = "System" }),
 
   awful.key({ Super }, "p", function()
     logout_popup.launch({
@@ -249,13 +223,14 @@ awful.keyboard.append_global_keybindings({
   --   { description = "Focus previous client", group = "System" }
   -- ),
 
-  -- awful.key(
-  --   { Super }, "u",
-  --   awful.tag.history.restore,
-  --   { description = "Go to last focused client", group = "System" }
-  -- ),
+  awful.key({ Super }, "u", awful.tag.history.restore, { description = "Go to last focused client", group = "System" }),
 
-  awful.key({ Super }, "u", awful.client.urgent.jumpto, { description = "Focus urgent client", group = "System" }),
+  awful.key(
+    { Super, Shift },
+    "u",
+    awful.client.urgent.jumpto,
+    { description = "Focus urgent client", group = "System" }
+  ),
 
   awful.key({ Super, Ctrl, Shift }, "n", function()
     local c = awful.client.restore()
@@ -453,9 +428,6 @@ awful.keyboard.append_global_keybindings({
     on_press = function(index)
       local scrn = awful.screen.focused()
       local tag = index == 0 and scrn.tags[10] or scrn.tags[index]
-      -- if index == 0 then
-      --   tag = scrn.tags[10]
-      -- end
       if tag then
         tag:view_only()
       end
@@ -470,9 +442,6 @@ awful.keyboard.append_global_keybindings({
     on_press = function(index)
       local scrn = awful.screen.focused()
       local tag = index == 0 and scrn.tags[10] or scrn.tags[index]
-      -- if index == 0 then
-      --   tag = scrn.tags[10]
-      -- end
       if tag then
         awful.tag.viewtoggle(tag)
       end
@@ -487,9 +456,6 @@ awful.keyboard.append_global_keybindings({
     on_press = function(index)
       if client.focus then
         local tag = index == 0 and client.focus.screen.tags[10] or client.focus.screen.tags[index]
-        -- if index == 0 then
-        --   tag = client.focus.screen.tags[10]
-        -- end
         if tag then
           client.focus:move_to_tag(tag)
         end
@@ -505,9 +471,6 @@ awful.keyboard.append_global_keybindings({
     on_press = function(index)
       if client.focus then
         local tag = index == 0 and client.focus.screen.tags[10] or client.focus.screen.tags[index]
-        -- if index == 0 then
-        --   tag = client.focus.screen.tags[10]
-        -- end
         if tag then
           client.focus:toggle_tag(tag)
         end
@@ -549,7 +512,7 @@ client.connect_signal("request::default_mousebindings", function()
   })
 
   awful.keyboard.append_client_keybindings({
-    awful.key({ Super }, "F11", function(c)
+    awful.key({}, "F11", function(c)
       c.fullscreen = not c.fullscreen
       c:raise()
     end, { description = "Toggle fullscreen", group = "System" }),
