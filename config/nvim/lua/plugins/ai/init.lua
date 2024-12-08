@@ -83,16 +83,16 @@ return {
     end,
   },
 
-  {
-    "Exafunction/codeium.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "hrsh7th/nvim-cmp",
-    },
-    event = "BufReadPost",
-    cmd = { "Codeium" },
-    opts = {},
-  },
+  -- {
+  --   "Exafunction/codeium.nvim",
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --     "hrsh7th/nvim-cmp",
+  --   },
+  --   event = "BufReadPost",
+  --   cmd = { "Codeium" },
+  --   opts = {},
+  -- },
 
   -- {
   --   "jackMort/ChatGPT.nvim",
