@@ -1,4 +1,11 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
+
+for cmd in amixer notify-send; do
+    if ! command -v "$cmd" &>/dev/null; then
+        echo "Error: '$cmd' is not installed. Please install it to use this script."
+        exit 1
+    fi
+done
 
 get_volume() {
     amixer get Master | awk 'match($0, /\[([0-9]*)%\]/, arr) { if (!printed) { print arr[1]; printed=1 } }'
@@ -28,62 +35,82 @@ send_notification() {
     fi
 
     icon="/usr/share/icons/Papirus-Dark/symbolic/status/audio-volume-$symbol-symbolic.svg"
+    [[ ! -f $icon ]] && icon="/usr/share/icons/Papirus/48x48/status/dialog-information.png"
 
     notify-send \
-      -u low \
-      -i "$icon" \
-      -h int:value:"$volume" \
-      -h string:synchronous:my-progress \
-      -a "Volume Monitor" \
-      "Volume: $volume"
+        -u low \
+        -i "$icon" \
+        -h int:value:"$volume" \
+        -h string:synchronous:my-progress \
+        -a "Volume Monitor" \
+        "Volume: $volume%"
 }
+
+show_help() {
+    echo "Usage: $0 [up|down|mute|micmute] [step]"
+    echo "Commands:"
+    echo "  up [step]      Increase volume by step (default: 5%)"
+    echo "  down [step]    Decrease volume by step (default: 5%)"
+    echo "  mute           Toggle mute for the system volume"
+    echo "  micmute        Toggle mute for the microphone"
+    exit 0
+}
+
+step=${2:-5}
 
 case "$1" in
     "up")
-        amixer sset Master 5%+ > /dev/null
-        # pactl set-sink-mute 0 0
-
+        amixer sset Master "$step"%+ > /dev/null
         amixer sset Master on > /dev/null
-        # pactl set-sink-volume 0 +5%
+
+        # pactl set-sink-volume 0 +$step%
+        # pactl set-sink-mute 0 0
 
         send_notification
         ;;
     "down")
-        amixer sset Master 5%- > /dev/null
-        # pactl set-sink-mute 0 0
-
+        amixer sset Master "$step"%- > /dev/null
         amixer sset Master on > /dev/null
-        # pactl set-sink-volume 0 -5%
+
+        # pactl set-sink-volume 0 -$step%
+        # pactl set-sink-mute 0 0
 
         send_notification
         ;;
     "mute")
-        amixer sset Master 1+ toggle > /dev/null
+        amixer sset Master toggle > /dev/null
         # pactl set-sink-mute 0 toggle
 
         if is_mute; then
             notify-send \
-            	-a "media" \
-            	-r 1001 "Audio muted" \
-            	-i /usr/share/icons/Papirus-Dark/symbolic/status/audio-volume-muted-symbolic.svg
+                -a "Volume Monitor" \
+                -r 1001 "Audio muted" \
+                -i /usr/share/icons/Papirus-Dark/symbolic/status/audio-volume-muted-symbolic.svg
         else
             send_notification
         fi
         ;;
     "micmute")
-        amixer sset Capture toggle
+        amixer sset Capture toggle > /dev/null
         # pactl set-source-mute 0 toggle
 
         if is_micmute; then
             notify-send \
-            	-a "media" \
-            	-r 1002 "MIC switched OFF" \
-            	-i /usr/share/icons/Papirus-Dark/symbolic/status/audio-input-microphone-muted-symbolic.svg
+                -a "Microphone Monitor" \
+                -r 1002 "Microphone muted" \
+                -i /usr/share/icons/Papirus-Dark/symbolic/status/audio-input-microphone-muted-symbolic.svg
         else
             notify-send \
-            	-a "media" \
-            	-r 1002 "MIC switched ON" \
-            	-i /usr/share/icons/Papirus-Dark/symbolic/status/audio-input-microphone-high-symbolic.svg
+                -a "Microphone Monitor" \
+                -r 1002 "Microphone unmuted" \
+                -i /usr/share/icons/Papirus-Dark/symbolic/status/audio-input-microphone-high-symbolic.svg
         fi
+        ;;
+    "help")
+        show_help
+        ;;
+    *)
+        echo "Invalid option. Use '$0 help' for usage instructions."
+        exit 1
         ;;
 esac
