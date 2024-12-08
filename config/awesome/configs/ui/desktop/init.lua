@@ -59,19 +59,19 @@ screen.connect_signal("request::desktop_decoration", function(s)
     ontop = true,
     bg = "#000000",
     x = s.geometry.x,
-    y = 0,
+    y = s.geometry.y,
     width = s.geometry.width,
     height = 1,
     stretch = true,
   })
 
-  s.Bartoggle:connect_signal("mouse::enter", function(_)
+  s.Bartoggle:connect_signal("mouse::enter", function()
     s.Bar.visible = true
     s.Bar.hover = true
     s.Bar.hide:stop()
   end)
 
-  s.Bartoggle:connect_signal("mouse::leave", function(_)
+  s.Bartoggle:connect_signal("mouse::leave", function()
     s.Bar.hover = false
 
     s.Bar.hide:connect_signal("timeout", function()
@@ -90,17 +90,20 @@ screen.connect_signal("request::desktop_decoration", function(s)
     ontop = true,
     bg = "#000000",
     x = s.geometry.x,
-    y = s.geometry.height - 1,
+    y = s.geometry.y + s.geometry.height - 1,
     width = s.geometry.width,
     height = 1,
     stretch = true,
   })
 
   s.Keyboard:connect_signal("mouse::enter", function(_)
+    -- require("naughty").notify({ message = "Entered" })
+
     -- local _, _, status = os.execute('virtkey')
     -- if status == 1 then
     --   awful.util.spawn([[corekeyboard]])
     -- end
+
     local g = 7.0 -- (m^2 / s) sensibility, gravity trigger
 
     local states = {
@@ -154,4 +157,30 @@ screen.connect_signal("request::desktop_decoration", function(s)
       awful.spawn([[corekeyboard]])
     end
   end)
+end)
+
+screen.connect_signal("added", function()
+  for scrn in screen do
+    scrn.Bartoggle = nil
+    scrn.Keyboard = nil
+    -- if scrn.Bartoggle then
+    --   scrn.Bartoggle = nil
+    -- end
+    -- if scrn.Keyboard then
+    --   scrn.Keyboard = nil
+    -- end
+  end
+end)
+
+screen.connect_signal("removed", function()
+  for scrn in screen do
+    scrn.Bartoggle = nil
+    scrn.Keyboard = nil
+    -- if scrn.Bartoggle then
+    --   scrn.Bartoggle = nil
+    -- end
+    -- if scrn.Keyboard then
+    --   scrn.Keyboard = nil
+    -- end
+  end
 end)
