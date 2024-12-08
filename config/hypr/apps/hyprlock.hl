@@ -38,7 +38,7 @@ label {
     color = $text
     font_size = 16
     font_family = IBM Plex Sans Medium 10
-    position = 0, -130
+    position = 0, -240
     halign = center
     valign = center
 }
@@ -48,7 +48,7 @@ label {
     color = $text
     font_size = 16
     font_family = IBM Plex Sans Medium 10
-    position = 0, -150
+    position = 0, -265
     halign = center
     valign = center
 }
@@ -58,7 +58,7 @@ label {
     color = $text
     font_size = 32
     font_family = SF Pro Rounded
-    position = 0, -200
+    position = 0, -300
     halign = center
     valign = center
 }
@@ -68,7 +68,7 @@ label {
     color = $text
     font_size = 16
     font_family = SF Pro Rounded
-    position = 0, -220
+    position = 0, -340
     halign = center
     valign = center
 }
@@ -78,7 +78,7 @@ label {
     color = $text
     font_size = 16
     font_family = SF Pro Rounded
-    position = 0, -240
+    position = 0, -365
     halign = center
     valign = center
 }
@@ -88,19 +88,19 @@ label {
     color = $text
     font_size = 16
     font_family = SF Pro Rounded
-    position = 0, -260
+    position = 0, -395
     halign = center
     valign = center
 }
 
 # label {
-# text = cmd[update:86400000] echo "<b><big> $(breeze) </big></b>"
-# color = $text
-# font_size = 16
-# font_family = SF Pro Rounded
-# position = 0, -280
-# halign = center
-# valign = center
+#     text = cmd[update:86400000] echo "<b><big> $(breeze) </big></b>"
+#     color = $text
+#     font_size = 16
+#     font_family = SF Pro Rounded
+#     position = 0, -280
+#     halign = center
+#     valign = center
 # }
 
 input-field {
