@@ -118,7 +118,7 @@ ruled.client.connect_signal("request::rules", function()
         return count <= 1
       end
 
-      if c.transient_for then
+      if c.transient_for and c.name ~= "Picture-in-Picture" then
         c:move_to_tag(c.transient_for.first_tag)
         return
       end

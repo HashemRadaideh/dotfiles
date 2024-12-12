@@ -316,7 +316,7 @@ awful.keyboard.append_global_keybindings({
   -- modify the client size
   awful.key({ Super, Shift }, "h", function()
     if client.focus.floating then
-      client.focus:relative_move(0, 0, -10, 0)
+      client.focus:relative_move(0, 0, -1, 0)
     else
       awful.tag.incmwfact(-0.025)
     end
@@ -324,7 +324,7 @@ awful.keyboard.append_global_keybindings({
 
   awful.key({ Super, Shift }, "j", function()
     if client.focus.floating then
-      client.focus:relative_move(0, 0, 0, 10)
+      client.focus:relative_move(0, 0, 0, 1)
     else
       awful.client.incwfact(0.025)
     end
@@ -332,7 +332,7 @@ awful.keyboard.append_global_keybindings({
 
   awful.key({ Super, Shift }, "k", function()
     if client.focus.floating then
-      client.focus:relative_move(0, 0, 0, -10)
+      client.focus:relative_move(0, 0, 0, -1)
     else
       awful.client.incwfact(-0.025)
     end
@@ -340,7 +340,7 @@ awful.keyboard.append_global_keybindings({
 
   awful.key({ Super, Shift }, "l", function()
     if client.focus.floating then
-      client.focus:relative_move(0, 0, 10, 0)
+      client.focus:relative_move(0, 0, 1, 0)
     else
       awful.tag.incmwfact(0.025)
     end
@@ -348,19 +348,19 @@ awful.keyboard.append_global_keybindings({
 
   -- Moving floating windows
   awful.key({ Super, Meta }, "h", function()
-    client.focus:relative_move(-10, 0, 0, 0)
+    client.focus:relative_move(-1, 0, 0, 0)
   end, { description = "Move floating client to the left", group = "Workflow" }),
 
   awful.key({ Super, Meta }, "j", function()
-    client.focus:relative_move(0, 10, 0, 0)
+    client.focus:relative_move(0, 1, 0, 0)
   end, { description = "Move floating client to the down", group = "Workflow" }),
 
   awful.key({ Super, Meta }, "k", function()
-    client.focus:relative_move(0, -10, 0, 0)
+    client.focus:relative_move(0, -1, 0, 0)
   end, { description = "Move floating client to the top", group = "Workflow" }),
 
   awful.key({ Super, Meta }, "l", function()
-    client.focus:relative_move(10, 0, 0, 0)
+    client.focus:relative_move(1, 0, 0, 0)
   end, { description = "Move floating client to the right", group = "Workflow" }),
 
   -- Change layout
