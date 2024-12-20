@@ -61,7 +61,7 @@ alias paru="paru --bottomup"
 
 # Lazy shortcuts
 alias lg="lazygit"
-alias ld="lazydocker"
+alias lc="lazydocker"
 
 # Glow shortcut
 # alias gl="glow"

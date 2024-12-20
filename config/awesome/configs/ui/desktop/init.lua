@@ -21,9 +21,9 @@ if ok then
     return files[index]
   end
 
-  Wallpaper = getRandPic(os.getenv("HOME") .. "/Pictures/wallpapers")
+  Wallpaper = getRandPic(os.getenv("HOME") .. "/Pictures/Wallpapers")
 else
-  Wallpaper = os.getenv("HOME") .. [[/Pictures/wallpapers/Abstract/Animals/wallpaperflare.com_wallpaper.jpg]]
+  Wallpaper = os.getenv("HOME") .. [[/Pictures/Wallpapers/Linux/Arch/1607458.png]]
 end
 
 ---@diagnostic disable-next-line: undefined-global

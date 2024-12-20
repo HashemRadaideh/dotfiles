@@ -27,6 +27,7 @@ zinit snippet OMZP::command-not-found
 
 # Load completions
 autoload -Uz compinit && compinit
+autoload -U bashcompinit && bashcompinit
 
 zinit cdreplay -q
 
@@ -219,6 +220,9 @@ python-venv() {
 
     [[ ! -d "$MYVENV" ]] && deactivate > /dev/null 2>&1
 }
+
+python-venv
+
 autoload -U add-zsh-hook
 add-zsh-hook chpwd python-venv
 

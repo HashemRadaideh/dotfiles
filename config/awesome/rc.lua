@@ -15,11 +15,10 @@ require("awful.autofocus")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
-Bluetooth_manager = "cinnamon-settings blueberry"
+Bluetooth_manager = "blueberry" -- "cinnamon-settings blueberry" -- "blueman-manager"
 File_manager = "thunar"
 Network_manager = "cinnamon-settings network"
-Power_manager = "cinnamon-settings power"
--- Audio_utility = "pavucontrol"
+Audio_manager = "pavucontrol"
 Graphical_editor = os.getenv("VISUAL")
 Terminal_emulator = os.getenv("TERMINAL")
 Shell = os.getenv("SHELL")

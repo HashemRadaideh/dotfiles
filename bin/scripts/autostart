@@ -9,17 +9,34 @@ function run {
 if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "$DISPLAY" ]; then
     run dunst
 
-    setxkbmap -layout us,ara -option grp:win_space_toggle
-    # run setxkbmap -option caps:escape
-    xmodmap -e "keycode 135 = Super_R"
-    run xset -b
+    # screenCount=$(xrandr | rg " connected" | wc -l)
+    # if [ $screenCount -gt 1 ]; then
+    # run $XDG_DATA_HOME/scripts/screenlayout.sh
+    # fi
+
+    # xrandr --output eDP --mode 1920x1200 --primary && autorandr --save 1920x1200 --force
+    # xrandr --output eDP --mode 1920x1200 --primary --output DisplayPort-0 --mode 1920x1080 --above eDP && autorandr --save 1920x2280 --force
+    # xrandr --output HDMI-A-0 --primary --mode 2560x1080 --rate 100 --output eDP --mode 1920x1200 --right-of HDMI-A-0 && autorandr --save 4480x1200 --force
+    # xrandr --output HDMI-A-0 --primary --mode 2560x1080 --rate 100 --output eDP --mode 1920x1200 --right-of HDMI-A-0 --output DisplayPort-0 --mode 1920x1080 --above HDMI-A-0 && autorandr --save 4480x2280 --force
+    run autorandr -c
+
+    [ -f "$HOME/.Xresources" ] && xrdb -merge "$HOME/.Xresources"
+
+    # wallpaper="$(find ~/Pictures/Wallpapers/ -type f -exec file -- {} + | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)"
+    # for (( i = 0; i < $screenCount; i++ )); do
+    #   run nitrogen --head="$i" --set-zoom-fill "$wallpaper"
+    # done
 
     run picom --config "$DOTFILES/config/picom/picom.conf"
 
-    xset s off
-    xset s noblank
-    xset -dpms
-    xset -b
+    setxkbmap -layout us,ara -option grp:win_space_toggle
+    # run setxkbmap -option caps:escape
+    run xmodmap -e "keycode 135 = Super_R"
+
+    run xset s off
+    run xset s noblank
+    run xset -dpms
+    run xset -b
 
     run xss-lock lock
 
@@ -43,24 +60,7 @@ if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "$DISPLAY" ]; then
     # run polybar
     # run conky -c $HOME/.config/conky/conky.conf
 
-    # screenCount=$(xrandr | rg " connected" | wc -l)
-
-    # if [ $screenCount -gt 1 ]; then
-    # run $XDG_DATA_HOME/scripts/screenlayout.sh
-    # fi
-
-    # wallpaper="$(find ~/Pictures/wallpapers/ -type f -exec file -- {} + | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)"
-
-    # for (( i = 0; i < $screenCount; i++ )); do
-    #   run nitrogen --head="$i" --set-zoom-fill "$wallpaper"
-    # done
-
     run autorotate
-
-    # xrandr --output eDP-1 --mode 1920x1200 --primary && autorandr --save laptop
-    # xrandr --output HDMI-1 --primary --mode 2560x1080 --rate 100 --output eDP-1 --mode 1920x1200 --right-of HDMI-1 && autorandr --save desktop
-    # xrandr --output HDMI-1 --primary --mode 2560x1080 --rate 100 --output eDP-1 --mode 1920x1200 --rotate right --right-of HDMI-1 && autorandr --save verical-right
-    run autorandr -c
 
     # run redshift-gtk -l manual:"$(while ! ping -c 1 1.1.1.1 >/dev/null 2>&1; do sleep 1; done && curl -s "https://location.services.mozilla.com/v1/geolocate?key=geoclue" | jq -r '"\(.location.lat):\(.location.lng)"')"
     # run redshift-gtk -l manual:"$(while ! ping -c 1 1.1.1.1 >/dev/null 2>&1; do sleep 1; done && curl -s https://ipinfo.io | jq -r '.loc' | tr ',' ':')"
@@ -86,38 +86,32 @@ else
     # run wl-paste --type image --watch cliphist store
 
     run swww init && swww img \
-        "$(find ~/Pictures/wallpapers/ -type f -exec file -- {} + | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)" \
+        "$(find ~/Pictures/Wallpapers/ -type f -exec file -- {} + | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)" \
         --transition-step 255
 
     # run gammastep -l "$(while ! ping -c 1 1.1.1.1 >/dev/null 2>&1; do sleep 1; done && curl -s "https://location.services.mozilla.com/v1/geolocate?key=geoclue" | jq -r '"\(.location.lat):\(.location.lng)"')"
     run gammastep -l "$(while ! ping -c 1 1.1.1.1 >/dev/null 2>&1; do sleep 1; done && curl -s https://ipinfo.io | jq -r '.loc' | tr ',' ':')"
 fi
 
-run mpv --no-video --mute=yes /usr/share/sounds/freedesktop/stereo/service-login.oga && sleep 1 && mpv --no-video /usr/share/sounds/freedesktop/stereo/service-login.oga
-
 run /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 run gnome-keyring-daemon --start --components=ssh
 
 run udiskie -s
 
-run playerctld daemon
-
-run showkey
-
+run birdtray
 # run battery
-
-# run wireplumber
-# run qjwgraph --minimized
-
 # run flameshot
 # run blueman-applet
 # run nm-applet --indicator
 # run volumeicon
+# run qjwgraph --minimized
 
 # run /usr/bin/emacs --daemon
 # run webcord
 run discord --start-minimized
-run steam -silent
+# run steam -silent
 # run spotify --minimized
 # run teams --minimized
 # run zoom --start minimized
+
+run mpv --no-video --mute=yes /usr/share/sounds/freedesktop/stereo/service-login.oga && sleep 1 && mpv --no-video /usr/share/sounds/freedesktop/stereo/service-login.oga
