@@ -1,68 +1,83 @@
-plugins=(
-    zsh-autosuggestions
-    zsh-syntax-highlighting
-    zsh-history-substring-search
-    # zsh-auto-notify
-    # zsh-you-should-use
-)
+# Add in zsh plugins
+zinit light zsh-users/zsh-syntax-highlighting
+zinit light zsh-users/zsh-completions
+zinit light zsh-users/zsh-autosuggestions
+zinit light Aloxaf/fzf-tab
 
-zrc() {
-    if [[ -z "$DISPLAY" ]] ; then
-        # Fetch machine's specs.
-        [ -x "$(command -v pfetch)"  ] && pfetch
-    else
-        # Use the starship prompt.
-        export STARSHIP_CONFIG="$DOTFILES/config/starship/starship.toml"
-        eval "$(starship init zsh)"
+# Add in snippets
+zinit snippet OMZP::git
+zinit snippet OMZP::sudo
+zinit snippet OMZP::archlinux
+zinit snippet OMZP::aws
+zinit snippet OMZP::kubectl
+zinit snippet OMZP::kubectx
+zinit snippet OMZP::command-not-found
 
-        # # Fetch machine's specs.
-        # kitty +kitten icat --place "50x50@-1x-1" "$(find ~/Pictures/wallpapers/ -type f -exec file -- {} + | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)"
-        # [ -x "$(command -v macchina)"  ] && ~/art > /tmp/ascii && macchina
-        [ -x "$(command -v macchina)"  ] && touch /tmp/ascii && macchina
-    fi
+# Shell integrations
+eval "$(fzf --zsh)"
+eval "$(zoxide init --cmd cd zsh)"
 
-    # opam configuration
-    [[ ! -r ~/.opam/opam-init/init.zsh ]] || source ~/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+# Load completions
+autoload -Uz bashcompinit && bashcompinit
+autoload -Uz compinit && compinit
 
-    [[ ! -r ~/export-esp.sh ]] && source ~/export-esp.sh
+[ -x "$(command -v arduino-cli)" ] && eval "$(arduino-cli completion zsh)"
 
-    [ -x "$(command -v gh)" ] && eval "$(gh completion -s zsh)"
+# opam configuration
+[[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
-    # [ -x "$(command -v git)" ] && source "/usr/share/bash-completion/completions/git"
+python-venv() {
+    local MYVENV=
+    local current_dir="$(pwd)"
 
-    [ -x "$(command -v zoxide)" ] && eval "$(zoxide init --cmd cd zsh)"
+    while [ "$current_dir" != "/" ]; do
+        while IFS= read -r -d '' dir; do
+            if [ -f "$dir/pyvenv.cfg" ]; then
+                MYVENV="$dir"
+                break
+            fi
+        done < <(find "$current_dir" -maxdepth 1 -type d -print0)
 
-    [ -x "$(command -v flutter)" ] && eval "$(flutter bash-completion)"
+        [[ -d $MYVENV ]] && break
 
-    python-venv() {
-        local MYVENV=
-        local current_dir="$(pwd)"
+        current_dir="$(dirname "$current_dir")"
+    done
 
-        while [ "$current_dir" != "/" ]; do
-            while IFS= read -r -d '' dir; do
-                if [ -f "$dir/pyvenv.cfg" ]; then
-                    MYVENV="$dir"
-                    break
-                fi
-            done < <(find "$current_dir" -maxdepth 1 -type d -print0)
+    [[ -d "$MYVENV" ]] && source "$MYVENV/bin/activate" > /dev/null 2>&1
 
-            [[ -d $MYVENV ]] && break
-
-            current_dir="$(dirname "$current_dir")"
-        done
-
-        [[ -d "$MYVENV" ]] && source "$MYVENV/bin/activate" > /dev/null 2>&1
-
-        [[ ! -d "$MYVENV" ]] && deactivate > /dev/null 2>&1
-    }
-    autoload -U add-zsh-hook
-    add-zsh-hook chpwd python-venv
-
-    if type clipcat-menu >/dev/null 2>&1; then
-        alias clipedit=' clipcat-menu --finder=builtin edit'
-        alias clipdel=' clipcat-menu --finder=builtin remove'
-
-        bindkey -s '^\' "^Q clipcat-menu --finder=builtin insert ^m"
-        bindkey -s '^]' "^Q clipcat-menu --finder=builtin remove ^m"
-    fi
+    [[ ! -d "$MYVENV" ]] && deactivate > /dev/null 2>&1
 }
+
+autoload -U add-zsh-hook
+add-zsh-hook chpwd python-venv
+python-venv
+
+if type clipcat-menu >/dev/null 2>&1; then
+    alias clipedit=' clipcat-menu --finder=builtin edit'
+    alias clipdel=' clipcat-menu --finder=builtin remove'
+
+    bindkey -s '^\' "^Q clipcat-menu --finder=builtin insert ^m"
+    bindkey -s '^]' "^Q clipcat-menu --finder=builtin remove ^m"
+fi
+
+if [[ -z "$DISPLAY" ]] ; then
+    # Fetch machine's specs.
+    [ -x "$(command -v pfetch)"  ] && pfetch
+    source "$ZDOTDIR/configs/prompt.zsh"
+else
+    source "$ZDOTDIR/configs/starship.zsh"
+
+    # # Fetch machine's specs.
+    # [ -x "$(command -v macchina)"  ] && ~/Workspace/art/art > /tmp/ascii && macchina -t Cobalt
+    [ -x "$(command -v macchina)"  ] && macchina
+fi
+
+# if [ -t 1 ] && [[ -z "$TMUX" ]]; then
+#     TMOUT=300
+
+#     TRAPALRM() { cmatrix -s } # tock # pipes.sh | tock | cmatrix -s | asciiquarium
+
+#     # # trap "cmatrix -s" ALRM
+
+#     # eval `ttysvr logo --init 3`
+# fi

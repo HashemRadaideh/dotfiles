@@ -31,7 +31,7 @@ alias v="$VISUAL"
 # alias la="exa -aF --icons --color=always --group-directories-first"   # all files and dirs
 # alias l="exa -lahF --icons --color=always --group-directories-first"  # long format
 # alias ll="exa -lahF --icons --color=always --group-directories-first | bat"  # paged long format
-alias lt="exa -aT --icons --color=always --group-directories-first"   # tree listing
+alias lt="eza -aT --icons --color=always --group-directories-first"   # tree listing
 
 # Changing "ls" to "lsd"
 alias ls="lsd -F --color=always --group-directories-first"    # my preferred listing
@@ -86,3 +86,15 @@ alias feh='feh --no-fehbg'
 alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts"'
 
 alias gpg='gpg --homedir="$HOME"'
+
+alias mysql-workbench=mysql-workbench --configdir="$XDG_DATA_HOME/mysql/workbench"
+alias yarn='yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config'
+alias svn='svn --config-dir $XDG_CONFIG_HOME/subversion'
+
+conda-open() {
+    eval "$($XDG_DATA_HOME/miniforge3/bin/conda shell.zsh hook)"
+}
+
+visudo() {
+    sudo EDITOR=$EDITOR visudo
+}

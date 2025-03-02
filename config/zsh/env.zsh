@@ -4,30 +4,15 @@ configs=(
     docker
     fzf
     lf
+    yazi
     nvim
     pacman
     utils
     wine
 )
 
-# export CC=`which clang`
-# alias cc=`which clang`
-
-# export CXX=`which clang++`
-# alias cpp=`which clang++`
-
-function conda-open() {
-    eval "$($XDG_DATA_HOME/miniforge3/bin/conda shell.zsh hook)"
-}
-
-export TERMINAL="kitty"
-
 # $EDITOR use nvim
 export EDITOR="nvim"
-
-visudo() {
-    sudo EDITOR=$EDITOR visudo
-}
 
 # $FILEMANAGER
 export FILEMANAGER="lf"
@@ -35,11 +20,11 @@ export FILEMANAGER="lf"
 # git editor
 export GIT_EDITOR="$EDITOR"
 
-# "bat" as manpager
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-
 # $OPENER use xdg-open
 export OPENER="xdg-open"
+
+# "bat" as manpager
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 # $PAGER uses bat with colors enabled
 export PAGER="bat --decorations=always --color=always --paging=always"
@@ -76,21 +61,22 @@ export ANDROID_SDK_ROOT=$ANDROID_HOME
 export ANDROID_USER_HOME=$HOME/.android
 export ANDROID_AVD_HOME=$ANDROID_USER_HOME/avd
 export ANDROID_NDK_HOME=$ANDROID_HOME/ndk-bundle
+export ANDROID_EMULATOR_WAIT_TIME_BEFORE_KILL=20
 export CHROME_EXECUTABLE=google-chrome-stable
 export NDK_HOME=$ANDROID_NDK_HOME
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export GNUPGHOME="$XDG_DATA_HOME/gnupm"
 export GOPATH="$XDG_DATA_HOME/go"
 export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
-export GTK_2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
-export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 export MINIKUBE_HOME="$XDG_DATA_HOME/minikube"
 export MPLAYER_HOME="$XDG_CONFIG_HOME/mplayer"
 export MYSQL_HISTFILE="$XDG_DATA_HOME"/mysql_history
 export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
 export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/pythonrc"
+export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
+export GTK_THEME='Colloid-Dark-Catppuccin:dark'
 export QT_QPA_PLATFORM="xcb"
-export QT_QPA_PLATFORMTHEME="qt5ct"
+export QT_QPA_PLATFORMTHEME="qt6ct"
 # export QT_STYLE_OVERRIDE="kvantum"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 export SSB_HOME="$XDG_DATA_HOME"/zoom
@@ -99,13 +85,4 @@ export XCURSOR_PATH=/usr/share/icons:$XDG_DATA_HOME/icons
 export WINEPREFIX="$HOME/wine"
 export QSYS_ROOTDIR="$XDG_CACHE_HOME/paru/clone/quartus-free/pkg/quartus-free-quartus/opt/intelFPGA/21.1/quartus/sopc_builder/bin"
 
-
-export PATH="$PATH:$XDG_DATA_HOME:$XDG_DATA_HOME/scripts:$XDG_DATA_HOME/sessions:$XDG_DATA_HOME/cargo/bin:$GOPATH/bin/:$XDG_CONFIG_HOME/doom/bin:$XDG_CONFIG_HOME/emacs/bin:/usr/lib/jvm/default/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$ANDROID_NDK_HOME:$XDG_DATA_HOME/nvim/mason/bin:$HOME/.yarn/bin/:$HOME/.cache/.bun/bin/:$HOME/.ghcup/bin/:$JAVA_HOME"
-
-alias mysql-workbench=mysql-workbench --configdir="$XDG_DATA_HOME/mysql/workbench"
-alias yarn='yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config'
-alias feh='feh --no-fehbg'
-alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts"'
-alias svn='svn --config-dir $XDG_CONFIG_HOME/subversion'
-
-zenv() { }
+export PATH="$PATH:$XDG_DATA_HOME:$XDG_DATA_HOME/scripts:$XDG_DATA_HOME/sessions:$XDG_DATA_HOME/cargo/bin:$GOPATH/bin/:$XDG_CONFIG_HOME/doom/bin:$XDG_CONFIG_HOME/emacs/bin:/usr/lib/jvm/default/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin/:$ANDROID_NDK_HOME:$XDG_DATA_HOME/nvim/mason/bin:$HOME/.yarn/bin/:$HOME/.cache/.bun/bin/:$HOME/.ghcup/bin/:$JAVA_HOME:$XDG_DATA_HOME/JetBrains/Toolbox/bin:$XDG_DATA_HOME/JetBrains/Toolbox/scripts"

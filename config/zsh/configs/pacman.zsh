@@ -1,15 +1,17 @@
-if [ ! -x "$(command -v paru)"  ]; then
+if [ ! -x "$(command -v yay)"  ]; then
     return
 fi
 
-# Paru shortcut
 clean() {
-    yay -Rcnsdd $(yay -Qdtq) && yay -Scc
+    local pkgman='pacman'
+    [ -x "$(command -v yay)" ] && pkgman='yay'
+
+    $pkgman -Rcnsdd $(yay -Qdtq) && $pkgman -Scc
 }
 
 download() {
     local pkgman='pacman'
-    [ -x "$(command -v paru)" ] && pkgman='paru'
+    [ -x "$(command -v yay)" ] && pkgman='yay'
 
     $pkgman -S $@
 
@@ -26,7 +28,7 @@ download() {
 
 delete() {
     local pkgman='pacman'
-    [ -x "$(command -v paru)" ] && pkgman='paru'
+    [ -x "$(command -v yay)" ] && pkgman='yay'
 
     $pkgman -Rnsdd $@
 
@@ -41,11 +43,11 @@ delete() {
 
 update() {
     local pkgman='pacman'
-    [ -x "$(command -v paru)" ] && pkgman='paru'
+    [ -x "$(command -v yay)" ] && pkgman='yay'
 
     $pkgman -Syu
 
-    [ -x "$(command -v paru)" ] && $pkgman -Sua
+    [ -x "$(command -v yay)" ] && $pkgman -Sua
 
     reposync  ~/.files/ ~/
 

@@ -1,3 +1,6 @@
+# Exit early for non-interactive shells
+[[ $- != *i* ]] && return
+
 # Set the directory we want to store zinit and plugins
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 
@@ -9,30 +12,6 @@ fi
 
 # Source/Load zinit
 source "${ZINIT_HOME}/zinit.zsh"
-
-# Add in zsh plugins
-zinit light zsh-users/zsh-syntax-highlighting
-zinit light zsh-users/zsh-completions
-zinit light zsh-users/zsh-autosuggestions
-zinit light Aloxaf/fzf-tab
-
-# Add in snippets
-zinit snippet OMZP::git
-zinit snippet OMZP::sudo
-zinit snippet OMZP::archlinux
-zinit snippet OMZP::aws
-zinit snippet OMZP::kubectl
-zinit snippet OMZP::kubectx
-zinit snippet OMZP::command-not-found
-
-# Load completions
-autoload -Uz compinit && compinit
-autoload -U bashcompinit && bashcompinit
-
-zinit cdreplay -q
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # History
 HISTSIZE=5000
@@ -54,18 +33,8 @@ zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
-export FZF_DEFAULT_OPTS='--height=~50% --layout=reverse --border --cycle --preview="bat --decorations=always --color=always {} 2>/dev/null" --bind ctrl-u:preview-page-up,ctrl-d:preview-page-down --exit-0'
-export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git --exclude node_modules --exclude .cache'
-
-# Shell integrations
-eval "$(fzf --zsh)"
-eval "$(zoxide init --cmd cd zsh)"
-
-setopt beep extendedglob nomatch notify
-
-setopt autocd		# Automatically cd into typed directory.
-stty stop undef		# Disable ctrl-s to freeze terminal.
-setopt interactive_comments
+setopt beep extendedglob nomatch notify autocd interactive_comments
+stty stop undef
 
 # vi mode setup
 bindkey -v
@@ -104,7 +73,6 @@ eclf() {
   edit-command-line
   export VISUAL="emacsclient -c -a 'emacs'"
 }
-
 autoload eclf; zle -N eclf
 
 bindkey -M vicmd e eclf
@@ -181,179 +149,6 @@ bindkey -M viins '^[[3;5~' kill-word
 bindkey -M vicmd '^[[3;5~' kill-word
 # use showkey -a or Ctrl-v to get key code for binding
 
-if [[ -z "$DISPLAY" ]] ; then
-    # Fetch machine's specs.
-    [ -x "$(command -v pfetch)"  ] && pfetch
-else
-    # Use the starship prompt.
-    export STARSHIP_CONFIG="$DOTFILES/config/starship/starship.toml"
-    eval "$(starship init zsh)"
+source "$ZDOTDIR/rc.zsh"
 
-    # # Fetch machine's specs.
-    # kitty +kitten icat --place "50x50@-1x-1" "$(find ~/Pictures/wallpapers/ -type f -exec file -- {} + | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)"
-    # [ -x "$(command -v neofetch)"  ] && neofetch
-    # [ -x "$(command -v macchina)"  ] && ~/art > /tmp/ascii && macchina
-    [ -x "$(command -v macchina)"  ] && touch /tmp/ascii && macchina
-fi
-
-# opam configuration
-[[ ! -r /home/hashem/.opam/opam-init/init.zsh ]] || source /home/hashem/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
-
-python-venv() {
-    local MYVENV=
-    local current_dir="$(pwd)"
-
-    while [ "$current_dir" != "/" ]; do
-        while IFS= read -r -d '' dir; do
-            if [ -f "$dir/pyvenv.cfg" ]; then
-                MYVENV="$dir"
-                break
-            fi
-        done < <(find "$current_dir" -maxdepth 1 -type d -print0)
-
-        [[ -d $MYVENV ]] && break
-
-        current_dir="$(dirname "$current_dir")"
-    done
-
-    [[ -d "$MYVENV" ]] && source "$MYVENV/bin/activate" > /dev/null 2>&1
-
-    [[ ! -d "$MYVENV" ]] && deactivate > /dev/null 2>&1
-}
-
-python-venv
-
-autoload -U add-zsh-hook
-add-zsh-hook chpwd python-venv
-
-if type clipcat-menu >/dev/null 2>&1; then
-    alias clipedit=' clipcat-menu --finder=builtin edit'
-    alias clipdel=' clipcat-menu --finder=builtin remove'
-
-    bindkey -s '^\' "^Q clipcat-menu --finder=builtin insert ^m"
-    bindkey -s '^]' "^Q clipcat-menu --finder=builtin remove ^m"
-fi
-
-if [[ -z "$DISPLAY" ]] ; then
-  # Use the custom zsh prompt.
-  autoload -U colors && colors
-
-  zle-line-init() {
-    emulate -L zsh
-
-    [[ $CONTEXT == start ]] || return 0
-
-    while true; do
-      zle .recursive-edit
-      local -i ret=$?
-      [[ $ret == 0 && $KEYS == $'\4' ]] || break
-      [[ -o ignore_eof ]] || exit 0
-    done
-
-    local saved_prompt=$PROMPT
-    local saved_rprompt=$RPROMPT
-
-    PROMPT='%~>'
-    RPROMPT=''
-    zle .reset-prompt
-    PROMPT=$saved_prompt
-    RPROMPT=$saved_rprompt
-
-    if (( ret )); then
-      zle .send-break
-    else
-      zle .accept-line
-    fi
-    return ret
-  }
-
-  prompt-length() {
-    emulate -L zsh
-      local -i x y="${#1}" m
-      if (( y )); then
-        while (( ${${(%):-$1%$y(l.1.0)}[-1]} )); do
-          x=y
-          (( y *= 2 ))
-        done
-        while (( y > x + 1 )); do
-          (( m = x + (y - x) / 2 ))
-          (( ${${(%):-$1%$m(l.x.y)}[-1]} = m ))
-        done
-      fi
-    echo "$x"
-  }
-
-  fill-line() {
-    local left_len="$(prompt-length "$1")"
-    local right_len="$(prompt-length "$2")"
-    local pad_len="$((COLUMNS - left_len - right_len - 1))"
-    local pad="${(pl.$pad_len.. .)}"  # pad_len spaces
-    echo "${1}${pad}${2}"
-  }
-
-  set-prompt() {
-    local ret="$?"
-    local top_left="%B%F{yellow}%n\
-$(if [[ -n $SSH_CONNECTION ]]; then
-  echo "%F{gray}@%F{blue}%M";
-fi)\
-$(if [[ -z $(git rev-parse --abbrev-ref HEAD 2>/dev/null) ]]; then
-  echo '%F{gray} in %F{magenta}%~';
-else
-  echo "\
-%F{gray} in repo: %F{yellow}%1~\
-%F{gray} on %F{red}$(git rev-parse --abbrev-ref HEAD 2>/dev/null)";
-# %F{gray}[%F{orange}$(git status --porcelain 2>/dev/null)%F{gray}]\
-# %F{gray} at %F{blue}%~"
-fi)"
-    local top_right="%F{white}at %T"
-    local bottom_left="$(if [ "$ret" = 0 ]; then
-    echo "%F{cyan}$ ";
-  else
-    echo "%F{red}X ";
-fi)%F{white}%b"
-    local bottom_right=""
-
-    PROMPT="$(fill-line "$top_left" "$top_right")"$'\n'$bottom_left
-    RPROMPT="$bottom_right"
-  }
-
-  zle -N zle-line-init
-  autoload -Uz add-zsh-hook
-  add-zsh-hook precmd set-prompt
-else
-  zle-line-init() {
-    emulate -L zsh
-
-    [[ $CONTEXT == start ]] || return 0
-
-    while true; do
-      zle .recursive-edit
-      local -i ret=$?
-      [[ $ret == 0 && $KEYS == $'\4' ]] || break
-      [[ -o ignore_eof ]] || exit 0
-    done
-
-    local saved_prompt=$PROMPT
-    local saved_rprompt=$RPROMPT
-    PROMPT='$(STARSHIP_CONFIG="$DOTFILES/config/starship/transient.toml" starship prompt --terminal-width="$COLUMNS" --keymap="${KEYMAP:-}" --status="$STARSHIP_CMD_STATUS" --pipestatus="${STARSHIP_PIPE_STATUS[*]}" --cmd-duration="${STARSHIP_DURATION:-}" --jobs="$STARSHIP_JOBS_COUNT")'
-    RPROMPT=''
-    zle .reset-prompt
-    PROMPT=$saved_prompt
-    RPROMPT=$saved_rprompt
-
-    if (( ret )); then
-      zle .send-break
-    else
-      zle .accept-line
-    fi
-    return ret
-  }
-
-  zle -N zle-line-init
-fi
-
-if [[ -z "$TMUX" ]]; then
-  TMOUT=120
-  TRAPALRM() { pipes.sh } # pipes.sh | tock | cmatrix -s | asciiquarium
-fi
+zinit cdreplay -q
