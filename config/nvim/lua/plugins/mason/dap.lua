@@ -4,7 +4,9 @@ return {
   opts = {
     ensure_installed = {
       "delve",
-      -- "codelldb",
+      "codelldb",
+      "cortex-debug",
+      "cpptools",
       "python", -- "debugpy",
       -- "js-debug-adapter",
       -- "chrome-debug-adapter",
