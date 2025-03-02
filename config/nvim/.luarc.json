@@ -1,7 +1,9 @@
 {
-    "diagnostics.globals": [
-        "vim",
-        "use",
-        "augroup"
-    ]
+  "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
+  "workspace": {
+    "library": ["vim.api.nvim_get_runtime_file('', true)"]
+  },
+  "diagnostics": {
+    "globals": ["vim", "use", "augroup"]
+  }
 }

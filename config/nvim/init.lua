@@ -18,4 +18,19 @@ if not ok then
   return
 end
 
-lazy.setup("plugins")
+lazy.setup("plugins", {
+  defaults = {
+    lazy = true,
+  },
+  change_detection = {
+    enabled = true,
+    notify = false,
+  },
+  checker = {
+    enabled = true,
+    notify = false,
+  },
+  install = {
+    missing = false,
+  },
+})
