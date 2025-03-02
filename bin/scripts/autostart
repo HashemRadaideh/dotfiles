@@ -16,9 +16,11 @@ if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "$DISPLAY" ]; then
 
     # xrandr --output eDP --mode 1920x1200 --primary && autorandr --save 1920x1200 --force
     # xrandr --output eDP --mode 1920x1200 --primary --output DisplayPort-0 --mode 1920x1080 --above eDP && autorandr --save 1920x2280 --force
-    # xrandr --output HDMI-A-0 --primary --mode 2560x1080 --rate 100 --output eDP --mode 1920x1200 --right-of HDMI-A-0 && autorandr --save 4480x1200 --force
-    # xrandr --output HDMI-A-0 --primary --mode 2560x1080 --rate 100 --output eDP --mode 1920x1200 --right-of HDMI-A-0 --output DisplayPort-0 --mode 1920x1080 --above HDMI-A-0 && autorandr --save 4480x2280 --force
+    # xrandr --output eDP --mode 1920x1200 --pos 2560x960 --output HDMI-A-0 --primary --mode 2560x1080 --pos 0x1080 && autorandr --save 4480x1200 --force
+    # xrandr --output eDP --mode 1920x1200 --pos 2560x960 --output HDMI-A-0 --primary --mode 2560x1080 --pos 0x1080 --output DisplayPort-0 --mode 1920x1080 --pos 640x0 && autorandr --save 4480x2160 --force
     run autorandr -c
+
+    run autorotate
 
     [ -f "$HOME/.Xresources" ] && xrdb -merge "$HOME/.Xresources"
 
@@ -54,13 +56,12 @@ if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "$DISPLAY" ]; then
         ''
 
     # run clipcatd
-    run greenclip daemon
+    # run greenclip daemon
+    run copyq
 
     # run plank
     # run polybar
     # run conky -c $HOME/.config/conky/conky.conf
-
-    run autorotate
 
     # run redshift-gtk -l manual:"$(while ! ping -c 1 1.1.1.1 >/dev/null 2>&1; do sleep 1; done && curl -s "https://location.services.mozilla.com/v1/geolocate?key=geoclue" | jq -r '"\(.location.lat):\(.location.lng)"')"
     # run redshift-gtk -l manual:"$(while ! ping -c 1 1.1.1.1 >/dev/null 2>&1; do sleep 1; done && curl -s https://ipinfo.io | jq -r '.loc' | tr ',' ':')"
@@ -95,23 +96,35 @@ fi
 
 run /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 run gnome-keyring-daemon --start --components=ssh
+# run bitwarden-desktop
 
 run udiskie -s
 
-run birdtray
-# run battery
-# run flameshot
-# run blueman-applet
-# run nm-applet --indicator
-# run volumeicon
-# run qjwgraph --minimized
-
-# run /usr/bin/emacs --daemon
-# run webcord
 run discord --start-minimized
-# run steam -silent
-# run spotify --minimized
+# run webcord
+
+# run birdtray
+
+# run telegram-desktop -startintray
+# run caprine
+# run whatsie
+
 # run teams --minimized
 # run zoom --start minimized
+
+# run steam -silent
+# run spotify --minimized
+
+# run gromit-mpx
+# run screenkey --start-disabled
+# run flameshot
+
+# run battery
+# run blueman-applet
+# run nm-applet --indicator
+# run qjwgraph --minimized
+# run volumeicon
+
+# run /usr/bin/emacs --daemon
 
 run mpv --no-video --mute=yes /usr/share/sounds/freedesktop/stereo/service-login.oga && sleep 1 && mpv --no-video /usr/share/sounds/freedesktop/stereo/service-login.oga

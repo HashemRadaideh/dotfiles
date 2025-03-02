@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+
+import json
+from subprocess import PIPE, run
+
+script = 'JSON.stringify([...Array(size())].map((_, i) => str(read(i))))'
+# 'JSON.stringify(Array.from({length: size()}, (_, i) => str(read(i))))'
+
+copyq = 'copyq -'.split(' ')
+history_json = run(copyq, input=script, text=True, stdout=PIPE).stdout
+
+history_list = json.loads(history_json)
+history_map = {' '.join(entry.split()): entry for entry in history_list}
+entries = '\n'.join(history_map.keys())
+
+rofi = 'rofi -dmenu -theme themes/clipboard.rasi'.split(' ')
+selected = run(rofi, input=entries, text=True, stdout=PIPE).stdout.strip()
+
+if selected and selected in history_map:
+    entry = history_map[selected]
+    xclip = 'xclip -sel c'.split(' ')
+    run(xclip, input=entry, text=True)

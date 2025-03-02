@@ -15,6 +15,14 @@ def read(fname):
     return bdopen(fname).read()
 
 
+def get_connected_screens():
+    """Check the number of connected screens."""
+    output = check_output(['xrandr', '--listmonitors']).decode('utf-8')
+    lines = output.splitlines()
+    # Subtract 1 for the header line
+    return len(lines) - 1
+
+
 for basedir in glob('/sys/bus/iio/devices/iio:device*'):
     if 'accel' in read('name'):
         break
@@ -93,6 +101,13 @@ if __name__ == '__main__':
     current_state = None
 
     while True:
+        # Check the number of connected screens
+        connected_screens = get_connected_screens()
+        if connected_screens > 1:
+            print("Multiple screens connected. Auto-rotate disabled.")
+            sleep(10)  # Delay before checking again
+            continue
+
         x = read_accel(accel_x)
         y = read_accel(accel_y)
         for i in range(4):

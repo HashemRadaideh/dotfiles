@@ -46,6 +46,8 @@ else
     esac
 fi
 
+[ -n "$3" ] && exit
+
 if [ -f "$screenshot" ]; then
     notify-send -u low -i "$screenshot" "Screenshot taken" "Saved as $screenshot"
 else
