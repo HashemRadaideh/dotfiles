@@ -258,7 +258,6 @@ img2txt
 libcasa
 libcaca
 openscad
-drawio-dekstop-bin
 drawio-desktop-bin
 sqlite
 sqlite-analyzer
