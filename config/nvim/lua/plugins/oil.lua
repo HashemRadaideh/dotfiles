@@ -1,5 +1,20 @@
 return {
   "stevearc/oil.nvim",
+  -- dependencies = { { "echasnovski/mini.icons", opts = {} } },
+  event = { "VimEnter", "BufEnter" },
+  cmd = { "Oil" },
+  keys = {
+    {
+      "<leader>fe",
+      [[<cmd>Oil<cr>]],
+      { noremap = true, silent = true, desc = "Open oil explorer" },
+    },
+    {
+      "<leader>fo",
+      [[<cmd>Oil --float<cr>]],
+      { noremap = true, silent = true, desc = "Open oil explorer" },
+    },
+  },
   opts = {
     -- Oil will take over directory buffers (e.g. `vim .` or `:e src/`)
     -- Set to false if you still want to use netrw.
@@ -7,10 +22,10 @@ return {
     -- Id is automatically added at the beginning, and name at the end
     -- See :help oil-columns
     columns = {
+      "permissions",
+      "mtime",
+      "size",
       "icon",
-      -- "permissions",
-      -- "size",
-      -- "mtime",
     },
     -- Buffer-local options to use for oil buffers
     buf_options = {
@@ -20,7 +35,7 @@ return {
     -- Window-local options to use for oil buffers
     win_options = {
       wrap = false,
-      signcolumn = "no",
+      signcolumn = "yes:1",
       cursorcolumn = false,
       foldcolumn = "0",
       spell = false,
@@ -29,7 +44,7 @@ return {
       concealcursor = "nvic",
     },
     -- Send deleted files to the trash instead of permanently deleting them (:help oil-trash)
-    delete_to_trash = false,
+    delete_to_trash = true,
     -- Skip the confirmation popup for simple operations (:help oil.skip_confirm_for_simple_edits)
     skip_confirm_for_simple_edits = false,
     -- Selecting a new/moved/renamed file or directory will prompt you to save changes first
@@ -48,9 +63,9 @@ return {
     },
     -- Constrain the cursor to the editable parts of the oil buffer
     -- Set to `false` to disable, or "name" to keep it on the file names
-    constrain_cursor = "editable",
+    constrain_cursor = "name",
     -- Set to true to watch the filesystem for changes and reload oil
-    experimental_watch_for_changes = false,
+    experimental_watch_for_changes = true,
     -- Keymaps in oil buffer. Can be any value that `vim.keymap.set` accepts OR a table of keymap
     -- options with a `callback` (e.g. { callback = function() ... end, desc = "", mode = "n" })
     -- Additionally, if it is a string that matches "actions.<name>",
@@ -59,28 +74,29 @@ return {
     -- See :help oil-actions for a list of all available actions
     keymaps = {
       ["g?"] = "actions.show_help",
-      ["<CR>"] = "actions.select",
-      ["<C-s>"] = "actions.select_vsplit",
-      ["<C-h>"] = "actions.select_split",
-      ["<C-t>"] = "actions.select_tab",
-      ["<C-p>"] = "actions.preview",
       ["<C-c>"] = "actions.close",
+      ["<esc><esc><esc>"] = "actions.close",
+      ["q"] = "actions.close",
+      ["H"] = "actions.parent",
+      ["J"] = "actions.preview_scroll_down",
+      ["K"] = "actions.preview_scroll_up",
+      ["L"] = "actions.select",
+      ["<CR>"] = "actions.select",
+      ["_"] = "actions.select_split",
+      ["|"] = "actions.select_vsplit",
       ["<C-l>"] = "actions.refresh",
-      ["-"] = "actions.parent",
-      ["_"] = "actions.open_cwd",
-      ["`"] = "actions.cd",
-      ["~"] = "actions.tcd",
+      ["<C-h>"] = "actions.toggle_hidden",
+      ["<C-p>"] = "actions.preview",
       ["gs"] = "actions.change_sort",
       ["gx"] = "actions.open_external",
-      ["g."] = "actions.toggle_hidden",
       ["g\\"] = "actions.toggle_trash",
-    },
-    -- Configuration for the floating keymaps help window
-    keymaps_help = {
-      border = "rounded",
+      ["<C-t>"] = "actions.select_tab",
+      -- ["_"] = "actions.open_cwd",
+      -- ["`"] = "actions.cd",
+      -- ["~"] = "actions.tcd",
     },
     -- Set to false to disable all of the above keymaps
-    use_default_keymaps = true,
+    use_default_keymaps = false,
     view_options = {
       -- Show files and directories that start with "."
       show_hidden = false,
@@ -102,6 +118,21 @@ return {
         { "name", "asc" },
       },
     },
+    -- Extra arguments to pass to SCP when moving/copying files over SSH
+    extra_scp_args = {},
+    -- EXPERIMENTAL support for performing file operations with git
+    git = {
+      -- Return true to automatically git add/mv/rm files
+      add = function(path)
+        return false
+      end,
+      mv = function(src_path, dest_path)
+        return false
+      end,
+      rm = function(path)
+        return false
+      end,
+    },
     -- Configuration for the floating window in oil.open_float
     float = {
       -- Padding around the floating window
@@ -118,8 +149,21 @@ return {
         return conf
       end,
     },
-    -- Configuration for the actions floating preview window
-    preview = {
+    -- Configuration for the file preview window
+    preview_win = {
+      -- Whether the preview window is automatically updated when the cursor is moved
+      update_on_cursor_moved = true,
+      -- How to open the preview window "load"|"scratch"|"fast_scratch"
+      preview_method = "load",
+      -- A function that returns true to disable preview on a file e.g. to avoid lag
+      disable_preview = function(filename)
+        return false
+      end,
+      -- Window-local options to use for preview window buffers
+      win_options = {},
+    },
+    -- Configuration for the floating action confirmation window
+    confirmation = {
       -- Width dimensions can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
       -- min_width and max_width can be a single value or a list of mixed integer/float types.
       -- max_width = {100, 0.8} means "the lesser of 100 columns or 80% of total"
@@ -140,8 +184,6 @@ return {
       win_options = {
         winblend = 0,
       },
-      -- Whether the preview window is automatically updated when the cursor is moved
-      update_on_cursor_moved = true,
     },
     -- Configuration for the floating progress window
     progress = {
@@ -161,12 +203,9 @@ return {
     ssh = {
       border = "rounded",
     },
-  },
-  keys = {
-    {
-      "<leader>fe",
-      [[<cmd>Oil<cr>]],
-      { noremap = true, silent = true, desc = "Open oil explorer" },
+    -- Configuration for the floating keymaps help window
+    keymaps_help = {
+      border = "rounded",
     },
   },
 }

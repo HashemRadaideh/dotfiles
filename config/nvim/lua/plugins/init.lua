@@ -14,7 +14,6 @@ return {
 
   {
     "brenton-leighton/multiple-cursors.nvim",
-    version = "*", -- Use the latest tagged version
     opts = {
       enable_split_paste = true,
       custom_key_maps = {
@@ -195,7 +194,6 @@ return {
   {
     "kylechui/nvim-surround",
     event = { "BufReadPost", "BufNewFile" },
-    version = "*",
     opts = {},
   },
 }

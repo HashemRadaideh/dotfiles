@@ -32,8 +32,7 @@ return {
   --   use_git_branch = false,
   -- },
   "olimorris/persisted.nvim",
-  lazy = false, -- make sure the plugin is always loaded at startup
-  -- config = true,
+  lazy = false,
   opts = {
     autostart = true,
     follow_cwd = true,
@@ -48,11 +47,13 @@ return {
     end,
     save_dir = vim.fn.expand(vim.fn.stdpath("data") .. "/sessions/"),
     ignored_dirs = {
-      { "~/", exact = true },
+      { "~", exact = true },
+      { "~/.config", exact = true },
       { "~/Workspace", exact = true },
       { "~/Projects", exact = true },
-      { "~/Downloads", exact = true },
+      "~/Downloads",
       { "/", exact = true },
+      "/tmp",
     },
     telescope = {
       mappings = {
@@ -69,18 +70,14 @@ return {
   },
   keys = {
     {
-      -- session manager mappings
-      -- vim.keymap.set('n', '<leader>ss', '<cmd>lua require"session_manager".load_session()<cr>, { noremap = true, silent = true, }')
-      -- vim.keymap.set('n', '<leader>sd', '<cmd>lua require"session_manager".delete_session()<cr>', { noremap = true, silent = true, })
-
       "<leader>ss",
-      "<cmd>SessionSelect<CR>",
+      "<cmd>Telescope persisted<CR>", -- "<cmd>SessionSelect<CR>",
       { noremap = true, silent = true, desc = "Select a session" },
     },
-    {
-      "<leader>sd",
-      "<cmd>SessionDelete<CR>",
-      { noremap = true, silent = true, desc = "Detele a session" },
-    },
+    -- {
+    --   "<leader>sd",
+    --   "<cmd>SessionDelete<CR>",
+    --   { noremap = true, silent = true, desc = "Detele a session" },
+    -- },
   },
 }

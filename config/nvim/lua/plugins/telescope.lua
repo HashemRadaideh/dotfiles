@@ -137,7 +137,7 @@ return {
     -- telescope.load_extension("fzf")
     -- telescope.load_extension("lazygit")
     telescope.load_extension("ui-select")
-    telescope.load_extension("file_browser")
+    -- telescope.load_extension("file_browser")
     telescope.load_extension("persisted")
     telescope.load_extension("undo")
     -- telescope.load_extension("projects")
@@ -213,7 +213,9 @@ return {
         file_browser = {
           theme = "ivy",
           -- disables netrw and use telescope-file-browser in its place
-          hijack_netrw = true,
+          hijack_netrw = false,
+          grouped = true,
+          respect_gitignore = true,
           mappings = {
             ["i"] = {
               -- your custom insert mode mappings
