@@ -1,26 +1,26 @@
-theme = "Cobalt"
+theme = "Beryllium"
 
 show = [
-   "Host",
-   "Machine",
-   "Kernel",
-   "Distribution",
-   "OperatingSystem",
-   "DesktopEnvironment",
-   "WindowManager",
-   "Resolution",
-   "Backlight",
-   "Packages",
-   "LocalIP",
-   "Terminal",
-   "Shell",
-   "Uptime",
-   "Processor",
-   "ProcessorLoad",
-   "Memory",
-   "Battery"
-   # "GPU",
-   # "DiskSpace",
+  "Host",
+  "Machine",
+  "Kernel",
+  "Distribution",
+  "OperatingSystem",
+  "DesktopEnvironment",
+  "WindowManager",
+  "Resolution",
+  "Backlight",
+  "Packages",
+  "LocalIP",
+  "Terminal",
+  "Shell",
+  "Uptime",
+  "GPU",
+  "Processor",
+  "ProcessorLoad",
+  "Memory",
+  "Battery",
+  "DiskSpace",
 ]
 
 # Specifies the network interface to use for the LocalIP readout
