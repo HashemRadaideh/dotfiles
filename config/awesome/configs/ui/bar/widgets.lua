@@ -1,5 +1,3 @@
----@diagnostic disable-next-line: undefined-global
-local client = client
 local awful = require("awful")
 local beautiful = require("beautiful")
 local gears = require("gears")
@@ -229,7 +227,7 @@ gears.timer({
   autostart = true,
   call_now = true,
   callback = function()
-    Clock.markup = "<span foreground='" .. "#ffffff" .. "'>" .. os.date("%H:%M %a, %d %b ") .. "</span>" -- 24 hour
+    Clock.markup = "<span foreground='" .. "#ffffff" .. "'>" .. os.date("%a, %d %b %H:%M ") .. "</span>" -- 24 hour
     -- os.date("%a %d %b, %I:%M %p ") .. "</span>" -- 12 hours
   end,
 })

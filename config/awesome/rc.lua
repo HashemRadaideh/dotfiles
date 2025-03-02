@@ -20,10 +20,10 @@ File_manager = "thunar"
 Network_manager = "cinnamon-settings network"
 Audio_manager = "pavucontrol"
 Graphical_editor = os.getenv("VISUAL")
-Terminal_emulator = os.getenv("TERMINAL")
+Terminal_emulator = "kitty"
 Shell = os.getenv("SHELL")
-Terminal_editor = Terminal_emulator .. " -e " .. Shell .. " -c " .. os.getenv("EDITOR")
-Terminal_file_manager = Terminal_emulator .. " -e " .. Shell .. " -c " .. os.getenv("FILEMANAGER")
+Terminal_editor = Terminal_emulator .. " -e " .. Shell .. " -c " .. (os.getenv("EDITOR") or "nvim")
+Terminal_file_manager = Terminal_emulator .. " -e " .. Shell .. " -c yazi"
 Terminal_multiplexed = Terminal_emulator .. " -e " .. Shell .. " -c fzt"
 Web_browser = "floorp"
 
@@ -31,6 +31,7 @@ Autohide = true
 Zen = true
 Sloppy = false
 Titled = false
+Randomize = true
 Idle = os.execute([[ps -o state= -p $(pgrep xidlehook) | grep -q 'T']])
 
 Theme = "configs/theme.lua"

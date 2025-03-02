@@ -1,9 +1,5 @@
----@diagnostic disable-next-line: undefined-global
-local awesome, client, root = awesome, client, root
-local gears = require("gears")
 local awful = require("awful")
 local beautiful = require("beautiful")
-local dpi = beautiful.xresources.apply_dpi
 
 awful.mouse.snap.edge_enabled = true
 

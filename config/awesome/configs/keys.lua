@@ -1,9 +1,6 @@
----@diagnostic disable-next-line: undefined-global
-local awesome, client, screen = awesome, client, screen
 local awful = require("awful")
 local hotkeys_popup = require("awful.hotkeys_popup")
 local beautiful = require("beautiful")
-local gears = require("gears")
 
 -- Default modkey.
 Ctrl = "Control"
@@ -125,14 +122,15 @@ awful.keyboard.append_global_keybindings({
   end, { description = "Open rofi run prompt", group = "Launch" }),
 
   awful.key({ Super }, "v", function()
-    awful.spawn(
-      [[rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}' -theme "themes/clipboard.rasi"]]
-    )
+    awful.spawn([[clipboardq]])
+    -- awful.spawn(
+    --   [[rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}' -theme "themes/clipboard.rasi"]]
+    -- )
     -- awful.spawn([[clipcat-menu]])
   end, { description = "Open rofi run prompt", group = "Launch" }),
 
   awful.key({ Super }, "c", function()
-    awful.spawn('rofi -show calc -modi calc -no-show-match -no-sort -theme "themes/calculator.rasi" | xclip')
+    awful.spawn('rofi -show calc -modi calc -no-show-match -no-sort -theme "themes/calculator.rasi" | xclip -sel c')
   end, { description = "Open rofi run prompt", group = "Launch" }),
 
   awful.key({ Super }, "d", function()

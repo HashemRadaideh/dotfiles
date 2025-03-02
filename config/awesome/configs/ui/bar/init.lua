@@ -1,5 +1,3 @@
----@diagnostic disable-next-line: undefined-global
-local screen = screen
 local awful = require("awful")
 local beautiful = require("beautiful")
 local wibox = require("wibox")

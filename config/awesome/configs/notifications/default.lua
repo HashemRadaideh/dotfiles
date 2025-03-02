@@ -1,6 +1,3 @@
----@diagnostic disable-next-line: undefined-global
-local client = client
-local awful = require("awful")
 local gears = require("gears")
 local beautiful = require("beautiful")
 local naughty = require("naughty")

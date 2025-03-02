@@ -1,0 +1,16 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
+  "Lua": {
+    "diagnostics": {
+      "globals": [
+        "awesome",
+        "client",
+        "screen",
+        "tag",
+        "keygrabber",
+        "root",
+        "double_click_timer"
+      ]
+    }
+  }
+}

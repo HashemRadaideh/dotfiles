@@ -1,5 +1,3 @@
----@diagnostic disable-next-line: undefined-global
-local awesome = awesome
 local awful = require("awful")
 local wibox = require("wibox")
 local gears = require("gears")

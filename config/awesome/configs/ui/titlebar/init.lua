@@ -1,5 +1,3 @@
----@diagnostic disable-next-line: undefined-global
-local client, double_click_timer = client, double_click_timer
 local wibox = require("wibox")
 local gears = require("gears")
 local awful = require("awful")

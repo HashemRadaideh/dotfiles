@@ -1,5 +1,3 @@
----@diagnostic disable-next-line: undefined-global
-local client = client
 local awful = require("awful")
 local ruled = require("ruled")
 
@@ -164,6 +162,8 @@ ruled.client.connect_signal("request::rules", function()
         "notion-app",
         "obsidian",
         "Evernote",
+        "thunderbird",
+        "Mail",
       },
     },
     properties = {
@@ -183,8 +183,22 @@ ruled.client.connect_signal("request::rules", function()
   ruled.client.append_rule({
     rule_any = {
       class = {
+        "zoom",
+        "Microsoft Teams - Preview",
+      },
+    },
+    properties = {
+      screen = awful.screen.focused,
+      tag = Tags[6],
+    },
+  })
+
+  ruled.client.append_rule({
+    rule_any = {
+      class = {
         "Steam",
         "lutris",
+        "heroic",
       },
       name = {
         "Steam",
@@ -217,8 +231,12 @@ ruled.client.connect_signal("request::rules", function()
     rule_any = {
       class = {
         "discord",
-        "zoom",
-        "Microsoft Teams - Preview",
+        "telegram-desktop",
+        "TelegramDesktop",
+        "whatsie",
+        "WhatSie",
+        "caprine",
+        "Caprine",
       },
     },
     properties = {

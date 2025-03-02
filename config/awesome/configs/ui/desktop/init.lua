@@ -1,5 +1,5 @@
 local ok, lfs = pcall(require, "lfs")
-if ok then
+if ok and Randomize then
   local function getRandPic(directory)
     local files = {}
     local function exploreDirectory(dir)
@@ -26,8 +26,6 @@ else
   Wallpaper = os.getenv("HOME") .. [[/Pictures/Wallpapers/Linux/Arch/1607458.png]]
 end
 
----@diagnostic disable-next-line: undefined-global
-local screen = screen
 local awful = require("awful")
 local wibox = require("wibox")
 
@@ -84,79 +82,79 @@ screen.connect_signal("request::desktop_decoration", function(s)
     s.Bar.hide:start()
   end)
 
-  s.Keyboard = wibox({
-    screen = s,
-    visible = true,
-    ontop = true,
-    bg = "#000000",
-    x = s.geometry.x,
-    y = s.geometry.y + s.geometry.height - 1,
-    width = s.geometry.width,
-    height = 1,
-    stretch = true,
-  })
+  -- s.Keyboard = wibox({
+  --   screen = s,
+  --   visible = true,
+  --   ontop = true,
+  --   bg = "#000000",
+  --   x = s.geometry.x,
+  --   y = s.geometry.y + s.geometry.height - 1,
+  --   width = s.geometry.width,
+  --   height = 1,
+  --   stretch = true,
+  -- })
 
-  s.Keyboard:connect_signal("mouse::enter", function(_)
-    -- require("naughty").notify({ message = "Entered" })
+  -- s.Keyboard:connect_signal("mouse::enter", function(_)
+  --   -- require("naughty").notify({ message = "Entered" })
 
-    -- local _, _, status = os.execute('virtkey')
-    -- if status == 1 then
-    --   awful.util.spawn([[corekeyboard]])
-    -- end
+  --   -- local _, _, status = os.execute('virtkey')
+  --   -- if status == 1 then
+  --   --   awful.util.spawn([[corekeyboard]])
+  --   -- end
 
-    local g = 7.0 -- (m^2 / s) sensibility, gravity trigger
+  --   local g = 7.0 -- (m^2 / s) sensibility, gravity trigger
 
-    local states = {
-      {
-        check = function(_, y)
-          return y <= -g
-        end,
-        keyboard = true,
-      },
-      {
-        check = function(_, y)
-          return y >= g
-        end,
-        keyboard = false,
-      },
-      {
-        check = function(x, _)
-          return x >= g
-        end,
-        keyboard = false,
-      },
-      {
-        check = function(x, _)
-          return x <= -g
-        end,
-        keyboard = false,
-      },
-    }
+  --   local states = {
+  --     {
+  --       check = function(_, y)
+  --         return y <= -g
+  --       end,
+  --       keyboard = true,
+  --     },
+  --     {
+  --       check = function(_, y)
+  --         return y >= g
+  --       end,
+  --       keyboard = false,
+  --     },
+  --     {
+  --       check = function(x, _)
+  --         return x >= g
+  --       end,
+  --       keyboard = false,
+  --     },
+  --     {
+  --       check = function(x, _)
+  --         return x <= -g
+  --       end,
+  --       keyboard = false,
+  --     },
+  --   }
 
-    local x = io.open("/sys/bus/iio/devices/iio:device0/in_accel_x_raw"):read("*all")
-    local y = io.open("/sys/bus/iio/devices/iio:device0/in_accel_y_raw"):read("*all")
+  --   local x = io.open("/sys/bus/iio/devices/iio:device0/in_accel_x_raw"):read("*all")
+  --   local y = io.open("/sys/bus/iio/devices/iio:device0/in_accel_y_raw"):read("*all")
 
-    local current_state = nil
+  --   local current_state = nil
 
-    local allowed = false
+  --   local allowed = false
 
-    for i = 1, 5 do
-      if i == current_state then
-        goto continue
-      end
-      if states[i].check(x + 0, y + 0) then
-        current_state = i
-        allowed = states[i].keyboard
-        break
-      end
-      ::continue::
-    end
+  --   for i = 1, 5 do
+  --     if i == current_state then
+  --       goto continue
+  --     end
+  --     if states[i].check(x + 0, y + 0) then
+  --       current_state = i
+  --       allowed = states[i].keyboard
+  --       break
+  --     end
+  --     ::continue::
+  --   end
 
-    if not allowed then
-      os.execute([[killall corekeyboard]])
-      awful.spawn([[corekeyboard]])
-    end
-  end)
+  --   if not allowed then
+  --     os.execute([[killall corekeyboard]])
+  --     awful.spawn([[corekeyboard]])
+  --   end
+  -- end)
 end)
 
 screen.connect_signal("added", function()

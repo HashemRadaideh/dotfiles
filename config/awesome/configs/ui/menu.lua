@@ -1,5 +1,3 @@
----@diagnostic disable-next-line: undefined-global
-local awesome, keygrabber = awesome, keygrabber
 local logout_popup = require("awesome-wm-widgets.logout-popup-widget.logout-popup")
 
 local awful = require("awful")
