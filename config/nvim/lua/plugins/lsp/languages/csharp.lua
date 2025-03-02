@@ -14,3 +14,6 @@ require("lspconfig").omnisharp.setup({
 })
 -- .csharp_ls.setup(config)
 -- .omnisharpmono.setup(config)
+
+vim.cmd([[autocmd BufNewFile,BufRead *.cshtml set filetype=html.cshtml.razor]])
+vim.cmd([[autocmd BufNewFile,BufRead *.razor set filetype=html.cshtml.razor]])

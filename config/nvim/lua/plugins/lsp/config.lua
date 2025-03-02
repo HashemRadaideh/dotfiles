@@ -1,25 +1,34 @@
+local x = vim.diagnostic.severity
+
 vim.diagnostic.config({
   virtual_text = {
-    source = "always", -- Or "if_many"
-    prefix = "■", -- Could be "●", "▎", "x"
+    source = true,
+    prefix = "●", -- "■", "▎"
   },
   float = {
-    source = "always", -- Or "if_many"
+    source = true,
     show_header = true,
     border = "rounded",
-    focusable = false,
+    focusable = true,
   },
-  signs = true,
+  signs = {
+    text = {
+      [x.ERROR] = "⮾", -- 
+      [x.WARN] = "", --  -- ⚠
+      [x.INFO] = "",
+      [x.HINT] = "💡",
+    },
+  },
   underline = true,
   update_in_insert = true,
-  severity_sort = false,
+  severity_sort = true,
 })
 
-local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
-for type, icon in pairs(signs) do
-  local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-end
+-- local signs = {}
+-- for type, icon in pairs(signs) do
+--   local hl = "DiagnosticSign" .. type
+--   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+-- end
 
 local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 -- capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -92,7 +101,7 @@ local handlers = {
   ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
   ["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
     underline = true,
-    signs = true,
+    -- signs = true,
     update_in_insert = true,
     virtual_text = {
       spacing = 5,
@@ -140,6 +149,9 @@ local on_attach = function(client, bufnr)
   --     end,
   --   })
   -- end
+
+  -- vim.lsp.util.make_position_params(0, "utf-8")
+  -- vim.lsp.util.make_range_params(0, "utf-8")
 
   -- codelens
   if client.server_capabilities.codeLensProvider then
@@ -193,14 +205,14 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_command([[ hi def link LspReferenceWrite CursorLine ]])
   vim.api.nvim_command([[ hi def link LspReferenceRead CursorLine ]])
 
-  vim.api.nvim_create_autocmd("CursorHold", {
-    buffer = bufnr,
-    callback = function()
-      vim.diagnostic.open_float(nil, {
-        close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
-      })
-    end,
-  })
+  -- vim.api.nvim_create_autocmd("CursorHold", {
+  --   buffer = bufnr,
+  --   callback = function()
+  --     vim.diagnostic.open_float(nil, {
+  --       close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+  --     })
+  --   end,
+  -- })
 
   -- local opts = { noremap = true, silent = true }
   -- local buf_map = vim.api.nvim_buf_set_keymap

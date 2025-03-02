@@ -9,6 +9,7 @@ require("lspconfig").clangd.setup({
   on_attach = config.on_attach,
   handlers = config.handlers,
   flags = config.flags,
+  filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
   -- cmd = {
   --     "clangd",
   --     "--all-scopes-completion",

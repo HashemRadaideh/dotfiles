@@ -1,31 +1,10 @@
 return {
   {
-    { require("plugins.lsp.mason") },
-    { require("plugins.lsp.mason-lspconfig") },
-    { require("plugins.lsp.mason-tool-installer") },
-    -- { require("plugins.lsp.none-ls") },
-    { require("plugins.lsp.conform") },
-    { require("plugins.lsp.lint") },
-    { require("plugins.lsp.cmp") },
-    { "RRethy/vim-illuminate", event = "LspAttach" },
-    { "ray-x/lsp_signature.nvim", event = "LspAttach" },
-    -- { "onsails/lspkind.nvim", event = "LspAttach" },
-    { "j-hui/fidget.nvim", event = "LspAttach", tag = "legacy", opts = {} },
-    -- { "lvimuser/lsp-inlayhints.nvim", event = "LspAttach", opts = {} },
-    -- { "folke/trouble.nvim", event = "LspAttach", opts = {} },
-    -- { "folke/neoconf.nvim" },
-    -- { "folke/neodev.nvim" },
-  },
-  {
     "neovim/nvim-lspconfig",
     event = { "BufReadPost", "BufNewFile" },
     config = function()
-      -- require("neoconf").setup({
-      --   -- override any of the default settings here
-      -- })
-      -- require("neodev").setup({
-      --   -- add any options here, or leave empty to use the default settings
-      -- })
+      -- require("neoconf").setup()
+      -- require("neodev").setup()
 
       require("plugins.lsp.languages")
 
@@ -45,8 +24,10 @@ return {
         callback = function(ev)
           -- local client = vim.lsp.get_client_by_id(ev.data.client_id)
           -- if client.server_capabilities.inlayHintProvider then
-          --   vim.lsp.inlay_hint.enable(ev.buf, true)
+          --   vim.lsp.inlay_hint.enable(true, { ev.buf })
           -- end
+          -- vim.lsp.util.make_position_params(ev.buf, "utf-8")
+          -- vim.lsp.util.make_position_params(0, "utf-8")
 
           -- Enable completion triggered by <c-x><c-o>
           vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
@@ -69,9 +50,9 @@ return {
           vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
           vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
           -- vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-          vim.keymap.set("n", "gr", require("telescope.builtin").lsp_references, opts)
+          vim.keymap.set("n", "<leader>gr", require("telescope.builtin").lsp_references, opts)
           vim.keymap.set("n", "<leader>uh", function()
-            vim.lsp.inlay_hint(0, nil)
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
           end, opts)
           -- vim.keymap.set("n", "<leader>fn", function()
           --   vim.lsp.buf.format({ async = false })
@@ -80,82 +61,16 @@ return {
       })
     end,
   },
-  {
-    "mrcjkb/rustaceanvim",
-    version = "^5",
-    config = function()
-      local config = require("plugins.lsp.config")
-      vim.g.rustaceanvim = {
-        server = {
-          on_attach = config.on_attach,
-        },
-      }
-    end,
-    ft = { "rust" },
-  },
-  {
-    "ray-x/go.nvim",
-    ft = { "go", "gomod" },
-    build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
-    dependencies = {
-      { "leoluz/nvim-dap-go", ft = "go", opts = {} },
-      "ray-x/guihua.lua",
-      "neovim/nvim-lspconfig",
-      "nvim-treesitter/nvim-treesitter",
-    },
-    opts = {},
-  },
-  {
-    "akinsho/flutter-tools.nvim",
-    ft = { "dart" },
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "stevearc/dressing.nvim",
-    },
-    -- config = true,
-    config = function()
-      local config = require("plugins.lsp.config")
-      require("flutter-tools").setup({
-        lsp = {
-          on_attach = config.on_attach,
-          capabilities = config.capabilities,
-          settings = {
-            showTodos = true,
-            completeFunctionCalls = true,
-            analysisExcludedFolders = {
-              vim.fn.expand("$HOME/AppData/Local/Pub/Cache"),
-              vim.fn.expand("$HOME/.pub-cache"),
-              vim.fn.expand("/opt/homebrew"),
-              vim.fn.expand("$HOME/tools/flutter"),
-            },
-            renameFilesWithClasses = "prompt",
-            enableSnippets = true,
-            updateImportsOnRename = true,
-          },
-        },
-      })
-    end,
-  },
-  -- {
-  --   "mfussenegger/nvim-jdtls",
-  --   ft = { "java" },
-  -- },
-  {
-    "nvim-java/nvim-java",
-    ft = { "java" },
-    dependencies = {
-      "nvim-java/lua-async-await",
-      "nvim-java/nvim-java-core",
-      "nvim-java/nvim-java-test",
-      "nvim-java/nvim-java-dap",
-      "MunifTanjim/nui.nvim",
-      "nvim-java/nvim-java-refactor",
-    },
-    config = function()
-      local config = require("plugins.lsp.config")
-
-      require("java").setup()
-      require("lspconfig").jdtls.setup(config)
-    end,
-  },
+  require("plugins.lsp.conform"),
+  require("plugins.lsp.lint"),
+  require("plugins.lsp.cmp"),
+  require("plugins.lsp.preconfig"),
+  { "RRethy/vim-illuminate", event = "LspAttach" },
+  { "ray-x/lsp_signature.nvim", event = "LspAttach" },
+  { "SmiteshP/nvim-navic", event = "LspAttach" },
+  -- { "j-hui/fidget.nvim", event = "LspAttach", opts = {}, },
+  -- { "folke/trouble.nvim", event = "LspAttach", opts = {} },
+  -- { "folke/neoconf.nvim" },
+  -- { "folke/neodev.nvim" },
+  --  require("plugins.lsp.none-ls") ,
 }
