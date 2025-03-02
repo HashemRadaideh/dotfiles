@@ -1,0 +1,72 @@
+# A TOML linter such as https://taplo.tamasfe.dev/ can use this schema to validate your config.
+# If you encounter any issues, please make an issue at https://github.com/yazi-rs/schemas.
+"$schema" = "https://yazi-rs.github.io/schemas/keymap.json"
+
+[[manager.prepend_keymap]]
+on = ["<C-h>"]
+run = """hidden toggle"""
+desc = "Show hidden files"
+
+[[manager.prepend_keymap]]
+on = ["a"]
+run = """create"""
+desc = "Create a file or directory (ends with / for directories)"
+
+[[manager.prepend_keymap]]
+on = ["<C-n>"]
+run = """shell "dragon-drop --and-exit --on-top "$@"" --confirm"""
+desc = "Open file with dragon"
+
+[[manager.prepend_keymap]]
+on = ["!"]
+run = """shell "$SHELL" --block --confirm"""
+desc = "Open shell in the current directory"
+
+[[manager.prepend_keymap]]
+on = ["g", "w"]
+run = """cd ~/Workspace"""
+desc = "Open shell in the current directory"
+
+[[manager.prepend_keymap]]
+on = ["g", "r"]
+run = '''shell 'ya emit cd "$(git rev-parse --show-toplevel)"''''
+
+[[manager.prepend_keymap]]
+on = ["l"]
+run = """plugin smart-enter"""
+desc = "Enter the child directory, or open the file"
+
+[[manager.prepend_keymap]]
+on = ["T"]
+run = """plugin max-preview"""
+desc = "Maximize or restore preview"
+
+[[manager.prepend_keymap]]
+on = ["<C-t>"]
+run = """plugin hide-preview"""
+desc = "Hide or show preview"
+
+[[manager.prepend_keymap]]
+on = ['f', 'u']
+run = """shell 'unarchive "$@"' """
+desc = "Unarchive the file under the cursor"
+
+[[manager.prepend_keymap]]
+on = ['f', 'a']
+run = """shell 'archive "$@" "$(ya input -p "Archive format: ")"'"""
+desc = "Archive the file under the cursor with specified format"
+
+# [[manager.prepend_keymap]]
+# on = ["<A-Enter>"]
+# run = """shell '$TERMINAL -e $SHELL -c -i \"cd $PWD && yazi && exec $SHELL\"' --orphan --confirm"""
+# desc = "Spawn new yazi window in CWD"
+
+# [[manager.prepend_keymap]]
+# on = ["j"]
+# run = ["plugin --sync arrow --args=1"]
+# desc = "Move selection downwards or wrap."
+
+# [[manager.prepend_keymap]]
+# on = ["k"]
+# run = ["plugin --sync arrow --args=-1"]
+# desc = "Move selection upwards or wrap."
