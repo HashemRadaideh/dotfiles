@@ -6,13 +6,6 @@ vim.cmd("silent call mkdir(stdpath('data').'/undos', 'p', '0700')")
 vim.cmd("silent call mkdir(stdpath('data').'/swaps', 'p', '0700')")
 vim.cmd("silent call mkdir(stdpath('data').'/sessions', 'p', '0700')")
 
-vim.filetype.add({
-  pattern = {
-    [".*/hypr/.*%.conf"] = "hyprlang",
-    [".*%.hl"] = "hyprlang",
-  },
-})
-
 local settings = {
   g = {
     mapleader = " ",
@@ -28,14 +21,14 @@ local settings = {
     relativenumber = true,
     mouse = "a",
     clipboard = "unnamedplus",
-    -- 	-- scrolloff = 10,
-    -- 	-- sidescrolloff = 10,
-    -- 	-- numberwidth = 2,
-    -- 	-- signcolumn = "yes:2",
-    -- 	-- colorcolumn = "80,120",
+    scrolloff = 10,
+    sidescrolloff = 10,
+    -- numberwidth = 2,
+    signcolumn = "yes:2",
+    -- colorcolumn = "80,100,120",
     -- showtabline = 2,
-    cursorline = true,
-    cursorcolumn = true,
+    cursorline = false,
+    cursorcolumn = false,
     cursorlineopt = { "screenline", "number" },
     ignorecase = true,
     smartcase = true,
@@ -46,7 +39,7 @@ local settings = {
     inccommand = "nosplit",
     -- 	wrap = true,
     -- 	wrapmargin = 1,
-    expandtab = false, -- Use spaces instead of tabs
+    expandtab = true, -- Use spaces instead of tabs
     softtabstop = 2, -- Number of spaces tabs count for
     tabstop = 2, -- Number of spaces in a tab
     shiftwidth = 2, -- Size of an indent
@@ -60,7 +53,7 @@ local settings = {
     autowrite = true,
     confirm = true,
     timeout = true,
-    timeoutlen = 300,
+    timeoutlen = 1000,
     foldenable = true,
     -- foldmethod = "expr",
     -- foldexpr = "v:lua.vim.treesitter.foldexpr()", -- "nvim_treesitter#foldexpr()",
@@ -108,20 +101,20 @@ local settings = {
       I = true, -- Do not show the intro message
       W = true, -- Do not show "written" in command line when writing
     },
-    updatetime = 200, -- If in this many milliseconds nothing is typed, the swap file will be written to disk. Also used for CursorHold autocommand
+    updatetime = 100, -- If in this many milliseconds nothing is typed, the swap file will be written to disk. Also used for CursorHold autocommand
     directory = vim.fn.stdpath("data") .. "/swaps",
-    -- 	backup = false,
-    -- 	writebackup = false,
+    backup = false,
+    writebackup = false,
     -- 	backupdir = vim.fn.stdpath("data") .. "/backups",
     -- 	showmode = false,
     -- 	showmatch = true,
     -- 	-- showcmd = true,
-    -- 	fileencoding = "utf-8",
+    fileencoding = "utf-8",
     -- 	-- autochdir = true,
     -- 	pumblend = 10,
     -- 	pumheight = 10,
     -- 	cmdheight = 1,
-    -- 	conceallevel = 3,
+    conceallevel = 0,
     -- 	shada = "!,'0,f0,<50,s10,h",
     -- 	-- shell = "/bin/zsh",
   },

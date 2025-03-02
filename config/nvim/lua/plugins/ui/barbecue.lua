@@ -2,23 +2,21 @@ return {
   "utilyre/barbecue.nvim",
   event = { "BufReadPost", "BufNewFile" },
   name = "barbecue",
-  version = "*",
   dependencies = {
     "SmiteshP/nvim-navic",
-    "nvim-tree/nvim-web-devicons", -- optional dependency
+    "nvim-tree/nvim-web-devicons",
   },
   opts = {
-    attach_navic = false, -- prevent barbecue from automatically attaching nvim - navic
-    create_autocmd = false, -- prevent barbecue from updating itself automatically
+    attach_navic = false,
+    create_autocmd = false,
   },
   config = function()
     vim.api.nvim_create_autocmd({
-      "WinScrolled", -- or WinResized on NVIM-v0.9 and higher
+      "WinScrolled",
+      "WinResized",
       "BufWinEnter",
       "CursorHold",
       "InsertLeave",
-
-      -- include this if you have set `show_modified` to `true`
       "BufModifiedSet",
     }, {
       group = vim.api.nvim_create_augroup("barbecue.updater", {}),

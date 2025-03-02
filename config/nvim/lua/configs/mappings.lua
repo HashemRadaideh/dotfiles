@@ -103,6 +103,35 @@ vim.keymap.set(
 vim.keymap.set("n", "-", "<cmd>sp .<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "\\", "<cmd>vs .<CR>", { noremap = true, silent = true })
 
+vim.keymap.set("n", "<A-->", function()
+  vim.cmd("sp | term")
+  vim.api.nvim_buf_set_option(0, "bufhidden", "wipe")
+  vim.cmd("startinsert")
+end, { noremap = true, silent = true })
+
+vim.keymap.set("n", "<A-\\>", function()
+  vim.cmd("vs | term")
+  vim.api.nvim_buf_set_option(0, "bufhidden", "wipe")
+  vim.cmd("startinsert")
+end, { noremap = true, silent = true })
+
+vim.keymap.set("n", "<A-h>", "<C-w>h", { noremap = true, silent = true })
+vim.keymap.set("n", "<A-l>", "<C-w>l", { noremap = true, silent = true })
+vim.keymap.set("n", "<A-j>", "<C-w>j", { noremap = true, silent = true })
+vim.keymap.set("n", "<A-k>", "<C-w>k", { noremap = true, silent = true })
+
+vim.keymap.set("t", "<A-h>", [[<C-\><C-n><C-w>h]], { noremap = true, silent = true })
+vim.keymap.set("t", "<A-l>", [[<C-\><C-n><C-w>l]], { noremap = true, silent = true })
+vim.keymap.set("t", "<A-j>", [[<C-\><C-n><C-w>j]], { noremap = true, silent = true })
+vim.keymap.set("t", "<A-k>", [[<C-\><C-n><C-w>k]], { noremap = true, silent = true })
+
+-- vim.keymap.set(
+--   { "t", "i", "n" },
+--   "<Esc>",
+--   [[<cmd>nohl<CR><cmd>lua (function() if vim.bo.buftype == "terminal" then vim.api.nvim_win_close(0, true) end end)()<CR><esc>]],
+--   { noremap = true, silent = true }
+-- )
+
 vim.keymap.set("n", "<leader>sp", "<cmd>e /tmp/scratchpad<cr>", { noremap = true, silent = true, desc = "Scratchpad" })
 vim.keymap.set("n", "<leader>fn", "<cmd>enew<cr>", { noremap = true, silent = true, desc = "New File" })
 

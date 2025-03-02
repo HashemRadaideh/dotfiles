@@ -9,5 +9,6 @@ return {
   require("plugins.ui.noice"),
   require("plugins.ui.notify"),
   require("plugins.ui.theme"),
+  -- require("plugins.ui.transparent"),
   require("plugins.ui.whichkey"),
 }

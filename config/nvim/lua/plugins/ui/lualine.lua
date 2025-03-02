@@ -19,6 +19,7 @@ return {
       symbols = { error = " ", warn = " " },
       colored = true,
       update_in_insert = true,
+      cond = hide_in_width,
       always_visible = false,
     }
 
@@ -49,23 +50,23 @@ return {
       icons_enabled = true,
       colored = true,
       icon = "",
+      cond = hide_in_width,
       always_visible = false,
     }
 
     local location = {
       "location",
-      padding = 1,
+      cond = hide_in_width,
       always_visible = false,
     }
 
-    -- cool function for progress
     local progress = function()
       local current_line = vim.fn.line(".")
       local total_lines = vim.fn.line("$")
-      local chars = { "__", "▁▁", "▂▂", "▃▃", "▄▄", "▅▅", "▆▆", "▇▇", "██" }
       local line_ratio = current_line / total_lines
+      local chars = { "█", "▇", "▆", "▅", "▄", "▃", "▂", "▁", "▁", " " } -- "_",
       local index = math.ceil(line_ratio * #chars)
-      return chars[index]
+      return math.floor(line_ratio * 100) .. "%% │ " .. chars[index]
     end
 
     local spaces = function()
@@ -77,6 +78,7 @@ return {
       -- fmt = function(str)
       --   return "encoding: " .. str
       -- end,
+      cond = hide_in_width,
       always_visible = false,
     }
 
@@ -84,13 +86,15 @@ return {
       options = {
         icons_enabled = true,
         theme = "auto",
-        component_separators = { left = "", right = "" },
-        section_separators = { left = "", right = "" },
+        component_separators = "│",
+        section_separators = "",
+        -- component_separators = { left = "", right = "" },
+        -- section_separators = { left = "", right = "" },
         -- component_separators = { left = "", right = "" },
         -- section_separators = { left = "", right = "" },
         disabled_filetypes = {
-          statusline = { "alpha", "dashboard", "NvimTree", "Outline", "neo-tree", "oil" },
-          winbar = { "alpha", "dashboard", "NvimTree", "Outline", "neo-tree", "oil" },
+          statusline = { "alpha", "dashboard", "NvimTree", "Outline", "neo-tree" }, -- , "AvanteInput", "Avante"
+          winbar = { "alpha", "dashboard", "NvimTree", "Outline", "neo-tree" },
         },
         ignore_focus = {},
         always_divide_middle = true,
@@ -108,26 +112,26 @@ return {
           branch,
           diff,
           -- "gfold",
-          diagnostics,
         },
         lualine_c = {
           -- require("venv-selector").get_active_path(),
           -- require("venv-selector").get_active_venv(),
           -- require("venv-selector").retrieve_from_cache(),
           -- "swenv",
-          -- "filename",
+          "filename",
+          diagnostics,
         },
-        lualine_x = {},
-        lualine_y = { progress, location },
-        lualine_z = { spaces, encoding }, --, "fileformat"
+        lualine_x = { filetype },
+        lualine_y = { { progress, cond = hide_in_width }, location },
+        lualine_z = { "fileformat" }, --  { spaces, cond = hide_in_width }, encoding,
       },
       inactive_sections = {
-        lualine_a = { "filename", filetype },
+        lualine_a = { "filename" },
         lualine_b = {},
         lualine_c = {},
         lualine_x = {},
         lualine_y = {},
-        lualine_z = {},
+        lualine_z = { filetype },
       },
       tabline = {},
       winbar = {},
