@@ -25,8 +25,8 @@ device {
    sensitivity = -0.5
 }
 
-bind = SUPER, Return, exec, $TERMINAL -e fzt
-bind = SUPER SHIFT, Return, exec, $TERMINAL
+bind = SUPER, Return, exec, kitty -e fzt
+bind = SUPER SHIFT, Return, exec, kitty
 bind = SUPER, Q, killactive
 bind = SUPER, code:47, killactive
 bind = SUPER CTRL, Q, exit
@@ -193,3 +193,7 @@ bind = ,XF86AudioPlay, exec, playerctl play-pause
 bind = ,XF86AudioNext, exec, playerctl next
 bind = ,XF86AudioStop, exec, playerctl stop
 bind = ,XF86Calculator, exec, rofi -show calc -modi calc -no-show-match -no-sort -theme "themes/calculator.rasi" | wl-copy
+
+bind = , Print, exec, screenshot fullscreen
+bind = SHIFT, Print, exec, screenshot selected
+bind = SUPER, Print, exec, screenshot focused
