@@ -13,20 +13,44 @@ zinit snippet OMZP::kubectl
 zinit snippet OMZP::kubectx
 zinit snippet OMZP::command-not-found
 
-# Shell integrations
-eval "$(fzf --zsh)"
-eval "$(zoxide init --cmd cd zsh)"
+theme() {
+    if [[ -z "$DISPLAY" ]] ; then
+        # Fetch machine's specs.
+        # [ -x "$(command -v pfetch)"  ] && pfetch
+        source "$ZDOTDIR/configs/prompt.zsh"
+    else
+        source "$ZDOTDIR/configs/starship.zsh"
+
+        # # Fetch machine's specs.
+        # [ -x "$(command -v macchina)"  ] && ~/Workspace/art/art > /tmp/ascii && macchina -t Cobalt
+        # [ -x "$(command -v macchina)"  ] && macchina
+    fi
+}
+
+theme
 
 # Load completions
 autoload -Uz bashcompinit && bashcompinit
 autoload -Uz compinit && compinit
 
+# Shell integrations
+eval "$(fzf --zsh)"
+
+eval "$(zoxide init --cmd cd zsh)"
+
 [ -x "$(command -v arduino-cli)" ] && eval "$(arduino-cli completion zsh)"
+
+[ -x "$(command -v atac)" ] && atac completions zsh $XDG_CACHE_HOME/zsh/completions >/dev/null
+fpath=($XDG_CACHE_HOME/.cache/zsh/completions $fpath)
 
 # opam configuration
 [[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
-python-venv() {
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init - zsh)"
+
+function python-venv() {
     local MYVENV=
     local current_dir="$(pwd)"
 
@@ -43,14 +67,29 @@ python-venv() {
         current_dir="$(dirname "$current_dir")"
     done
 
-    [[ -d "$MYVENV" ]] && source "$MYVENV/bin/activate" > /dev/null 2>&1
+    if [[ -d "$MYVENV" ]]; then
+        source "$MYVENV/bin/activate" > /dev/null 2>&1
+    else
+        deactivate > /dev/null 2>&1
+        theme
+    fi
 
-    [[ ! -d "$MYVENV" ]] && deactivate > /dev/null 2>&1
+    [[ -d "$VIRTUAL_ENV" ]] && export PYTHONPATH="$VIRTUAL_ENV/lib/$(\ls $VIRTUAL_ENV/lib)/site-packages"
 }
 
 autoload -U add-zsh-hook
 add-zsh-hook chpwd python-venv
 python-venv
+
+function sync_display_from_tmux() {
+  if [[ -n "$TMUX" && -n "$DISPLAY" ]]; then
+    if ! xdpyinfo >/dev/null 2>&1; then
+      export DISPLAY=$(tmux show-environment DISPLAY 2>/dev/null | cut -d= -f2)
+    fi
+  fi
+}
+
+add-zsh-hook precmd sync_display_from_tmux
 
 if type clipcat-menu >/dev/null 2>&1; then
     alias clipedit=' clipcat-menu --finder=builtin edit'
@@ -58,18 +97,6 @@ if type clipcat-menu >/dev/null 2>&1; then
 
     bindkey -s '^\' "^Q clipcat-menu --finder=builtin insert ^m"
     bindkey -s '^]' "^Q clipcat-menu --finder=builtin remove ^m"
-fi
-
-if [[ -z "$DISPLAY" ]] ; then
-    # Fetch machine's specs.
-    [ -x "$(command -v pfetch)"  ] && pfetch
-    source "$ZDOTDIR/configs/prompt.zsh"
-else
-    source "$ZDOTDIR/configs/starship.zsh"
-
-    # # Fetch machine's specs.
-    # [ -x "$(command -v macchina)"  ] && ~/Workspace/art/art > /tmp/ascii && macchina -t Cobalt
-    [ -x "$(command -v macchina)"  ] && macchina
 fi
 
 # if [ -t 1 ] && [[ -z "$TMUX" ]]; then

@@ -6,8 +6,8 @@ ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 
 # Download Zinit, if it's not there yet
 if [ ! -d "$ZINIT_HOME" ]; then
-   mkdir -p "$(dirname $ZINIT_HOME)"
-   git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+    mkdir -p "$(dirname $ZINIT_HOME)"
+    git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 fi
 
 # Source/Load zinit
@@ -49,16 +49,16 @@ export KEYTIMEOUT=1
 
 # Change cursor shape for different vi modes.
 zle-keymap-select () {
-  case "$KEYMAP" in
-    vicmd) echo -ne '\e[1 q' ;;      # block
-    viins|main) echo -ne '\e[5 q' ;; # beam
-  esac
+    case "$KEYMAP" in
+        vicmd) echo -ne '\e[1 q' ;;      # block
+        viins|main) echo -ne '\e[5 q' ;; # beam
+    esac
 }
 zle -N zle-keymap-select
 
 zle-line-init() {
-  zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
-  echo -ne "\e[5 q"
+    zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
+    echo -ne "\e[5 q"
 }
 zle -N zle-line-init
 
@@ -68,10 +68,10 @@ preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
 # Edit line in vim with ctrl-e:
 eclf() {
-  autoload edit-command-line; zle -N edit-command-line
-  export VISUAL='nvim'
-  edit-command-line
-  export VISUAL="emacsclient -c -a 'emacs'"
+    autoload edit-command-line; zle -N edit-command-line
+    export VISUAL='nvim'
+    edit-command-line
+    export VISUAL="emacsclient -c -a 'emacs'"
 }
 autoload eclf; zle -N eclf
 
@@ -113,11 +113,11 @@ key[Shift-Tab]="${terminfo[kcbt]}"
 # Finally, make sure the terminal is in application mode, when zle is
 # active. Only then are the values from $terminfo valid.
 if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
-  autoload -Uz add-zle-hook-widget
-  function zle_application_mode_start { echoti smkx }
-  function zle_application_mode_stop { echoti rmkx }
-  add-zle-hook-widget -Uz zle-line-init zle_application_mode_start
-  add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
+    autoload -Uz add-zle-hook-widget
+    function zle_application_mode_start { echoti smkx }
+    function zle_application_mode_stop { echoti rmkx }
+    add-zle-hook-widget -Uz zle-line-init zle_application_mode_start
+    add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
 fi
 
 # histroy search

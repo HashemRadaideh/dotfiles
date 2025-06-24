@@ -11,6 +11,26 @@ configs=(
     wine
 )
 
+export XDG_CACHE_HOME=${XDG_CACHE_HOME:="$HOME/.cache"}
+export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:="$HOME/.config"}
+export XDG_DATA_HOME=${XDG_DATA_HOME:="$HOME/.local/bin"}
+export XDG_STATE_HOME=${XDG_STATE_HOME:="$HOME/.local/state"}
+
+export XDG_DESKTOP_DIR=${XDG_DESKTOP_DIR:="$HOME/Desktop"}
+export XDG_DOCUMENTS_DIR=${XDG_DOCUMENTS_DIR:="$HOME/Documents"}
+export XDG_DOWNLOAD_DIR=${XDG_DOWNLOAD_DIR:="$HOME/Downloads"}
+export XDG_MUSIC_DIR=${XDG_MUSIC_DIR:="$HOME/Music"}
+export XDG_PICTURES_DIR=${XDG_PICTURES_DIR:="$HOME/Pictures"}
+export XDG_PUBLICSHARE_DIR=${XDG_PUBLICSHARE_DIR:="$HOME/Public"}
+export XDG_TEMPLATES_DIR=${XDG_TEMPLATES_DIR:="$HOME/Templates"}
+export XDG_VIDEOS_DIR=${XDG_VIDEOS_DIR:="$HOME/Videos"}
+
+export GTK_IM_MODULE=fcitx5
+export QT_IM_MODULE=fcitx5
+export SDL_IM_MODULE=fcitx5
+export XMODIFIERS=@im=fcitx5
+export GLFW_IM_MODULE=ibus
+
 # $EDITOR use nvim
 export EDITOR="nvim"
 
@@ -36,20 +56,6 @@ export MANROFFOPT='-c'
 export VISUAL="emacsclient --alternate-editor='emacs' --create-frame"
 
 export DOTFILES="$HOME/.files"
-
-export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_DATA_HOME="$HOME/.local/bin"
-export XDG_STATE_HOME="$HOME/.local/state"
-
-export XDG_DESKTOP_DIR="$HOME/Desktop"
-export XDG_DOCUMENTS_DIR="$HOME/Documents"
-export XDG_DOWNLOAD_DIR="$HOME/Downloads"
-export XDG_MUSIC_DIR="$HOME/Music"
-export XDG_PICTURES_DIR="$HOME/Pictures"
-export XDG_PUBLICSHARE_DIR="$HOME/Public"
-export XDG_TEMPLATES_DIR="$HOME/Templates"
-export XDG_VIDEOS_DIR="$HOME/Videos"
 
 # home directory clean up
 # export _JAVA_OPTIONS="-Djava.io.tmpdir=$XDG_CONFIG_HOME/java -Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java"
@@ -84,5 +90,7 @@ export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
 export XCURSOR_PATH=/usr/share/icons:$XDG_DATA_HOME/icons
 export WINEPREFIX="$HOME/wine"
 export QSYS_ROOTDIR="$XDG_CACHE_HOME/paru/clone/quartus-free/pkg/quartus-free-quartus/opt/intelFPGA/21.1/quartus/sopc_builder/bin"
+export GEM_HOME="$(gem env user_gemhome)"
+export ATAC_KEY_BINDINGS="$XDG_CONFIG_HOME/atac-config/bindings.toml"
 
-export PATH="$PATH:$XDG_DATA_HOME:$XDG_DATA_HOME/scripts:$XDG_DATA_HOME/sessions:$XDG_DATA_HOME/cargo/bin:$GOPATH/bin/:$XDG_CONFIG_HOME/doom/bin:$XDG_CONFIG_HOME/emacs/bin:/usr/lib/jvm/default/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin/:$ANDROID_NDK_HOME:$XDG_DATA_HOME/nvim/mason/bin:$HOME/.yarn/bin/:$HOME/.cache/.bun/bin/:$HOME/.ghcup/bin/:$JAVA_HOME:$XDG_DATA_HOME/JetBrains/Toolbox/bin:$XDG_DATA_HOME/JetBrains/Toolbox/scripts"
+export PATH="$PATH:$XDG_DATA_HOME:$XDG_DATA_HOME/scripts:$XDG_DATA_HOME/sessions:$XDG_DATA_HOME/cargo/bin:$GOPATH/bin/:$XDG_CONFIG_HOME/doom/bin:$XDG_CONFIG_HOME/emacs/bin:/usr/lib/jvm/default/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin/:$ANDROID_NDK_HOME:$XDG_DATA_HOME/nvim/mason/bin:$HOME/.yarn/bin/:$HOME/.cache/.bun/bin/:$HOME/.ghcup/bin/:$JAVA_HOME:$XDG_DATA_HOME/JetBrains/Toolbox/bin:$XDG_DATA_HOME/JetBrains/Toolbox/scripts:$GEM_HOME/bin:$XDG_DATA_HOME/JetBrains/Toolbox/scripts"

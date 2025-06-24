@@ -91,6 +91,8 @@ alias mysql-workbench=mysql-workbench --configdir="$XDG_DATA_HOME/mysql/workbenc
 alias yarn='yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config'
 alias svn='svn --config-dir $XDG_CONFIG_HOME/subversion'
 
+alias ruby='PAGER=cat ruby'
+
 conda-open() {
     eval "$($XDG_DATA_HOME/miniforge3/bin/conda shell.zsh hook)"
 }
