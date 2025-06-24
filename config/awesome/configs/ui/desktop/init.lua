@@ -1,54 +1,58 @@
-local ok, lfs = pcall(require, "lfs")
-if ok and Randomize then
-  local function getRandPic(directory)
-    local files = {}
-    local function exploreDirectory(dir)
-      for file in lfs.dir(dir) do
-        if file ~= "." and file ~= ".." and file ~= ".git" then
-          local filePath = dir .. "/" .. file
-          local attr = lfs.attributes(filePath)
-          if attr.mode == "file" then
-            table.insert(files, filePath)
-          elseif attr.mode == "directory" then
-            exploreDirectory(filePath)
-          end
-        end
-      end
-    end
-    exploreDirectory(directory)
-
-    local index = math.random(#files)
-    return files[index]
-  end
-
-  Wallpaper = getRandPic(os.getenv("HOME") .. "/Pictures/Wallpapers")
-else
-  Wallpaper = os.getenv("HOME") .. [[/Pictures/Wallpapers/Linux/Arch/1607458.png]]
-end
-
 local awful = require("awful")
 local wibox = require("wibox")
 
-screen.connect_signal("request::wallpaper", function(s)
-  awful.wallpaper({
-    screen = s,
-    widget = {
-      {
-        image = Wallpaper,
-        resize = true,
-        upscale = true,
-        downscale = true,
-        horizontal_fit_policy = "fit",
-        vertical_fit_policy = "fit",
-        widget = wibox.widget.imagebox,
+function Change_wallpaper()
+  local ok, lfs = pcall(require, "lfs")
+  if ok and Randomize then
+    local function getRandPic(directory)
+      local files = {}
+      local function exploreDirectory(dir)
+        for file in lfs.dir(dir) do
+          if file ~= "." and file ~= ".." and file ~= ".git" then
+            local filePath = dir .. "/" .. file
+            local attr = lfs.attributes(filePath)
+            if attr.mode == "file" then
+              table.insert(files, filePath)
+            elseif attr.mode == "directory" then
+              exploreDirectory(filePath)
+            end
+          end
+        end
+      end
+      exploreDirectory(directory)
+
+      local index = math.random(#files)
+      return files[index]
+    end
+
+    Wallpaper = getRandPic(os.getenv("HOME") .. "/Pictures/Wallpapers")
+  else
+    Wallpaper = os.getenv("HOME") .. [[/Pictures/Wallpapers/Linux/Arch/1607458.png]]
+  end
+
+  screen.connect_signal("request::wallpaper", function(s)
+    awful.wallpaper({
+      screen = s,
+      widget = {
+        {
+          image = Wallpaper,
+          resize = true,
+          upscale = true,
+          downscale = true,
+          horizontal_fit_policy = "fit",
+          vertical_fit_policy = "fit",
+          widget = wibox.widget.imagebox,
+        },
+        valign = "center",
+        halign = "center",
+        tiled = false,
+        widget = wibox.container.background,
       },
-      valign = "center",
-      halign = "center",
-      tiled = false,
-      widget = wibox.container.background,
-    },
-  })
-end)
+    })
+  end)
+end
+
+Change_wallpaper()
 
 screen.connect_signal("request::desktop_decoration", function(s)
   s.Bartoggle = wibox({

@@ -40,6 +40,8 @@ function ZenSwitch()
   Zen = not Zen
 end
 
+ZenSwitch()
+
 -- Rounded Borders and no border for maximized clients
 local function border_adjust(c)
   if Autohide and c.fullscreen then

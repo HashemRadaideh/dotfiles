@@ -30,6 +30,8 @@ awful.keyboard.append_global_keybindings({
 
   awful.key({ Super, Ctrl }, "r", awesome.restart, { description = "Reload Awesome", group = "Awesome" }),
 
+  awful.key({ Super }, "w", Change_wallpaper, { description = "Change Wallpaper", group = "Awesome" }),
+
   awful.key({ Super, Ctrl }, "q", awesome.quit, { description = "Quit awesome", group = "Awesome" }),
 
   awful.key({ Super, Ctrl }, ";", awesome.quit, { description = "Quit awesome", group = "Awesome" }),
@@ -106,19 +108,19 @@ awful.keyboard.append_global_keybindings({
   end, { description = "Open a terminal", group = "Launch" }),
 
   awful.key({ Super }, "r", function()
-    awful.spawn('rofi -show drun -theme "themes/launchpad.rasi"')
+    awful.spawn([[rofi -show drun -theme "themes/catppuccin-frappe.rasi"]])
   end, { description = "Open rofi run prompt", group = "Launch" }),
 
   awful.key({ Super }, "/", function()
-    awful.spawn('rofi -show drun -theme "themes/launchpad.rasi"')
+    awful.spawn([[rofi -show drun -theme "themes/launchpad.rasi"]])
   end, { description = "Open rofi run prompt", group = "Launch" }),
 
   awful.key({ Super }, "g", function()
-    awful.spawn('rofi -show emoji -modi emoji -theme "themes/emojis.rasi"')
+    awful.spawn([[rofi -show emoji -modi emoji -theme "themes/emojis.rasi"]])
   end, { description = "Open rofi run prompt", group = "Launch" }),
 
   awful.key({ Super, Shift }, "f", function()
-    awful.spawn('rofi -show filebrowser -modi filebrowser -theme "themes/launchpad.rasi"')
+    awful.spawn([[rofi -show filebrowser -modi filebrowser -theme "themes/launchpad.rasi"]])
   end, { description = "Open rofi run prompt", group = "Launch" }),
 
   awful.key({ Super }, "v", function()
@@ -130,7 +132,7 @@ awful.keyboard.append_global_keybindings({
   end, { description = "Open rofi run prompt", group = "Launch" }),
 
   awful.key({ Super }, "c", function()
-    awful.spawn('rofi -show calc -modi calc -no-show-match -no-sort -theme "themes/calculator.rasi" | xclip -sel c')
+    awful.spawn([[rofi -show calc -modi calc -no-show-match -no-sort -theme "themes/calculator.rasi" | xclip -sel c]])
   end, { description = "Open rofi run prompt", group = "Launch" }),
 
   awful.key({ Super }, "d", function()
@@ -146,15 +148,15 @@ awful.keyboard.append_global_keybindings({
   end, { description = "Open file manger", group = "Launch" }),
 
   awful.key({}, "Print", function()
-    awful.spawn.with_shell("screenshot")
+    awful.spawn.with_shell("creamshot")
   end, { description = "Screenshot whole screen", group = "System" }),
 
   awful.key({ Super }, "Print", function()
-    awful.spawn.with_shell("screenshot focused")
+    awful.spawn.with_shell("creamshot focused")
   end, { description = "Screenshot focused window", group = "System" }),
 
   awful.key({ Shift }, "Print", function()
-    awful.spawn.with_shell("screenshot selected")
+    awful.spawn.with_shell("creamshot selected")
   end, { description = "Screenshot a selected area", group = "System" }),
 
   awful.key({ Super }, "x", function()
@@ -164,13 +166,6 @@ awful.keyboard.append_global_keybindings({
   awful.key({ Super, Shift }, "x", function()
     IdleInhibitor:emit_signal("button::press")
   end, { description = "Toggle screen idle", group = "System" }),
-
-  awful.key({ Super }, "f", function()
-    if client.focus then
-      client.focus.fullscreen = not client.focus.fullscreen
-      client.focus:raise()
-    end
-  end, { description = "Toggle fullscreen", group = "System" }),
 
   awful.key({ Super }, "p", function()
     logout_popup.launch({
@@ -230,7 +225,7 @@ awful.keyboard.append_global_keybindings({
     { description = "Focus urgent client", group = "System" }
   ),
 
-  awful.key({ Super, Ctrl, Shift }, "n", function()
+  awful.key({ Super, Shift }, "n", function()
     local c = awful.client.restore()
     if c then
       c:activate({ raise = true, context = "key.unminimize" })
@@ -371,51 +366,51 @@ awful.keyboard.append_global_keybindings({
   end, { description = "Select previous layout", group = "Workflow" }),
 
   awful.key({ Super }, "i", function()
-    awful.util.spawn([[playerctl play-pause ]])
+    awful.spawn([[playerctl play-pause]])
   end, { description = "Increase volume", group = "Media" }),
 
   awful.key({}, "XF86AudioRaiseVolume", function()
-    awful.util.spawn([[media up]])
+    awful.spawn([[media up]])
   end, { description = "Increase volume", group = "Media" }),
 
   awful.key({}, "XF86AudioLowerVolume", function()
-    awful.util.spawn([[media down]])
+    awful.spawn([[media down]])
   end, { description = "Decrease volume", group = "Media" }),
 
   awful.key({}, "XF86AudioMute", function()
-    awful.util.spawn([[media mute]])
+    awful.spawn([[media mute]])
   end, { description = "Mute volume", group = "Media" }),
 
   awful.key({}, "XF86AudioMicMute", function()
-    awful.util.spawn([[media micmute]])
+    awful.spawn([[media micmute]])
   end, { description = "Mute volume", group = "Media" }),
 
   awful.key({}, "XF86MonBrightnessUp", function()
-    awful.util.spawn([[brightness up]])
+    awful.spawn([[brightness up]])
   end, { description = "Increase brightness", group = "Media" }),
 
   awful.key({}, "XF86MonBrightnessDown", function()
-    awful.util.spawn([[brightness down]])
+    awful.spawn([[brightness down]])
   end, { description = "Decrease brightness", group = "Media" }),
 
   awful.key({}, "XF86AudioPrev", function()
-    awful.util.spawn([[playerctl previous ]])
+    awful.spawn([[playerctl previous]])
   end, { description = "Increase volume", group = "Media" }),
 
   awful.key({}, "XF86Calculator", function()
-    awful.spawn('rofi -show calc -modi calc -no-show-match -no-sort -theme "themes/calculator.rasi" | xclip')
+    awful.spawn([[rofi -show calc -modi calc -no-show-match -no-sort -theme "themes/calculator.rasi" | xclip]])
   end, { description = "Increase volume", group = "Media" }),
 
   awful.key({}, "XF86AudioNext", function()
-    awful.util.spawn([[ playerctl next ]])
+    awful.spawn([[playerctl next]])
   end, { description = "Increase volume", group = "Media" }),
 
   awful.key({}, "XF86AudioPlay", function()
-    awful.util.spawn([[ playerctl play-pause ]])
+    awful.spawn([[playerctl play-pause]])
   end, { description = "Increase volume", group = "Media" }),
 
   awful.key({}, "XF86AudioStop", function()
-    awful.util.spawn([[ playerctl stop ]])
+    awful.spawn([[playerctl stop]])
   end, { description = "Increase volume", group = "Media" }),
 
   awful.key({
@@ -510,6 +505,11 @@ client.connect_signal("request::default_mousebindings", function()
   })
 
   awful.keyboard.append_client_keybindings({
+    awful.key({ Super }, "f", function(c)
+      c.fullscreen = not c.fullscreen
+      c:raise()
+    end, { description = "Toggle fullscreen", group = "System" }),
+
     awful.key({}, "F11", function(c)
       c.fullscreen = not c.fullscreen
       c:raise()
@@ -546,11 +546,11 @@ client.connect_signal("request::default_mousebindings", function()
       c.ontop = not c.ontop
     end, { description = "Keep floating client on top", group = "Workspace" }),
 
-    awful.key({ Super, Ctrl }, "n", function(c)
+    awful.key({ Super }, "n", function(c)
       c.minimized = true
     end, { description = "Minimize focused client", group = "System" }),
 
-    awful.key({ Super, Ctrl }, "m", function(c)
+    awful.key({ Super }, "m", function(c)
       c.maximized = not c.maximized
       c:raise()
     end, { description = "(Un)Maximize Focused client", group = "System" }),
