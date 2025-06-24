@@ -1,11 +1,10 @@
 local config = require("plugins.lsp.config")
 
-local clangd_capabilities = require("cmp_nvim_lsp").default_capabilities(config.capabilities)
--- clangd_capabilities.textDocument.semanticHighlighting = true
-clangd_capabilities.offsetEncoding = "utf-8"
+-- config.capabilities.textDocument.semanticHighlighting = true
+config.capabilities.offsetEncoding = "utf-8"
 
 require("lspconfig").clangd.setup({
-  capabilities = clangd_capabilities,
+  capabilities = config.capabilities,
   on_attach = config.on_attach,
   handlers = config.handlers,
   flags = config.flags,

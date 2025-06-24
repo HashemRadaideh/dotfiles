@@ -114,7 +114,7 @@ local settings = {
     -- 	pumblend = 10,
     -- 	pumheight = 10,
     -- 	cmdheight = 1,
-    conceallevel = 0,
+    -- conceallevel = 0,
     -- 	shada = "!,'0,f0,<50,s10,h",
     -- 	-- shell = "/bin/zsh",
   },
@@ -127,7 +127,7 @@ for mode, options in pairs(settings) do
 end
 
 local disabled_plugins = {
-  "2html_plugin",
+  -- "2html_plugin",
   "getscript",
   "getscriptPlugin",
   "gzip",

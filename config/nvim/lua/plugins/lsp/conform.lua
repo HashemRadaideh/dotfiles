@@ -1,37 +1,37 @@
+-- https://www.josean.com/posts/neovim-linting-and-formatting
 return {
   "stevearc/conform.nvim",
-  event = { "BufReadPost", "BufNewFile" },
+  event = { "BufReadPre", "BufNewFile" },
   opts = {
     formatters_by_ft = {
       lua = { "stylua" },
-      rust = { "rustfmt", lsp_format = "fallback" },
       toml = { "taplo" },
       go = { "goimports", "gofmt" },
-      svelte = { "prettierd", "prettier", stop_after_first = true },
-      javascript = { "prettierd", "prettier", stop_after_first = true },
-      typescript = { "prettierd", "prettier", stop_after_first = true },
-      javascriptreact = { "prettierd", "prettier", stop_after_first = true },
-      typescriptreact = { "prettierd", "prettier", stop_after_first = true },
-      css = { "prettierd", "prettier", stop_after_first = true },
-      scss = { "prettierd", "prettier", stop_after_first = true },
-      json = { "prettierd", "prettier", stop_after_first = true },
-      graphql = { "prettierd", "prettier", stop_after_first = true },
-      yaml = { "yamlfix" },
-      liquid = { "prettierd", "prettier" },
-      ruby = { "standardrb", "rubocop", stop_after_first = true },
-      -- python = { "isort", "ruff_format", { "blue", "black" } },
+      svelte = { "prettier" },
+      javascript = { "biome", "prettier", stop_after_first = true },
+      typescript = { "biome", "prettier", stop_after_first = true },
+      javascriptreact = { "biome", "prettier", stop_after_first = true },
+      typescriptreact = { "biome", "prettier", stop_after_first = true },
+      css = { "biome", "prettier", stop_after_first = true },
+      scss = { "biome", "prettier", stop_after_first = true },
+      json = { "biome", "prettier", stop_after_first = true },
+      graphql = { "biome", "prettier", stop_after_first = true },
+      html = { "biome", "prettier" },
+      yaml = { "prettier", "yamlfix" },
+      liquid = { "biome", "prettier" },
+      ruby = { "rubocop", "standardrb", stop_after_first = true },
       python = function(bufnr)
-        if require("conform").get_formatter_info("blue", bufnr).available then
+        if require("conform").get_formatter_info("ruff_format", bufnr).available then
+          return { "ruff_organize_imports", "ruff_format" }
+        elseif require("conform").get_formatter_info("blue", bufnr).available then
           return { "isort", "blue" }
-        elseif require("conform").get_formatter_info("ruff_format", bufnr).available then
-          return { "isort", "ruff_format" }
         else
           return { "isort", "black" }
         end
       end,
-      kotlin = { "ktlint" },
+      kotlin = { "ktlint", "ktfmt", stop_after_first = true },
       java = { "google-java-format" },
-      markdown = { "prettierd", "prettier", stop_after_first = true },
+      markdown = { "mdformat", "prettier", stop_after_first = true },
       protobuf = { "buf" },
       -- erb = { "htmlbeautifier" },
       -- html = { "htmlbeautifier" },
@@ -42,9 +42,9 @@ return {
       proto = { "buf" },
       c = { "clang-format" },
       cpp = { "clang-format" },
-      cc = { "clang-format" },
-      cmake = { "gersemi" },
+      cmake = { "cmakelang" },
       asm = { "asmfmt" },
+      fsharp = { "fantomas" },
       ["_"] = { "trim_whitespace" },
     },
     format_after_save = {

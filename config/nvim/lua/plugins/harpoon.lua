@@ -2,19 +2,27 @@ return {
   "ThePrimeagen/harpoon",
   branch = "harpoon2",
   dependencies = { "nvim-lua/plenary.nvim" },
+  config = function()
+    require("harpoon"):setup({})
+  end,
   keys = {
-
     {
-      "<leader>aa",
+      "<leader>ha",
       function()
-        require("harpoon"):list():append()
+        require("harpoon"):list():add()
       end,
+      { desc = "Added current file to harpoon" },
     },
-
     {
-      "<leader>ak",
+      "<leader>hs",
       function()
-        -- basic telescope configuration
+        require("harpoon").ui:toggle_quick_menu(require("harpoon"):list())
+      end,
+      { desc = "Open harpoon window" },
+    },
+    {
+      "<leader>hl",
+      function()
         local conf = require("telescope.config").values
         local function toggle_telescope(harpoon_files)
           local file_paths = {}
@@ -36,10 +44,22 @@ return {
 
         toggle_telescope(require("harpoon"):list())
       end,
-      { desc = "Open harpoon window" },
+      { desc = "Open harpoon telescope picker" },
     },
-    -- {"<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end},
-
+    {
+      "<C-S-p>",
+      function()
+        require("harpoon"):list():prev()
+      end,
+      { desc = "Open harpoon previous window" },
+    },
+    {
+      "<C-S-n>",
+      function()
+        require("harpoon"):list():next()
+      end,
+      { desc = "Open harpoon next window" },
+    },
     {
       "<C-1>",
       function()
@@ -64,24 +84,5 @@ return {
         require("harpoon"):list():select(4)
       end,
     },
-
-    -- Toggle previous & next buffers stored within Harpoon list
-    {
-      "<leader>ah",
-      function()
-        require("harpoon"):list():prev()
-      end,
-    },
-    {
-      "<leader>al",
-      function()
-        require("harpoon"):list():next()
-      end,
-    },
   },
-  config = function()
-    local harpoon = require("harpoon")
-
-    harpoon:setup({})
-  end,
 }

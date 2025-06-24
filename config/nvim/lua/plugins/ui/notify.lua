@@ -17,14 +17,19 @@ return {
       vim.api.nvim_win_set_config(win, { zindex = 100 })
     end,
   },
-  -- config = function()
-  --   vim.notify = require("notify").setup({
-  --     background_colour = "#000000",
-  --     fps = 60,
-  --     render = "wrapped-compact",
-  --     stages = "fade",
-  --     timeout = 1000,
-  --     top_down = false
-  --   })
-  -- end
+  config = function()
+    --   vim.notify = require("notify").setup({
+    --     background_colour = "#000000",
+    --     fps = 60,
+    --     render = "wrapped-compact",
+    --     stages = "fade",
+    --     timeout = 1000,
+    --     top_down = false
+    --   })
+    local original_notify = vim.notify
+    vim.notify = function(msg, level, opts)
+      -- Forward other messages to the original handler
+      original_notify(msg, level, opts)
+    end
+  end,
 }

@@ -215,7 +215,7 @@ return {
         container = {
           enable_character_fade = true,
           width = "100%",
-          right_padding = 0,
+          right_padding = 1,
         },
         diagnostics = {
           symbols = {
@@ -267,7 +267,7 @@ return {
           end,
         },
         modified = {
-          symbol = "[+] ",
+          symbol = "●",
           highlight = "NeoTreeModified",
         },
         name = {

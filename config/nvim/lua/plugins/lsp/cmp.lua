@@ -14,6 +14,7 @@ return {
         "rafamadriz/friendly-snippets",
       },
     },
+    -- "onsails/lspkind.nvim",
   },
   config = function()
     local ok, cmp = pcall(require, "cmp")
@@ -39,42 +40,57 @@ return {
       },
     })
 
-    local check_backspace = function()
-      local col = vim.fn.col(".") - 1
-      return col == 0 or vim.fn.getline("."):sub(col, col):match("%s")
-    end
+    -- local check_backspace = function()
+    --   local col = vim.fn.col(".") - 1
+    --   return col == 0 or vim.fn.getline("."):sub(col, col):match("%s")
+    -- end
 
-    local function has_words_before()
-      local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-      return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-    end
+    -- local function has_words_before()
+    --   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+    --   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+    -- end
+
+    -- local has_words_before2 = function()
+    --   if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then
+    --     return false
+    --   end
+    --   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+    --   return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
+    -- end
 
     local kind_icons = {
-      Text = "",
-      Method = "m",
-      Function = "",
-      Constructor = "",
-      Field = "",
-      Variable = "",
-      Class = "",
+      Text = "󰉿",
+      Method = "󰆧",
+      Function = "󰊕",
+      Constructor = "",
+      Field = "󰜢",
+      Variable = "󰀫",
+      Class = "󰠱",
       Interface = "",
       Module = "",
-      Property = "",
-      Unit = "",
-      Value = "",
+      Property = "󰜢",
+      Unit = "󰑭",
+      Value = "󰎠",
       Enum = "",
-      Keyword = "",
-      Snippet = "",
-      Color = "",
-      File = "",
-      Reference = "",
-      Folder = "",
+      Keyword = "󰌋",
+      Snippet = "",
+      Color = "󰏘",
+      File = "󰈙",
+      Reference = "󰈇",
+      Folder = "󰉋",
       EnumMember = "",
-      Constant = "",
-      Struct = "",
+      Constant = "󰏿",
+      Struct = "󰙅",
       Event = "",
-      Operator = "",
-      TypeParameter = "",
+      Operator = "󰆕",
+      TypeParameter = "",
+      Codeium = "",
+      path = "/",
+      nvim_lsp = "🤖",
+      luasnip = "🆘",
+      nvim_lua = "🌚",
+      buffer = "🔄",
+      Copilot = "",
     }
 
     cmp.setup({
@@ -95,46 +111,32 @@ return {
         documentation = cmp.config.window.bordered(),
       },
       sources = {
-        { name = "nvim_lsp" },
-        { name = "luasnip" },
-        { name = "buffer", keyword_length = 2 },
-        { name = "path", keyword_length = 3 },
-        { name = "codeium" },
-        -- { name = "nvim_lua" },
+        { name = "nvim_lsp", group_index = 1 },
+        { name = "luasnip", group_index = 1 },
+        { name = "path", group_index = 1 },
+        { name = "nvim_lua", group_index = 1 },
+        { name = "latex_symbols", group_index = 1 },
+        { name = "copilot", group_index = 2 },
+        { name = "codeium", group_index = 2 },
+        { name = "render-markdown", group_index = 2 },
+        { name = "buffer", group_index = 3 },
       },
       formatting = {
-        fields = { "kind", "abbr", "menu" },
+        fields = { "abbr", "kind", "menu" },
         format = function(entry, vim_item)
-          -- vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
-          vim_item.kind = ("%s %s"):format(kind_icons[vim_item.kind], vim_item.kind)
-
-          vim_item.menu = ({
-            nvim_lsp = "[LSP]",
-            luasnip = "[Snippet]",
-            buffer = "[Buffer]",
-            path = "[Path]",
-            codeium = "[Codeium]",
-            nvim_lua = "[NVIM_LUA]",
-          })[entry.source.name]
-
-          return vim_item
+          local lspkind_ok, lspkind = pcall(require, "lspkind")
+          if not lspkind_ok then
+            vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
+            vim_item.menu = "[" .. entry.source.name .. "]"
+            return vim_item
+          else
+            return lspkind.cmp_format({
+              mode = "symbol_text",
+              symbol_map = kind_icons,
+            })(entry, vim_item)
+          end
         end,
       },
-      -- formatting = {
-      --   format = require("lspkind").cmp_format({
-      --     mode = "symbol",
-      --     maxwidth = 50,
-      --     ellipsis_char = "...",
-      --     symbol_map = {
-      --       Codeium = "",
-      --       path = "/",
-      --       nvim_lsp = "🤖",
-      --       luasnip = "🆘",
-      --       nvim_lua = "🌚",
-      --       buffer = "🔄",
-      --     },
-      --   }),
-      -- },
       -- duplicates = {
       --   nvim_lsp = 1,
       --   luasnip = 1,
@@ -154,106 +156,77 @@ return {
       --   entries = "native",
       -- },
       mapping = {
-        ["<C-j>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            cmp.select_next_item()
-          elseif luasnip.expandable() then
-            luasnip.expand()
-          elseif luasnip.expand_or_jumpable() then
-            luasnip.expand_or_jump()
-          elseif check_backspace() then
-            fallback()
-          elseif has_words_before() then
-            cmp.complete()
-          else
-            fallback()
-          end
-        end, { "i", "s" }),
-        ["<C-k>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            cmp.select_prev_item()
-          elseif luasnip.jumpable(-1) then
-            luasnip.jump(-1)
-          else
-            fallback()
-          end
-        end, { "i", "s" }),
         ["<C-n>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
-            cmp.select_next_item()
-          elseif luasnip.expandable() then
-            luasnip.expand()
+            cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
           elseif luasnip.expand_or_jumpable() then
             luasnip.expand_or_jump()
-          elseif check_backspace() then
-            fallback()
-          elseif has_words_before() then
-            cmp.complete()
+          -- elseif luasnip.expandable() then
+          --   luasnip.expand()
+          -- elseif has_words_before() then
+          --   cmp.complete()
+          -- elseif check_backspace() then
+          --   fallback()
           else
             fallback()
           end
         end, { "i", "s" }),
         ["<C-p>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
-            cmp.select_prev_item()
+            cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
           elseif luasnip.jumpable(-1) then
             luasnip.jump(-1)
+          elseif luasnip.expandable(-1) then
+            luasnip.expand(-1)
           else
             fallback()
           end
         end, { "i", "s" }),
+        ["<Tab>"] = vim.schedule_wrap(function(fallback)
+          if cmp.visible() then
+            cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+          elseif luasnip.expand_or_jumpable() then
+            luasnip.expand_or_jump()
+          else
+            fallback()
+          end
+        end),
+        ["<S-Tab>"] = vim.schedule_wrap(function(fallback)
+          if cmp.visible() then
+            cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+          elseif luasnip.jumpable(-1) then
+            luasnip.jump(-1)
+          elseif luasnip.expandable(-1) then
+            luasnip.expand(-1)
+          else
+            fallback()
+          end
+        end),
         ["<C-u>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i", "c" }),
         ["<C-d>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "i", "c" }),
         ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
         ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
-        ["<C-h>"] = cmp.mapping({
+        ["<C-e>"] = cmp.mapping({
           i = cmp.mapping.abort(),
           c = cmp.mapping.close(),
         }),
         ["<C-space>"] = cmp.mapping({
           i = function()
             if cmp.visible() then
-              require("notify")("visible")
               cmp.abort()
             else
-              require("notify")("not visible")
               cmp.complete()
             end
           end,
           c = function()
             if cmp.visible() then
-              require("notify")("visible")
               cmp.close()
             else
-              require("notify")("not visible")
               cmp.complete()
             end
           end,
         }),
-        ["<C-l>"] = cmp.mapping({
-          i = function()
-            if cmp.visible() then
-              require("notify")("visible")
-              cmp.abort()
-            else
-              require("notify")("not visible")
-              cmp.complete()
-            end
-          end,
-          c = function()
-            if cmp.visible() then
-              require("notify")("visible")
-              cmp.close()
-            else
-              require("notify")("not visible")
-              cmp.complete()
-            end
-          end,
-        }),
-        ["<CR>"] = cmp.mapping.confirm({
-          behavior = cmp.ConfirmBehavior.Replace,
-          select = true,
-        }),
+        ["<CR>"] = cmp.mapping.confirm(),
       },
     })
 

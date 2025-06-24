@@ -5,14 +5,12 @@ vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true })
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
 
 -- Move lines up or down https://vim.fandom.com/wiki/Moving_lines_up_or_down
--- vim.keymap.set("v", "<C-j>", "<cmd>m '>+1<CR>gv=gv", { noremap = true, silent = true, desc = "Move line down" })
--- vim.keymap.set("v", "<C-k>", "<cmd>m '<-2<CR>gv=gv", { noremap = true, silent = true, desc = "Move line up" })
--- vim.keymap.set("n", "<C-j>", ":m .+1<CR>==", { noremap = true, silent = true })
--- vim.keymap.set("n", "<C-k>", ":m .-2<CR>==", { noremap = true, silent = true })
--- vim.keymap.set("i", "<C-j>", "<Esc>:m .+1<CR>==gi", { noremap = true, silent = true })
--- vim.keymap.set("i", "<C-k>", "<Esc>:m .-2<CR>==gi", { noremap = true, silent = true })
--- vim.keymap.set("v", "<C-j>", ":m '>+1<CR>gv=gv", { noremap = true, silent = true })
--- vim.keymap.set("v", "<C-k>", ":m '<-2<CR>gv=gv", { noremap = true, silent = true })
+vim.keymap.set("v", "<C-j>", ":m '>+1<CR>gv=gv", { noremap = true, silent = true, desc = "Move line down" })
+vim.keymap.set("v", "<C-k>", ":m '<-2<CR>gv=gv", { noremap = true, silent = true, desc = "Move line up" })
+vim.keymap.set("n", "<C-j>", ":m .+1<CR>==", { noremap = true, silent = true, desc = "Move line down" })
+vim.keymap.set("n", "<C-k>", ":m .-2<CR>==", { noremap = true, silent = true, desc = "Move line up" })
+vim.keymap.set("i", "<C-j>", "<Esc>:m .+1<CR>==gi", { noremap = true, silent = true, desc = "Move line down" })
+vim.keymap.set("i", "<C-k>", "<Esc>:m .-2<CR>==gi", { noremap = true, silent = true, desc = "Move line up" })
 
 -- Remove newline and keep cursor position
 vim.keymap.set("n", "J", "mzJ`z", { noremap = true, silent = true })
@@ -23,11 +21,27 @@ vim.keymap.set("n", "<leader>k", "<cmd>set paste<CR>m`O<Esc>``<cmd>set nopaste<C
 vim.keymap.set("n", "<leader>J", "m`<cmd>silent +g/\\m^\\s*$/d<CR>``<cmd>noh<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>K", "m`<cmd>silent -g/\\m^\\s*$/d<CR>``<cmd>noh<CR>", { noremap = true, silent = true })
 
+vim.keymap.set("n", "<C-n>", function()
+  if vim.fn.getqflist({ size = 0 }).size > 0 then
+    vim.cmd("cnext")
+  else
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-n>", true, true, true), "n", false)
+  end
+end, { noremap = true, silent = true })
+
+vim.keymap.set("n", "<C-p>", function()
+  if vim.fn.getqflist({ size = 0 }).size > 0 then
+    vim.cmd("cprev")
+  else
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-p>", true, true, true), "n", false)
+  end
+end, { noremap = true, silent = true })
+
 -- keep screen centered when moving
-vim.keymap.set("n", "<C-b>", "<C-b>zz", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-f>", "<C-f>zz", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-d>", "<C-d>zz", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-u>", "<C-u>zz", { noremap = true, silent = true })
+-- vim.keymap.set("n", "<C-b>", "<C-b>zz", { noremap = true, silent = true })
+-- vim.keymap.set("n", "<C-f>", "<C-f>zz", { noremap = true, silent = true })
+-- vim.keymap.set("n", "<C-d>", "<C-d>zz", { noremap = true, silent = true })
+-- vim.keymap.set("n", "<C-u>", "<C-u>zz", { noremap = true, silent = true })
 
 -- Improved search
 vim.keymap.set(
@@ -76,7 +90,7 @@ vim.keymap.set("i", "<C-H>", "<C-o>db", { noremap = true, silent = true, desc = 
 vim.keymap.set("i", "<C-Del>", "<C-o>dw", { noremap = true, silent = true, desc = "Delete word forward" })
 vim.keymap.set("i", "<S-right>", "<C-o>v", { noremap = true, silent = true, desc = "Delete word forward" })
 vim.keymap.set("i", "<S-left>", "<C-o>v", { noremap = true, silent = true, desc = "Delete word forward" })
-vim.keymap.set("i", "<C-c>", "<Esc>", { noremap = true, silent = true })
+-- vim.keymap.set("i", "<C-c>", "<Esc>", { noremap = true, silent = true })
 
 -- vim.keymap.set("i", "<C-Left>", "<C-o>b", { noremap = true, silent = true, desc = "Move one word forward" })
 -- vim.keymap.set("i", "<C-Right>", "<C-o>w", { noremap = true, silent = true, desc = "Move one word backward" })
@@ -145,8 +159,8 @@ vim.keymap.set("n", "<leader>ai", "<cmd>NeoAIToggle<CR>", { noremap = true, sile
 vim.keymap.set("n", "<leader>gpt", "<cmd>ChatGPT<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>tn", "<cmd>TabnineToggle<CR>", { noremap = true, silent = true })
 
-vim.keymap.set("n", "<tab>", "<cmd>bnext<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<S-tab>", "<cmd>bprev<CR>", { noremap = true, silent = true })
+-- vim.keymap.set("n", "<tab>", "<cmd>bnext<CR>", { noremap = true, silent = true })
+-- vim.keymap.set("n", "<S-tab>", "<cmd>bprev<CR>", { noremap = true, silent = true })
 
 -- ToggleTerm mappings
 vim.keymap.set("n", "<leader>tlg", "<cmd>lua Lazygit:toggle()<CR>", { noremap = true, silent = true })
@@ -172,5 +186,5 @@ vim.keymap.set(
   { noremap = true, silent = true }
 )
 
--- Markdown-preview mappings
-vim.keymap.set("n", "<leader>m", "<cmd>MarkdownPreviewToggle<cr>", { noremap = true, silent = true })
+-- -- Markdown-preview mappings
+-- vim.keymap.set("n", "<leader>m", "<cmd>MarkdownPreviewToggle<cr>", { noremap = true, silent = true })

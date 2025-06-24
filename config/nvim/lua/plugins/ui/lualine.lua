@@ -12,14 +12,26 @@ return {
       return vim.fn.winwidth(0) > 80
     end
 
+    local hide_mcp = function()
+      local buf_ft = vim.bo.filetype
+
+      return string.match(string.lower(buf_ft), "avante") ~= nil
+    end
+
+    local hide_buffertypes = function()
+      local buf_ft = vim.bo.filetype
+
+      return string.match(string.lower(buf_ft), "avante") == nil
+    end
+
     local diagnostics = {
       "diagnostics",
       sources = { "nvim_diagnostic" },
-      sections = { "error", "warn" },
-      symbols = { error = " ", warn = " " },
+      -- sections = { "hint", "warn", "error" },
+      -- symbols = { error = " ", warn = " " },
       colored = true,
       update_in_insert = true,
-      cond = hide_in_width,
+      -- cond = hide_in_width,
       always_visible = false,
     }
 
@@ -29,6 +41,28 @@ return {
       symbols = { added = " ", modified = " ", removed = " " }, -- changes diff symbols
       cond = hide_in_width,
       always_visible = false,
+    }
+
+    local filename = {
+      "filename",
+      path = 0,
+      symbols = {
+        modified = "●",
+        readonly = "",
+        unnamed = "[Untitled]",
+      },
+      cond = hide_buffertypes,
+    }
+
+    local project_name = function()
+      local cwd = vim.fn.getcwd()
+      return vim.fn.fnamemodify(cwd, ":t") -- Extract the last part of the current working directory
+    end
+
+    local project = {
+      project_name,
+      icon = "",
+      cond = hide_in_width,
     }
 
     local mode = {
@@ -43,6 +77,7 @@ return {
       icons_enabled = true,
       icon = nil,
       always_visible = false,
+      cond = hide_buffertypes,
     }
 
     local branch = {
@@ -109,6 +144,7 @@ return {
         lualine_a = { mode },
         lualine_b = {
           -- require("auto-session.lib").current_session_name,
+          project,
           branch,
           diff,
           -- "gfold",
@@ -118,15 +154,18 @@ return {
           -- require("venv-selector").get_active_venv(),
           -- require("venv-selector").retrieve_from_cache(),
           -- "swenv",
-          "filename",
-          diagnostics,
+          filename,
         },
-        lualine_x = { filetype },
+        lualine_x = {
+          diagnostics,
+          { require("mcphub.extensions.lualine"), cond = hide_mcp },
+          filetype,
+        },
         lualine_y = { { progress, cond = hide_in_width }, location },
         lualine_z = { "fileformat" }, --  { spaces, cond = hide_in_width }, encoding,
       },
       inactive_sections = {
-        lualine_a = { "filename" },
+        lualine_a = { filename },
         lualine_b = {},
         lualine_c = {},
         lualine_x = {},

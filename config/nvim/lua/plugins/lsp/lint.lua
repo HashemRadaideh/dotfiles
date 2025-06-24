@@ -1,42 +1,36 @@
 return {
   "mfussenegger/nvim-lint",
   event = {
-    "BufReadPost",
+    "BufReadPre",
     "BufNewFile",
   },
-  -- opts = {
-  --   linters = {
-  --     eslint_d = {
-  --       args = {
-  --         "--no-warn-ignored",
-  --         "--format",
-  --         "json",
-  --         "--stdin",
-  --         "--stdin-filename",
-  --         function()
-  --           return vim.api.nvim_buf_get_name(0)
-  --         end,
-  --       },
-  --     },
-  --   },
-  -- },
   config = function()
     local lint = require("lint")
 
     lint.linters_by_ft = {
-      -- javascript = { "eslint_d" },
-      -- typescript = { "eslint_d" },
-      -- javascriptreact = { "eslint_d" },
-      -- typescriptreact = { "eslint_d" },
-      -- svelte = { "eslint_d" },
+      -- javascript = { "biome", "eslint_d" },
+      -- typescript = { "biome", "eslint_d" },
+      -- javascriptreact = { "biome", "eslint_d" },
+      -- typescriptreact = { "biome", "eslint_d" },
+      -- svelte = { "biome", "eslint_d" },
+      -- lua = { "selene" }, -- "luacheck",
+      rust = { "bacon" },
+      c = { "cpplint" },
+      cpp = { "cpplint" },
+      cc = { "cpplint" },
+      -- markdown = { "markdownlint" },
       kotlin = { "ktlint" },
       clojure = { "clj-kondo" },
       terraform = { "tflint" },
-      ruby = { { "standardrb", "rubocop" } },
-      python = {
-        "ruff" --[[ , "mypy", "pylint" ]],
+      ruby = {
+        "rubocop", --[[ "standardrb" ]]
       },
+      python = {
+        "ruff", --[[ "mypy", "pylint" ]]
+      },
+      make = { "checkmake" },
       cmake = { "cmakelint" },
+      docker = { "hadolint" },
       protobuf = { "protolint" },
       ["*"] = { "codespell", "misspell", "cspell", "trivy", "ast-grep" },
     }

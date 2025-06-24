@@ -18,6 +18,7 @@ require("lspconfig").lua_ls.setup({
       workspace = {
         checkThirdParty = true,
         -- library = {
+        --   vim.api.nvim_get_runtime_file('', true),
         --   vim.fn.expand("$VIMRUNTIME/lua"),
         --   vim.fn.expand("$VIMRUNTIME/lua/vim/lsp"),
         --   vim.fn.stdpath("data") .. "/lazy/lazy.nvim/lua/lazy",
@@ -28,7 +29,7 @@ require("lspconfig").lua_ls.setup({
       },
       completion = {
         enable = true,
-        callSnippet = "Replace",
+        -- callSnippet = "Replace",
       },
       diagnostics = {
         enable = true,
@@ -37,7 +38,7 @@ require("lspconfig").lua_ls.setup({
         },
       },
       telemetry = {
-        enable = true,
+        enable = false,
       },
     },
   },

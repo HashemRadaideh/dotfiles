@@ -1,9 +1,7 @@
-local x = vim.diagnostic.severity
-
 vim.diagnostic.config({
   virtual_text = {
     source = true,
-    prefix = "●", -- "■", "▎"
+    prefix = "■", -- "●", "▎"
   },
   float = {
     source = true,
@@ -11,12 +9,12 @@ vim.diagnostic.config({
     border = "rounded",
     focusable = true,
   },
-  signs = {
+  signs = { --  
     text = {
-      [x.ERROR] = "⮾", -- 
-      [x.WARN] = "", --  -- ⚠
-      [x.INFO] = "",
-      [x.HINT] = "💡",
+      [vim.diagnostic.severity.ERROR] = "", -- ⮾
+      [vim.diagnostic.severity.WARN] = "", -- ⚠
+      [vim.diagnostic.severity.INFO] = "",
+      [vim.diagnostic.severity.HINT] = "💡",
     },
   },
   underline = true,
@@ -30,7 +28,8 @@ vim.diagnostic.config({
 --   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 -- end
 
-local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+-- local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require("blink.cmp").get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities())
 -- capabilities.textDocument.completion.completionItem.snippetSupport = true
 -- capabilities.textDocument.completion.completionItem.resolveSupport = {
 -- 	properties = { "documentation", "detail", "additionalTextEdits" },
@@ -39,18 +38,23 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protoc
 -- 	dynamicRegistration = false,
 -- 	lineFoldingOnly = true,
 -- }
-capabilities.textDocument = {
-  completion = {
-    completionItem = {
-      snippetSupport = true,
-      resolveSupport = {
-        properties = { "documentation", "detail", "additionalTextEdits" },
+capabilities = {
+  signatureHelpProvider = {
+    triggerCharacters = { "(", ",", " " },
+  },
+  textDocument = {
+    completion = {
+      completionItem = {
+        snippetSupport = true,
+        resolveSupport = {
+          properties = { "documentation", "detail", "additionalTextEdits" },
+        },
       },
     },
-  },
-  foldingRange = {
-    dynamicRegistration = false,
-    lineFoldingOnly = true,
+    foldingRange = {
+      dynamicRegistration = false,
+      lineFoldingOnly = true,
+    },
   },
 }
 
@@ -109,6 +113,16 @@ local handlers = {
     },
   }),
   ["textDocument/definition"] = goto_definition("vsplit"),
+  ["window/logMessage"] = function(_, result, ctx, _)
+    local client = vim.lsp.get_client_by_id(ctx.client_id)
+    local message = result.message
+
+    local messageType = result.type
+    local clientName = client and client.name or "Unknown client"
+    if messageType == vim.lsp.protocol.MessageType.Error then
+      vim.notify(string.format("%s LSP Error: %s", clientName, message), vim.log.levels.ERROR)
+    end
+  end,
 }
 
 local on_attach = function(client, bufnr)
@@ -181,13 +195,24 @@ local on_attach = function(client, bufnr)
     require("nvim-navic").attach(client, bufnr)
   end
 
-  require("lsp_signature").on_attach({
-    bind = true,
-    padding = "",
-    handler_opts = {
-      border = "rounded",
-    },
-  }, bufnr)
+  -- Get the filetype of the current buffer
+  local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
+
+  -- Skip lsp_signature setup for F# files
+  if filetype ~= "fsharp" then
+    -- https://www.reddit.com/r/neovim/comments/so4g5e/if_you_guys_arent_using_lsp_signaturenvim_what/
+    require("lsp_signature").on_attach({
+      bind = true,
+      padding = "",
+      handler_opts = {
+        border = "rounded",
+      },
+      hint_enable = true,
+      hint_prefix = "🔍 ",
+      -- toggle_key = "<C-k>",
+      extra_trigger_chars = { "(", ",", " " },
+    }, bufnr)
+  end
 
   require("illuminate").on_attach(client)
 

@@ -1,4 +1,4 @@
-vim.cmd([[let &scrolloff=999-&scrolloff]])
+-- vim.cmd([[let &scrolloff=999-&scrolloff]])
 -- vim.cmd([[let &colorcolumn="80,100,".join(range(120,999),",")]])
 -- vim.cmd([[autocmd BufRead,BufNewFile * setlocal signcolumn=yes:2]])
 -- vim.cmd([[highlight CursorColumn guibg=#ff0000]])

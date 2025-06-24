@@ -1,8 +1,8 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").kotlin_language_server.setup({
+require("lspconfig").gleam.setup({
   capabilities = config.capabilities,
   flags = config.flags,
-  -- handlers = config.handlers,
+  handlers = config.handlers,
   on_attach = config.on_attach,
 })

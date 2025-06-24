@@ -5,6 +5,7 @@ require("lspconfig").cssls.setup({
   on_attach = config.on_attach,
   handlers = config.handlers,
   flags = config.flags,
+  filetypes = { "css" },
   settings = {
     css = {
       customData = {

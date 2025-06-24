@@ -4,7 +4,6 @@ return {
     "nvim-lua/plenary.nvim",
   },
   cmd = { "Ollama", "OllamaModel", "OllamaServe", "OllamaServeStop" },
-
   keys = {
     {
       "<leader>oo",
