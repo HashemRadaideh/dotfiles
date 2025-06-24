@@ -1,0 +1,86 @@
+# https://github.com/Julien-cpsn/ATAC/blob/main/example_resources/key_bindings/vim_key_bindings.toml
+
+[keybindings.main_menu]
+exit = "q" # ctrl-c is implemented by default
+
+unselect_request = "h"
+expand_collection = "l"
+
+move_request_up = "Ctrl-k"
+move_request_down = "Ctrl-j"
+
+# next_environment = "e"
+# display_cookies = "c"
+
+next_environment = "Shift-E"
+display_env_editor = "Ctrl-E"
+display_cookies = "Shift-C"
+display_logs = "Shift-L"
+
+[keybindings.generic]
+display_help = "?"
+
+[keybindings.generic.text_inputs.text_input]
+confirm = "Enter"
+cancel = "Esc"
+
+delete_backward = "Delete"
+delete_forward = "Backspace"
+
+move_cursor_left = "Ctrl-h"
+move_cursor_right = "Ctrl-l"
+move_cursor_line_start = "Home"
+move_cursor_line_end = "End"
+
+[keybindings.generic.text_inputs]
+text_area_mode = "VimEmulation"
+
+[keybindings.generic.navigation]
+move_cursor_up = "k"
+move_cursor_down = "j"
+move_cursor_left = "h"
+move_cursor_right = "l"
+
+alt_move_cursor_up = "Ctrl-k"
+alt_move_cursor_down = "Ctrl-j"
+alt_move_cursor_left = "Ctrl-h"
+alt_move_cursor_right = "Ctrl-l"
+
+go_back = "Esc"
+select = "Enter"
+
+[keybindings.generic.list_and_table_actions]
+create_element = "n"
+delete_element = "d"
+edit_element = "Enter"        # Edit query param, header, basic auth, bearer token
+rename_element = "r"          # Only used in the collections list (main menu)
+toggle_element = "Shift-T"    # Only used in tables (Query params, headers, cookies)
+duplicate_element = "Shift-Y"
+
+[keybindings.request_selected]
+param_next_tab = "Tab"
+
+change_url = "u"
+change_method = "m"
+request_settings = "s"
+
+next_view = "]"
+
+send_request = "Space"
+alt_send_request = "Ctrl-Enter"
+
+export_request = "Ctrl-e"
+
+[keybindings.request_selected.param_tabs]
+change_auth_method = "a"
+change_body_content_type = "b"
+
+[keybindings.request_selected.result_tabs]
+scroll_up = "Ctrl-p"
+scroll_down = "Ctrl-n"
+scroll_left = "Ctrl-b"
+scroll_right = "Ctrl-f"
+
+yank_response_part = "y"
+
+result_next_tab = "t"
