@@ -31,9 +31,14 @@ if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "$DISPLAY" ]; then
 
     run picom --config "$DOTFILES/config/picom/picom.conf"
 
-    setxkbmap -layout us,ara -option grp:win_space_toggle
     # run setxkbmap -option caps:escape
     run xmodmap -e "keycode 135 = Super_R"
+    # setxkbmap -layout us,ara -option grp:win_space_toggle
+    run fcitx5
+    # run ibus-daemon -drx
+
+    run touchegg --client
+    run /usr/bin/touchpad-indicator
 
     run xset s off
     run xset s noblank
@@ -94,16 +99,28 @@ else
     run gammastep -l "$(while ! ping -c 1 1.1.1.1 >/dev/null 2>&1; do sleep 1; done && curl -s https://ipinfo.io | jq -r '.loc' | tr ',' ':')"
 fi
 
+run mpv --no-video --mute=yes /usr/share/sounds/freedesktop/stereo/service-login.oga && mpv --no-video /usr/share/sounds/freedesktop/stereo/service-login.oga
+
 run /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 run gnome-keyring-daemon --start --components=ssh
-# run bitwarden-desktop
 
 run udiskie -s
+# run blueman-applet
+# run nm-applet --indicator
+# run qjwgraph --minimized
+# run volumeicon
+
+# run gromit-mpx
+# run screenkey --start-disabled
+# run flameshot
+run birdtray
+
+# run battery
+
+# run bitwarden-desktop
 
 run discord --start-minimized
 # run webcord
-
-# run birdtray
 
 # run telegram-desktop -startintray
 # run caprine
@@ -115,16 +132,4 @@ run discord --start-minimized
 # run steam -silent
 # run spotify --minimized
 
-# run gromit-mpx
-# run screenkey --start-disabled
-# run flameshot
-
-# run battery
-# run blueman-applet
-# run nm-applet --indicator
-# run qjwgraph --minimized
-# run volumeicon
-
 # run /usr/bin/emacs --daemon
-
-run mpv --no-video --mute=yes /usr/share/sounds/freedesktop/stereo/service-login.oga && sleep 1 && mpv --no-video /usr/share/sounds/freedesktop/stereo/service-login.oga

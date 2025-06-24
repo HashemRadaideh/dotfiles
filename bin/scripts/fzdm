@@ -1,28 +1,29 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
-if [[ -z "$TMUX" ]]; then
-    list=("$(\ls "$XDG_DATA_HOME/sessions" | sort)" "tmux" "$(tty)" "power off" "reboot" "sleep" "logout")
-    file=$(printf "%s\n" "${list[@]}" | fzf --border-label=" Fuzzy Display Manager (fzdm) ")
+[ -n "$TMUX" ] && exit
 
-    starter() {
-        local extension="${$(grep -P 'export XDG_SESSION_TYPE=*' "$XDG_DATA_HOME/sessions/$1" | awk '{print $2}')//\)}"
+starter() {
+    tmp=$(grep -P 'export XDG_SESSION_TYPE=*' "$XDG_DATA_HOME/sessions/$1" | awk '{print $2}')
+    extension="${tmp//\)}"
 
-        if [[ "$extension" == "XDG_SESSION_TYPE=x11" ]]; then
-            startx "$XDG_DATA_HOME/sessions/$1"
-        else
-            eval "$(\cat "$XDG_DATA_HOME"/sessions/"$1")"
-        fi
-    }
-
-    if [ -n "$file" ]; then
-        case "$file" in
-            "logout") exit ;;
-            "sleep") systemctl suspend ;;
-            "reboot") systemctl reboot ;;
-            "power off") systemctl poweroff ;;
-            "$(tty)") clear ;;
-            "tmux") exec fzt ;;
-            *) exec starter "$file" ;;
-        esac
+    if [ "$extension" = "XDG_SESSION_TYPE=x11" ]; then
+        startx "$XDG_DATA_HOME/sessions/$1"
+    else
+        eval "$(\cat "$XDG_DATA_HOME"/sessions/"$1")"
     fi
-fi
+}
+
+list=("$(\ls "$XDG_DATA_HOME/sessions" | sort)" "tmux" "$(tty)" "power off" "reboot" "sleep" "logout")
+file=$(printf "%s\n" "${list[@]}" | fzf --border-label=" Fuzzy Display Manager (fzdm) ")
+
+[ -z "$file" ] && exit
+
+case "$file" in
+    "logout") exit ;;
+    "sleep") systemctl suspend ;;
+    "reboot") systemctl reboot ;;
+    "power off") systemctl poweroff ;;
+    "$(tty)") clear ;;
+    "tmux") exec fzt ;;
+    *) exec starter "$file" ;;
+esac

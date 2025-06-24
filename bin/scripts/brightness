@@ -2,7 +2,7 @@
 
 brightness_file="/tmp/brightness_previous"
 
-backlight_device=$(ls /sys/class/backlight/ | head -n 1)
+backlight_device=$(\ls /sys/class/backlight | head -n 1)
 
 if [ -z "$backlight_device" ]; then
     echo "Error: No backlight device found. Ensure your system supports brightness control."

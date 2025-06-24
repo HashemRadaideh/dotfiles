@@ -8,11 +8,15 @@ fi
 appname="$1"
 urgency="${5:-normal}"
 
+# echo "$appname" >> /tmp/notification_appnames.log
+
 ignored_apps=(
     "Volume Monitor"
     "Brightness Monitor"
     "spotify"
     "Spotify"
+    "Input Method"
+    "Touchpad-Indicator"
 )
 
 for ignored in "${ignored_apps[@]}"; do
@@ -23,9 +27,11 @@ done
 
 dir=/usr/share/sounds/freedesktop/stereo
 
+# mpv --no-video --mute=yes "$dir/dialog-error.oga"
+
 case "$urgency" in
     "LOW") mpv --no-video "$dir/message-new-instant.oga" ;;
     "NORMAL") mpv --no-video "$dir/message.oga" ;;
-    "CRITICAL") mpv --no-video "$dir/dialog-warning.oga" ;; # dialog-error.oga
+    "CRITICAL") mpv --no-video "$dir/dialog-warning.oga" ;; #
     *) mpv --no-video "$dir/dialog-information.oga" ;;
 esac

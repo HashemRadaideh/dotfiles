@@ -1,0 +1,141 @@
+#!/usr/bin/env python
+
+import re
+import sys
+from glob import glob
+from os import path
+from subprocess import check_call, check_output
+
+DISABLE_TOUCHPADS = False
+
+G = 7  # (m^2 / s) sensibility, gravity trigger
+
+STATES = [
+    {
+        "name": "normal",
+        "matrix": "1 0 0 0 1 0 0 0 1",
+        "check": lambda x, y: y <= -G,
+    },
+    {
+        "name": "inverted",
+        "matrix": "-1 0 1 0 -1 1 0 0 1",
+        "check": lambda x, y: y >= G,
+    },
+    {
+        "name": "left",
+        "matrix": "0 -1 1 1 0 0 0 0 1",
+        "check": lambda x, y: x >= G,
+    },
+    {
+        "name": "right",
+        "matrix": "0 1 0 -1 0 1 0 0 1",
+        "check": lambda x, y: x <= -G,
+    },
+]
+
+
+def find_accelerometer():
+    """Find the accelerometer device path."""
+    for device_path in glob("/sys/bus/iio/devices/iio:device*"):
+        with open(path.join(device_path, "name"), encoding="utf-8") as f:
+            if "accel" in f.read():
+                return device_path
+    return None
+
+
+def read_acceleration(device_path):
+    """Read acceleration values from the device."""
+    with open(path.join(device_path, "in_accel_scale"), encoding="utf-8") as f:
+        scale = float(f.read())
+
+    with open(path.join(device_path, "in_accel_x_raw"), encoding="utf-8") as f:
+        x = float(f.read()) * scale
+
+    with open(path.join(device_path, "in_accel_y_raw"), encoding="utf-8") as f:
+        y = float(f.read()) * scale
+
+    return x, y
+
+
+def get_display_name():
+    """Get the primary display device name."""
+    output = check_output(["xrandr"], universal_newlines=True)
+
+    edp_match = re.search(r"(eDP[0-9\-]*) connected", output)
+    if edp_match:
+        return edp_match.group(1)
+
+    lvds_match = re.search(r"(LVDS[0-9\-]*) connected", output)
+    if lvds_match:
+        return lvds_match.group(1)
+
+    return None
+
+
+def get_input_devices():
+    """Get touchscreen and touchpad devices."""
+    devices = check_output(["xinput", "--list", "--name-only"]).splitlines()
+
+    touchscreens = [
+        device
+        for device in devices
+        if any(name in device.lower() for name in [b"touchscreen", b"wacom"])
+    ]
+
+    touchpads = [
+        device
+        for device in devices
+        if any(name in device.lower() for name in [b"touchpad", b"trackpoint"])
+    ]
+
+    return touchscreens, touchpads
+
+
+def rotate_screen(state):
+    """Rotate the screen and input devices."""
+    display = get_display_name()
+    if not display:
+        sys.stderr.write("Can't find a display device!\n")
+        sys.exit(1)
+
+    check_call(["xrandr", "--output", display, "--rotate", state["name"]])
+
+    touchscreens, touchpads = get_input_devices()
+
+    for screen in touchscreens:
+        check_call(
+            ["xinput", "set-prop", screen, "Coordinate Transformation Matrix"]
+            + state["matrix"].split()
+        )
+
+    if not DISABLE_TOUCHPADS:
+        for pad in touchpads:
+            check_call(
+                ["xinput", "set-prop", pad, "Coordinate Transformation Matrix"]
+                + state["matrix"].split()
+            )
+    else:
+        touchpad_action = "disable" if state["name"] != "normal" else "enable"
+        for pad in touchpads:
+            check_call(["xinput", touchpad_action, pad])
+
+
+def main():
+    device_path = find_accelerometer()
+    if not device_path:
+        sys.stderr.write("Can't find an accelerometer device!\n")
+        sys.exit(1)
+
+    current_state = None
+    while True:
+        x, y = read_acceleration(device_path)
+
+        for state in STATES:
+            if state["check"](x, y) and state != current_state:
+                rotate_screen(state)
+                current_state = state
+                break
+
+
+if __name__ == "__main__":
+    main()

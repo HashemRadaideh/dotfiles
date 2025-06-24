@@ -2,7 +2,7 @@
 
 rm /tmp/screenlock.png
 
-screenshot fullscreen /tmp/screenlock.png "Screen Lock"
+creamshot fullscreen /tmp/screenlock.png "Screen Lock"
 
 magick /tmp/screenlock.png \
     -blur 0x10 \

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Function to fetch "feels like" temperature for a given city ID
 get_feels_like_temperature() {

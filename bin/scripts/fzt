@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-session=""
-
 if [ -n "$(tmux ls 2>/dev/null)" ]; then
     session=$(
         tmux ls -F "#S" |
@@ -15,9 +13,7 @@ else
     exec tmux -u new -s "default"
 fi
 
-if [ "$session" = "" ]; then
-    exit
-fi
+[ -z "$session" ] && exit
 
 if tmux has -t "$session" 2>/dev/null; then
     if [ -z "$TMUX" ]; then

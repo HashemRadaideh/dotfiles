@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if ! command -v curl >/dev/null 2>&1 || ! command -v awk >/dev/null 2>&1 ; then
     if ! command -v notify-send >/dev/null 2>&1 ; then

@@ -1,4 +1,4 @@
-#!/bin/luajit
+#!/usr/bin/env luajit
 
 local function notify(notification)
 	local text = notification.text or ""
@@ -87,7 +87,7 @@ while true do
 	end
 
 	x, y, z = newX, newY, newZ
-	-- notify({ text = "IMU at (" .. x .. ", " .. y .. ", " .. z .. ")", id = 999 })
+	notify({ text = "IMU at (" .. x .. ", " .. y .. ", " .. z .. ")", id = 999 })
 
 	for _, orientation in ipairs(orientations) do
 		if orientation.check(x, y, z) then
@@ -105,16 +105,16 @@ while true do
 
 	if rotation == rotations.LANDSCAPE and not flipped then
 		-- notify({ text = "normal", id = 997 })
-		os.execute([[xrandr --output eDP-1 --rotate normal]])
+		os.execute([[xrandr --output eDP --rotate normal]])
 	elseif rotation == rotations.LANDSCAPE and flipped then
 		-- notify({ text = "inverted", id = 997 })
-		os.execute([[xrandr --output eDP-1 --rotate inverted]])
+		os.execute([[xrandr --output eDP --rotate inverted]])
 	elseif rotation == rotations.PORTRAIT and not flipped then
 		-- notify({ text = "left", id = 997 })
-		os.execute([[xrandr --output eDP-1 --rotate left]])
+		os.execute([[xrandr --output eDP --rotate left]])
 	elseif rotation == rotations.PORTRAIT and flipped then
 		-- notify({ text = "right", id = 997 })
-		os.execute([[xrandr --output eDP-1 --rotate right]])
+		os.execute([[xrandr --output eDP --rotate right]])
 	end
 	::continue::
 end
