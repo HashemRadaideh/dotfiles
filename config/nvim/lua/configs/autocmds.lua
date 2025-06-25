@@ -37,7 +37,7 @@ vim.cmd([[
       endif
     endif
   endfunction
-  " nnoremap <silent> <F10> :call Transparency()<CR>
+  nnoremap <silent> <F10> :call Transparency()<CR>
   " au VimEnter * call Transparency()
 ]])
 
