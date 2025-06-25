@@ -16,32 +16,6 @@ client.connect_signal("manage", function(c)
   end
 end)
 
-function Titled()
-  Titles = not Titles
-
-  if Titles then
-    for _, c in ipairs(client.get()) do
-      if not c.maximized then
-        awful.titlebar.show(c)
-      end
-    end
-  else
-    for _, c in ipairs(client.get()) do
-      awful.titlebar.hide(c)
-    end
-  end
-end
-
-function Gapped()
-  Gaps = not Gaps
-
-  for _, t in ipairs(root.tags()) do
-    awful.tag.incgap(Gaps and -8 or 8, t)
-  end
-end
-
-Gapped()
-
 -- Rounded Borders and no border for maximized clients
 local function border_adjust(c)
   if Autohide and c.fullscreen then
@@ -65,17 +39,6 @@ local function border_adjust(c)
   else
     c.border_width = 0
   end
-
-  -- if Gaps then
-  --   if c.maximized or c.fullscreen then
-  --     c.border_width = 0
-  --     c.shape = nil
-  --   else
-  --     c.shape = function(cr, w, h) gears.shape.rounded_rect(cr, w, h, 15) end
-  --   end
-  -- else
-  --   c.shape = nil
-  -- end
 end
 
 client.connect_signal("focus", border_adjust)
@@ -89,7 +52,6 @@ end)
 client.connect_signal("mouse::enter", function(c)
   border_adjust(c)
   if Sloppy then
-    -- c:emit_signal("request::activate", "mouse_enter", { raise = true })
     c:activate({ context = "mouse_enter", raise = true })
   end
 end)
@@ -100,3 +62,29 @@ client.connect_signal("request::manage", function(c)
     awful.titlebar.hide(c)
   end
 end)
+
+function Titled()
+  Titles = not Titles
+
+  if Titles then
+    for _, c in ipairs(client.get()) do
+      if not c.maximized then
+        awful.titlebar.show(c)
+      end
+    end
+  else
+    for _, c in ipairs(client.get()) do
+      awful.titlebar.hide(c)
+    end
+  end
+end
+
+function Gapped()
+  Gaps = not Gaps
+
+  for _, t in ipairs(root.tags()) do
+    awful.tag.incgap(Gaps and -beautiful.useless_gap_size or beautiful.useless_gap_size, t)
+  end
+end
+
+Gapped()

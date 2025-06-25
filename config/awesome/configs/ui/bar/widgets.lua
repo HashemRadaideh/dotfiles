@@ -216,13 +216,35 @@ end
 
 ModeToggle = wibox.widget.imagebox(get_image())
 
-ModeToggle:connect_signal("button::press", function(self)
-  if not Autohide and not Gaps and Titles and Sloppy then
+ModeToggle:connect_signal("update_ui", function(self)
+  self.prev = self.mode or "zen"
+  if Autohide and Gaps and not Titles and not Sloppy then
     self.image = beautiful.mode_zen
-  elseif Autohide and Gaps and not Titles and not Sloppy then
+    self.mode = "zen"
+  elseif not Autohide and not Gaps and Titles and Sloppy then
     self.image = beautiful.mode_casual
+    self.mode = "casual"
   else
     self.image = beautiful.mode_custom
+    self.mode = "custom"
+  end
+end)
+
+ModeToggle:connect_signal("button::press", function(self)
+  if self.mode == "custom" and self.prev == "zen" then
+    Autohide = false
+    if Gaps then
+      Gapped()
+    end
+    Titles = true
+    Sloppy = true
+  elseif self.mode == "custom" and self.prev == "casual" then
+    Autohide = true
+    if not Gaps then
+      Gapped()
+    end
+    Titles = false
+    Sloppy = false
   end
 
   Autohide = not Autohide
@@ -239,6 +261,8 @@ ModeToggle:connect_signal("button::press", function(self)
   Titled()
 
   Sloppy = not Sloppy
+
+  self:emit_signal("update_ui")
 end)
 
 -- Right region widgets

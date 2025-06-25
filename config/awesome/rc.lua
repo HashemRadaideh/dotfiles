@@ -16,13 +16,14 @@ require("awful.autofocus")
 require("awful.hotkeys_popup.keys")
 
 Theme = "configs/theme.lua"
+Wallpapers_path = os.getenv("HOME") .. "/Pictures/Wallpapers"
 
-Randomize = true
+Randomize = false
 
 Autohide = false
 Gaps = true
 Sloppy = true
-Titles = true
+Titles = false
 
 Idle = os.execute([[ps -o state= -p $(pgrep xidlehook) | grep -q 'T']])
 

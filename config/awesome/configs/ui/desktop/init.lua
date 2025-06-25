@@ -1,41 +1,48 @@
 local awful = require("awful")
 local wibox = require("wibox")
+local beautiful = require("beautiful")
 
-function Change_wallpaper()
+function GetRandPic(directory)
   local ok, lfs = pcall(require, "lfs")
-  if ok and Randomize then
-    local function getRandPic(directory)
-      local files = {}
-      local function exploreDirectory(dir)
-        for file in lfs.dir(dir) do
-          if file ~= "." and file ~= ".." and file ~= ".git" then
-            local filePath = dir .. "/" .. file
-            local attr = lfs.attributes(filePath)
-            if attr.mode == "file" then
-              table.insert(files, filePath)
-            elseif attr.mode == "directory" then
-              exploreDirectory(filePath)
-            end
-          end
-        end
-      end
-      exploreDirectory(directory)
-
-      local index = math.random(#files)
-      return files[index]
-    end
-
-    Wallpaper = getRandPic(os.getenv("HOME") .. "/Pictures/Wallpapers")
-  else
-    Wallpaper = os.getenv("HOME") .. [[/Pictures/Wallpapers/Linux/Arch/1607458.png]]
+  if not ok then
+    return beautiful.default_wallpaper
   end
 
+  local function collectWallpapers(dir, list)
+    list = list or {}
+
+    local ignore = { ["."] = true, [".."] = true, [".git"] = true }
+
+    for file in lfs.dir(dir) do
+      if not ignore[file] then
+        local filePath = dir .. "/" .. file
+        local mode = lfs.attributes(filePath, "mode")
+
+        if mode == "file" then
+          list[#list + 1] = filePath
+        elseif mode == "directory" then
+          collectWallpapers(filePath, list)
+        end
+      end
+    end
+
+    return list
+  end
+
+  local wallpapers = collectWallpapers(directory)
+  if not wallpapers or #wallpapers == 0 then
+    return beautiful.default_wallpaper
+  end
+  return wallpapers[math.random(#wallpapers)]
+end
+
+function Change_wallpaper(wallpaper)
   screen.connect_signal("request::wallpaper", function(s)
     awful.wallpaper({
       screen = s,
       widget = {
         {
-          image = Wallpaper,
+          image = wallpaper,
           resize = true,
           upscale = true,
           downscale = true,
@@ -52,7 +59,16 @@ function Change_wallpaper()
   end)
 end
 
-Change_wallpaper()
+local function set_wallpaper()
+  local wallpaper = beautiful.default_wallpaper
+  if Randomize then
+    wallpaper = GetRandPic(Wallpapers_path)
+  end
+
+  Change_wallpaper(wallpaper)
+end
+
+set_wallpaper()
 
 screen.connect_signal("request::desktop_decoration", function(s)
   s.Bartoggle = wibox({
@@ -161,28 +177,28 @@ screen.connect_signal("request::desktop_decoration", function(s)
   -- end)
 end)
 
-screen.connect_signal("added", function()
-  for scrn in screen do
-    scrn.Bartoggle = nil
-    scrn.Keyboard = nil
-    -- if scrn.Bartoggle then
-    --   scrn.Bartoggle = nil
-    -- end
-    -- if scrn.Keyboard then
-    --   scrn.Keyboard = nil
-    -- end
-  end
-end)
+-- screen.connect_signal("added", function()
+--   for scrn in screen do
+--     scrn.Bartoggle = nil
+--     scrn.Keyboard = nil
+--     -- if scrn.Bartoggle then
+--     --   scrn.Bartoggle = nil
+--     -- end
+--     -- if scrn.Keyboard then
+--     --   scrn.Keyboard = nil
+--     -- end
+--   end
+-- end)
 
-screen.connect_signal("removed", function()
-  for scrn in screen do
-    scrn.Bartoggle = nil
-    scrn.Keyboard = nil
-    -- if scrn.Bartoggle then
-    --   scrn.Bartoggle = nil
-    -- end
-    -- if scrn.Keyboard then
-    --   scrn.Keyboard = nil
-    -- end
-  end
-end)
+-- screen.connect_signal("removed", function()
+--   for scrn in screen do
+--     scrn.Bartoggle = nil
+--     scrn.Keyboard = nil
+--     -- if scrn.Bartoggle then
+--     --   scrn.Bartoggle = nil
+--     -- end
+--     -- if scrn.Keyboard then
+--     --   scrn.Keyboard = nil
+--     -- end
+--   end
+-- end)

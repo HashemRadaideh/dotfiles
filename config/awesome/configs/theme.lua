@@ -8,7 +8,7 @@ local dpi = xresources.apply_dpi
 local theme = {}
 
 -- Path to themes folder
-theme.icons_dir = gears.filesystem.get_configuration_dir() .. "configs/icons/"
+theme.assets_dir = gears.filesystem.get_configuration_dir() .. "assets/"
 theme.default_dir = gears.filesystem.get_themes_dir()
 
 local function getHostname()
@@ -23,7 +23,7 @@ local function getHostname()
 end
 
 -- Side panel profile
-theme.pfp = theme.icons_dir .. "pfp.png"
+theme.pfp = theme.assets_dir .. "pfp.png"
 theme.user = os.getenv("USER")
 theme.hostname = getHostname()
 
@@ -100,6 +100,18 @@ theme.fg_minimize = theme.dim_foreground
 theme.border_normal = theme.black
 theme.border_focus = theme.blue
 theme.border_marked = theme.red
+theme.border_width = dpi(2)
+
+theme.useless_gap = 0
+theme.useless_gap_size = dpi(8)
+theme.gap_single_client = true
+
+theme.master_count = 1
+theme.column_count = 1
+
+theme.master_fill_policy = "master_width_factor"
+theme.master_fill_policy = "expand"
+theme.master_width_factor = 0.5
 
 -- Bar
 theme.bar = theme.background
@@ -117,7 +129,7 @@ theme.titlebar_bg_normal = theme.bar
 theme.titlebar_bg_focus = theme.bar
 
 -- Main menu
-theme.menu_icon = theme.icons_dir .. "menu.png"
+theme.menu_icon = theme.assets_dir .. "menu.png"
 
 theme.menu_font = theme.font
 theme.menu_height = dpi(10)
@@ -196,18 +208,20 @@ theme.layout_cornerse = theme.default_dir .. "default/layouts/cornersew.png"
 theme.awesome_icon = theme_assets.awesome_icon(theme.menu_height, theme.bg_focus, theme.fg_focus)
 
 -- Mode icon
-theme.mode_zen = theme.icons_dir .. "modes/zen.png"
-theme.mode_casual = theme.icons_dir .. "modes/casual.png"
-theme.mode_custom = theme.icons_dir .. "modes/custom.png"
+theme.mode_zen = theme.assets_dir .. "modes/zen.png"
+theme.mode_casual = theme.assets_dir .. "modes/casual.png"
+theme.mode_custom = theme.assets_dir .. "modes/custom.png"
 
 -- Seprator icon
-theme.arrow_left = theme.icons_dir .. "arrow_left.png"
-theme.arrow_right = theme.icons_dir .. "arrow_right.png"
+theme.arrow_left = theme.assets_dir .. "arrow_left.png"
+theme.arrow_right = theme.assets_dir .. "arrow_right.png"
 
 -- icons
-theme.cpu_icon = theme.icons_dir .. "cpu.png"
-theme.mem_icon = theme.icons_dir .. "memory.png"
-theme.net_icon = theme.icons_dir .. "network.png"
-theme.clock_icon = theme.icons_dir .. "clock.png"
+theme.cpu_icon = theme.assets_dir .. "cpu.png"
+theme.mem_icon = theme.assets_dir .. "memory.png"
+theme.net_icon = theme.assets_dir .. "network.png"
+theme.clock_icon = theme.assets_dir .. "clock.png"
+
+theme.default_wallpaper = theme.assets_dir .. "archlinux.png"
 
 return theme

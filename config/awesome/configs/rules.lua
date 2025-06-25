@@ -94,24 +94,23 @@ ruled.client.connect_signal("request::rules", function()
   ruled.client.append_rule({
     rule_any = {
       class = {
-        "firefox",
-        "floorp",
-        "Brave",
-        "Google-chrome",
-        "Sidekick-browser",
         "zen",
+        "floorp",
+        "firefox",
+        "Brave",
+        "Sidekick-browser",
+        "Google-chrome",
       },
     },
     properties = {
       screen = awful.screen.focused,
     },
     callback = function(c)
-      ---@diagnostic disable-next-line: unused-local
       local function is_empty(tag, clt)
         local count = 0
 
         for _, clnt in pairs(tag:clients()) do
-          count = clnt.class == c.class and count + 1 or count
+          count = clnt.class == clt.class and count + 1 or count
         end
 
         return count <= 1
@@ -123,18 +122,27 @@ ruled.client.connect_signal("request::rules", function()
       end
 
       local tags = awful.screen.focused().tags
-      local current_tag = tags[awful.tag.getidx()]
+      local index = awful.tag.getidx() - 1
+      local tag = tags[index]
 
-      if not is_empty(current_tag, c) then
-        for _, tag in pairs(tags) do
-          if #tag:clients() == 0 then
-            current_tag = tag
-            break
-          end
+      for i = 0, #tags - 1 do
+        local idx = ((index + i) % #tags) + 1
+        if is_empty(tags[idx], c) then
+          tag = tags[idx]
+          break
         end
       end
 
-      c:move_to_tag(current_tag)
+      require("gears").timer({
+        timeout = 2,
+        call_now = true,
+        autostart = true,
+        single_shot = true,
+        callback = function()
+          tag:view_only()
+          c:move_to_tag(tag)
+        end,
+      })
     end,
   })
 

@@ -30,7 +30,9 @@ awful.keyboard.append_global_keybindings({
 
   awful.key({ Super, Ctrl }, "r", awesome.restart, { description = "Reload Awesome", group = "Awesome" }),
 
-  awful.key({ Super }, "w", Change_wallpaper, { description = "Change Wallpaper", group = "Awesome" }),
+  awful.key({ Super }, "w", function()
+    Change_wallpaper(GetRandPic(Wallpapers_path))
+  end, { description = "Change Wallpaper", group = "Awesome" }),
 
   awful.key({ Super, Ctrl }, "q", awesome.quit, { description = "Quit awesome", group = "Awesome" }),
 
@@ -63,18 +65,22 @@ awful.keyboard.append_global_keybindings({
         s.Bar.visible = not Autohide
       end
     end
+    ModeToggle:emit_signal("update_ui")
   end, { description = "Toggle bar visibility", group = "awesome" }),
 
   awful.key({ Super }, "t", function()
     Titled()
+    ModeToggle:emit_signal("update_ui")
   end, { description = "Toggle titlebars mode", group = "System" }),
 
   awful.key({ Super }, "g", function()
     Gapped()
+    ModeToggle:emit_signal("update_ui")
   end, { description = "Toggle zen mode", group = "System" }),
 
   awful.key({ Super, Shift }, "s", function()
     Sloppy = not Sloppy
+    ModeToggle:emit_signal("update_ui")
   end, { description = "Toggle sloppy focus", group = "System" }),
 
   awful.key({ Super }, "z", function()

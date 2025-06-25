@@ -99,8 +99,6 @@ else
     run gammastep -l "$(while ! ping -c 1 1.1.1.1 >/dev/null 2>&1; do sleep 1; done && curl -s https://ipinfo.io | jq -r '.loc' | tr ',' ':')"
 fi
 
-run mpv --no-video --mute=yes /usr/share/sounds/freedesktop/stereo/service-login.oga && mpv --no-video /usr/share/sounds/freedesktop/stereo/service-login.oga
-
 run /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 run gnome-keyring-daemon --start --components=ssh
 
@@ -133,3 +131,6 @@ run discord --start-minimized
 # run spotify --minimized
 
 # run /usr/bin/emacs --daemon
+
+mpv --no-video --really-quiet --volume=0 /usr/share/sounds/freedesktop/stereo/service-login.oga
+mpv --no-video --really-quiet /usr/share/sounds/freedesktop/stereo/service-login.oga
