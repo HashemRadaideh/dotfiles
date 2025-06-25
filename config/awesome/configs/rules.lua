@@ -9,7 +9,7 @@ ruled.client.connect_signal("request::rules", function()
     id = "global",
     rule = {},
     properties = {
-      titlebars_enabled = Titled,
+      titlebars_enabled = Titles,
       focus = awful.client.focus.filter,
       raise = true,
       screen = awful.screen.focused,
@@ -99,6 +99,7 @@ ruled.client.connect_signal("request::rules", function()
         "Brave",
         "Google-chrome",
         "Sidekick-browser",
+        "zen",
       },
     },
     properties = {

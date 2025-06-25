@@ -204,17 +204,41 @@ function Tagslist(s)
   })
 end
 
-ModeToggle = wibox.widget.imagebox(beautiful.mode_icon)
+local function get_image()
+  if Autohide and not Gaps and not Titles and not Sloppy then
+    return beautiful.mode_zen
+  elseif not Autohide and Gaps and Titles and Sloppy then
+    return beautiful.mode_casual
+  else
+    return beautiful.mode_custom
+  end
+end
+
+ModeToggle = wibox.widget.imagebox(get_image())
 
 ModeToggle:connect_signal("button::press", function(self)
-  ZenSwitch()
-  Titles()
-
-  if Zen then
-    self.image = beautiful.mode_icon
+  if not Autohide and not Gaps and Titles and Sloppy then
+    self.image = beautiful.mode_zen
+  elseif Autohide and Gaps and not Titles and not Sloppy then
+    self.image = beautiful.mode_casual
   else
-    self.image = beautiful.mode_icon_active
+    self.image = beautiful.mode_custom
   end
+
+  Autohide = not Autohide
+  for s in screen do
+    if Autohide then
+      s.Bar.hide:start()
+    else
+      s.Bar.visible = not Autohide
+    end
+  end
+
+  Gapped()
+
+  Titled()
+
+  Sloppy = not Sloppy
 end)
 
 -- Right region widgets

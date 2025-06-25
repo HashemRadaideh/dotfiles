@@ -24,7 +24,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
     type = "dock",
     screen = s,
     visible = true,
-    hide = gears.timer({ timeout = 1 }),
+    hide = gears.timer({ timeout = 2.5 }),
     hover = false,
     ontop = false,
     bg = beautiful.bg_transparent,

@@ -86,7 +86,7 @@ theme.white = "#B5BFE2"
 
 -- General/default Settings
 theme.bg_normal = theme.background
-theme.bg_transparent = theme.bg_normal
+theme.bg_transparent = theme.bg_normal .. "bf"
 theme.bg_focus = theme.black
 theme.bg_urgent = theme.red
 theme.bg_minimize = theme.white
@@ -195,11 +195,10 @@ theme.layout_cornerse = theme.default_dir .. "default/layouts/cornersew.png"
 -- Generate Awesome icon:
 theme.awesome_icon = theme_assets.awesome_icon(theme.menu_height, theme.bg_focus, theme.fg_focus)
 
-theme.transparent_bg = theme.icons_dir .. "bg.png"
-
 -- Mode icon
-theme.mode_icon = theme.icons_dir .. "mode.png"
-theme.mode_icon_active = theme.icons_dir .. "mode2.png"
+theme.mode_zen = theme.icons_dir .. "modes/zen.png"
+theme.mode_casual = theme.icons_dir .. "modes/casual.png"
+theme.mode_custom = theme.icons_dir .. "modes/custom.png"
 
 -- Seprator icon
 theme.arrow_left = theme.icons_dir .. "arrow_left.png"

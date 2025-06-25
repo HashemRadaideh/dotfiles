@@ -15,6 +15,17 @@ require("awful.autofocus")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
+Theme = "configs/theme.lua"
+
+Randomize = true
+
+Autohide = false
+Gaps = true
+Sloppy = true
+Titles = true
+
+Idle = os.execute([[ps -o state= -p $(pgrep xidlehook) | grep -q 'T']])
+
 Bluetooth_manager = "blueberry" -- "cinnamon-settings blueberry" -- "blueman-manager"
 File_manager = "thunar"
 Network_manager = "cinnamon-settings network"
@@ -26,14 +37,5 @@ Terminal_editor = Terminal_emulator .. " -e " .. Shell .. " -c " .. (os.getenv("
 Terminal_file_manager = Terminal_emulator .. " -e " .. Shell .. " -c yazi"
 Terminal_multiplexed = Terminal_emulator .. " -e " .. Shell .. " -c fzt"
 Web_browser = "floorp"
-
-Autohide = true
-Zen = true
-Sloppy = false
-Titled = false
-Randomize = true
-Idle = os.execute([[ps -o state= -p $(pgrep xidlehook) | grep -q 'T']])
-
-Theme = "configs/theme.lua"
 
 require("configs")

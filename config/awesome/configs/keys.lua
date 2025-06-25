@@ -55,25 +55,31 @@ awful.keyboard.append_global_keybindings({
   end, { description = "Toggle bar visibility", group = "awesome" }),
 
   awful.key({ Super, Shift }, "b", function()
-    -- if Autohide then
     Autohide = not Autohide
     for s in screen do
-      s.Bar.visible = not Autohide
+      if Autohide then
+        s.Bar.hide:start()
+      else
+        s.Bar.visible = not Autohide
+      end
     end
-    -- end
   end, { description = "Toggle bar visibility", group = "awesome" }),
 
   awful.key({ Super }, "t", function()
-    Titles()
+    Titled()
   end, { description = "Toggle titlebars mode", group = "System" }),
 
-  awful.key({ Super }, "z", function()
-    ZenSwitch()
+  awful.key({ Super }, "g", function()
+    Gapped()
   end, { description = "Toggle zen mode", group = "System" }),
 
   awful.key({ Super, Shift }, "s", function()
-    Is_sloppy = not Is_sloppy
+    Sloppy = not Sloppy
   end, { description = "Toggle sloppy focus", group = "System" }),
+
+  awful.key({ Super }, "z", function()
+    ModeToggle:emit_signal("button::press")
+  end, { description = "Toggle mode", group = "System" }),
 
   -- awful.key(
   --   { Super, }, "/",
@@ -115,7 +121,7 @@ awful.keyboard.append_global_keybindings({
     awful.spawn([[rofi -show drun -theme "themes/launchpad.rasi"]])
   end, { description = "Open rofi run prompt", group = "Launch" }),
 
-  awful.key({ Super }, "g", function()
+  awful.key({ Super, Shift }, "g", function()
     awful.spawn([[rofi -show emoji -modi emoji -theme "themes/emojis.rasi"]])
   end, { description = "Open rofi run prompt", group = "Launch" }),
 

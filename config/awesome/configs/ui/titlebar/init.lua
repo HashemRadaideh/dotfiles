@@ -149,7 +149,7 @@ client.connect_signal("request::titlebars", function(c)
           exit_button,
         },
       },
-      margins = { top = 5, bottom = 5, left = 10, right = 10 },
+      margins = { top = 0, bottom = 0, left = 10, right = 10 },
       widget = wibox.container.margin,
     })
 end)
