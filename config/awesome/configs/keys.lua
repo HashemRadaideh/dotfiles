@@ -42,16 +42,16 @@ awful.keyboard.append_global_keybindings({
   awful.key({ Super }, "b", function()
     if Autohide then
       for s in screen do
-        s.Bar.visible = Autohide
+        s.bar.visible = Autohide
 
-        s.Bar.hide:connect_signal("timeout", function()
-          if not s.Bar.hover then
-            s.Bar.visible = not Autohide
+        s.bar.hide:connect_signal("timeout", function()
+          if not s.bar.hover then
+            s.bar.visible = not Autohide
           end
-          s.Bar.hide:stop()
+          s.bar.hide:stop()
         end)
 
-        s.Bar.hide:start()
+        s.bar.hide:start()
       end
     end
   end, { description = "Toggle bar visibility", group = "awesome" }),
@@ -60,31 +60,31 @@ awful.keyboard.append_global_keybindings({
     Autohide = not Autohide
     for s in screen do
       if Autohide then
-        s.Bar.hide:start()
+        s.bar.hide:start()
       else
-        s.Bar.visible = not Autohide
+        s.bar.visible = not Autohide
       end
     end
-    ModeToggle:emit_signal("update_ui")
+    require("configs.ui.bar.modetoggle"):emit_signal("update_ui")
   end, { description = "Toggle bar visibility", group = "awesome" }),
 
   awful.key({ Super }, "t", function()
     Titled()
-    ModeToggle:emit_signal("update_ui")
+    require("configs.ui.bar.modetoggle"):emit_signal("update_ui")
   end, { description = "Toggle titlebars mode", group = "System" }),
 
   awful.key({ Super }, "g", function()
     Gapped()
-    ModeToggle:emit_signal("update_ui")
+    require("configs.ui.bar.modetoggle"):emit_signal("update_ui")
   end, { description = "Toggle zen mode", group = "System" }),
 
   awful.key({ Super, Shift }, "s", function()
     Sloppy = not Sloppy
-    ModeToggle:emit_signal("update_ui")
+    require("configs.ui.bar.modetoggle"):emit_signal("update_ui")
   end, { description = "Toggle sloppy focus", group = "System" }),
 
   awful.key({ Super }, "z", function()
-    ModeToggle:emit_signal("button::press")
+    require("configs.ui.bar.modetoggle"):emit_signal("button::press")
   end, { description = "Toggle mode", group = "System" }),
 
   -- awful.key(
@@ -96,15 +96,11 @@ awful.keyboard.append_global_keybindings({
   -- ),
 
   awful.key({ Super }, "a", function()
-    Task.visible = not Task.visible
-
-    TaskButton.image = Task.visible and beautiful.arrow_left or beautiful.arrow_right
+    require("configs.ui.bar.tasks").tasks_button:emit_signal("button::press")
   end, { description = "Toggle active apps list visibility", group = "System" }),
 
   awful.key({ Super }, "s", function()
-    Systray.visible = not Systray.visible
-
-    SystrayButton.image = Systray.visible and beautiful.arrow_right or beautiful.arrow_left
+    require("configs.ui.bar.systray").systray_button:emit_signal("button::press")
   end, { description = "Toggle systray visibility", group = "System" }),
 
   awful.key({ Super }, "'", function()
@@ -176,7 +172,7 @@ awful.keyboard.append_global_keybindings({
   end, { description = "Lock screen", group = "System" }),
 
   awful.key({ Super, Shift }, "x", function()
-    IdleInhibitor:emit_signal("button::press")
+    require("configs.ui.bar.idleinhibitor"):emit_signal("button::press")
   end, { description = "Toggle screen idle", group = "System" }),
 
   awful.key({ Super }, "p", function()

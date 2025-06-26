@@ -113,7 +113,7 @@ theme.master_fill_policy = "master_width_factor"
 theme.master_fill_policy = "expand"
 theme.master_width_factor = 0.5
 
--- Bar
+-- bar
 theme.bar = theme.background
 theme.bar_alt = theme.bright_background
 theme.bg_systray = theme.background
@@ -129,7 +129,7 @@ theme.titlebar_bg_normal = theme.bar
 theme.titlebar_bg_focus = theme.bar
 
 -- Main menu
-theme.menu_icon = theme.assets_dir .. "menu.png"
+theme.menu_icon = theme.assets_dir .. "white-menu.png"
 
 theme.menu_font = theme.font
 theme.menu_height = dpi(10)

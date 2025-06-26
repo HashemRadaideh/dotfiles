@@ -20,22 +20,11 @@ tag.connect_signal("request::default_layouts", function()
   awful.layout.suit.tile.left.mirror = true
 end)
 
-Tags = {
-  -- "", "", "", "", "", "", "", "", "ﭮ", "",
-  -- "", "", "", "", "", "", "", "", "", "",
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "10",
-  -- "Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ",
-  -- ">_<", "o_O", "~_~", "T-T", "^_^", "._.", ":3", ":')", ":D", "?_?",
-}
+-- "", "", "", "", "", "", "", "", "ﭮ", "",
+-- "", "", "", "", "", "", "", "", "", "",
+-- "Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ",
+-- ">_<", "o_O", "~_~", "T-T", "^_^", "._.", ":3", ":')", ":D", "?_?",
+Tags = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }
 
 local function switch(case)
   return function(codetable)
@@ -120,3 +109,7 @@ function Create_tags(s)
     })
   end
 end
+
+screen.connect_signal("request::desktop_decoration", function(s)
+  Create_tags(s)
+end)

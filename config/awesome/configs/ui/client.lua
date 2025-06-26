@@ -19,18 +19,18 @@ end)
 -- Rounded Borders and no border for maximized clients
 local function border_adjust(c)
   if Autohide and c.fullscreen then
-    if c.screen.Bartoggle then
-      c.screen.Bartoggle.ontop = false
+    if c.screen.bar_toggle then
+      c.screen.bar_toggle.ontop = false
     end
-    if c.screen.Bar.hide then
-      c.screen.Bar.hide:stop()
+    if c.screen.bar.hide then
+      c.screen.bar.hide:stop()
     end
   else
-    if c.screen.Bartoggle then
-      c.screen.Bartoggle.ontop = true
+    if c.screen.bar_toggle then
+      c.screen.bar_toggle.ontop = true
     end
-    if c.screen.Bar.hide then
-      c.screen.Bar.hide:start()
+    if c.screen.bar.hide then
+      c.screen.bar.hide:start()
     end
   end
 

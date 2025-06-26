@@ -37,7 +37,7 @@ end
 local network_interfaces = get_interface_names()
 
 local config_dir = gears.filesystem.get_configuration_dir()
-local widget_icon_dir = config_dir .. "configs/icons/network/"
+local widget_icon_dir = config_dir .. "assets/network/"
 
 local network_mode = nil
 

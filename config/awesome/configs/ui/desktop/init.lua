@@ -71,7 +71,7 @@ end
 set_wallpaper()
 
 screen.connect_signal("request::desktop_decoration", function(s)
-  s.Bartoggle = wibox({
+  s.bar_toggle = wibox({
     screen = s,
     visible = true,
     ontop = true,
@@ -83,23 +83,23 @@ screen.connect_signal("request::desktop_decoration", function(s)
     stretch = true,
   })
 
-  s.Bartoggle:connect_signal("mouse::enter", function()
-    s.Bar.visible = true
-    s.Bar.hover = true
-    s.Bar.hide:stop()
+  s.bar_toggle:connect_signal("mouse::enter", function()
+    s.bar.visible = true
+    s.bar.hover = true
+    s.bar.hide:stop()
   end)
 
-  s.Bartoggle:connect_signal("mouse::leave", function()
-    s.Bar.hover = false
+  s.bar_toggle:connect_signal("mouse::leave", function()
+    s.bar.hover = false
 
-    s.Bar.hide:connect_signal("timeout", function()
-      if not s.Bar.hover then
-        s.Bar.visible = not Autohide
+    s.bar.hide:connect_signal("timeout", function()
+      if not s.bar.hover then
+        s.bar.visible = not Autohide
       end
-      s.Bar.hide:stop()
+      s.bar.hide:stop()
     end)
 
-    s.Bar.hide:start()
+    s.bar.hide:start()
   end)
 
   -- s.Keyboard = wibox({
@@ -179,10 +179,10 @@ end)
 
 -- screen.connect_signal("added", function()
 --   for scrn in screen do
---     scrn.Bartoggle = nil
+--     scrn.bar_toggle = nil
 --     scrn.Keyboard = nil
---     -- if scrn.Bartoggle then
---     --   scrn.Bartoggle = nil
+--     -- if scrn.bar_toggle then
+--     --   scrn.bar_toggle = nil
 --     -- end
 --     -- if scrn.Keyboard then
 --     --   scrn.Keyboard = nil
@@ -192,10 +192,10 @@ end)
 
 -- screen.connect_signal("removed", function()
 --   for scrn in screen do
---     scrn.Bartoggle = nil
+--     scrn.bar_toggle = nil
 --     scrn.Keyboard = nil
---     -- if scrn.Bartoggle then
---     --   scrn.Bartoggle = nil
+--     -- if scrn.bar_toggle then
+--     --   scrn.bar_toggle = nil
 --     -- end
 --     -- if scrn.Keyboard then
 --     --   scrn.Keyboard = nil

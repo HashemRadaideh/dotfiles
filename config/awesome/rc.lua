@@ -22,18 +22,18 @@ Randomize = false
 
 Autohide = false
 Gaps = true
-Sloppy = true
+Sloppy = false
 Titles = false
 
 Idle = os.execute([[ps -o state= -p $(pgrep xidlehook) | grep -q 'T']])
 
-Bluetooth_manager = "blueberry" -- "cinnamon-settings blueberry" -- "blueman-manager"
-File_manager = "thunar"
-Network_manager = "cinnamon-settings network"
-Audio_manager = "pavucontrol"
-Graphical_editor = os.getenv("VISUAL")
 Terminal_emulator = "kitty"
 Shell = os.getenv("SHELL")
+Bluetooth_manager = "blueberry" -- "cinnamon-settings blueberry" -- "blueman-manager"
+File_manager = "thunar"
+Network_manager = "cinnamon-settings network" or Terminal_emulator .. " -e " .. Shell .. " -c nmtui"
+Audio_manager = "pavucontrol"
+Graphical_editor = os.getenv("VISUAL")
 Terminal_editor = Terminal_emulator .. " -e " .. Shell .. " -c " .. (os.getenv("EDITOR") or "nvim")
 Terminal_file_manager = Terminal_emulator .. " -e " .. Shell .. " -c yazi"
 Terminal_multiplexed = Terminal_emulator .. " -e " .. Shell .. " -c fzt"

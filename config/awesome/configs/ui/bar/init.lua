@@ -2,119 +2,118 @@ local awful = require("awful")
 local beautiful = require("beautiful")
 local wibox = require("wibox")
 local gears = require("gears")
+local dpi = require("beautiful.xresources").apply_dpi
 
--- Widgets
-require("configs.ui.bar.widgets")
+---@diagnostic disable-next-line: unused-local
+local menu = require("configs.ui.bar.menu")
+local layoutbox = require("configs.ui.bar.layoutbox")
+local tags_list = require("configs.ui.bar.tagslist")
+local mode_toggle = require("configs.ui.bar.modetoggle")
+local tasks = require("configs.ui.bar.tasks")
 
-local network = require("configs.ui.bar.network")
+local shape = require("configs.ui.bar.shape")
+local clock = require("configs.ui.bar.clock")
+
+local systray = require("configs.ui.bar.systray")
+---@diagnostic disable-next-line: unused-local
+local net = require("configs.ui.bar.net")
+---@diagnostic disable-next-line: unused-local
+local cpu = require("configs.ui.bar.cpu")
+---@diagnostic disable-next-line: unused-local
+local mem = require("configs.ui.bar.ram")
 local bluetooth = require("configs.ui.bar.bluetooth")
+local network = require("configs.ui.bar.network")
 local volume_widget = require("awesome-wm-widgets.pactl-widget.volume")
-
-local net = network()
-local bat = Battery()
+local brightness = require("configs.ui.bar.brightness")
+local battery = require("configs.ui.bar.battery")
+local idle_inhibitor = require("configs.ui.bar.idleinhibitor")
+local logout = require("configs.ui.bar.logout")
 
 screen.connect_signal("request::desktop_decoration", function(s)
-  s.mypromptbox = awful.widget.prompt()
-
-  Create_tags(s)
-
-  Task = Tasks(s)
-
-  s.Bar = awful.wibar({
-    type = "dock",
-    screen = s,
-    visible = true,
+  s.bar = awful.wibar({
     hide = gears.timer({ timeout = 2.5 }),
     hover = false,
+    visible = true,
+    screen = s,
+    type = "dock",
     ontop = false,
-    bg = beautiful.bg_transparent,
-    x = 0,
-    y = 0,
-    height = s.geometry.height / 40,
-    width = s.geometry.width,
     stretch = false,
+    bg = beautiful.bg_transparent,
+    height = dpi(32),
+    width = s.geometry.width,
     position = "top",
-    border_width = 0,
-    border_color = beautiful.black,
     align = "center",
-    margins = {
-      top = 0,
-      left = 0,
-      right = 0,
-      bottom = 0,
-    },
     widget = {
       layout = wibox.layout.align.horizontal,
       expand = "none",
       {
         layout = wibox.layout.fixed.horizontal,
-        Menu,
-        TaskButton,
-        Task,
+        exapnd = "none",
+        menu,
+        layoutbox,
+        mode_toggle,
+        tags_list(s),
+        tasks.tasks_button,
+        tasks.tasks_list[s],
       },
       {
         layout = wibox.layout.fixed.horizontal,
-        Shape(beautiful.arrow_left),
-        Layoutbox,
-        Tagslist(s),
-        ModeToggle,
-        Shape(beautiful.arrow_right),
+        expand = "none",
+        shape(beautiful.arrow_left),
+        clock,
+        shape(beautiful.arrow_right),
       },
       {
         layout = wibox.layout.fixed.horizontal,
-        Systray,
-        SystrayButton,
-        Clock,
-        -- NET,
-        -- NETButton,
-        MEM,
-        MEMButton,
-        CPU,
-        CPUButton,
+        systray.systray,
+        systray.systray_button,
+        -- net.net,
+        -- net.net_button,
+        -- mem.mem,
+        -- mem.mem_button,
+        -- cpu.cpu,
+        -- cpu.cpu_button,
         bluetooth,
-        net,
-        -- Volume,
+        network(),
         volume_widget({
           widget_type = "arc", -- icon_and_text
-          -- width = s.geometry.width / 15,
-          -- margins = { top = 0, bottom = 0, left = 0, right = 0 },
-          -- margins = 0,
+          step = 1,
         }),
-        Brightness,
-        bat,
-        IdleInhibitor,
-        Logout,
+        brightness,
+        battery(),
+        idle_inhibitor,
+        logout,
       },
     },
   })
 
   if Autohide then
-    s.Bar.hide:start()
+    s.bar.hide:start()
   end
 
-  s.Bar:connect_signal("mouse::enter", function()
-    s.Bar.visible = true
-    s.Bar.hover = true
-    s.Bar.hide:stop()
+  s.bar:connect_signal("mouse::enter", function()
+    s.bar.visible = true
+    s.bar.hover = true
+    s.bar.hide:stop()
   end)
 
-  s.Bar:connect_signal("mouse::leave", function()
-    s.Bar.hover = false
+  s.bar:connect_signal("mouse::leave", function()
+    s.bar.hover = false
 
-    s.Bar.hide:connect_signal("timeout", function()
-      if not s.Bar.hover then
-        s.Bar.visible = not Autohide
+    s.bar.hide:connect_signal("timeout", function()
+      if not s.bar.hover then
+        s.bar.visible = not Autohide
       end
-      s.Bar.hide:stop()
+      s.bar.hide:stop()
     end)
 
-    s.Bar.hide:start()
+    s.bar.hide:start()
   end)
 
-  s.Bar.hide:connect_signal("timeout", function()
-    if not s.Bar.hover then
-      s.Bar.visible = not Autohide
+  s.bar.hide:connect_signal("timeout", function()
+    if not s.bar.hover then
+      s.bar.visible = not Autohide
     end
-    s.Bar.hide:stop()
+    s.bar.hide:stop()
   end)
 end)

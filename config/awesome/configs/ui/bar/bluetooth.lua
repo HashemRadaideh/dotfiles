@@ -7,7 +7,7 @@ local clickable_container = require("configs.ui.bar.clickable-container")
 local naughty = require("naughty")
 
 local config_dir = gears.filesystem.get_configuration_dir()
-local widget_icon_dir = config_dir .. "configs/icons/bluetooth/"
+local widget_icon_dir = config_dir .. "assets/bluetooth/"
 
 local checker
 
