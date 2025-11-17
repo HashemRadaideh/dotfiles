@@ -1,3 +1,4 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").matlab_ls.setup(config)
+vim.lsp.config("matlab_ls", config)
+vim.lsp.enable("matlab_ls")

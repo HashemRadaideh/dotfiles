@@ -1,3 +1,4 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").mesonlsp.setup(config)
+vim.lsp.config("mesonlsp", config)
+vim.lsp.enable("mesonlsp")

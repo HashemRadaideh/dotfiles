@@ -1,9 +1,12 @@
 {
   "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
-  "workspace": {
-    "library": ["vim.api.nvim_get_runtime_file('', true)"]
-  },
-  "diagnostics": {
-    "globals": ["vim", "use", "augroup"]
+  "Lua": {
+    "workspace": {
+      "library": ["/usr/share/nvim/runtime",
+                "${3rd}/luv/library"]
+    },
+    "diagnostics": {
+      "globals": ["vim", "use", "augroup"]
+    }
   }
 }

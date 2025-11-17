@@ -1,3 +1,4 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").svelte.setup(config)
+vim.lsp.config("svelte", config)
+vim.lsp.enable("svelte")

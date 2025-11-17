@@ -1,3 +1,4 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").emmet_ls.setup(config)
+vim.lsp.config("emmet_ls", config)
+vim.lsp.enable("emmet_ls")

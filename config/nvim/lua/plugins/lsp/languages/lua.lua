@@ -1,6 +1,6 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").lua_ls.setup({
+vim.lsp.config("lua_ls", {
   capabilities = config.capabilities,
   on_attach = config.on_attach,
   handlers = config.handlers,
@@ -17,19 +17,19 @@ require("lspconfig").lua_ls.setup({
       },
       workspace = {
         checkThirdParty = true,
-        -- library = {
-        --   vim.api.nvim_get_runtime_file('', true),
-        --   vim.fn.expand("$VIMRUNTIME/lua"),
-        --   vim.fn.expand("$VIMRUNTIME/lua/vim/lsp"),
-        --   vim.fn.stdpath("data") .. "/lazy/lazy.nvim/lua/lazy",
-        -- },
+        library = {
+          vim.fn.expand("$VIMRUNTIME/lua"),
+          vim.fn.expand("$VIMRUNTIME/lua/vim/lsp"),
+          -- vim.api.nvim_get_runtime_file("", true),
+          -- vim.fn.stdpath("data") .. "/lazy/lazy.nvim/lua/lazy",
+        },
       },
       hint = {
         enable = true,
       },
       completion = {
         enable = true,
-        -- callSnippet = "Replace",
+        callSnippet = "Replace",
       },
       diagnostics = {
         enable = true,
@@ -40,6 +40,8 @@ require("lspconfig").lua_ls.setup({
       telemetry = {
         enable = false,
       },
+      format = { enable = true },
     },
   },
 })
+vim.lsp.enable("lua_ls")

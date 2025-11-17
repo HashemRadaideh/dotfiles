@@ -1,3 +1,4 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").asm_lsp.setup(config)
+vim.lsp.config("asm_lsp", config)
+vim.lsp.enable("asm_lsp")

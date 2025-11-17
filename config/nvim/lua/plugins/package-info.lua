@@ -5,10 +5,12 @@ return {
   dependencies = { "MunifTanjim/nui.nvim" },
   opts = {
     autostart = true,
-    package_manager = "yarn",
-    colors = {
-      outdated = "#db4b4b",
-    },
+    package_manager = "bun",
     hide_up_to_date = true,
+    highlight = {
+      outdated = {
+        fg = "#db4b4b",
+      },
+    },
   },
 }

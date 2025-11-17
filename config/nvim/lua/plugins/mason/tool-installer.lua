@@ -1,6 +1,7 @@
 return {
   "WhoIsSethDaniel/mason-tool-installer.nvim",
   -- event = { "LspAttach" },
+  lazy = false,
   opts = {
     auto_update = true,
     run_on_start = true,
@@ -10,7 +11,7 @@ return {
       "vim-language-server",
       "stylua",
       "selene",
-      "shellcheck",
+      -- "shellcheck",
       "editorconfig-checker",
       "golangci-lint",
       "gopls",
@@ -73,7 +74,7 @@ return {
       "hlint",
       "protolint",
       "pyflakes",
-      "pyre",
+      -- "pyre",
     },
   },
 }

@@ -1,3 +1,4 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").jsonls.setup(config)
+vim.lsp.config("jsonls", {})
+vim.lsp.enable("jsonls")

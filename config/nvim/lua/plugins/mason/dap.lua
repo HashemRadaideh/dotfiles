@@ -1,6 +1,7 @@
 return {
   "jay-babu/mason-nvim-dap.nvim",
   -- event = { "LspAttach" },
+  lazy=false,
   opts = {
     ensure_installed = {
       "delve",

@@ -3,7 +3,7 @@ local config = require("plugins.lsp.config")
 -- config.capabilities.textDocument.semanticHighlighting = true
 config.capabilities.offsetEncoding = "utf-8"
 
-require("lspconfig").clangd.setup({
+vim.lsp.config("clangd", {
   capabilities = config.capabilities,
   on_attach = config.on_attach,
   handlers = config.handlers,
@@ -34,3 +34,4 @@ require("lspconfig").clangd.setup({
   --     semanticHighlighting = true,
   -- },
 })
+vim.lsp.enable("clangd")

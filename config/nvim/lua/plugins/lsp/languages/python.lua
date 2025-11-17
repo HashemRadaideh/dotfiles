@@ -10,7 +10,7 @@ else
   py_path = vim.g.python3_host_prog
 end
 
-require("lspconfig").pylsp.setup({
+vim.lsp.config("pylsp", {
   on_attach = config.on_attach,
   flags = config.flags,
   capabilities = config.capabilities,
@@ -27,7 +27,7 @@ require("lspconfig").pylsp.setup({
         pylint = {
           enabled = true,
           args = {
-            "--disable=missing-module-docstring,missing-function-docstring,too-many-positional-arguments,too-many-arguments,too-many-instance-attributes,line-too-long,broad-exception-caught,missing-class-docstring,broad-exception-raised,too-few-public-methods",
+            "--disable=missing-module-docstring,missing-function-docstring,too-many-positional-arguments,too-many-arguments,too-many-instance-attributes,line-too-long,broad-exception-caught,missing-class-docstring,broad-exception-raised,too-few-public-methods,trailing-newlines,import-error,too-many-locals,too-many-statements,too-many-branches",
           },
         },
         ruff = { enabled = true },
@@ -53,10 +53,22 @@ require("lspconfig").pylsp.setup({
     },
   },
 })
+vim.lsp.enable("pylsp")
 
--- require("lspconfig").pyright.setup(config)
--- require("lspconfig").ruff.setup(config)
--- require("lspconfig").pylyzer.setup(config)
--- require("lspconfig").django_template_lsp.setup(config)
--- require("lspconfig").pyre.setup(config)
--- require("lspconfig").sourcery.setup(config)
+-- vim.lsp.config("pyright", config)
+-- vim.lsp.enable("pyright")
+
+-- vim.lsp.config("ruff", config)
+-- vim.lsp.enable("ruff")
+
+-- vim.lsp.config("pylyzer", config)
+-- vim.lsp.enable("pylyzer")
+
+-- vim.lsp.config("django_template_lsp", config)
+-- vim.lsp.enable("django_template_lsp")
+
+-- vim.lsp.config("pyre", config)
+-- vim.lsp.enable("pyre")
+
+-- vim.lsp.config("sourcery",  config)
+-- vim.lsp.enable("sourcery")

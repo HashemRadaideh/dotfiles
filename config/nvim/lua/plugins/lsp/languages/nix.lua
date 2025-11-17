@@ -1,4 +1,6 @@
 local config = require("plugins.lsp.config")
 
--- require("lspconfig").rnix.setup(config)
-require("lspconfig").nil_ls.setup(config)
+-- vim.lsp.config("rnix",  config)
+-- vim.lsp.enable("rnix")
+vim.lsp.config("nil_ls", config)
+vim.lsp.enable("nil_ls")

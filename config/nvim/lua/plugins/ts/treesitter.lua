@@ -65,7 +65,7 @@ return {
       modules = {},
       highlight = {
         enable = true,
-        additional_vim_regex_highlighting = true,
+        additional_vim_regex_highlighting = false,
       },
       rainbow = {
         enable = true,
@@ -134,11 +134,11 @@ return {
     })
 
     vim.cmd([[
-        hi TreesitterContext guibg=none ctermbg=none
-        hi TreesitterContextLineNumber guibg=none ctermbg=none
-        hi TreesitterContextSeparator guibg=none ctermbg=none
-        hi TreesitterContextBottom guibg=none ctermbg=none
-      ]])
+      hi TreesitterContext guibg=none ctermbg=none
+      hi TreesitterContextLineNumber guibg=none ctermbg=none
+      hi TreesitterContextSeparator guibg=none ctermbg=none
+      hi TreesitterContextBottom guibg=none ctermbg=none
+    ]])
 
     vim.filetype.add({
       extension = {

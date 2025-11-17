@@ -8,10 +8,11 @@ config.capabilities = {
   },
 }
 
-require("lspconfig").sourcekit.setup({
+vim.lsp.config("sourcekit", {
   capabilities = config.capabilities,
   flags = config.flags,
   handlers = config.handlers,
   on_attach = config.on_attach,
   filetypes = { "swift", "objc", "objcpp" },
 })
+vim.lsp.enable("sourcekit")

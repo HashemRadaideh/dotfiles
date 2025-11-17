@@ -1,3 +1,4 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").bashls.setup(config)
+vim.lsp.config("bashls", config)
+vim.lsp.enable("bashls")

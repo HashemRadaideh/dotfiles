@@ -1,3 +1,4 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").graphql.setup(config)
+vim.lsp.config("graphql", config)
+vim.lsp.enable("graphql")

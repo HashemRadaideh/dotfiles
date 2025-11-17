@@ -1,3 +1,4 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").intelephense.setup(config)
+vim.lsp.config("intelephense", config)
+vim.lsp.enable("intelephense")

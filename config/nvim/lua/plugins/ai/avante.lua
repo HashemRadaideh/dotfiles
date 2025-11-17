@@ -1,6 +1,5 @@
 return {
   "yetone/avante.nvim",
-  event = "VeryLazy",
   build = "make",
   -- build = "make BUILD_FROM_SOURCE=true",
   -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false",
@@ -28,35 +27,35 @@ return {
     -- },
   },
   opts = {
-    provider = "gemini",
-    auto_suggestions_provider = "gemini",
-    cursor_applying_provider = "gemini",
-    gemini = {
-      model = "gemini-2.0-flash",
-    },
-    copilot = {
-      model = "claude-3.5-sonnet",
-    },
-    ollama = {
-      model = "qwen2.5-coder:3b",
-    },
-    claude = {
-      model = "claude-3-7-sonnet-20250219",
-    },
-    openai = {
-      model = "gpt-4o",
-    },
-    -- azure = {},
-    -- bedrock = {},
-    -- vertex = {},
-    -- vertex_cluade = {},
-    cohere = {
-      model = "command-a-03-2025",
-    },
-    aihubmix = {
-      model = "gpt-4o-2024-11-20",
-    },
-    vendors = {
+    provider = "copilot",
+    auto_suggestions_provider = "copilot",
+    cursor_applying_provider = "copilot",
+    providers = {
+      gemini = {
+        model = "gemini-2.5-pro",
+      },
+      copilot = {
+        model = "claude-3.7-sonnet",
+      },
+      ollama = {
+        model = "qwen2.5-coder:3b",
+      },
+      claude = {
+        model = "claude-3-7-sonnet-20250219",
+      },
+      openai = {
+        model = "gpt-4o",
+      },
+      -- azure = {},
+      -- bedrock = {},
+      -- vertex = {},
+      -- vertex_cluade = {},
+      cohere = {
+        model = "command-a-03-2025",
+      },
+      aihubmix = {
+        model = "gpt-4o-2024-11-20",
+      },
       together = {
         __inherited_from = "openai",
         api_key_name = "TOGETHER_API_KEY",
@@ -137,7 +136,7 @@ return {
     },
     system_prompt = function()
       local hub = require("mcphub").get_hub_instance()
-      return hub:get_active_servers_prompt()
+      return hub and hub:get_active_servers_prompt() or ""
     end,
     custom_tools = function()
       return {

@@ -1,3 +1,4 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").cmake.setup(config)
+vim.lsp.config("cmake", config)
+vim.lsp.enable("cmake")

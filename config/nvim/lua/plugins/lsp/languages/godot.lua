@@ -1,8 +1,10 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").gdscript.setup(config)
+vim.lsp.config("gdscript", config)
+vim.lsp.enable("gdscript")
 
-require("lspconfig").gdshader_lsp.setup(config)
+vim.lsp.config("gdshader_lsp", config)
+vim.lsp.enable("gdshader_lsp")
 
 if vim.fn.filereadable(vim.fs.find({ "project.godot" }, { upward = true })[1]) == 1 then
   vim.fn.serverstart("./godothost")

@@ -1,3 +1,4 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").taplo.setup(config)
+vim.lsp.config("taplo", config)
+vim.lsp.enable("taplo")

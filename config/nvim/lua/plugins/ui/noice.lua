@@ -7,6 +7,10 @@ return {
   },
   opts = {
     lsp = {
+      progress = {
+        enabled = false,
+        throttle = 50,
+      },
       message = {
         view = "mini",
       },

@@ -1,3 +1,4 @@
 local config = require("plugins.lsp.config")
 
--- require("lspconfig").ltex.setup(config)
+-- vim.lsp.config("ltex",  config)
+-- vim.lsp.enable("ltex")

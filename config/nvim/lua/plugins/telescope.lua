@@ -35,7 +35,7 @@ return {
       '<cmd>lua require("telescope.builtin").live_grep()<cr>',
       desc = "Grep (root dir)",
     },
-    { "<leader>b/", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Buffer" },
+    { "<leader>?", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Buffer" },
     -- { "<leader>sg", Util.telescope("live_grep"),                  desc = "Grep (root dir)" },
     -- { "<leader>sG", Util.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" },
     { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command History" },
@@ -184,6 +184,8 @@ return {
         },
         buffers = {
           theme = "ivy",
+          ignore_current_buffer = true,
+          sort_mru = true,
         },
       },
       extensions = {

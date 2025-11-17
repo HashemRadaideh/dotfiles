@@ -1,6 +1,6 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").gopls.setup({
+vim.lsp.config("gopls", {
   capabilities = config.capabilities,
   flags = config.flags,
   handlers = config.handlers,
@@ -19,3 +19,4 @@ require("lspconfig").gopls.setup({
     },
   },
 })
+vim.lsp.enable("gopls")

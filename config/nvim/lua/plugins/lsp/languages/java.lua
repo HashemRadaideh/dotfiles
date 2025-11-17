@@ -1,3 +1,4 @@
 -- local config = require("plugins.lsp.config")
 
--- require("lspconfig").jdtls.setup(config)
+-- vim.lsp.config("jdtls",  config)
+-- vim.lsp.enable("jdtls")

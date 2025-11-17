@@ -7,6 +7,12 @@ return {
   config = function()
     local lint = require("lint")
 
+    -- vim.filetype.add({
+    --   pattern = {
+    --     [".*%.env"] = "env",
+    --   },
+    -- })
+
     lint.linters_by_ft = {
       -- javascript = { "biome", "eslint_d" },
       -- typescript = { "biome", "eslint_d" },
@@ -14,7 +20,7 @@ return {
       -- typescriptreact = { "biome", "eslint_d" },
       -- svelte = { "biome", "eslint_d" },
       -- lua = { "selene" }, -- "luacheck",
-      rust = { "bacon" },
+      -- rust = { "bacon" },
       c = { "cpplint" },
       cpp = { "cpplint" },
       cc = { "cpplint" },

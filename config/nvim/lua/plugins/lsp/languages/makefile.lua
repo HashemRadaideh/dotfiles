@@ -1,3 +1,4 @@
 local config = require("plugins.lsp.config")
 
--- require("lspconfig").checkmake.setup(config)
+-- vim.lsp.config("checkmake",  config)
+-- vim.lsp.enable("checkmake")

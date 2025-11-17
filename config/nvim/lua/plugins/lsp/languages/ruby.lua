@@ -1,4 +1,6 @@
 local config = require("plugins.lsp.config")
 
--- require("lspconfig").rubocop.setup(config)
-require("lspconfig").ruby_lsp.setup(config)
+-- vim.lsp.config("rubocop",  config)
+-- vim.lsp.enable("rubocop")
+vim.lsp.config("ruby_lsp", config)
+vim.lsp.enable("ruby_lsp")

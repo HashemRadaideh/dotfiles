@@ -4,7 +4,9 @@ return {
     event = { "BufReadPost", "BufNewFile" },
     config = function()
       -- require("neoconf").setup()
-      -- require("neodev").setup()
+      require("neodev").setup({
+        library = { plugins = true, types = true },
+      })
 
       require("plugins.lsp.languages")
 
@@ -66,12 +68,13 @@ return {
   -- require("plugins.lsp.cmp"),
   require("plugins.lsp.blink"),
   require("plugins.lsp.preconfig"),
-  { "RRethy/vim-illuminate", event = "LspAttach" },
-  { "ray-x/lsp_signature.nvim", event = "LspAttach" },
+  { "joeveiga/ng.nvim", event = "LspAttach" },
+  -- { "RRethy/vim-illuminate", event = "LspAttach" },
+  { "ray-x/lsp_signature.nvim" },
   { "SmiteshP/nvim-navic", event = "LspAttach" },
   -- { "j-hui/fidget.nvim", event = "LspAttach", opts = {}, },
   -- { "folke/trouble.nvim", event = "LspAttach", opts = {} },
   -- { "folke/neoconf.nvim" },
-  -- { "folke/neodev.nvim" },
+  { "folke/neodev.nvim" },
   --  require("plugins.lsp.none-ls") ,
 }

@@ -8,7 +8,8 @@ vim.filetype.add({
   },
 })
 
-require("lspconfig").hyprls.setup(config)
+vim.lsp.config("hyprls", config)
+vim.lsp.enable("hyprls")
 
 -- vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
 --   pattern = { "*.hl", "hypr*.conf" },

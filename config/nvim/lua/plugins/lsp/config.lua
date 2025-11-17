@@ -6,7 +6,7 @@ vim.diagnostic.config({
   float = {
     source = true,
     show_header = true,
-    border = "rounded",
+    border = "none",
     focusable = true,
   },
   signs = { --  
@@ -30,6 +30,7 @@ vim.diagnostic.config({
 
 -- local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 local capabilities = require("blink.cmp").get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities())
+
 -- capabilities.textDocument.completion.completionItem.snippetSupport = true
 -- capabilities.textDocument.completion.completionItem.resolveSupport = {
 -- 	properties = { "documentation", "detail", "additionalTextEdits" },
@@ -89,20 +90,9 @@ local function goto_definition(split_cmd)
   return handler
 end
 
-local border = {
-  { "", "FloatBorder" },
-  { "", "FloatBorder" },
-  { "", "FloatBorder" },
-  { "", "FloatBorder" },
-  { "", "FloatBorder" },
-  { "", "FloatBorder" },
-  { "", "FloatBorder" },
-  { "", "FloatBorder" },
-}
-
 local handlers = {
-  ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
-  ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
+  ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover),
+  ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help),
   ["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
     underline = true,
     -- signs = true,
@@ -113,16 +103,16 @@ local handlers = {
     },
   }),
   ["textDocument/definition"] = goto_definition("vsplit"),
-  ["window/logMessage"] = function(_, result, ctx, _)
-    local client = vim.lsp.get_client_by_id(ctx.client_id)
-    local message = result.message
+  -- ["window/logMessage"] = function(_, result, ctx, _)
+  --   local client = vim.lsp.get_client_by_id(ctx.client_id)
+  --   local message = result.message
 
-    local messageType = result.type
-    local clientName = client and client.name or "Unknown client"
-    if messageType == vim.lsp.protocol.MessageType.Error then
-      vim.notify(string.format("%s LSP Error: %s", clientName, message), vim.log.levels.ERROR)
-    end
-  end,
+  --   local messageType = result.type
+  --   local clientName = client and client.name or "Unknown client"
+  --   if messageType == vim.lsp.protocol.MessageType.Error then
+  --     vim.notify(string.format("%s LSP Error: %s", clientName, message), vim.log.levels.ERROR)
+  --   end
+  -- end,
 }
 
 local on_attach = function(client, bufnr)
@@ -142,7 +132,7 @@ local on_attach = function(client, bufnr)
   -- client.server_capabilities.document_formatting = enable
   -- client.server_capabilities.document_range_formatting = enable
 
-  -- -- Auto-formatting
+  -- Auto-formatting
   -- if client.server_capabilities.documentFormattingProvider then
   --   vim.api.nvim_create_autocmd("BufWritePre", {
   --     group = vim.api.nvim_create_augroup("Format", { clear = true }),
@@ -177,7 +167,19 @@ local on_attach = function(client, bufnr)
         vim.lsp.codelens.refresh()
       end,
     })
+
+    -- local grp = vim.api.nvim_create_augroup("LspCodeLens" .. bufnr, { clear = true })
+    -- vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave", "BufWritePost" }, {
+    --   group = grp,
+    --   buffer = bufnr,
+    --   callback = function()
+    --     pcall(vim.lsp.codelens.refresh, { bufnr = bufnr })
+    --   end,
+    -- })
+    -- pcall(vim.lsp.codelens.refresh, { bufnr = bufnr })
+
     vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>cl", "<Cmd>lua vim.lsp.codelens.run()<CR>", { silent = true })
+    -- vim.keymap.set("n", "<leader>cl", vim.lsp.codelens.run, { buffer = bufnr, silent = true, desc = "Run CodeLens" })
   end
 
   -- inlay hints
@@ -189,6 +191,7 @@ local on_attach = function(client, bufnr)
     -- vim.lsp.inlay_hint.enable(bufnr, true)
     -- vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ 0 }), { 0 })
     vim.lsp.inlay_hint.enable(true, { bufnr })
+    -- vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
   end
 
   if client.server_capabilities.documentSymbolProvider then
@@ -202,33 +205,32 @@ local on_attach = function(client, bufnr)
   if filetype ~= "fsharp" then
     -- https://www.reddit.com/r/neovim/comments/so4g5e/if_you_guys_arent_using_lsp_signaturenvim_what/
     require("lsp_signature").on_attach({
-      bind = true,
-      padding = "",
+      padding = " ",
       handler_opts = {
-        border = "rounded",
+        border = "none",
       },
-      hint_enable = true,
-      hint_prefix = "🔍 ",
-      -- toggle_key = "<C-k>",
-      extra_trigger_chars = { "(", ",", " " },
+      hint_prefix = "🔍",
+      max_height = 6,
+      toggle_key = "<C-u>",
+      move_cursor_key = "<C-w>",
     }, bufnr)
   end
 
-  require("illuminate").on_attach(client)
+  -- require("illuminate").on_attach(client)
 
-  vim.g.Illuminate_ftblacklist = { "neo-tree" }
+  -- vim.g.Illuminate_ftblacklist = { "neo-tree" }
 
-  vim.api.nvim_create_autocmd("VimEnter", {
-    group = vim.api.nvim_create_augroup("Illuminate", { clear = true }),
-    pattern = "*",
-    callback = function()
-      vim.command([[ hi illuminatedWord cterm=underline gui=underline ]])
-    end,
-  })
+  -- vim.api.nvim_create_autocmd("VimEnter", {
+  --   group = vim.api.nvim_create_augroup("Illuminate", { clear = true }),
+  --   pattern = "*",
+  --   callback = function()
+  --     vim.command([[ hi illuminatedWord cterm=underline gui=underline ]])
+  --   end,
+  -- })
 
-  vim.api.nvim_command([[ hi def link LspReferenceText CursorLine ]])
-  vim.api.nvim_command([[ hi def link LspReferenceWrite CursorLine ]])
-  vim.api.nvim_command([[ hi def link LspReferenceRead CursorLine ]])
+  -- vim.api.nvim_command([[ hi def link LspReferenceText CursorLine ]])
+  -- vim.api.nvim_command([[ hi def link LspReferenceWrite CursorLine ]])
+  -- vim.api.nvim_command([[ hi def link LspReferenceRead CursorLine ]])
 
   -- vim.api.nvim_create_autocmd("CursorHold", {
   --   buffer = bufnr,

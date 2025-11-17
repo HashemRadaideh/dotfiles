@@ -1,16 +1,18 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").cssls.setup({
+vim.lsp.config("cssls", {
   capabilities = config.capabilities,
   on_attach = config.on_attach,
   handlers = config.handlers,
   flags = config.flags,
-  filetypes = { "css" },
   settings = {
     css = {
-      customData = {
-        ".vscode/css_custom_data.json",
-        vim.fn.stdpath("config") .. "/lua/plugins/lsp/languages/css_custom_data.json",
+      -- customData = {
+      --   ".vscode/css_custom_data.json",
+      --   vim.fn.stdpath("config") .. "/lua/plugins/lsp/languages/css_custom_data.json",
+      -- },
+      lint = {
+        unknownAtRules = "ignore",
       },
     },
     less = {
@@ -25,8 +27,9 @@ require("lspconfig").cssls.setup({
     },
   },
 })
+vim.lsp.enable("cssls")
 
-require("lspconfig").somesass_ls.setup({
+vim.lsp.config("somesass_ls", {
   capabilities = config.capabilities,
   on_attach = config.on_attach,
   handlers = config.handlers,
@@ -35,11 +38,21 @@ require("lspconfig").somesass_ls.setup({
     somesass = {},
   },
 })
+vim.lsp.enable("somesass_ls")
 
--- require("lspconfig").css_variables.setup(config)
+-- vim.lsp.config("css_variables",  config)
+-- vim.lsp.enable("css_variables")
 
--- require("lspconfig").cssmodules_ls.setup(config)
+-- vim.lsp.config("cssmodules_ls",  config)
+-- vim.lsp.enable("cssmodules_ls")
 
-require("lspconfig").tailwindcss.setup(config)
+vim.lsp.config("tailwindcss", {
+  capabilities = config.capabilities,
+  on_attach = config.on_attach,
+  handlers = config.handlers,
+  flags = config.flags,
+})
+vim.lsp.enable("tailwindcss")
 
--- require("lspconfig").unocss.setup(config)
+-- vim.lsp.config("unocss",  config)
+-- vim.lsp.enable("unocss")

@@ -1,3 +1,4 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").zls.setup(config)
+vim.lsp.config("zls", config)
+vim.lsp.enable("zls")

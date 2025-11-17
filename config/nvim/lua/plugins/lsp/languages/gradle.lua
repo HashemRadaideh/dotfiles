@@ -1,3 +1,4 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").gradle_ls.setup(config)
+vim.lsp.config("gradle_ls", config)
+vim.lsp.enable("gradle_ls")

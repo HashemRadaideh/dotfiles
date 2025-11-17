@@ -1,6 +1,7 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").sqlls.setup(config)
+vim.lsp.config("sqlls", config)
+vim.lsp.enable("sqlls")
 
 -- require('lspconfig')
 --     .sqls.setup({

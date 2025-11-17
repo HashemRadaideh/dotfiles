@@ -1,3 +1,4 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").prismals.setup(config)
+vim.lsp.config("prismals", config)
+vim.lsp.enable("prismals")

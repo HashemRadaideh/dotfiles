@@ -1,3 +1,4 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").grammarly.setup(config)
+vim.lsp.config("grammarly", config)
+vim.lsp.enable("grammarly")

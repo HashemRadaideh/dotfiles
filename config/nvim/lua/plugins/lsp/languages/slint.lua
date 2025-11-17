@@ -1,3 +1,4 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").slint_lsp.setup(config)
+vim.lsp.config("slint_lsp", config)
+vim.lsp.enable("slint_lsp")

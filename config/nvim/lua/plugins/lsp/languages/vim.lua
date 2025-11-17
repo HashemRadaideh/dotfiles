@@ -1,3 +1,4 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").vimls.setup(config)
+vim.lsp.config("vimls", config)
+vim.lsp.enable("vimls")

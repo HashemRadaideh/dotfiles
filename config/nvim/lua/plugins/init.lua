@@ -104,9 +104,9 @@ return {
       { "<C-LeftMouse>", "<Cmd>MultipleCursorsMouseAddDelete<CR>", mode = { "n", "i" } },
       { "<Leader>n", "<Cmd>MultipleCursorsJumpNextMatch<CR>", mode = { "n", "x" } },
       { "<Leader>N", "<Cmd>MultipleCursorsJumpPrevMatch<CR>", mode = { "n", "x" } },
-      { "<Leader>a", "<Cmd>MultipleCursorsAddJumpNextMatch<CR>", mode = { "n", "x" } },
-      { "<Leader>A", "<Cmd>MultipleCursorsAddJumpPrevMatch<CR>", mode = { "n", "x" } },
-      { "<Leader>m", "<Cmd>MultipleCursorsAddMatches<CR>", mode = { "n", "x" }, desc = "Add cursors to cword" },
+      { "<Leader>i", "<Cmd>MultipleCursorsAddJumpNextMatch<CR>", mode = { "n", "x" } },
+      { "<Leader>I", "<Cmd>MultipleCursorsAddJumpPrevMatch<CR>", mode = { "n", "x" } },
+      { "<Leader>all", "<Cmd>MultipleCursorsAddMatches<CR>", mode = { "n", "x" }, desc = "Add cursors to cword" },
       {
         "<Leader>M",
         "<Cmd>MultipleCursorsAddMatchesV<CR>",

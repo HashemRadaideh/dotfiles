@@ -1,3 +1,4 @@
 local config = require("plugins.lsp.config")
 
-require("lspconfig").lemminx.setup(config)
+vim.lsp.config("lemminx", config)
+vim.lsp.enable("lemminx")
