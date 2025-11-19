@@ -1,0 +1,93 @@
+* {
+    font: "JetBrainsMono Nerd Font 14";
+
+    blue: #8caaee;
+
+    bg0:    #303446E6;
+    bg1:    #30344680;
+    bg2:    #303446E6;
+
+    fg0:    #c6d0f5;
+    fg1:    #e78284;
+    fg2:    #73799480;
+
+    background-color:   transparent;
+    text-color:         @fg0;
+
+    margin:     0;
+    padding:    0;
+    spacing:    0;
+}
+
+window {
+    background-color:   @bg0;
+
+    location:       center;
+    width:          640;
+    border-radius:  8;
+}
+
+inputbar {
+    padding:    12px;
+    spacing:    12px;
+    children:   [ prompt, entry ];
+}
+
+prompt {
+    background-color: @blue;
+    text-color:       @bg0;
+    padding:          3px;
+    border-radius:    3px;
+    expand:           false;
+}
+
+icon-search, entry, element-icon, element-text {
+    vertical-align: 0.5;
+}
+
+entry {
+    placeholder         : "Search";
+    placeholder-color   : @fg2;
+}
+
+message {
+    border:             2px 0 0;
+    border-color:       @bg1;
+    background-color:   @bg1;
+}
+
+textbox {
+    padding:    8px 24px;
+}
+
+listview {
+    lines:      20;
+    columns:    1;
+
+    fixed-height:   false;
+    border:         1px 0 0;
+    border-color:   @bg1;
+}
+
+element {
+    padding:            8px 16px;
+    background-color:   transparent;
+}
+
+element normal active {
+    text-color: @bg2;
+}
+
+element selected normal, element selected active {
+    background-color:   @bg2;
+    text-color:         @fg1;
+}
+
+element-icon {
+    size:   1em;
+}
+
+element-text {
+    text-color: inherit;
+}
+
