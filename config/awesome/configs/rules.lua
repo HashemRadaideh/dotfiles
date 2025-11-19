@@ -1,6 +1,16 @@
 local awful = require("awful")
 local ruled = require("ruled")
 
+local function is_empty(tag, clt)
+  local count = 0
+
+  for _, clnt in pairs(tag:clients()) do
+    count = clnt.class == clt.class and count + 1 or count
+  end
+
+  return count <= 1
+end
+
 ruled.client.connect_signal("request::rules", function()
   local screen_width = awful.screen.focused().geometry.width
   local screen_height = awful.screen.focused().geometry.height
@@ -106,27 +116,17 @@ ruled.client.connect_signal("request::rules", function()
       screen = awful.screen.focused,
     },
     callback = function(c)
-      local function is_empty(tag, clt)
-        local count = 0
-
-        for _, clnt in pairs(tag:clients()) do
-          count = clnt.class == clt.class and count + 1 or count
-        end
-
-        return count <= 1
-      end
-
       if c.transient_for and c.name ~= "Picture-in-Picture" then
         c:move_to_tag(c.transient_for.first_tag)
         return
       end
 
       local tags = awful.screen.focused().tags
-      local index = awful.tag.getidx() - 1
+      local index = awful.tag.getidx()
       local tag = tags[index]
 
-      for i = 0, #tags - 1 do
-        local idx = ((index + i) % #tags) + 1
+      for i = 0, #tags do
+        local idx = (index + i) % #tags
         if is_empty(tags[idx], c) then
           tag = tags[idx]
           break
@@ -143,6 +143,34 @@ ruled.client.connect_signal("request::rules", function()
           c:move_to_tag(tag)
         end,
       })
+    end,
+  })
+
+  ruled.client.append_rule({
+    rule_any = {
+      class = {
+        "thunderbird",
+        "Mail",
+      },
+    },
+    properties = {
+      screen = awful.screen.focused,
+    },
+    callback = function(c)
+      local tags = awful.screen.focused().tags
+      local index = awful.tag.getidx()
+      local tag = tags[index]
+
+      for i = 0, #tags do
+        local idx = (index + i) % #tags
+        if is_empty(tags[idx], c) then
+          tag = tags[idx]
+          break
+        end
+      end
+
+      tag:view_only()
+      c:move_to_tag(tag)
     end,
   })
 
@@ -171,8 +199,6 @@ ruled.client.connect_signal("request::rules", function()
         "notion-app",
         "obsidian",
         "Evernote",
-        "thunderbird",
-        "Mail",
       },
     },
     properties = {

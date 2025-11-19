@@ -1,6 +1,5 @@
 local awful = require("awful")
 local hotkeys_popup = require("awful.hotkeys_popup")
-local beautiful = require("beautiful")
 
 -- Default modkey.
 Ctrl = "Control"
@@ -27,7 +26,6 @@ awful.mouse.append_global_mousebindings({
 
 awful.keyboard.append_global_keybindings({
   awful.key({ Super, Shift }, "/", hotkeys_popup.show_help, { description = "Show help popup", group = "Awesome" }),
-
   awful.key({ Super, Ctrl }, "r", awesome.restart, { description = "Reload Awesome", group = "Awesome" }),
 
   awful.key({ Super }, "w", function()
@@ -104,7 +102,7 @@ awful.keyboard.append_global_keybindings({
   end, { description = "Toggle systray visibility", group = "System" }),
 
   awful.key({ Super }, "'", function()
-    Main_menu:toggle({ coords = { x = 0, y = 0 } })
+    require("configs.ui.bar.menu"):emit_signal("button::press")
   end, { description = "Show main menu", group = "System" }),
 
   awful.key({ Super }, "Return", function()
@@ -225,7 +223,6 @@ awful.keyboard.append_global_keybindings({
   -- ),
 
   awful.key({ Super }, "u", awful.tag.history.restore, { description = "Go to last focused client", group = "System" }),
-
   awful.key(
     { Super, Shift },
     "u",
@@ -349,18 +346,34 @@ awful.keyboard.append_global_keybindings({
 
   -- Moving floating windows
   awful.key({ Super, Meta }, "h", function()
-    client.focus:relative_move(-1, 0, 0, 0)
+    client.focus:relative_move(-10, 0, 0, 0)
   end, { description = "Move floating client to the left", group = "Workflow" }),
 
   awful.key({ Super, Meta }, "j", function()
-    client.focus:relative_move(0, 1, 0, 0)
+    client.focus:relative_move(0, 10, 0, 0)
   end, { description = "Move floating client to the down", group = "Workflow" }),
 
   awful.key({ Super, Meta }, "k", function()
-    client.focus:relative_move(0, -1, 0, 0)
+    client.focus:relative_move(0, -10, 0, 0)
   end, { description = "Move floating client to the top", group = "Workflow" }),
 
   awful.key({ Super, Meta }, "l", function()
+    client.focus:relative_move(10, 0, 0, 0)
+  end, { description = "Move floating client to the right", group = "Workflow" }),
+
+  awful.key({ Super, Meta, Shift }, "h", function()
+    client.focus:relative_move(-1, 0, 0, 0)
+  end, { description = "Move floating client to the left", group = "Workflow" }),
+
+  awful.key({ Super, Meta, Shift }, "j", function()
+    client.focus:relative_move(0, 1, 0, 0)
+  end, { description = "Move floating client to the down", group = "Workflow" }),
+
+  awful.key({ Super, Meta, Shift }, "k", function()
+    client.focus:relative_move(0, -1, 0, 0)
+  end, { description = "Move floating client to the top", group = "Workflow" }),
+
+  awful.key({ Super, Meta, Shift }, "l", function()
     client.focus:relative_move(1, 0, 0, 0)
   end, { description = "Move floating client to the right", group = "Workflow" }),
 
@@ -528,7 +541,46 @@ client.connect_signal("request::default_mousebindings", function()
     end, { description = "Close Focused client", group = "System" }),
 
     awful.key({ Super }, "q", function(c)
+      local pid = tonumber(c.pid or 0)
+
+      if c.class:lower():match("^%s*thunderbird%s*$") then
+        awful.spawn.easy_async_with_shell(
+          ("ps -o comm= -p $(ps -o ppid= -p %d 2>/dev/null) 2>/dev/null"):format(pid),
+          function(out)
+            if out:match("^%s*birdtray%s*$") then
+              awful.spawn("birdtray -t")
+            else
+              c:kill()
+            end
+          end
+        )
+
+        return
+      end
+
       c:kill()
+
+      local function pid_has_sibling(id, except)
+        local clnts = awful.client.iterate(function(clnt)
+          return clnt.pid == id
+        end)
+
+        for clnt in clnts do
+          if clnt ~= except then
+            return true
+          end
+        end
+
+        return false
+      end
+
+      require("gears").timer.start_new(0.3, function()
+        if c.valid and not c.is_deleted and not pid_has_sibling(pid, c) then
+          awful.spawn.with_shell("kill -9 " .. pid)
+        end
+
+        return false
+      end)
     end, { description = "Close Focused client", group = "System" }),
 
     awful.key(

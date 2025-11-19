@@ -4,7 +4,6 @@ local wibox = require("wibox")
 local gears = require("gears")
 local dpi = require("beautiful").xresources.apply_dpi
 local clickable_container = require("configs.ui.bar.clickable-container")
-local naughty = require("naughty")
 
 local config_dir = gears.filesystem.get_configuration_dir()
 local widget_icon_dir = config_dir .. "assets/bluetooth/"
@@ -20,7 +19,15 @@ local widget = wibox.widget({
   layout = wibox.layout.align.horizontal,
 })
 
-local widget_button = clickable_container(wibox.container.margin(widget, dpi(7), dpi(7), dpi(7), dpi(7)))
+local widget_button = wibox.widget({
+  {
+    widget,
+    margins = { left = dpi(2), top = dpi(7), bottom = dpi(7), right = dpi(2) },
+    widget = wibox.container.margin,
+  },
+  widget = clickable_container,
+})
+
 widget_button:buttons(gears.table.join(awful.button({}, 1, nil, function()
   awful.spawn(Bluetooth_manager)
 end)))

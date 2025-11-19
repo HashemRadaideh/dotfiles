@@ -73,9 +73,9 @@ set_wallpaper()
 screen.connect_signal("request::desktop_decoration", function(s)
   s.bar_toggle = wibox({
     screen = s,
-    visible = true,
+    visible = Autohide,
     ontop = true,
-    bg = "#000000",
+    bg = "#00000000",
     x = s.geometry.x,
     y = s.geometry.y,
     width = s.geometry.width,
@@ -84,16 +84,20 @@ screen.connect_signal("request::desktop_decoration", function(s)
   })
 
   s.bar_toggle:connect_signal("mouse::enter", function()
-    s.bar.visible = true
+    s.bar_toggle.visible = false
     s.bar.hover = true
     s.bar.hide:stop()
+    s.bar.border_color = beautiful.border_focus
+    s.bar.visible = true
   end)
 
   s.bar_toggle:connect_signal("mouse::leave", function()
     s.bar.hover = false
+    s.bar.border_color = beautiful.border_normal
 
     s.bar.hide:connect_signal("timeout", function()
       if not s.bar.hover then
+        s.bar_toggle.visible = Autohide
         s.bar.visible = not Autohide
       end
       s.bar.hide:stop()

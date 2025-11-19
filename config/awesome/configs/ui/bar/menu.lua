@@ -18,13 +18,12 @@ menu:connect_signal("button::press", function()
   local s, mouse_coords = mouse.screen, mouse.coords()
 
   -- local target_x = s.geometry.x + (s.geometry.width - Main_menu.width) / 2
-  local target_x = mouse_coords.x - (Main_menu.width / 2)
+  local target_x = mouse_coords.x
   local x = clamp(target_x, s.geometry.x, s.geometry.x + s.geometry.width - Main_menu.width)
 
   -- local target_y = s.geometry.y + s.bar.height + beautiful.useless_gap_size
   local target_y = mouse_coords.y
-  local y =
-    clamp(target_y, s.geometry.y + s.bar.height, s.geometry.y + s.geometry.height - Main_menu.height - s.bar.height)
+  local y = clamp(target_y, s.geometry.y, s.geometry.y + s.geometry.height - Main_menu.height)
 
   Main_menu:toggle({ coords = { x = x, y = y } })
 end)

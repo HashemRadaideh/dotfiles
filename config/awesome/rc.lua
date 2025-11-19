@@ -27,16 +27,16 @@ Titles = false
 
 Idle = os.execute([[ps -o state= -p $(pgrep xidlehook) | grep -q 'T']])
 
-Terminal_emulator = "kitty"
+Terminal_emulator = "kitty" -- "ghostty" -- "alacritty"
 Shell = os.getenv("SHELL")
 Bluetooth_manager = "blueberry" -- "cinnamon-settings blueberry" -- "blueman-manager"
 File_manager = "thunar"
-Network_manager = "cinnamon-settings network" or Terminal_emulator .. " -e " .. Shell .. " -c nmtui"
+Network_manager = "nmrofi" -- "cinnamon-settings network" or Terminal_emulator .. " -e " .. Shell .. " -c nmtui"
 Audio_manager = "pavucontrol"
 Graphical_editor = os.getenv("VISUAL")
 Terminal_editor = Terminal_emulator .. " -e " .. Shell .. " -c " .. (os.getenv("EDITOR") or "nvim")
 Terminal_file_manager = Terminal_emulator .. " -e " .. Shell .. " -c yazi"
 Terminal_multiplexed = Terminal_emulator .. " -e " .. Shell .. " -c fzt"
-Web_browser = "floorp"
+Web_browser = "zen-browser"
 
 require("configs")

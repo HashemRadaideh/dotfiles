@@ -28,12 +28,13 @@ theme.user = os.getenv("USER")
 theme.hostname = getHostname()
 
 -- Font
+-- theme.font_name = "JetBrainsMono Nerd Font"
+-- theme.font_name = "FiraCode Nerd Font"
+-- theme.font_name = "SauceCodePro Nerd Font"
+-- theme.font_name = "DejaVuSansMono Nerd Font"
 theme.font_name = "CaskaydiaCove Nerd Font"
-theme.font = theme.font_name .. "12"
--- theme.font                = "JetBrainsMono Nerd Font 11"
--- theme.font                = "FiraCode Nerd Font 11"
--- theme.font                = "SauceCodePro Nerd Font 11"
--- theme.font                = "DejaVuSansMono Nerd Font 11"
+theme.font_size = "12"
+theme.font = theme.font_name .. " " .. theme.font_size
 
 -- Colors
 theme.background = "#303446"
@@ -100,7 +101,7 @@ theme.fg_minimize = theme.dim_foreground
 theme.border_normal = theme.black
 theme.border_focus = theme.blue
 theme.border_marked = theme.red
-theme.border_width = dpi(2)
+theme.border_width = dpi(1)
 
 theme.useless_gap = 0
 theme.useless_gap_size = dpi(8)
@@ -121,7 +122,7 @@ theme.bg_systray = theme.background
 theme.taglist_fg_focus = theme.blue
 theme.taglist_bg_focus = theme.blue
 theme.taglist_fg_occupied = theme.bright_background
-theme.taglist_fg_empty = theme.background
+theme.taglist_fg_empty = theme.black
 
 theme.tasklist_fg_focus = theme.fg_normal
 
@@ -129,7 +130,7 @@ theme.titlebar_bg_normal = theme.bar
 theme.titlebar_bg_focus = theme.bar
 
 -- Main menu
-theme.menu_icon = theme.assets_dir .. "white-menu.png"
+theme.menu_icon = theme.assets_dir .. "menu.png"
 
 theme.menu_font = theme.font
 theme.menu_height = dpi(10)
@@ -156,7 +157,7 @@ theme.notification_padding = dpi(5)
 theme.notification_spacing = dpi(5)
 theme.notification_margin = dpi(5)
 theme.notification_border_width = dpi(5)
-theme.notification_position = "top_right"
+theme.notification_position = "bottom_right"
 
 theme.notification_low_bg = theme.background
 theme.notification_low_fg = theme.foreground

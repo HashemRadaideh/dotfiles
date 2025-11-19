@@ -9,8 +9,12 @@
         "tag",
         "keygrabber",
         "root",
-        "double_click_timer"
+        "double_click_timer",
+        "mouse"
       ]
+    },
+    "workspace": {
+      "library": ["/usr/share/awesome/lib"]
     }
   }
 }

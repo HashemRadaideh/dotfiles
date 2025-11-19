@@ -20,25 +20,27 @@ end)
 local function border_adjust(c)
   if Autohide and c.fullscreen then
     if c.screen.bar_toggle then
-      c.screen.bar_toggle.ontop = false
+      c.screen.bar_toggle.visible = false
     end
+
     if c.screen.bar.hide then
       c.screen.bar.hide:stop()
     end
   else
     if c.screen.bar_toggle then
-      c.screen.bar_toggle.ontop = true
+      c.screen.bar_toggle.visible = true
     end
+
     if c.screen.bar.hide then
       c.screen.bar.hide:start()
     end
   end
 
-  if #awful.screen.focused().clients > 1 then
-    c.border_width = beautiful.border_width
-  else
-    c.border_width = 0
-  end
+  -- if #awful.screen.focused().clients > 1 then
+  --   c.border_width = beautiful.border_width
+  -- else
+  --   c.border_width = 0
+  -- end
 end
 
 client.connect_signal("focus", border_adjust)

@@ -127,6 +127,7 @@ client.connect_signal("request::titlebars", function(c)
     .titlebar(c, {
       position = "top",
       bg = beautiful.bg_transparent,
+      size = dpi(28),
     })
     :setup({
       {

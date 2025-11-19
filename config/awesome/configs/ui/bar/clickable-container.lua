@@ -1,6 +1,6 @@
 local wibox = require("wibox")
 
-function build(widget)
+return function(widget)
   local container = wibox.widget({
     widget,
     widget = wibox.container.background,
@@ -9,7 +9,8 @@ function build(widget)
 
   container:connect_signal("mouse::enter", function()
     container.bg = "#ffffff11"
-    local w = _G.mouse.current_wibox
+    ---@diagnostic disable-next-line: undefined-global
+    local w = mouse.current_wibox
     if w then
       old_cursor, old_wibox = w.cursor, w
       w.cursor = "hand1"
@@ -34,5 +35,3 @@ function build(widget)
 
   return container
 end
-
-return build

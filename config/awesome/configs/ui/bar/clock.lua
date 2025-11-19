@@ -2,10 +2,14 @@ local awful = require("awful")
 local beautiful = require("beautiful")
 local gears = require("gears")
 local wibox = require("wibox")
+local dpi = require("beautiful.xresources").apply_dpi
 local capi = { keygrabber = keygrabber }
+
+local clickable_container = require("configs.ui.bar.clickable-container")
 
 local clock = wibox.widget({ widget = wibox.widget.textbox })
 
+---@diagnostic disable-next-line: unused-local, unused-function
 local function ordinal(n)
   local suffix = "th"
   local rem100 = n % 100
@@ -27,10 +31,16 @@ gears.timer({
   autostart = true,
   call_now = true,
   callback = function()
-    clock.markup = "<span foreground='#ffffff'>"
-      .. os.date(" %A, ")
+    clock.markup = "<span foreground='"
+      .. beautiful.foreground
+      .. "'>"
+      -- .. os.date("%A, ")
+      -- .. ordinal(tonumber(os.date("%d")))
+      -- .. os.date(" of %B, %I:%M:%S %p")
+      .. os.date("%a, ")
       .. ordinal(tonumber(os.date("%d")))
-      .. os.date(" of %B %Y, %I:%M:%S %p ")
+      .. os.date(" of %b, %I:%M:%S %p")
+      -- .. os.date("%a, %d/%m/%Y, %H:%M:%S")
       .. "</span>"
   end,
 })
@@ -42,7 +52,7 @@ local current_year = os.date("*t").year
 -- Calendar content widget
 local cal_text = wibox.widget({
   widget = wibox.widget.textbox,
-  font = "monospace 10",
+  font = beautiful.font,
   align = "center",
 })
 
@@ -81,9 +91,16 @@ end
 -- Navigation buttons
 local function create_nav_button(symbol, delta)
   local btn = wibox.widget({
-    text = symbol,
-    widget = wibox.widget.textbox,
-    align = "center",
+    {
+      {
+        text = symbol,
+        widget = wibox.widget.textbox,
+        align = "center",
+      },
+      margins = dpi(5),
+      widget = wibox.container.margin,
+    },
+    widget = clickable_container,
   })
 
   btn:connect_signal("button::press", function()
@@ -152,16 +169,16 @@ clock:connect_signal("button::press", function()
     ---@diagnostic disable-next-line: undefined-global, unused-local
     local s, mouse_coords = mouse.screen, mouse.coords()
 
-    local target_x = s.geometry.x + (s.geometry.width - calendar.width) / 2
-    -- local target_x = mouse_coords.x - (calendar_popup.width / 2)
+    -- local target_x = s.geometry.x + (s.geometry.width - calendar.width) / 2
+    local target_x = mouse_coords.x - (calendar.width / 2)
     calendar.x = clamp(
       target_x,
       s.geometry.x + beautiful.useless_gap_size,
       s.geometry.x + s.geometry.width - calendar.width - beautiful.useless_gap_size
     )
 
-    local target_y = s.geometry.y + s.bar.height + beautiful.useless_gap_size
-    -- local target_y = mouse_coords.y + s.bar.height + beautiful.useless_gap_size
+    -- local target_y = s.geometry.y + s.bar.height + beautiful.useless_gap_size
+    local target_y = mouse_coords.y + s.bar.height + beautiful.useless_gap_size
     calendar.y = clamp(
       target_y,
       s.geometry.y + s.bar.height + beautiful.useless_gap_size,

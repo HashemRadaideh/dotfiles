@@ -31,45 +31,39 @@ local function tags_list(s)
       end)
     ),
     widget_template = {
-      id = "text_role",
-      forced_width = dpi(35),
-      align = "center",
-      widget = wibox.widget.textbox,
-      -- create_callback = function(self, c3)
-      --   self:connect_signal("button::press", function()
-      --     if c3.selected then
-      --       self:get_children_by_id("text_role")[1].markup = "0"
-      --     else
-      --       self:get_children_by_id("text_role")[1].markup = "O"
-      --     end
-      --   end)
-      --
-      --   self:connect_signal('mouse::enter', function()
-      --     if self.markup ~= '0' then
-      --       self.backup     = self.markup
-      --       self.has_backup = true
-      --     end
-      --     self.text = ""
-      --   end)
-      --
-      --   self:connect_signal('mouse::leave', function()
-      --     if self.has_backup then self.markup = self.backup end
-      --   end)
-      --
-      --   if c3.selected then
-      --     self:get_children_by_id("text_role")[1].markup = "0"
-      --   else
-      --     self:get_children_by_id("text_role")[1].markup = "O"
-      --   end
-      -- end,
+      {
+        {
+          id = "text_role",
+          forced_width = dpi(32),
+          align = "center",
+          widget = wibox.widget.textbox,
+        },
+        layout = wibox.layout.fixed.horizontal,
+      },
+      widget = wibox.container.background,
+      create_callback = function(self)
+        local old_cursor, old_wibox
 
-      -- update_callback = function(self, c3, _)
-      --   if c3.selected then
-      --     self:get_children_by_id("text_role")[1].markup = "0"
-      --   else
-      --     self:get_children_by_id("text_role")[1].markup = "O"
-      --   end
-      -- end,
+        self.bg = "#ffffff00"
+
+        self:connect_signal("mouse::enter", function()
+          ---@diagnostic disable-next-line: undefined-global
+          local w = mouse.current_wibox
+          if w then
+            old_cursor, old_wibox = w.cursor, w
+            w.cursor = "hand1"
+          end
+          self.bg = "#ffffff11"
+        end)
+
+        self:connect_signal("mouse::leave", function()
+          if old_wibox then
+            old_wibox.cursor = old_cursor
+            old_wibox = nil
+          end
+          self.bg = "#ffffff00"
+        end)
+      end,
     },
   })
 end

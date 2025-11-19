@@ -1,10 +1,7 @@
 local awful = require("awful")
-local beautiful = require("beautiful")
 local wibox = require("wibox")
-local dpi = beautiful.xresources.apply_dpi
 
 local idle_inhibitor = wibox.widget({
-  margins = { left = dpi(3), right = dpi(3) },
   halign = "center",
   valign = "center",
   text = Idle and " " or " ",

@@ -1,7 +1,7 @@
 local awful = require("awful")
 local wibox = require("wibox")
 local gears = require("gears")
-local naughty = require("naughty")
+-- local naughty = require("naughty")
 local dpi = require("beautiful").xresources.apply_dpi
 local clickable_container = require("configs.ui.bar.clickable-container")
 
@@ -62,15 +62,11 @@ local return_button = function()
   local widget_button = wibox.widget({
     {
       widget,
-      margins = dpi(7),
+      margins = { left = dpi(2), top = dpi(7), bottom = dpi(7), right = dpi(7) },
       widget = wibox.container.margin,
     },
     widget = clickable_container,
   })
-
-  widget_button:buttons(gears.table.join(awful.button({}, 1, nil, function()
-    awful.spawn(Network_manager, false)
-  end)))
 
   local network_tooltip = awful.tooltip({
     text = "Loading...",
@@ -81,6 +77,11 @@ local return_button = function()
     margin_leftright = dpi(8),
     margin_topbottom = dpi(8),
   })
+
+  widget_button:buttons(gears.table.join(awful.button({}, 1, nil, function()
+    network_tooltip:hide()
+    awful.spawn(Network_manager, false)
+  end)))
 
   local check_internet_health = [=[
     status_ping=0
@@ -114,27 +115,27 @@ local return_button = function()
     network_tooltip:set_markup(message)
   end
 
-  local network_notify = function(message, title, app_name, icon)
-    naughty.notify({
-      message = message,
-      title = title,
-      app_name = app_name,
-      icon = icon,
-    })
-  end
+  -- local network_notify = function(message, title, app_name, icon)
+  --   naughty.notify({
+  --     message = message,
+  --     title = title,
+  --     app_name = app_name,
+  --     icon = icon,
+  --   })
+  -- end
 
   -- Wireless mode / Update
   local update_wireless = function()
     network_mode = "wireless"
 
-    -- Create wireless connection notification
-    local notify_connected = function(essid)
-      local message = 'You are now connected to <b>"' .. essid .. '"</b>'
-      local title = "Connection Established"
-      local app_name = "System Notification"
-      local icon = widget_icon_dir .. "connected_notification.svg"
-      network_notify(message, title, app_name, icon)
-    end
+    -- -- Create wireless connection notification
+    -- local notify_connected = function(essid)
+    --   local message = 'You are now connected to <b>"' .. essid .. '"</b>'
+    --   local title = "Connection Established"
+    --   local app_name = "System Notification"
+    --   local icon = widget_icon_dir .. "connected_notification.svg"
+    --   network_notify(message, title, app_name, icon)
+    -- end
 
     -- Get wifi essid and bitrate
     local update_wireless_data = function(strength, healthy)
@@ -159,7 +160,7 @@ local return_button = function()
         end
 
         if reconnect_startup or startup then
-          notify_connected(essid)
+          -- notify_connected(essid)
           update_reconnect_startup(false)
         end
       end)
@@ -205,13 +206,13 @@ local return_button = function()
   local update_wired = function()
     network_mode = "wired"
 
-    local notify_connected = function()
-      local message = 'Connected to internet with <b>"' .. network_interfaces.lan .. '"</b>'
-      local title = "Connection Established"
-      local app_name = "System Notification"
-      local icon = widget_icon_dir .. "wired.svg"
-      network_notify(message, title, app_name, icon)
-    end
+    -- local notify_connected = function()
+    --   local message = 'Connected to internet with <b>"' .. network_interfaces.lan .. '"</b>'
+    --   local title = "Connection Established"
+    --   local app_name = "System Notification"
+    --   local icon = widget_icon_dir .. "wired.svg"
+    --   network_notify(message, title, app_name, icon)
+    -- end
 
     awful.spawn.easy_async_with_shell(check_internet_health, function(stdout)
       local widget_icon_name = "wired"
@@ -225,7 +226,7 @@ local return_button = function()
         update_tooltip("Ethernet Interface: <b>" .. network_interfaces.lan .. "</b>")
         if startup or reconnect_startup then
           awesome.emit_signal("system::network_connected")
-          notify_connected()
+          -- notify_connected()
           update_startup()
         end
         update_reconnect_startup(false)
@@ -235,21 +236,21 @@ local return_button = function()
   end
 
   local update_disconnected = function()
-    local notify_wireless_disconnected = function(essid)
-      local message = "Wi-Fi network has been disconnected"
-      local title = "Connection Disconnected"
-      local app_name = "System Notification"
-      local icon = widget_icon_dir .. "wifi-strength-off.svg"
-      network_notify(message, title, app_name, icon)
-    end
+    -- local notify_wireless_disconnected = function(essid)
+    --   local message = "Wi-Fi network has been disconnected"
+    --   local title = "Connection Disconnected"
+    --   local app_name = "System Notification"
+    --   local icon = widget_icon_dir .. "wifi-strength-off.svg"
+    --   network_notify(message, title, app_name, icon)
+    -- end
 
-    local notify_wired_disconnected = function(essid)
-      local message = "Ethernet network has been disconnected"
-      local title = "Connection Disconnected"
-      local app_name = "System Notification"
-      local icon = widget_icon_dir .. "wired-off.svg"
-      network_notify(message, title, app_name, icon)
-    end
+    -- local notify_wired_disconnected = function(essid)
+    --   local message = "Ethernet network has been disconnected"
+    --   local title = "Connection Disconnected"
+    --   local app_name = "System Notification"
+    --   local icon = widget_icon_dir .. "wired-off.svg"
+    --   network_notify(message, title, app_name, icon)
+    -- end
 
     local widget_icon_name = "wifi-strength-off"
 
@@ -257,13 +258,13 @@ local return_button = function()
       widget_icon_name = "wifi-strength-off"
       if not reconnect_startup then
         update_reconnect_startup(true)
-        notify_wireless_disconnected()
+        -- notify_wireless_disconnected()
       end
     elseif network_mode == "wired" then
       widget_icon_name = "wired-off"
       if not reconnect_startup then
         update_reconnect_startup(true)
-        notify_wired_disconnected()
+        -- notify_wired_disconnected()
       end
     end
     update_tooltip("Network is currently disconnected")
