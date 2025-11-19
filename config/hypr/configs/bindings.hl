@@ -32,6 +32,7 @@ bind = SUPER, code:47, killactive
 bind = SUPER CTRL, Q, exit
 bind = SUPER CTRL, code:47, exit
 
+bind = SUPER, W, exec, swww img "$(find ~/Pictures/Wallpapers/ -type f -exec file -- {} + | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)" --transition-step 255
 bind = SUPER, B, exec, killall waybar || waybar
 bind = SUPER, code:48, exec, swaync-client -t -sw
 bind = SUPER, E, exec, thunar
