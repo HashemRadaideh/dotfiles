@@ -8,6 +8,7 @@ config.capabilities = {
   },
 }
 
+vim.lsp.enable("sourcekit")
 vim.lsp.config("sourcekit", {
   capabilities = config.capabilities,
   flags = config.flags,
@@ -15,4 +16,3 @@ vim.lsp.config("sourcekit", {
   on_attach = config.on_attach,
   filetypes = { "swift", "objc", "objcpp" },
 })
-vim.lsp.enable("sourcekit")

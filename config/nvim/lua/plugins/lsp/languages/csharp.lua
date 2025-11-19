@@ -1,5 +1,6 @@
 local config = require("plugins.lsp.config")
 
+vim.lsp.enable("omnisharp")
 vim.lsp.config("omnisharp", {
   capabilities = config.capabilities,
   on_attach = config.on_attach,
@@ -12,7 +13,6 @@ vim.lsp.config("omnisharp", {
     tostring(vim.fn.getpid()),
   },
 })
-vim.lsp.enable("omnisharp")
 -- .csharp_ls.setup(config)
 -- .omnisharpmono.setup(config)
 

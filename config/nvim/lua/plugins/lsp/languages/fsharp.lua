@@ -1,5 +1,6 @@
 local config = require("plugins.lsp.config")
 
+vim.lsp.enable("fsautocomplete")
 vim.lsp.config("fsautocomplete", {
   capabilities = config.capabilities,
   on_attach = config.on_attach,
@@ -9,4 +10,3 @@ vim.lsp.config("fsautocomplete", {
     AutomaticWorkspaceInit = true,
   },
 })
-vim.lsp.enable("fsautocomplete")

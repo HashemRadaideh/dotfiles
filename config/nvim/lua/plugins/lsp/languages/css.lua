@@ -1,5 +1,6 @@
 local config = require("plugins.lsp.config")
 
+vim.lsp.enable("cssls")
 vim.lsp.config("cssls", {
   capabilities = config.capabilities,
   on_attach = config.on_attach,
@@ -27,8 +28,8 @@ vim.lsp.config("cssls", {
     },
   },
 })
-vim.lsp.enable("cssls")
 
+vim.lsp.enable("somesass_ls")
 vim.lsp.config("somesass_ls", {
   capabilities = config.capabilities,
   on_attach = config.on_attach,
@@ -38,21 +39,20 @@ vim.lsp.config("somesass_ls", {
     somesass = {},
   },
 })
-vim.lsp.enable("somesass_ls")
 
--- vim.lsp.config("css_variables",  config)
 -- vim.lsp.enable("css_variables")
+-- vim.lsp.config("css_variables",  config)
 
--- vim.lsp.config("cssmodules_ls",  config)
 -- vim.lsp.enable("cssmodules_ls")
+-- vim.lsp.config("cssmodules_ls",  config)
 
+vim.lsp.enable("tailwindcss")
 vim.lsp.config("tailwindcss", {
   capabilities = config.capabilities,
   on_attach = config.on_attach,
   handlers = config.handlers,
   flags = config.flags,
 })
-vim.lsp.enable("tailwindcss")
 
--- vim.lsp.config("unocss",  config)
 -- vim.lsp.enable("unocss")
+-- vim.lsp.config("unocss",  config)

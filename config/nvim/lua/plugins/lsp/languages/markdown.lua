@@ -1,7 +1,7 @@
 local config = require("plugins.lsp.config")
 
-vim.lsp.config("marksman", config)
 vim.lsp.enable("marksman")
+vim.lsp.config("marksman", config)
 
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = { "*.md" },

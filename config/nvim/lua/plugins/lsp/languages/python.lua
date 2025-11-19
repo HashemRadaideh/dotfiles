@@ -10,6 +10,7 @@ else
   py_path = vim.g.python3_host_prog
 end
 
+vim.lsp.enable("pylsp")
 vim.lsp.config("pylsp", {
   on_attach = config.on_attach,
   flags = config.flags,
@@ -53,22 +54,21 @@ vim.lsp.config("pylsp", {
     },
   },
 })
-vim.lsp.enable("pylsp")
 
--- vim.lsp.config("pyright", config)
 -- vim.lsp.enable("pyright")
+-- vim.lsp.config("pyright", config)
 
--- vim.lsp.config("ruff", config)
 -- vim.lsp.enable("ruff")
+-- vim.lsp.config("ruff", config)
 
--- vim.lsp.config("pylyzer", config)
 -- vim.lsp.enable("pylyzer")
+-- vim.lsp.config("pylyzer", config)
 
--- vim.lsp.config("django_template_lsp", config)
 -- vim.lsp.enable("django_template_lsp")
+-- vim.lsp.config("django_template_lsp", config)
 
--- vim.lsp.config("pyre", config)
 -- vim.lsp.enable("pyre")
+-- vim.lsp.config("pyre", config)
 
--- vim.lsp.config("sourcery",  config)
 -- vim.lsp.enable("sourcery")
+-- vim.lsp.config("sourcery",  config)

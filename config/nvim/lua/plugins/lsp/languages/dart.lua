@@ -1,5 +1,6 @@
 local config = require("plugins.lsp.config")
 
+vim.lsp.enable("dartls")
 vim.lsp.config("dartls", {
   capabilities = config.capabilities,
   on_attach = config.on_attach,
@@ -16,7 +17,6 @@ vim.lsp.config("dartls", {
     },
   },
 })
-vim.lsp.enable("dartls")
 
 local ok, flutter_tools = pcall(require, "flutter-tools")
 if not ok then

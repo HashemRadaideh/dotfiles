@@ -133,13 +133,11 @@ return {
       telescope.load_extension("notify")
     end
 
+    telescope.load_extension("ui-select")
     -- telescope.load_extension("toggletasks")
     -- telescope.load_extension("fzf")
     -- telescope.load_extension("lazygit")
-    telescope.load_extension("ui-select")
-    -- telescope.load_extension("file_browser")
-    telescope.load_extension("persisted")
-    telescope.load_extension("undo")
+    -- telescope.load_extension("persisted")
     -- telescope.load_extension("projects")
 
     return {

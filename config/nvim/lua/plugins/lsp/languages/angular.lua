@@ -1,5 +1,6 @@
 local config = require("plugins.lsp.config")
 
+vim.lsp.enable("angularls")
 vim.lsp.config("angularls", {
   capabilities = config.capabilities,
   flags = config.flags,
@@ -7,7 +8,6 @@ vim.lsp.config("angularls", {
   on_attach = config.on_attach,
   -- filetypes = { "typescript", "html", "typescriptreact", "typescript.tsx", "htmlangular" },
 })
-vim.lsp.enable("angularls")
 
 -- vim.filetype.add({
 --   pattern = {

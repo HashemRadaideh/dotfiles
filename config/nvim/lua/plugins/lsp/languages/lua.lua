@@ -1,5 +1,6 @@
 local config = require("plugins.lsp.config")
 
+vim.lsp.enable("lua_ls")
 vim.lsp.config("lua_ls", {
   capabilities = config.capabilities,
   on_attach = config.on_attach,
@@ -44,4 +45,3 @@ vim.lsp.config("lua_ls", {
     },
   },
 })
-vim.lsp.enable("lua_ls")

@@ -1,5 +1,6 @@
 local config = require("plugins.lsp.config")
 
+vim.lsp.enable("ts_ls")
 vim.lsp.config("ts_ls", {
   capabilities = config.capabilities,
   flags = config.flags,
@@ -30,4 +31,3 @@ vim.lsp.config("ts_ls", {
     },
   },
 })
-vim.lsp.enable("ts_ls")

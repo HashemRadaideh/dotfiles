@@ -45,6 +45,7 @@ return {
   --   -- config = function()
   --   --   local config = require("plugins.lsp.config")
 
+  --   --   vim.lsp.enable("rustowl")
   --   --   vim.lsp.config("rustowl", {
   --   --     -- capabilities = config.capabilities,
   --   --     -- on_attach = config.on_attach,
@@ -54,7 +55,6 @@ return {
   --   --       hover = false,
   --   --     },
   --   --   })
-  --   --   vim.lsp.enable("rustowl")
   --   -- end,
   --   key = {
   --     "<leader>ro",
