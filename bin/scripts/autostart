@@ -38,7 +38,7 @@ if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "$DISPLAY" ]; then
     # run ibus-daemon -drx
 
     run touchegg --client
-    run /usr/bin/touchpad-indicator
+    # run /usr/bin/touchpad-indicator
 
     run xset s off
     run xset s noblank
@@ -91,7 +91,7 @@ else
     run wl-paste --type text --watch cliphist store
     # run wl-paste --type image --watch cliphist store
 
-    run swww init && swww img \
+    run swww-daemon && swww img \
         "$(find ~/Pictures/Wallpapers/ -type f -exec file -- {} + | awk -F':' '/\w+ image/{print $1}' | shuf -n 1)" \
         --transition-step 255
 
@@ -111,7 +111,8 @@ run udiskie -s
 # run gromit-mpx
 # run screenkey --start-disabled
 # run flameshot
-run birdtray
+# run birdtray
+run bluemail
 
 # run battery
 
@@ -132,5 +133,5 @@ run discord --start-minimized
 
 # run /usr/bin/emacs --daemon
 
-mpv --no-video --really-quiet --volume=0 /usr/share/sounds/freedesktop/stereo/service-login.oga
-mpv --no-video --really-quiet /usr/share/sounds/freedesktop/stereo/service-login.oga
+# mpv --no-video --really-quiet --volume=0 /usr/share/sounds/freedesktop/stereo/service-login.oga
+# mpv --no-video --really-quiet /usr/share/sounds/freedesktop/stereo/service-login.oga

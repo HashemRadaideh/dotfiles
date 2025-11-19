@@ -25,5 +25,5 @@ case "$file" in
     "power off") systemctl poweroff ;;
     "$(tty)") clear ;;
     "tmux") exec fzt ;;
-    *) exec starter "$file" ;;
+    *) starter "$file" ;;
 esac

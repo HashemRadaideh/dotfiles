@@ -44,8 +44,8 @@ send_notification() {
         symbol="off"
     fi
 
-    icon="/usr/share/icons/Papirus-Dark/symbolic/status/display-brightness-$symbol-symbolic.svg"
-    [[ ! -f $icon ]] && icon="/usr/share/icons/Papirus/48x48/status/dialog-information.png" # Fallback icon
+    icon="/usr/share/icons/Papirus/16x16/symbolic/status/display-brightness-$symbol-symbolic.svg"
+    [[ ! -f $icon ]] && icon="/usr/share/icons/Papirus/48x48/status/dialog-information.svg"
 
     notify-send \
         -u low \

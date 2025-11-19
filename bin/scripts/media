@@ -22,20 +22,20 @@ is_micmute() {
 send_notification() {
     volume=$(get_volume)
 
-    if (( volume > 100 )); then
+    if (( volume >= 100 )); then
         symbol="overamplified"
-    elif (( volume > 66 )); then
+    elif (( volume >= 80 )); then
         symbol="high"
-    elif (( volume > 35 )); then
+    elif (( volume >= 50 )); then
         symbol="medium"
-    elif (( volume > 10 )); then
+    elif (( volume >= 15 )); then
         symbol="low"
     else
         symbol="muted"
     fi
 
-    icon="/usr/share/icons/Papirus-Dark/symbolic/status/audio-volume-$symbol-symbolic.svg"
-    [[ ! -f $icon ]] && icon="/usr/share/icons/Papirus/48x48/status/dialog-information.png"
+    icon="/usr/share/icons/Papirus/16x16/symbolic/status/audio-volume-$symbol-symbolic.svg"
+    [[ ! -f $icon ]] && icon="/usr/share/icons/Papirus/48x48/status/dialog-information.svg"
 
     notify-send \
         -u low \

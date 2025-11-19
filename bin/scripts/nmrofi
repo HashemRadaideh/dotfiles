@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+set -euo pipefail
+LC_ALL=C
+
+need() { command -v "$1" >/dev/null 2>&1 || { notify-send -u critical "Wi-Fi Error" "Missing dependency: $1"; exit 1; }; }
+need nmcli; need rofi; need notify-send
+
+wifi_status() { nmcli -t -f WIFI g | tr '[:upper:]' '[:lower:]'; }
+
+signal_bars() {
+    local s=${1:-0}
+    if   (( s >= 80 )); then echo "󰤨"
+    elif (( s >= 60 )); then echo "󰤥"
+    elif (( s >= 40 )); then echo "󰤢"
+    elif (( s >= 20 )); then echo "󰤟"
+    else echo "󰤯"
+    fi
+}
+lock_icon() { local sec=${1:-}; [[ "$sec" == "--" || -z "$sec" ]] && echo "" || echo ""; }
+star_icon() { local inuse=${1:-}; [[ "$inuse" == "*" ]] && echo " " || echo ""; }
+
+ask()           { rofi -dmenu -p "$1" -theme "themes/wifi.rasi" "$@"; }
+ok()            { notify-send -i network-wireless "Wi-Fi" "$1"; }
+err()           { notify-send -u critical -i dialog-error "Wi-Fi Error" "$1"; }
+
+menu_items=(
+    "  Rescan"
+    "$([[ "$(wifi_status)" == "enabled" ]] && echo "󰖪  Disable Wi-Fi" || echo "󰖩  Enable Wi-Fi")"
+    "󰘳  Hidden/Manual SSID"
+)
+
+RATE_W=10
+CHAN_W=6
+SIG_W=3
+
+while IFS= read -r line; do
+    inuse="${line%%:*}"; rest="${line#*:}"
+    ssid="${rest%%:*}";  rest="${rest#*:}"
+    chan="${rest%%:*}";  rest="${rest#*:}"
+    rate="${rest%%:*}";  rest="${rest#*:}"
+    sec="${rest%%:*}";   rest="${rest#*:}"
+    sig="${rest%%:*}";
+    bssid="${rest#*:}"
+
+    ssid="${ssid//\\:/:}"
+    bssid="${bssid//\\:/:}"
+
+    lock="$(lock_icon "$sec")"
+    bars="$(signal_bars "${sig:-0}")"
+    star="$(star_icon "$inuse")"
+
+    sig_val="${sig:-0}"
+    sig_col="$(printf "%${SIG_W}s" "$sig_val")"
+
+    rate="${rate:----}"
+    rate="${rate/bit\/s/b\/s}"
+    rate_col="$(printf "%-${RATE_W}s" "$rate")"
+
+    chan_val="${chan:---}"
+    chan_col="$(printf "%-${CHAN_W}s" "(ch${chan_val})")"
+
+    menu_items+=("$lock [${bars} ${sig_col}%] ${rate_col}${chan_col} $ssid $star"$'\x1f'"$bssid"$'\x1f'"$ssid"$'\x1f'"$sec")
+done <<< "$(nmcli -t -c no -f IN-USE,SSID,CHAN,RATE,SECURITY,SIGNAL,BSSID device wifi list)"
+
+menu_joined=$(printf '%b\n' "${menu_items[@]}")
+chosen=$(printf '%b\n' "$menu_joined" | awk -F'\x1f' '{print $1}' | ask "SSID:") || exit 0
+
+case "$chosen" in
+    "") exit 0 ;;
+    "  Rescan") exec "$0" ;;
+    "󰖩  Enable Wi-Fi")
+        if nmcli radio wifi on; then ok "Wi-Fi enabled."; else err "Could not enable Wi-Fi."; fi
+        exit 0 ;;
+    "󰖪  Disable Wi-Fi")
+        if nmcli radio wifi off; then ok "Wi-Fi disabled."; else err "Could not disable Wi-Fi."; fi
+        exit 0 ;;
+    "󰘳  Hidden/Manual SSID")
+        # TODO: implement this feature later
+        exit 0 ;;
+esac
+
+line=$(printf '%b\n' "${menu_items[@]}" | awk -v c="$chosen" -F'\x1f' '$1==c{print $0; exit}')
+bssid=$(printf '%b' "$line" | cut -d$'\x1f' -f2)
+ssid=$(printf '%b' "$line" | cut -d$'\x1f' -f3)
+sec=$(printf '%b' "$line" | cut -d$'\x1f' -f4)
+
+cmd=(nmcli -w 20 dev wifi connect "${bssid:-$ssid}")
+
+try_connect() {
+    if "${cmd[@]}" 2>/tmp/wifi_err; then
+        ok "Connected to \"$ssid\"."
+        return 0
+    fi
+    return 1
+}
+
+if ! try_connect; then
+    cmd+=(password "$(ask "Password for $ssid:" -password)")
+    try_connect || err "$(</tmp/wifi_err)"
+fi
