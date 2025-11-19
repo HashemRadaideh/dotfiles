@@ -56,6 +56,11 @@ on = ['f', 'a']
 run = """shell 'archive "$@" "$(ya input -p "Archive format: ")"'"""
 desc = "Archive the file under the cursor with specified format"
 
+[[mgr.prepend_keymap]]
+on = ['w']
+run = """shell 'feh --bg-fill "$@"'"""
+desc = "Change wallpaper"
+
 # [[manager.prepend_keymap]]
 # on = ["<A-Enter>"]
 # run = """shell '$TERMINAL -e $SHELL -c -i \"cd $PWD && yazi && exec $SHELL\"' --orphan --confirm"""
