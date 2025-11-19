@@ -5,13 +5,13 @@ zinit light zsh-users/zsh-autosuggestions
 zinit light Aloxaf/fzf-tab
 
 # Add in snippets
-zinit snippet OMZP::git
-zinit snippet OMZP::sudo
-zinit snippet OMZP::archlinux
-zinit snippet OMZP::aws
-zinit snippet OMZP::kubectl
-zinit snippet OMZP::kubectx
-zinit snippet OMZP::command-not-found
+# zinit snippet OMZP::git
+# zinit snippet OMZP::sudo
+# zinit snippet OMZP::archlinux
+# zinit snippet OMZP::aws
+# zinit snippet OMZP::kubectl
+# zinit snippet OMZP::kubectx
+# zinit snippet OMZP::command-not-found
 
 theme() {
     if [[ -z "$DISPLAY" ]] ; then
@@ -50,6 +50,9 @@ export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init - zsh)"
 
+source /usr/share/nvm/init-nvm.sh
+source <(ng completion script)
+
 function python-venv() {
     local MYVENV=
     local current_dir="$(pwd)"
@@ -82,22 +85,22 @@ add-zsh-hook chpwd python-venv
 python-venv
 
 function sync_display_from_tmux() {
-  if [[ -n "$TMUX" && -n "$DISPLAY" ]]; then
-    if ! xdpyinfo >/dev/null 2>&1; then
-      export DISPLAY=$(tmux show-environment DISPLAY 2>/dev/null | cut -d= -f2)
+    if [[ -n "$TMUX" && -n "$DISPLAY" ]]; then
+        if ! xdpyinfo >/dev/null 2>&1; then
+            export DISPLAY=$(tmux show-environment DISPLAY 2>/dev/null | cut -d= -f2)
+        fi
     fi
-  fi
 }
 
 add-zsh-hook precmd sync_display_from_tmux
 
-if type clipcat-menu >/dev/null 2>&1; then
-    alias clipedit=' clipcat-menu --finder=builtin edit'
-    alias clipdel=' clipcat-menu --finder=builtin remove'
+# if type clipcat-menu >/dev/null 2>&1; then
+#     alias clipedit=' clipcat-menu --finder=builtin edit'
+#     alias clipdel=' clipcat-menu --finder=builtin remove'
 
-    bindkey -s '^\' "^Q clipcat-menu --finder=builtin insert ^m"
-    bindkey -s '^]' "^Q clipcat-menu --finder=builtin remove ^m"
-fi
+#     bindkey -s '^\' "^Q clipcat-menu --finder=builtin insert ^m"
+#     bindkey -s '^]' "^Q clipcat-menu --finder=builtin remove ^m"
+# fi
 
 # if [ -t 1 ] && [[ -z "$TMUX" ]]; then
 #     TMOUT=300
