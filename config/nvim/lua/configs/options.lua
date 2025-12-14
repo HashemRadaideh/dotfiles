@@ -7,12 +7,13 @@ local settings = {
   g = {
     mapleader = " ",
     maplocalleader = " ",
+    have_nerd_font = true,
   },
   opt = {
     number = true,
     relativenumber = true,
     mouse = "a",
-    clipboard = "unnamedplus",
+    -- clipboard = "unnamedplus",
     signcolumn = "yes:2",
     cursorline = true,
     showmatch = true,
@@ -76,6 +77,10 @@ local settings = {
     undodir = vim.fn.stdpath("data") .. "/undos",
   },
 }
+
+vim.schedule(function()
+  vim.o.clipboard = 'unnamedplus'
+end)
 
 for mode, options in pairs(settings) do
   for option, value in pairs(options) do

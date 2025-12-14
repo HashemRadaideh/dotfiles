@@ -9,5 +9,6 @@ return {
   require("plugins.ai.mcphub"),
   -- require("plugins.ai.neoai"),
   -- require("plugins.ai.ollama"),
+  require("plugins.ai.opencode"),
   -- require("plugins.ai.tabnine"),
 }

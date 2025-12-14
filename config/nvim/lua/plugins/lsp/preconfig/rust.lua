@@ -3,8 +3,6 @@ return {
     "mrcjkb/rustaceanvim",
     ft = { "rust" },
     config = function()
-      local config = require("plugins.lsp.config")
-
       -- local mason_registry = require("mason-registry")
       -- local codelldb = mason_registry.get_package("codelldb")
       -- local extension_path = codelldb:get_install_path() .. "/extension"
@@ -23,10 +21,6 @@ return {
           adapter = cfg.get_codelldb_adapter(codelldb_path, liblldb_path),
         },
         server = {
-          capabilities = config.capabilities,
-          on_attach = config.on_attach,
-          handlers = config.handlers,
-          flags = config.flags,
         },
       }
     end,
@@ -42,20 +36,13 @@ return {
   --     idle_time = 500, -- Time in milliseconds to hover with the cursor before triggering RustOwl
   --     client = {}, -- LSP client configuration that gets passed to `vim.lsp.start`
   --   },
-  --   -- config = function()
-  --   --   local config = require("plugins.lsp.config")
-
-  --   --   vim.lsp.enable("rustowl")
-  --   --   vim.lsp.config("rustowl", {
-  --   --     -- capabilities = config.capabilities,
-  --   --     -- on_attach = config.on_attach,
-  --   --     -- handlers = config.handlers,
-  --   --     -- flags = config.flags,
-  --   --     trigger = {
-  --   --       hover = false,
-  --   --     },
-  --   --   })
-  --   -- end,
+  --   config = function()
+  --     vim.lsp.config("rustowl", {
+  --       trigger = {
+  --         hover = false,
+  --       },
+  --     })
+  --   end,
   --   key = {
   --     "<leader>ro",
   --     [[<cmd>Rustowl toggle<CR>]],

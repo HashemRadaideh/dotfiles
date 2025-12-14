@@ -1,5 +1,11 @@
+-- Package manager mappings
+vim.keymap.set("n", "<leader>mp", "<cmd>Lazy<CR>", { noremap = true, silent = true })
+
+-- vim.keymap.set("n", "<tab>", "<cmd>bnext<CR>", { noremap = true, silent = true })
+-- vim.keymap.set("n", "<S-tab>", "<cmd>bprev<CR>", { noremap = true, silent = true })
+
 vim.keymap.set({ "n", "x", "o", "v" }, "<C-z>", "<nop>", { noremap = true, silent = true })
-vim.keymap.set({ "n", "x", "o", "v" }, "Q", "<nop>", { noremap = true, silent = true })
+-- vim.keymap.set({ "n", "x", "o", "v" }, "Q", "<nop>", { noremap = true, silent = true })
 
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true })
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
@@ -12,15 +18,19 @@ vim.keymap.set("n", "<C-k>", ":m .-2<CR>==", { noremap = true, silent = true, de
 vim.keymap.set("i", "<C-j>", "<Esc>:m .+1<CR>==gi", { noremap = true, silent = true, desc = "Move line down" })
 vim.keymap.set("i", "<C-k>", "<Esc>:m .-2<CR>==gi", { noremap = true, silent = true, desc = "Move line up" })
 
--- Remove newline and keep cursor position
-vim.keymap.set("n", "J", "mzJ`z", { noremap = true, silent = true })
-
 -- Leader-J/K deletes blank line below/above, and leader-j/k inserts.
 vim.keymap.set("n", "<leader>j", "<cmd>set paste<CR>m`o<Esc>``<cmd>set nopaste<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>k", "<cmd>set paste<CR>m`O<Esc>``<cmd>set nopaste<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>J", "m`<cmd>silent +g/\\m^\\s*$/d<CR>``<cmd>noh<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>K", "m`<cmd>silent -g/\\m^\\s*$/d<CR>``<cmd>noh<CR>", { noremap = true, silent = true })
 
+-- Leader-q closes current open buffer
+vim.keymap.set("n", "<leader>q", "<C-w>q", { noremap = true, silent = true })
+
+-- Remove newline and keep cursor position
+vim.keymap.set("n", "J", "mzJ`z", { noremap = true, silent = true })
+
+-- Move up or down the bqf buffers
 vim.keymap.set("n", "<C-n>", function()
   if vim.fn.getqflist({ size = 0 }).size > 0 then
     vim.cmd("cnext")
@@ -38,10 +48,10 @@ vim.keymap.set("n", "<C-p>", function()
 end, { noremap = true, silent = true })
 
 -- keep screen centered when moving
--- vim.keymap.set("n", "<C-b>", "<C-b>zz", { noremap = true, silent = true })
--- vim.keymap.set("n", "<C-f>", "<C-f>zz", { noremap = true, silent = true })
--- vim.keymap.set("n", "<C-d>", "<C-d>zz", { noremap = true, silent = true })
--- vim.keymap.set("n", "<C-u>", "<C-u>zz", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-b>", "<C-b>zz", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-f>", "<C-f>zz", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-d>", "<C-d>zz", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-u>", "<C-u>zz", { noremap = true, silent = true })
 
 -- Improved search
 vim.keymap.set(
@@ -85,17 +95,20 @@ vim.keymap.set("v", ">", ">gv", { noremap = true, silent = true })
 -- keep position after changing capitalization
 vim.keymap.set("n", "~", "~h", { noremap = true, silent = true })
 
+vim.keymap.set("v", "<S-right>", "l", { noremap = true, silent = true })
+vim.keymap.set("v", "<S-left>", "h", { noremap = true, silent = true })
+
 -- better insert mode
 vim.keymap.set("i", "<C-H>", "<C-o>db", { noremap = true, silent = true, desc = "Delete word backward" })
 vim.keymap.set("i", "<C-Del>", "<C-o>dw", { noremap = true, silent = true, desc = "Delete word forward" })
 vim.keymap.set("i", "<S-right>", "<C-o>v", { noremap = true, silent = true, desc = "Delete word forward" })
 vim.keymap.set("i", "<S-left>", "<C-o>v", { noremap = true, silent = true, desc = "Delete word forward" })
--- vim.keymap.set("i", "<C-c>", "<Esc>", { noremap = true, silent = true })
+vim.keymap.set("i", "<C-c>", "<nop>", { noremap = true, silent = true })
 
 -- vim.keymap.set("i", "<C-Left>", "<C-o>b", { noremap = true, silent = true, desc = "Move one word forward" })
 -- vim.keymap.set("i", "<C-Right>", "<C-o>w", { noremap = true, silent = true, desc = "Move one word backward" })
 
-vim.keymap.set("i", "<C-f>", "<C-o>/", { noremap = true, silent = true, desc = "Search for a string" })
+-- vim.keymap.set("i", "<C-f>", "<C-o>/", { noremap = true, silent = true, desc = "Search for a string" })
 
 vim.keymap.set("i", "<C-n>", "<C-o>n", { noremap = true, silent = true, desc = "Move to next occurrence" })
 vim.keymap.set("i", "<C-p>", "<C-o>N", { noremap = true, silent = true, desc = "Move to previous occurrence" })
@@ -107,15 +120,12 @@ vim.keymap.set("i", ";", ";<C-g>u", { noremap = true, silent = true })
 vim.keymap.set("i", "<C-z>", "<C-o>u", { noremap = true, silent = true, desc = "Undo last move" })
 
 vim.keymap.set("i", "<C-a>", "<Esc>ggVG", { noremap = true, silent = true, desc = "Select all" })
-vim.keymap.set(
-  { "n", "v", "i", "s" },
-  "<C-s>",
-  "<cmd>w<CR><Esc>",
-  { noremap = true, silent = true, desc = "Save file" }
-)
+vim.keymap.set({ "n", "v", "i", "s" }, "<C-s>", "<cmd>w<CR>", { noremap = true, silent = true, desc = "Save file" })
 
-vim.keymap.set("n", "-", "<cmd>sp .<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "\\", "<cmd>vs .<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "-", "<cmd>sp<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "\\", "<cmd>vs<CR>", { noremap = true, silent = true })
+-- vim.keymap.set("n", "-", "<cmd>sp .<CR>", { noremap = true, silent = true })
+-- vim.keymap.set("n", "\\", "<cmd>vs .<CR>", { noremap = true, silent = true })
 
 vim.keymap.set("n", "<A-->", function()
   vim.cmd("sp | term")
@@ -146,45 +156,39 @@ vim.keymap.set("t", "<A-k>", [[<C-\><C-n><C-w>k]], { noremap = true, silent = tr
 --   { noremap = true, silent = true }
 -- )
 
-vim.keymap.set("n", "<leader>sp", "<cmd>e /tmp/scratchpad<cr>", { noremap = true, silent = true, desc = "Scratchpad" })
-vim.keymap.set("n", "<leader>fn", "<cmd>enew<cr>", { noremap = true, silent = true, desc = "New File" })
+-- vim.keymap.set("n", "<leader>sp", "<cmd>e /tmp/scratchpad<cr>", { noremap = true, silent = true, desc = "Scratchpad" })
+-- vim.keymap.set("n", "<leader>fn", "<cmd>enew<cr>", { noremap = true, silent = true, desc = "New File" })
 
 -- Plugins mappings
--- Package manager mappings
-vim.keymap.set("n", "<leader>mp", "<cmd>Lazy<CR>", { noremap = true, silent = true })
-
-vim.keymap.set({ "n", "v" }, "<leader>]", ":Gen<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>ghc", "<cmd>Copilot<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>ai", "<cmd>NeoAIToggle<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>gpt", "<cmd>ChatGPT<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>tn", "<cmd>TabnineToggle<CR>", { noremap = true, silent = true })
-
--- vim.keymap.set("n", "<tab>", "<cmd>bnext<CR>", { noremap = true, silent = true })
--- vim.keymap.set("n", "<S-tab>", "<cmd>bprev<CR>", { noremap = true, silent = true })
+-- vim.keymap.set({ "n", "v" }, "<leader>]", ":Gen<CR>", { noremap = true, silent = true })
+-- vim.keymap.set("n", "<leader>ghc", "<cmd>Copilot<CR>", { noremap = true, silent = true })
+-- vim.keymap.set("n", "<leader>ai", "<cmd>NeoAIToggle<CR>", { noremap = true, silent = true })
+-- vim.keymap.set("n", "<leader>gpt", "<cmd>ChatGPT<CR>", { noremap = true, silent = true })
+-- vim.keymap.set("n", "<leader>tn", "<cmd>TabnineToggle<CR>", { noremap = true, silent = true })
 
 -- ToggleTerm mappings
-vim.keymap.set("n", "<leader>tlg", "<cmd>lua Lazygit:toggle()<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>tgl", "<cmd>lua Glow:toggle()<CR>", { noremap = true, silent = true })
-vim.keymap.set(
-  "n",
-  "<leader>tlf",
-  "<cmd>lua LF:toggle()<CR>",
-  { noremap = true, silent = true, desc = "Focus Explorer" }
-)
-vim.keymap.set(
-  "n",
-  "<leader>tfm",
-  "<cmd>lua Frogmouth:toggle()<CR>",
-  { noremap = true, silent = true, desc = "Focus Explorer" }
-)
-
+-- vim.keymap.set("n", "<leader>tlg", "<cmd>lua Lazygit:toggle()<CR>", { noremap = true, silent = true })
+-- vim.keymap.set("n", "<leader>tgl", "<cmd>lua Glow:toggle()<CR>", { noremap = true, silent = true })
+-- vim.keymap.set(
+--   "n",
+--   "<leader>tlf",
+--   "<cmd>lua LF:toggle()<CR>",
+--   { noremap = true, silent = true, desc = "Focus Explorer" }
+-- )
+-- vim.keymap.set(
+--   "n",
+--   "<leader>tfm",
+--   "<cmd>lua Frogmouth:toggle()<CR>",
+--   { noremap = true, silent = true, desc = "Focus Explorer" }
+-- )
+--
 -- Window picker
-vim.keymap.set(
-  "n",
-  "<leader>w",
-  "<cmd>lua require('window-picker').pick_window()<CR>",
-  { noremap = true, silent = true }
-)
+-- vim.keymap.set(
+--   "n",
+--   "<leader>w",
+--   "<cmd>lua require('window-picker').pick_window()<CR>",
+--   { noremap = true, silent = true }
+-- )
 
 -- -- Markdown-preview mappings
 -- vim.keymap.set("n", "<leader>m", "<cmd>MarkdownPreviewToggle<cr>", { noremap = true, silent = true })

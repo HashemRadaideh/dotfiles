@@ -1,3 +1,21 @@
+require("dap").adapters.dart = {
+  type = "executable",
+  command = vim.fn.stdpath("data") .. "/mason/bin/dart-debug-adapter",
+  args = { "flutter" },
+}
+
+require("dap").configurations.dart = {
+  {
+    type = "dart",
+    request = "launch",
+    name = "Launch flutter",
+    dartSdkPath = "/opt/flutter/bin/",
+    flutterSdkPath = "/opt/flutter/bin/",
+    program = "${workspaceFolder}/lib/main.dart",
+    cwd = "${workspaceFolder}",
+  },
+}
+
 vim.api.nvim_create_autocmd("BufWritePre", {
   group = vim.api.nvim_create_augroup("FixAllCodeAction", { clear = true }),
   pattern = { "*" },

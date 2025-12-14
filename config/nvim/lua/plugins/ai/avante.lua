@@ -1,50 +1,53 @@
 return {
   "yetone/avante.nvim",
-  build = "make",
-  -- build = "make BUILD_FROM_SOURCE=true",
-  -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false",
+  build = vim.fn.has("win32") ~= 0 and "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
+    or "make", -- "make BUILD_FROM_SOURCE=true",
   dependencies = {
-    "stevearc/dressing.nvim",
     "nvim-lua/plenary.nvim",
     "MunifTanjim/nui.nvim",
-    "hrsh7th/nvim-cmp",
+    "nvim-telescope/telescope.nvim",
+    "ibhagwan/fzf-lua",
     "nvim-tree/nvim-web-devicons", -- echasnovski/mini.icons
     "zbirenbaum/copilot.lua",
     "MeanderingProgrammer/render-markdown.nvim",
-    -- {
-    --   "HakonHarnes/img-clip.nvim",
-    --   event = "VeryLazy",
-    --   opts = {
-    --     default = {
-    --       embed_image_as_base64 = false,
-    --       prompt_for_file_name = false,
-    --       drag_and_drop = {
-    --         insert_mode = true,
-    --       },
-    --       use_absolute_path = true,
-    --     },
-    --   },
-    -- },
+    {
+      "HakonHarnes/img-clip.nvim",
+      event = "VeryLazy",
+      opts = {
+        default = {
+          embed_image_as_base64 = false,
+          prompt_for_file_name = false,
+          drag_and_drop = {
+            insert_mode = true,
+          },
+          use_absolute_path = true,
+        },
+      },
+    },
   },
   opts = {
     provider = "copilot",
     auto_suggestions_provider = "copilot",
     cursor_applying_provider = "copilot",
     providers = {
+      claude = {
+        model = "claude-sonnet-4-20250514",
+        extra_request_body = {
+          temperature = 0.75,
+          max_tokens = 20480,
+        },
+      },
+      copilot = {
+        model = "claude-4-5-sonnet",
+      },
       gemini = {
         model = "gemini-2.5-pro",
       },
-      copilot = {
-        model = "claude-3.7-sonnet",
+      openai = {
+        model = "gpt-4o",
       },
       ollama = {
         model = "qwen2.5-coder:3b",
-      },
-      claude = {
-        model = "claude-3-7-sonnet-20250219",
-      },
-      openai = {
-        model = "gpt-4o",
       },
       -- azure = {},
       -- bedrock = {},
@@ -56,11 +59,14 @@ return {
       aihubmix = {
         model = "gpt-4o-2024-11-20",
       },
-      together = {
-        __inherited_from = "openai",
-        api_key_name = "TOGETHER_API_KEY",
-        endpoint = "https://api.together.xyz/v1/chat/completions",
-        model = "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+      moonshot = {
+        endpoint = "https://api.moonshot.ai/v1",
+        model = "kimi-k2-0711-preview",
+        timeout = 30000, -- Timeout in milliseconds
+        extra_request_body = {
+          temperature = 0.75,
+          max_tokens = 32768,
+        },
       },
       deepseek = {
         __inherited_from = "openai",
@@ -97,6 +103,35 @@ return {
         api_key_name = "GROQ_API_KEY",
         endpoint = "https://api.groq.com/openai/v1/",
         model = "llama-3.3-70b-versatile",
+      },
+    },
+    acp_providers = {
+      ["gemini-cli"] = {
+        command = "gemini",
+        args = { "--experimental-acp" },
+        env = {
+          NODE_NO_WARNINGS = "1",
+          GEMINI_API_KEY = os.getenv("GEMINI_API_KEY"),
+        },
+      },
+      ["claude-code"] = {
+        command = "npx",
+        args = { "@zed-industries/claude-code-acp" },
+        env = {
+          NODE_NO_WARNINGS = "1",
+          ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY"),
+        },
+      },
+      ["goose"] = {
+        command = "goose",
+        args = { "acp" },
+      },
+      ["codex"] = {
+        command = "codex-acp",
+        env = {
+          NODE_NO_WARNINGS = "1",
+          OPENAI_API_KEY = os.getenv("OPENAI_API_KEY"),
+        },
       },
     },
     web_search_engine = {
@@ -169,7 +204,7 @@ return {
       mode = "v",
     },
     {
-      "<leader>at",
+      "<leader>av",
       function()
         require("avante.api").toggle()
       end,
