@@ -1,10 +1,8 @@
-# Add in zsh plugins
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 zinit light Aloxaf/fzf-tab
 
-# Add in snippets
 # zinit snippet OMZP::git
 # zinit snippet OMZP::sudo
 # zinit snippet OMZP::archlinux
@@ -13,71 +11,54 @@ zinit light Aloxaf/fzf-tab
 # zinit snippet OMZP::kubectx
 # zinit snippet OMZP::command-not-found
 
-theme() {
+function theme() {
     if [[ -z "$DISPLAY" ]] ; then
-        # Fetch machine's specs.
         # [ -x "$(command -v pfetch)"  ] && pfetch
+
         source "$ZDOTDIR/configs/prompt.zsh"
     else
-        source "$ZDOTDIR/configs/starship.zsh"
-
-        # # Fetch machine's specs.
         # [ -x "$(command -v macchina)"  ] && ~/Workspace/art/art > /tmp/ascii && macchina -t Cobalt
         # [ -x "$(command -v macchina)"  ] && macchina
+
+        source "$ZDOTDIR/configs/starship.zsh"
     fi
 }
 
 theme
 
-# Load completions
-autoload -Uz bashcompinit && bashcompinit
-autoload -Uz compinit && compinit
-
-# Shell integrations
-eval "$(fzf --zsh)"
-
-eval "$(zoxide init --cmd cd zsh)"
-
-[ -x "$(command -v arduino-cli)" ] && eval "$(arduino-cli completion zsh)"
-
-[ -x "$(command -v atac)" ] && atac completions zsh $XDG_CACHE_HOME/zsh/completions >/dev/null
-fpath=($XDG_CACHE_HOME/.cache/zsh/completions $fpath)
-
-# opam configuration
-[[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
-
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init - zsh)"
-
-source /usr/share/nvm/init-nvm.sh
-source <(ng completion script)
-
 function python-venv() {
     local MYVENV=
-    local current_dir="$(pwd)"
+    local current_dir="$PWD"
 
-    while [ "$current_dir" != "/" ]; do
-        while IFS= read -r -d '' dir; do
-            if [ -f "$dir/pyvenv.cfg" ]; then
+    while [[ "$current_dir" != "/" ]]; do
+        for dir in "$current_dir" "$current_dir"/.venv "$current_dir"/venv "$current_dir"/env; do
+            if [[ -f "$dir/pyvenv.cfg" ]]; then
                 MYVENV="$dir"
-                break
+                break 2
             fi
-        done < <(find "$current_dir" -maxdepth 1 -type d -print0)
-
-        [[ -d $MYVENV ]] && break
+        done
 
         current_dir="$(dirname "$current_dir")"
     done
 
     if [[ -d "$MYVENV" ]]; then
-        source "$MYVENV/bin/activate" > /dev/null 2>&1
+        if [[ "$MYVENV" != "$VIRTUAL_ENV" ]]; then
+            source "$MYVENV/bin/activate" > /dev/null 2>&1
+        fi
     else
-        deactivate > /dev/null 2>&1
+        [[ -n "$VIRTUAL_ENV" ]] && deactivate > /dev/null 2>&1
         theme
     fi
 
-    [[ -d "$VIRTUAL_ENV" ]] && export PYTHONPATH="$VIRTUAL_ENV/lib/$(\ls $VIRTUAL_ENV/lib)/site-packages"
+    if [[ -d "$VIRTUAL_ENV" ]]; then
+        if [[ -z "$_PYTHON_VERSION" ]]; then
+            _PYTHON_VERSION=$(python3 -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")' 2>/dev/null)
+        fi
+
+        if [[ -n "$_PYTHON_VERSION" && -d "$VIRTUAL_ENV/lib/python$_PYTHON_VERSION/site-packages" ]]; then
+            export PYTHONPATH="$VIRTUAL_ENV/lib/python$_PYTHON_VERSION/site-packages"
+        fi
+    fi
 }
 
 autoload -U add-zsh-hook
@@ -85,10 +66,15 @@ add-zsh-hook chpwd python-venv
 python-venv
 
 function sync_display_from_tmux() {
-    if [[ -n "$TMUX" && -n "$DISPLAY" ]]; then
+    [[ -n "$TMUX" ]] || return 0
+
+    if [[ -n "$DISPLAY" && "$_LAST_DISPLAY" != "$DISPLAY" ]]; then
         if ! xdpyinfo >/dev/null 2>&1; then
-            export DISPLAY=$(tmux show-environment DISPLAY 2>/dev/null | cut -d= -f2)
+            local new_display
+            new_display=$(tmux show-environment DISPLAY 2>/dev/null | cut -d= -f2)
+            [[ -n "$new_display" ]] && export DISPLAY="$new_display"
         fi
+        _LAST_DISPLAY="$DISPLAY"
     fi
 }
 
@@ -111,3 +97,97 @@ add-zsh-hook precmd sync_display_from_tmux
 
 #     # eval `ttysvr logo --init 3`
 # fi
+
+autoload -Uz bashcompinit && bashcompinit
+
+# Optimize compinit: use dump file if it exists and is newer than .zshrc
+# Otherwise skip security check for faster startup (use -C flag)
+autoload -Uz compinit
+local zcompdump="${XDG_CACHE_HOME}/zsh/.zcompdump"
+if [[ -f "$zcompdump" ]] && [[ "$zcompdump" -nt "${ZDOTDIR}/.zshrc" ]]; then
+    compinit -d "$zcompdump"
+else
+    compinit -C -d "$zcompdump"
+fi
+
+fpath=($XDG_CACHE_HOME/.cache/zsh/completions $fpath)
+
+eval "$(zoxide init --cmd cd zsh)"
+
+nvm() {
+    unfunction nvm 2>/dev/null
+
+    # Find nvm.sh in common locations
+    local nvm_script
+    if [[ -n "$NVM_DIR" && -s "$NVM_DIR/nvm.sh" ]]; then
+        nvm_script="$NVM_DIR/nvm.sh"
+    elif [[ -s "$HOME/.nvm/nvm.sh" ]]; then
+        nvm_script="$HOME/.nvm/nvm.sh"
+        export NVM_DIR="$HOME/.nvm"
+    elif [[ -s "$XDG_DATA_HOME/nvm/nvm.sh" ]]; then
+        nvm_script="$XDG_DATA_HOME/nvm/nvm.sh"
+        export NVM_DIR="$XDG_DATA_HOME/nvm"
+    elif [[ -s "/usr/share/nvm/nvm.sh" ]]; then
+        nvm_script="/usr/share/nvm/nvm.sh"
+        export NVM_DIR="/usr/share/nvm"
+    else
+        # Try to find it anywhere
+        nvm_script=$(find "$HOME" -name "nvm.sh" -type f 2>/dev/null | head -1)
+        if [[ -n "$nvm_script" ]]; then
+            export NVM_DIR="$(dirname "$nvm_script")"
+        fi
+    fi
+
+    # Source nvm.sh which creates the nvm function and sets up node/npm
+    if [[ -n "$nvm_script" && -s "$nvm_script" ]]; then
+        # Source in current shell context
+        source "$nvm_script"
+        # Also source bash completion if available
+        [[ -s "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion" 2>/dev/null
+
+        # Now call the actual nvm function that was created by nvm.sh
+        # The function should exist after sourcing
+        if (( ${+functions[nvm]} )); then
+            # Call the real nvm function with all arguments
+            nvm "$@"
+        else
+            echo "Error: nvm function not found after loading nvm.sh" >&2
+            echo "This might indicate an issue with your nvm installation." >&2
+            return 1
+        fi
+    else
+        echo "Error: nvm.sh not found." >&2
+        echo "Searched in:" >&2
+        echo "  - \$NVM_DIR/nvm.sh ($NVM_DIR/nvm.sh)" >&2
+        echo "  - ~/.nvm/nvm.sh" >&2
+        echo "  - \$XDG_DATA_HOME/nvm/nvm.sh ($XDG_DATA_HOME/nvm/nvm.sh)" >&2
+        echo "  - /usr/share/nvm/nvm.sh" >&2
+        echo "Please install nvm or set NVM_DIR to the correct location." >&2
+        return 1
+    fi
+}
+
+
+pyenv() {
+    unfunction pyenv
+    [[ -d "$PYENV_ROOT/bin" ]] && eval "$(pyenv init - zsh)"
+    pyenv "$@"
+}
+
+sdk() {
+    unfunction sdk
+    [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
+    sdk "$@"
+}
+
+[ -x "$(command -v arduino-cli)" ] && eval "$(arduino-cli completion zsh)"
+
+[ -x "$(command -v atac)" ] && atac completions zsh "$XDG_CACHE_HOME/zsh/completions" >/dev/null
+
+[ -x "$(command -v ng)" ] && source <(ng completion script)
+
+[ -x "$(command -v brew)" ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+[ -s "$CARGO_HOME/env" ] && . "$CARGO_HOME/env"
+
+[ -r "$HOME/.opam/opam-init/init.zsh" ] && source "$HOME/.opam/opam-init/init.zsh"  > /dev/null 2> /dev/null

@@ -13,7 +13,9 @@ lf () {
     fi
 }
 
-bindkey -s '^o' '^ulf^m'
+# Keybinding conflict: yazi.zsh also uses ^o, so lf binding is disabled
+# Uncomment the line below if you prefer lf over yazi
+# bindkey -s '^o' '^ulf^m'
 
 # Use icons within lf
 export LF_ICONS="\

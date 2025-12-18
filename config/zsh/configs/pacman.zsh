@@ -1,26 +1,37 @@
-if [ ! -x "$(command -v yay)"  ]; then
+# Check for paru (AUR helper) or yay, prefer paru
+if [ ! -x "$(command -v paru)" ] && [ ! -x "$(command -v yay)" ]; then
     return
 fi
 
 clean() {
     local pkgman='pacman'
-    [ -x "$(command -v yay)" ] && pkgman='yay'
+    [ -x "$(command -v paru)" ] && pkgman='paru' || [ -x "$(command -v yay)" ] && pkgman='yay'
 
-    $pkgman -Rcnsdd $(yay -Qdtq) && $pkgman -Scc
+    local orphans
+    if [ "$pkgman" = "paru" ]; then
+        orphans=$(paru -Qdtq 2>/dev/null)
+    else
+        orphans=$(yay -Qdtq 2>/dev/null)
+    fi
+
+    if [[ -n "$orphans" ]]; then
+        $pkgman -Rcnsdd $orphans && $pkgman -Scc
+    else
+        $pkgman -Scc
+    fi
 }
 
 download() {
     local pkgman='pacman'
-    [ -x "$(command -v yay)" ] && pkgman='yay'
+    [ -x "$(command -v paru)" ] && pkgman='paru' || [ -x "$(command -v yay)" ] && pkgman='yay'
 
-    $pkgman -S $@
+    if $pkgman -S "$@"; then
+        local packages_file="${DOTFILES}/scripts/packages.txt"
+        [[ -f "$packages_file" ]] || touch "$packages_file" 2>/dev/null
 
-    touch "$DOTFILES/scripts/packages.txt" 2> /dev/null
-
-    if [ $? -eq 0 ]; then
         for item in "$@"; do
-            if ! rg -q "^$item$" "$DOTFILES/scripts/packages.txt" ; then
-                echo "$item" >> "$DOTFILES/scripts/packages.txt"
+            if ! rg -q "^$item$" "$packages_file" 2>/dev/null; then
+                echo "$item" >> "$packages_file"
             fi
         done
     fi
@@ -28,39 +39,55 @@ download() {
 
 delete() {
     local pkgman='pacman'
-    [ -x "$(command -v yay)" ] && pkgman='yay'
+    [ -x "$(command -v paru)" ] && pkgman='paru' || [ -x "$(command -v yay)" ] && pkgman='yay'
 
-    $pkgman -Rnsdd $@
-
-    if [ $? -eq 0 ] && [ -f "$DOTFILES/scripts/packages.txt" ]; then
-        for item in "$@"; do
-            if rg -q "^$item$" "$DOTFILES/scripts/packages.txt"; then
-                sed -i "/^$item$/d" "$DOTFILES/scripts/packages.txt"
-            fi
-        done
+    if $pkgman -Rnsdd "$@"; then
+        local packages_file="${DOTFILES}/scripts/packages.txt"
+        if [[ -f "$packages_file" ]]; then
+            for item in "$@"; do
+                if rg -q "^$item$" "$packages_file" 2>/dev/null; then
+                    sed -i "/^$item$/d" "$packages_file"
+                fi
+            done
+        fi
     fi
 }
 
 update() {
     local pkgman='pacman'
-    [ -x "$(command -v yay)" ] && pkgman='yay'
+    [ -x "$(command -v paru)" ] && pkgman='paru' || [ -x "$(command -v yay)" ] && pkgman='yay'
 
     $pkgman -Syu
 
-    [ -x "$(command -v yay)" ] && $pkgman -Sua
+    # Update AUR packages if using AUR helper
+    if [[ "$pkgman" != "pacman" ]]; then
+        $pkgman -Sua
+    fi
 
-    reposync  ~/.files/ ~/
+    # Update dotfiles repo if it exists and is a git repo
+    if [[ -d "$DOTFILES/.git" ]]; then
+        (cd "$DOTFILES" && git pull 2>/dev/null)
+    fi
 
-    # nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
-    nvim --headless "+Lazy! sync" +qa
+    # Update Neovim plugins
+    [ -x "$(command -v nvim)" ] && nvim --headless "+Lazy! sync" +qa 2>/dev/null
 
-    doom sync
+    # Update Doom Emacs
+    [ -x "$(command -v doom)" ] && doom sync 2>/dev/null
 
-    ~/.config/tmux/plugins/tpm/scripts/install_plugins.sh
+    # Update tmux plugins
+    if [[ -f ~/.config/tmux/plugins/tpm/scripts/install_plugins.sh ]]; then
+        ~/.config/tmux/plugins/tpm/scripts/install_plugins.sh 2>/dev/null
+    fi
 
-    rustup self upgrade-data
+    # Update rustup
+    [ -x "$(command -v rustup)" ] && rustup self upgrade-data 2>/dev/null
 
     clean
 
-    sort "$DOTFILES/packages.txt" | uniq --unique > "$DOTFILES/packages.txt"
+    # Sort and deduplicate packages file
+    local packages_file="${DOTFILES}/packages.txt"
+    if [[ -f "$packages_file" ]]; then
+        sort "$packages_file" | uniq > "${packages_file}.tmp" && mv "${packages_file}.tmp" "$packages_file"
+    fi
 }

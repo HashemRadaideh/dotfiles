@@ -1,7 +1,22 @@
 autoload -U colors && colors
 
+# Set up cursor shape for vi mode (if not already set by starship)
+if ! (( ${+functions[zle-keymap-select-cursor]} )); then
+    zle-keymap-select-cursor() {
+        case "$KEYMAP" in
+            vicmd) echo -ne '\e[1 q' ;;      # block
+            viins|main) echo -ne '\e[5 q' ;; # beam
+        esac
+    }
+fi
+zle -N zle-keymap-select zle-keymap-select-cursor
+
 zle-line-init() {
     emulate -L zsh
+
+    # Set vi insert mode and cursor shape (from .zshrc)
+    zle -K viins
+    echo -ne "\e[5 q"
 
     [[ $CONTEXT == start ]] || return 0
 

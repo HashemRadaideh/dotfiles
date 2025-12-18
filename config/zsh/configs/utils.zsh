@@ -22,10 +22,31 @@ testcolors() {
 }
 
 flash() {
-    notify-send "$1"
-    notify-send "$1" -t 5000
-    sudo dd bs=4M if="$1" of="$2" conv=fdatasync  status=progress
-    notify-send "$2 created successfully"
+    if [[ $# -lt 2 ]]; then
+        echo "Usage: flash <image_file> <device>" >&2
+        return 1
+    fi
+
+    local image="$1"
+    local device="$2"
+
+    if [[ ! -f "$image" ]]; then
+        echo "Error: Image file '$image' not found" >&2
+        return 1
+    fi
+
+    if [[ ! -b "$device" ]]; then
+        echo "Error: '$device' is not a block device" >&2
+        return 1
+    fi
+
+    notify-send "Flashing $image to $device..."
+    if sudo dd bs=4M if="$image" of="$device" conv=fdatasync status=progress; then
+        notify-send "Successfully flashed $device"
+    else
+        notify-send "Failed to flash $device" -u critical
+        return 1
+    fi
 }
 
 lookfor() {
@@ -33,15 +54,28 @@ lookfor() {
 }
 
 mk() {
-    if [[ "$(echo "${1:${#1}-1:1}")" == "/" ]]; then
-        mkdir -p $1
-        return;
+    if [[ $# -eq 0 ]]; then
+        echo "Usage: mk <file_or_dir>" >&2
+        return 1
     fi
 
-    if echo "$1" | grep -q "/"; then
-        mkdir -p "$(sed 's/\(.*\)\/.*/\1/' <<< "$1")" && touch "$1"
-        return;
+    local target="$1"
+
+    # If ends with /, create directory
+    if [[ "${target: -1}" == "/" ]]; then
+        mkdir -p "$target"
+        return $?
     fi
 
-    touch "$1"
+    # If contains /, create parent dirs and file
+    if [[ "$target" == */* ]]; then
+        local dir
+        dir=$(dirname -- "$target")
+        mkdir -p "$dir" && touch "$target"
+        return $?
+    fi
+
+    # Otherwise, just create file
+    touch "$target"
+    return $?
 }

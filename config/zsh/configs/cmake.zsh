@@ -7,9 +7,15 @@ cbuild() {
 }
 
 crun() {
-    cbuild "$1"
-    if [ $? -eq 0 ]; then
-        ./build/"${$(grep -P 'set\(NAME.*' ./CMakeLists.txt | awk '{print $2}')//\)}"
+    if cbuild "$@"; then
+        local name
+        name=$(grep -P 'set\(NAME\s+' ./CMakeLists.txt 2>/dev/null | awk '{print $2}' | tr -d ')')
+        if [[ -n "$name" && -x "./build/$name" ]]; then
+            ./build/"$name"
+        else
+            echo "Error: Could not find executable name in CMakeLists.txt or binary doesn't exist" >&2
+            return 1
+        fi
     fi
 }
 

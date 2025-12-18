@@ -20,7 +20,7 @@ nvims() {
     NVIM_APPNAME="$config" nvim "$@"
 }
 
-bindkey -s ^a "nvims\n"
+bindkey -s '^a' "^unvims^m"
 
 codi() {
     local syntax="${1:-python}"

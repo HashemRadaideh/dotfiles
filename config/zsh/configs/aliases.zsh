@@ -1,12 +1,20 @@
+# Cache hostnamectl output to avoid multiple calls
+if [[ -z "$_HOSTNAMECTL_CACHE" ]]; then
+    _HOSTNAMECTL_CACHE="$(hostnamectl 2>/dev/null)"
+fi
+
 # $HOSTNAME current machine hostname
-export HOSTNAME="$(hostnamectl | grep 'Static hostname: ' | awk '{print $3}')"
+export HOSTNAME="${HOSTNAME:-$(echo "$_HOSTNAMECTL_CACHE" | grep 'Static hostname:' | awk '{print $3}')}"
 
 # $DISTRO current linux distribution
-export DISTRO="$(hostnamectl | grep 'Operating System' | awk '{ print substr($0, index($0,$3)) }')"
+export DISTRO="${DISTRO:-$(echo "$_HOSTNAMECTL_CACHE" | grep 'Operating System:' | awk '{ print substr($0, index($0,$3)) }')}"
 
-# IPv4 address.
-export IPv4="${$(ip a | grep -P '^.*(?=.*inet )(?=.*dynamic).*$' | awk '{print $2}')//\/*}"
-export IPv6="${$(ip a | grep -P '^.*(?=.*inet6 )(?=.*dynamic).*$' | awk '{print $2}')//\/*}"
+# IPv4/IPv6 addresses (cache ip output)
+if [[ -z "$_IP_CACHE" ]]; then
+    _IP_CACHE="$(ip a 2>/dev/null)"
+fi
+export IPv4="${IPv4:-${$(echo "$_IP_CACHE" | grep -P '^.*(?=.*inet )(?=.*dynamic).*$' | awk '{print $2}')//\/*}}"
+export IPv6="${IPv6:-${$(echo "$_IP_CACHE" | grep -P '^.*(?=.*inet6 )(?=.*dynamic).*$' | awk '{print $2}')//\/*}}"
 
 # xkb
 # alias lsxkbmodels="sed '/^! model$/,/^ *$/!d;//d' /usr/share/X11/xkb/rules/base.lst"
