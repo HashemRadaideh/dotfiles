@@ -4,7 +4,7 @@ return {
   dependencies = { "MunifTanjim/nui.nvim" },
   opts = {
     autostart = true,
-    package_manager = "bun",
+    package_manager = "npm",
     hide_up_to_date = true,
     highlight = {
       outdated = {

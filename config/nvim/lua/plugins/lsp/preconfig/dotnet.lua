@@ -8,10 +8,6 @@ return {
         config = true,
       },
     },
-    config = function()
-      vim.lsp.enable("rzls")
-      vim.lsp.enable("roslyn")
-    end,
     init = function()
       vim.filetype.add({
         extension = {

@@ -1,9 +1,42 @@
 return {
   "nvim-java/nvim-java",
   ft = { "java" },
-  config = function()
-    require("java").setup({})
-
-    require("lspconfig").jdtls.setup({})
-  end,
+  cmd = {
+    "JavaBuildBuildWorkspace",
+    "JavaBuildCleanWorkspace",
+    "JavaRunnerRunMain",
+    "JavaRunnerStopMain",
+    "JavaRunnerToggleLogs",
+    "JavaDapConfig",
+    "JavaTestRunCurrentClass",
+    "JavaTestDebugCurrentClass",
+    "JavaTestRunCurrentMethod",
+    "JavaTestDebugCurrentMethod",
+    "JavaTestViewLastReport",
+    "JavaProfile",
+    "JavaRefactorExtractVariable",
+    "JavaRefactorExtractVariableAllOccurrence",
+    "JavaRefactorExtractConstant",
+    "JavaRefactorExtractField",
+    "JavaSettingsChangeRuntime",
+  },
+  keys = {
+    { "<leader>jbw", "<cmd>JavaBuildBuildWorkspace<cr>", desc = "" },
+    { "<leader>jcw", "<cmd>JavaBuildCleanWorkspace<cr>", desc = "" },
+    { "<leader>jrm", "<cmd>JavaRunnerRunMain<cr>", desc = "" },
+    { "<leader>jsm", "<cmd>JavaRunnerStopMain<cr>", desc = "" },
+    { "<leader>jtl", "<cmd>JavaRunnerToggleLogs<cr>", desc = "" },
+    { "<leader>jcd", "<cmd>JavaDapConfig<cr>", desc = "" },
+    { "<leader>jtc", "<cmd>JavaTestRunCurrentClass<cr>", desc = "" },
+    { "<leader>jdc", "<cmd>JavaTestDebugCurrentClass<cr>", desc = "" },
+    { "<leader>jtm", "<cmd>JavaTestRunCurrentMethod<cr>", desc = "" },
+    { "<leader>jdm", "<cmd>JavaTestDebugCurrentMethod<cr>", desc = "" },
+    { "<leader>jtv", "<cmd>JavaTestViewLastReport<cr>", desc = "" },
+    { "<leader>jpr", "<cmd>JavaProfile<cr>", desc = "" },
+    { "<leader>jev", "<cmd>JavaRefactorExtractVariable<cr>", desc = "" },
+    { "<leader>jea", "<cmd>JavaRefactorExtractVariableAllOccurrence<cr>", desc = "" },
+    { "<leader>jec", "<cmd>JavaRefactorExtractConstant<cr>", desc = "" },
+    { "<leader>jef", "<cmd>JavaRefactorExtractField<cr>", desc = "" },
+    { "<leader>jrt", "<cmd>JavaSettingsChangeRuntime<cr>", desc = "" },
+  },
 }

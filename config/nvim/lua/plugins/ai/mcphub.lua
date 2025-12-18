@@ -4,7 +4,7 @@ return {
     "nvim-lua/plenary.nvim",
   },
   cmd = "MCPHub",
-  build = "bun install -g mcp-hub@latest",
+  build = "npm install -g mcp-hub@latest",
   opts = {
     shutdown_delay = 0,
     extensions = {

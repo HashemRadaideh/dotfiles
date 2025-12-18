@@ -6,14 +6,14 @@ return {
     {
       "<leader>fn",
       function()
-        require("conform").format({ async = true })
+        require("conform").format()
       end,
       mode = { "n", "v" },
       desc = "Format file or range (in visual mode)",
     },
   },
   opts = {
-    format_on_save = function(bufnr)
+    format_on_save = function(_bufnr)
       if vim.fs.dirname(vim.fs.find({ "nuget.config" }, { upward = true })[1]) then
         return nil
       else
@@ -22,12 +22,8 @@ return {
         }
       end
     end,
-    -- format_after_save = {
-    --   lsp_format = "fallback",
-    -- },
     formatters_by_ft = {
       lua = { "stylua" },
-      toml = { "taplo" },
       go = { "goimports", "gofmt" },
       svelte = { "prettier" },
       javascript = { "prettier" },
@@ -40,11 +36,26 @@ return {
       graphql = { "prettier" },
       htmlangular = { "prettier" },
       html = { "prettier" },
-      -- html = { "htmlbeautifier" },
-      -- erb = { "htmlbeautifier" },
-      yaml = { "prettier", "yamlfix" },
+      yaml = { "prettier" },
       liquid = { "prettier" },
+      toml = { "taplo" },
       ruby = { "rubocop", "standardrb", stop_after_first = true },
+      kotlin = { "ktlint", "ktfmt", stop_after_first = true },
+      java = { "google-java-format", "clang-format", stop_after_first = true },
+      markdown = { "mdformat", "prettier", stop_after_first = true },
+      sh = { "beautysh", "shfmt", stop_after_first = true },
+      bash = { "beautysh", "shfmt", stop_after_first = true },
+      zsh = { "beautysh", "shfmt", stop_after_first = true },
+      fish = { "beautysh", "shfmt", stop_after_first = true },
+      proto = { "buf" },
+      protobuf = { "buf" },
+      c = { "clang-format" },
+      cpp = { "clang-format" },
+      cmake = { "cmakelang" },
+      asm = { "asmfmt" },
+      fsharp = { "fantomas" },
+      cs = { "csharpier" },
+      dart = { "dcm" },
       python = function(bufnr)
         if require("conform").get_formatter_info("ruff_format", bufnr).available then
           return { "ruff_organize_imports", "ruff_format" }
@@ -54,23 +65,14 @@ return {
           return { "isort", "black" }
         end
       end,
-      kotlin = { "ktlint", "ktfmt", stop_after_first = true },
-      java = { "google-java-format" },
-      markdown = { "mdformat", "prettier", stop_after_first = true },
-      protobuf = { "buf" },
-      sh = { "beautysh", "shfmt", stop_after_first = true },
-      bash = { "beautysh", "shfmt", stop_after_first = true },
-      zsh = { "beautysh" },
-      fish = { "beautysh", "shfmt", stop_after_first = true },
-      proto = { "buf" },
-      c = { "clang-format" },
-      cpp = { "clang-format" },
-      cmake = { "cmakelang" },
-      asm = { "asmfmt" },
-      fsharp = { "fantomas" },
-      cs = { "csharpier" },
-      dart = { "dcm" },
       ["_"] = { "trim_whitespace" },
+    },
+    notify_on_error = false,
+    notify_no_formatters = false,
+    formatters = {
+      ["google-java-format"] = {
+        prepend_args = { "-a" },
+      },
     },
   },
 }
