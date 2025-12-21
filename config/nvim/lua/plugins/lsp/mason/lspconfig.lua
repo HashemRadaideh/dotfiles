@@ -39,7 +39,7 @@ return {
       "hls",
       "html",
       "hyprls",
-      -- "jdtls",
+      "jdtls",
       "jsonls",
       "kotlin_language_server",
       "ltex",

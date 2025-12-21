@@ -21,41 +21,41 @@ return {
     },
   },
   keys = {
-    { "<leader>ff", '<cmd>lua require("telescope.builtin").find_files()<cr>', desc = "Find Files (root dir)" },
+    { "<leader>ff", '<cmd>lua require("telescope.builtin").find_files()<cr>',        desc = "Find Files (root dir)" },
 
-    { "<leader>,", "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>", desc = "Switch Buffer" },
-    { "<leader>.", "<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>", desc = "File Explorere" },
+    { "<leader>,",  "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>",   desc = "Switch Buffer" },
+    { "<leader>.",  "<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>", desc = "File Explorere" },
 
-    { "<leader>/", '<cmd>lua require("telescope.builtin").live_grep()<cr>', desc = "Grep (root dir)" },
-    { "<leader>?", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Buffer" },
+    { "<leader>/",  '<cmd>lua require("telescope.builtin").live_grep()<cr>',         desc = "Grep (root dir)" },
+    { "<leader>?",  "<cmd>Telescope current_buffer_fuzzy_find<cr>",                  desc = "Buffer" },
 
-    { "<leader>rf", "<cmd>Telescope oldfiles<cr>", desc = "Recent" },
+    { "<leader>rf", "<cmd>Telescope oldfiles<cr>",                                   desc = "Recent" },
 
-    { "<leader>gf", "<cmd>Telescope git_files<cr>", desc = "Find Files (git-files)" },
-    { "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "commits" },
-    { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "status" },
+    { "<leader>gf", "<cmd>Telescope git_files<cr>",                                  desc = "Find Files (git-files)" },
+    { "<leader>gc", "<cmd>Telescope git_commits<CR>",                                desc = "commits" },
+    { "<leader>gs", "<cmd>Telescope git_status<CR>",                                 desc = "status" },
 
-    { '<leader>s"', "<cmd>Telescope registers<cr>", desc = "Registers" },
+    { '<leader>s"', "<cmd>Telescope registers<cr>",                                  desc = "Registers" },
 
-    { "<leader>sa", "<cmd>Telescope autocommands<cr>", desc = "Auto Commands" },
+    { "<leader>sa", "<cmd>Telescope autocommands<cr>",                               desc = "Auto Commands" },
 
-    { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command History" },
-    { "<leader>sc", "<cmd>Telescope commands<cr>", desc = "Commands" },
+    { "<leader>:",  "<cmd>Telescope command_history<cr>",                            desc = "Command History" },
+    { "<leader>sc", "<cmd>Telescope commands<cr>",                                   desc = "Commands" },
 
-    { "<leader>dd", "<cmd>Telescope diagnostics bufnr=0<cr>", desc = "Document diagnostics" },
-    { "<leader>dD", "<cmd>Telescope diagnostics<cr>", desc = "Workspace diagnostics" },
+    { "<leader>dd", "<cmd>Telescope diagnostics bufnr=0<cr>",                        desc = "Document diagnostics" },
+    { "<leader>dD", "<cmd>Telescope diagnostics<cr>",                                desc = "Workspace diagnostics" },
 
-    { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help Pages" },
-    { "<leader>sH", "<cmd>Telescope highlights<cr>", desc = "Search Highlight Groups" },
-    { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Key Maps" },
-    { "<leader>sM", "<cmd>Telescope man_pages<cr>", desc = "Man Pages" },
-    { "<leader>sm", "<cmd>Telescope marks<cr>", desc = "Jump to Mark" },
-    { "<leader>sO", "<cmd>Telescope vim_options<cr>", desc = "Options" },
-    { "<leader>sR", "<cmd>Telescope resume<cr>", desc = "Resume" },
+    { "<leader>sh", "<cmd>Telescope help_tags<cr>",                                  desc = "Help Pages" },
+    { "<leader>sH", "<cmd>Telescope highlights<cr>",                                 desc = "Search Highlight Groups" },
+    { "<leader>sk", "<cmd>Telescope keymaps<cr>",                                    desc = "Key Maps" },
+    { "<leader>sM", "<cmd>Telescope man_pages<cr>",                                  desc = "Man Pages" },
+    { "<leader>sm", "<cmd>Telescope marks<cr>",                                      desc = "Jump to Mark" },
+    { "<leader>sO", "<cmd>Telescope vim_options<cr>",                                desc = "Options" },
+    { "<leader>sR", "<cmd>Telescope resume<cr>",                                     desc = "Resume" },
 
-    { "<leader>tt", "<cmd>Telescope lazygit<cr>", desc = "Lazygit" },
-    { "<leader>fu", "<cmd>Telescope undo<CR>", desc = "Undo History" },
-    { "<leader>fz", "<cmd>Telescope zoxide list<cr>", desc = "Zoxide History" },
+    { "<leader>tt", "<cmd>Telescope lazygit<cr>",                                    desc = "Lazygit" },
+    { "<leader>fu", "<cmd>Telescope undo<CR>",                                       desc = "Undo History" },
+    { "<leader>fz", "<cmd>Telescope zoxide list<cr>",                                desc = "Zoxide History" },
   },
   config = function()
     local telescope = require("telescope")
@@ -85,6 +85,16 @@ return {
           },
         },
         file_ignore_patterns = { "%__virtual.cs$" },
+        preview = {
+          treesitter = {
+            enable = function()
+              local ok, _ = pcall(function()
+                return vim.treesitter.language and vim.treesitter.language.ft_to_lang
+              end)
+              return ok
+            end,
+          },
+        },
       },
       pickers = {
         -- find_files = {

@@ -4,7 +4,7 @@ return {
   require("plugins.tools.dbee"),
   -- require("plugins.tools.harpoon"),
   require("plugins.tools.multicursor"),
-  -- require("plugins.tools.neotree"),
+  require("plugins.tools.neotree"),
   require("plugins.tools.ng"),
   require("plugins.tools.oil"),
   require("plugins.tools.oscyank"),
