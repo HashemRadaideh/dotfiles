@@ -100,8 +100,6 @@ add-zsh-hook precmd sync_display_from_tmux
 
 autoload -Uz bashcompinit && bashcompinit
 
-# Optimize compinit: use dump file if it exists and is newer than .zshrc
-# Otherwise skip security check for faster startup (use -C flag)
 autoload -Uz compinit
 local zcompdump="${XDG_CACHE_HOME}/zsh/.zcompdump"
 if [[ -f "$zcompdump" ]] && [[ "$zcompdump" -nt "${ZDOTDIR}/.zshrc" ]]; then
@@ -114,72 +112,6 @@ fpath=($XDG_CACHE_HOME/.cache/zsh/completions $fpath)
 
 eval "$(zoxide init --cmd cd zsh)"
 
-nvm() {
-    unfunction nvm 2>/dev/null
-
-    # Find nvm.sh in common locations
-    local nvm_script
-    if [[ -n "$NVM_DIR" && -s "$NVM_DIR/nvm.sh" ]]; then
-        nvm_script="$NVM_DIR/nvm.sh"
-    elif [[ -s "$HOME/.nvm/nvm.sh" ]]; then
-        nvm_script="$HOME/.nvm/nvm.sh"
-        export NVM_DIR="$HOME/.nvm"
-    elif [[ -s "$XDG_DATA_HOME/nvm/nvm.sh" ]]; then
-        nvm_script="$XDG_DATA_HOME/nvm/nvm.sh"
-        export NVM_DIR="$XDG_DATA_HOME/nvm"
-    elif [[ -s "/usr/share/nvm/nvm.sh" ]]; then
-        nvm_script="/usr/share/nvm/nvm.sh"
-        export NVM_DIR="/usr/share/nvm"
-    else
-        # Try to find it anywhere
-        nvm_script=$(find "$HOME" -name "nvm.sh" -type f 2>/dev/null | head -1)
-        if [[ -n "$nvm_script" ]]; then
-            export NVM_DIR="$(dirname "$nvm_script")"
-        fi
-    fi
-
-    # Source nvm.sh which creates the nvm function and sets up node/npm
-    if [[ -n "$nvm_script" && -s "$nvm_script" ]]; then
-        # Source in current shell context
-        source "$nvm_script"
-        # Also source bash completion if available
-        [[ -s "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion" 2>/dev/null
-
-        # Now call the actual nvm function that was created by nvm.sh
-        # The function should exist after sourcing
-        if (( ${+functions[nvm]} )); then
-            # Call the real nvm function with all arguments
-            nvm "$@"
-        else
-            echo "Error: nvm function not found after loading nvm.sh" >&2
-            echo "This might indicate an issue with your nvm installation." >&2
-            return 1
-        fi
-    else
-        echo "Error: nvm.sh not found." >&2
-        echo "Searched in:" >&2
-        echo "  - \$NVM_DIR/nvm.sh ($NVM_DIR/nvm.sh)" >&2
-        echo "  - ~/.nvm/nvm.sh" >&2
-        echo "  - \$XDG_DATA_HOME/nvm/nvm.sh ($XDG_DATA_HOME/nvm/nvm.sh)" >&2
-        echo "  - /usr/share/nvm/nvm.sh" >&2
-        echo "Please install nvm or set NVM_DIR to the correct location." >&2
-        return 1
-    fi
-}
-
-
-pyenv() {
-    unfunction pyenv
-    [[ -d "$PYENV_ROOT/bin" ]] && eval "$(pyenv init - zsh)"
-    pyenv "$@"
-}
-
-sdk() {
-    unfunction sdk
-    [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
-    sdk "$@"
-}
-
 [ -x "$(command -v arduino-cli)" ] && eval "$(arduino-cli completion zsh)"
 
 [ -x "$(command -v atac)" ] && atac completions zsh "$XDG_CACHE_HOME/zsh/completions" >/dev/null
@@ -188,6 +120,13 @@ sdk() {
 
 [ -x "$(command -v brew)" ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-[ -s "$CARGO_HOME/env" ] && . "$CARGO_HOME/env"
+[ -s "$CARGO_HOME/env" ] && source "$CARGO_HOME/env"
 
 [ -r "$HOME/.opam/opam-init/init.zsh" ] && source "$HOME/.opam/opam-init/init.zsh"  > /dev/null 2> /dev/null
+
+[[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
+[[ -s "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"
+
+[[ -d "$PYENV_ROOT/bin" ]] && eval "$(pyenv init - zsh)"
+
+[[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"

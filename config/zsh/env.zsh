@@ -2,7 +2,9 @@ configs=(
     aliases
     cmake
     docker
+    fzdm
     fzf
+    fzt
     lf
     yazi
     nvim
@@ -111,9 +113,10 @@ add_to_path "$HOME/.ghcup/bin"
 add_to_path "$HOME/.dotnet/tools"
 add_to_path "/home/linuxbrew/.linuxbrew/bin"
 add_to_path "/usr/lib/jvm/default/bin"
+add_to_path "$HOME/.lmstudio/bin"
 add_to_path "$XDG_DATA_HOME/nvim/mason/bin"
-add_to_path "$XDG_DATA_HOME/JetBrains/Toolbox/bin"
-add_to_path "$XDG_DATA_HOME/JetBrains/Toolbox/scripts"
+add_to_path "$HOME/.local/bin/JetBrains/Toolbox/scripts"
+add_to_path "$HOME/.local/bin/JetBrains/Toolbox/scripts"
 add_to_path "$XDG_CONFIG_HOME/doom/bin"
 add_to_path "$XDG_CONFIG_HOME/emacs/bin"
 add_to_path "$HOME/.opencode/bin"
