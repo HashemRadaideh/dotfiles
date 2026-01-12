@@ -5,5 +5,8 @@ return {
   require("plugins.ui.lualine"),
   require("plugins.ui.noice"),
   require("plugins.ui.notify"),
+  require("plugins.ui.statuscol"),
+  require("plugins.ui.ufo"),
   require("plugins.ui.whichkey"),
+  require("plugins.ui.wrapwidth"),
 }

@@ -54,7 +54,7 @@ return function()
       map("n", "gD", vim.lsp.buf.declaration, "Goto Declaration")
       -- map("n", "gd", vim.lsp.buf.definition, "Goto Definition")
       map("n", "gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
-      -- map("n", "gr", vim.lsp.buf.references, "Goto References")
+      map("n", "gr", vim.lsp.buf.references, "Goto References")
       map("n", "gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
       -- map("n", "gi", vim.lsp.buf.implementation, "Goto Implementation")
       map("n", "gi", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
@@ -78,16 +78,19 @@ return function()
 
       if filetype ~= "fsharp" then
         -- https://www.reddit.com/r/neovim/comments/so4g5e/if_you_guys_arent_using_lsp_signaturenvim_what/
-        require("lsp_signature").on_attach({
-          padding = " ",
-          handler_opts = {
-            border = "none",
-          },
-          hint_prefix = "🔍",
-          max_height = 6,
-          toggle_key = "<C-u>",
-          move_cursor_key = "<C-w>",
-        }, event.buf)
+        local ok, lsp_signature = pcall(require, "lsp_signature")
+        if ok then
+          lsp_signature.on_attach({
+            padding = " ",
+            handler_opts = {
+              border = "none",
+            },
+            hint_prefix = "🔍",
+            max_height = 6,
+            toggle_key = "<C-u>",
+            move_cursor_key = "<C-w>",
+          }, event.buf)
+        end
       end
 
       -- if client.server_capabilities.documentSymbolProvider then
@@ -98,8 +101,8 @@ return function()
 
       -- vim.g.Illuminate_ftblacklist = { "neo-tree" }
 
-      if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf) then
-        local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
+      if client and client.server_capabilities.documentHighlightProvider then
+        local highlight_augroup = vim.api.nvim_create_augroup("lsp-highlight", { clear = false })
         vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
           buffer = event.buf,
           group = highlight_augroup,
@@ -113,10 +116,10 @@ return function()
         })
 
         vim.api.nvim_create_autocmd("LspDetach", {
-          group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
+          group = vim.api.nvim_create_augroup("lsp-detach", { clear = true }),
           callback = function(event2)
             vim.lsp.buf.clear_references()
-            vim.api.nvim_clear_autocmds({ group = "kickstart-lsp-highlight", buffer = event2.buf })
+            vim.api.nvim_clear_autocmds({ group = "lsp-highlight", buffer = event2.buf })
           end,
         })
       end
@@ -214,59 +217,30 @@ return function()
   -- capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
   capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
 
-  -- capabilities = {
-  --   signatureHelpProvider = {
-  --     triggerCharacters = { "(", ",", " " },
-  --   },
-  --   workspace = {
-  --     didChangeWatchedFiles = {
-  --       dynamicRegistration = true,
-  --     },
-  --   },
-  --   textDocument = {
-  --     completion = {
-  --       completionItem = {
-  --         snippetSupport = true,
-  --         resolveSupport = {
-  --           properties = { "documentation", "detail", "additionalTextEdits" },
-  --         },
-  --       },
-  --     },
-  --     foldingRange = {
-  --       dynamicRegistration = false,
-  --       lineFoldingOnly = true,
-  --     },
-  --   },
-  -- }
-
-  local function goto_definition(split_cmd)
-    local log = require("vim.lsp.log")
-
-    local handler = function(_, result, ctx)
-      if result == nil or vim.tbl_isempty(result) then
-        local _ = log.info() and log.info(ctx.method, "No location found")
-        return nil
-      end
-
-      if split_cmd then
-        vim.cmd(split_cmd)
-      end
-
-      if vim.tbl_islist(result) then
-        vim.lsp.util.jump_to_location(result[1])
-
-        if #result > 1 then
-          vim.diagnostic.setqflist(vim.lsp.util.locations_to_items(result))
-          vim.api.nvim_command("copen")
-          vim.api.nvim_command("wincmd p")
-        end
-      else
-        vim.lsp.util.jump_to_location(result)
-      end
-    end
-
-    return handler
-  end
+  capabilities = vim.tbl_deep_extend("force", capabilities, {
+    -- signatureHelpProvider = {
+    --   triggerCharacters = { "(", ",", " " },
+    -- },
+    -- workspace = {
+    --   didChangeWatchedFiles = {
+    --     dynamicRegistration = true,
+    --   },
+    -- },
+    textDocument = {
+      -- completion = {
+      --   completionItem = {
+      --     snippetSupport = true,
+      --     resolveSupport = {
+      --       properties = { "documentation", "detail", "additionalTextEdits" },
+      --     },
+      --   },
+      -- },
+      foldingRange = {
+        dynamicRegistration = false,
+        lineFoldingOnly = true,
+      },
+    },
+  })
 
   local handlers = {
     ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover),
@@ -280,7 +254,7 @@ return function()
         -- severity_limit = "Warning",
       },
     }),
-    ["textDocument/definition"] = goto_definition("vsplit"),
+    -- ["textDocument/definition"] = goto_definition("vsplit"), -- Using vim.lsp.buf.definition directly now
     -- ["window/logMessage"] = function(_, result, ctx, _)
     --   local client = vim.lsp.get_client_by_id(ctx.client_id)
     --   local message = result.message

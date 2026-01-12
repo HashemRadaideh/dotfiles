@@ -1,4 +1,4 @@
-vim.lsp.config("ts_ls", {
+return {
   settings = {
     javascript = {
       inlayHints = {
@@ -23,4 +23,4 @@ vim.lsp.config("ts_ls", {
       },
     },
   },
-})
+}

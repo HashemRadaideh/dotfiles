@@ -87,11 +87,11 @@ return {
         },
       },
       pre_hook = function()
-        vim.opt.cursorline = false
+        vim.o.cursorline = false
         vim.cmd("NoMatchParen")
       end,
       post_hook = function()
-        vim.opt.cursorline = true
+        vim.o.cursorline = true
         vim.cmd("DoMatchParen")
       end,
     },

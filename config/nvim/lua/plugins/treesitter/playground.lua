@@ -1,4 +1,4 @@
 return {
-  "nvim-treesitter/playground",
-  event = { "BufReadPost", "BufNewFile" },
+  -- "nvim-treesitter/playground",
+  -- event = { "BufReadPost", "BufNewFile" },
 }
