@@ -28,7 +28,7 @@ return {
   },
   opts = {
     -- https://docs.github.com/en/copilot/reference/ai-models/supported-models
-    copilot_model = "claude-sonnet-4.5",
+    copilot_model = "gpt-41-copilot",
     panel = {
       enabled = true,
       auto_refresh = true,

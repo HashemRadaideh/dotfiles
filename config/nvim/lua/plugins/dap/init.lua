@@ -2,7 +2,7 @@ return {
   {
     "mfussenegger/nvim-dap",
     dependencies = {
-      { "rcarriga/nvim-dap-ui", opts = {}, dependencies = { "nvim-neotest/nvim-nio" } },
+      { "rcarriga/nvim-dap-ui",            opts = {}, dependencies = { "nvim-neotest/nvim-nio" } },
       { "theHamsta/nvim-dap-virtual-text", opts = {} },
       require("plugins.dap.mason"),
     },
@@ -91,7 +91,7 @@ return {
         mode = { "n", "v" },
       },
       {
-        "<Leader>df",
+        "<Leader>dt",
         function()
           local widgets = require("dap.ui.widgets")
           widgets.centered_float(widgets.frames)
@@ -108,7 +108,37 @@ return {
     config = function()
       local dap, dapui = require("dap"), require("dapui")
 
-      vim.fn.sign_define("DapBreakpoint", { text = "🛑", texthl = "ErrorMsg", linehl = "", numhl = "CurSearch" })
+      -- vim.fn.sign_define("DapBreakpoint", { text = "🛑", texthl = "ErrorMsg", linehl = "", numhl = "CurSearch" })
+      vim.fn.sign_define("DapBreakpoint", {
+        text = "⬤",
+        texthl = "DiagnosticError",
+        linehl = "",
+        numhl = "DiagnosticError"
+      })
+      vim.fn.sign_define("DapBreakpointCondition", {
+        text = "◆",
+        texthl = "DiagnosticWarn",
+        linehl = "",
+        numhl = "DiagnosticWarn"
+      })
+      vim.fn.sign_define("DapBreakpointRejected", {
+        text = "●",
+        texthl = "DiagnosticHint",
+        linehl = "",
+        numhl = ""
+      })
+      vim.fn.sign_define("DapLogPoint", {
+        text = "◆",
+        texthl = "DiagnosticInfo",
+        linehl = "",
+        numhl = ""
+      })
+      vim.fn.sign_define("DapStopped", {
+        text = "▶",
+        texthl = "DiagnosticOk",
+        linehl = "DiffAdd",
+        numhl = "DiagnosticOk"
+      })
 
       dap.listeners.before.attach.dapui_config = function()
         dapui.open()

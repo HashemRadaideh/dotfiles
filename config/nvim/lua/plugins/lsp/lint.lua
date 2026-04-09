@@ -7,6 +7,14 @@ local config = function()
   --   },
   -- })
 
+  -- -- Configure checkstyle to use custom config file
+  -- local config_dir = vim.fn.stdpath("config")
+  -- local checkstyle_config_path = config_dir .. "/checkstyle.xml"
+  -- lint.linters.checkstyle = lint.linters.checkstyle or {}
+  -- lint.linters.checkstyle.args = function()
+  --   return { "-c", checkstyle_config_path }
+  -- end
+
   lint.linters_by_ft = {
     -- javascript = { "biome", "eslint_d" },
     -- typescript = { "biome", "eslint_d" },
@@ -15,6 +23,7 @@ local config = function()
     -- svelte = { "biome", "eslint_d" },
     -- lua = { "selene" }, -- "luacheck",
     -- rust = { "bacon" },
+    -- java = { "checkstyle" },
     c = { "cpplint" },
     cpp = { "cpplint" },
     cc = { "cpplint" },

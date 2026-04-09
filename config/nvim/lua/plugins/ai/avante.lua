@@ -1,7 +1,7 @@
 return {
   "yetone/avante.nvim",
   build = vim.fn.has("win32") ~= 0 and "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
-    or "make", -- "make BUILD_FROM_SOURCE=true",
+      or "make", -- "make BUILD_FROM_SOURCE=true",
   dependencies = {
     "nvim-lua/plenary.nvim",
     "MunifTanjim/nui.nvim",
@@ -31,14 +31,14 @@ return {
     cursor_applying_provider = "copilot",
     providers = {
       claude = {
-        model = "claude-sonnet-4-20250514",
+        model = "claude-sonnet-4.6",
         extra_request_body = {
           temperature = 0.75,
           max_tokens = 20480,
         },
       },
       copilot = {
-        model = "claude-4-5-sonnet",
+        model = "claude-sonnet-4.6",
       },
       gemini = {
         model = "gemini-2.5-pro",
@@ -142,8 +142,8 @@ return {
       auto_set_keymaps = true,
       auto_apply_diff_after_generation = false,
       support_paste_from_clipboard = false,
-      minimize_diff = true, -- Whether to remove unchanged lines when applying a code block
-      enable_token_counting = true, -- Whether to enable token counting. Default to true.
+      minimize_diff = true,                -- Whether to remove unchanged lines when applying a code block
+      enable_token_counting = true,        -- Whether to enable token counting. Default to true.
       auto_suggestions = false,
       enable_cursor_planning_mode = false, -- Whether to enable Cursor Planning Mode. Default to false.
       enable_claude_text_editor_tool_mode = false,

@@ -69,10 +69,10 @@ return {
     },
     notify_on_error = false,
     notify_no_formatters = false,
-    formatters = {
-      ["google-java-format"] = {
-        prepend_args = { "-a" },
-      },
-    },
+    -- formatters = {
+    --   ["google-java-format"] = {
+    --     prepend_args = { "-a" },
+    --   },
+    -- },
   },
 }

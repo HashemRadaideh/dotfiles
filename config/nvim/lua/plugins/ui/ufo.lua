@@ -1,60 +1,43 @@
 local handler = function(virtText, lnum, endLnum, width, truncate)
   local newVirtText = {}
   local lineCount = endLnum - lnum
+  local bufnr = vim.api.nvim_get_current_buf()
 
-  local function is_single_statement()
-    local bufnr = vim.api.nvim_get_current_buf()
-    local lines = vim.api.nvim_buf_get_lines(bufnr, lnum, endLnum, false)
-    local count = 0
+  local ELLIPSIS_PATTERNS = {
+    "^%s*import%s+",
+    "^%s*import%s+.*from",
+    "^%s*from%s+.*import",
+    "^%s*use%s+",
+    "^%s*pub%s+.*use%s+",
+    "^%s*include%s+",
+    "^%s*/%*",
+    "^%s*//",
+    "^%s*#",
+  }
 
-    local non_statement_patterns = { "^[{}()%[%]]$", "^then$", "^do$", "^end$", "^fi$", "^begin$", "^esac$" }
-    for _, line in ipairs(lines) do
-      local trimmed = line:gsub("^%s+", ""):gsub("%s+$", "")
+  local NON_STATEMENT_PATTERNS = {
+    "^[{}()%[%]]$",
+    "^begin$",
+    "^then$",
+    "^do$",
+    "^end$",
+    "^fi$",
+    "^esac$",
+  }
 
-      if trimmed ~= "" then
-        local is_statement = true
-
-        for _, pattern in ipairs(non_statement_patterns) do
-          if trimmed:match(pattern) then
-            is_statement = false
-            break
-          end
-        end
-
-        if is_statement then
-          count = count + 1
-        end
-      end
-    end
-
-    return count == 1
+  local function get_line(n)
+    return vim.api.nvim_buf_get_lines(bufnr, n - 1, n, false)[1]
   end
 
-  local function is_foldable_block()
-    local bufnr = vim.api.nvim_get_current_buf()
-    local line = vim.api.nvim_buf_get_lines(bufnr, lnum - 1, lnum, false)[1]
+  local function get_lines(from, to)
+    return vim.api.nvim_buf_get_lines(bufnr, from, to, false)
+  end
 
-    if not line then
-      return false
+  local function matches_any(str, patterns)
+    for _, p in ipairs(patterns) do
+      if str:match(p) then return true end
     end
-
-    local excluded_patterns = {
-      "^%s*import%s+",
-      "^%s*from%s+.*import",
-      "^%s*/%*",
-      "^%s*//",
-      "^%s*#",
-      "^%s*package%s+",
-      "^%s*module%s+",
-    }
-
-    for _, pattern in ipairs(excluded_patterns) do
-      if line:match(pattern) then
-        return false
-      end
-    end
-
-    return is_single_statement()
+    return false
   end
 
   local function add_chunks(target_width)
@@ -62,7 +45,6 @@ local handler = function(virtText, lnum, endLnum, width, truncate)
     for _, chunk in ipairs(virtText) do
       local chunk_text = chunk[1]
       local chunk_width = vim.fn.strdisplaywidth(chunk_text)
-
       if target_width > cur_width + chunk_width then
         table.insert(newVirtText, chunk)
         cur_width = cur_width + chunk_width
@@ -75,78 +57,91 @@ local handler = function(virtText, lnum, endLnum, width, truncate)
     return cur_width
   end
 
-  local function get_fold_content_with_highlighting()
-    local bufnr = vim.api.nvim_get_current_buf()
-    local lines = vim.api.nvim_buf_get_lines(bufnr, lnum, endLnum, false)
-    local content_chunks = {}
+  local function is_ellipsis_fold()
+    local line = get_line(lnum)
+    return line and matches_any(line, ELLIPSIS_PATTERNS)
+  end
 
-    for line_idx, line in ipairs(lines) do
+  local function is_oneliner_fold()
+    local line = get_line(lnum)
+    if not line or matches_any(line, ELLIPSIS_PATTERNS) then return false end
+
+    local count = 0
+    for _, l in ipairs(get_lines(lnum, endLnum)) do
+      local trimmed = l:gsub("^%s+", ""):gsub("%s+$", "")
+      if trimmed ~= "" and not matches_any(trimmed, NON_STATEMENT_PATTERNS) then
+        count = count + 1
+      end
+    end
+    return count == 1
+  end
+
+  local function get_highlighted_chunks(from, to)
+    local chunks = {}
+    for line_idx, line in ipairs(get_lines(from, to)) do
       local trimmed = line:gsub("^%s+", ""):gsub("%s+$", "")
       if trimmed ~= "" then
-        local line_num = lnum + line_idx - 1
-
+        local line_num = from + line_idx
         local col = line:find("%S") or 1
-        local highlight_chunks = {}
-        local current_hl = nil
-        local current_text = ""
+        local cur_hl, cur_text = nil, ""
+
+        local function flush()
+          if cur_text ~= "" then
+            table.insert(chunks, { cur_text, cur_hl or "Normal" })
+            cur_text = ""
+          end
+        end
 
         for i = col, #line do
           local char = line:sub(i, i)
           if char:match("%S") then
-            local syn_id = vim.fn.synID(line_num + 1, i, 1)
-            local hl_name = vim.fn.synIDattr(vim.fn.synIDtrans(syn_id), "name")
-
-            if hl_name ~= current_hl then
-              if current_text ~= "" then
-                table.insert(highlight_chunks, { current_text, current_hl or "Normal" })
-              end
-              current_hl = hl_name ~= "" and hl_name or "Normal"
-              current_text = char
-            else
-              current_text = current_text .. char
+            local syn_id = vim.fn.synID(line_num, i, 1)
+            local hl = vim.fn.synIDattr(vim.fn.synIDtrans(syn_id), "name")
+            hl = hl ~= "" and hl or "Normal"
+            if hl ~= cur_hl then
+              flush()
+              cur_hl = hl
             end
-          elseif current_text ~= "" then
-            current_text = current_text .. char
+            cur_text = cur_text .. char
+          elseif cur_text ~= "" then
+            cur_text = cur_text .. char
           end
         end
 
-        if current_text ~= "" then
-          current_text = current_text:gsub("%s+$", "")
-          if current_text ~= "" then
-            table.insert(highlight_chunks, { current_text, current_hl or "Normal" })
-          end
-        end
+        cur_text = cur_text:gsub("%s+$", "")
+        flush()
 
-        if #content_chunks > 0 then
-          table.insert(content_chunks, { " ", "Normal" })
-        end
-
-        for _, chunk in ipairs(highlight_chunks) do
-          table.insert(content_chunks, chunk)
+        if #chunks > 0 then
+          table.insert(chunks, #chunks, { " ", "Normal" })
         end
       end
     end
-
-    return content_chunks
+    return chunks
   end
 
-  if is_foldable_block() then
-    local content_chunks = get_fold_content_with_highlighting()
+  if is_ellipsis_fold() then
+    local line    = get_line(lnum)
+    local indent  = line:match("^(%s*)") or ""
+    local keyword = line:match("^%s*(%S+)") or ""
+    local closing = keyword:match("^/%*") and " */" or ""
 
+    table.insert(newVirtText, { indent, "Normal" })
+    table.insert(newVirtText, { keyword .. " …" .. closing, "NonText" })
+    return newVirtText
+  end
+
+  if is_oneliner_fold() then
+    local content_chunks = get_highlighted_chunks(lnum, endLnum)
     local content_width = 0
     for _, chunk in ipairs(content_chunks) do
       content_width = content_width + vim.fn.strdisplaywidth(chunk[1])
     end
 
     add_chunks(width - content_width - 10)
-
-    if #content_chunks > 0 then
-      table.insert(newVirtText, { " ", "Normal" })
-      for _, chunk in ipairs(content_chunks) do
-        table.insert(newVirtText, chunk)
-      end
+    table.insert(newVirtText, { " ", "Normal" })
+    for _, chunk in ipairs(content_chunks) do
+      table.insert(newVirtText, chunk)
     end
-
     return newVirtText
   end
 

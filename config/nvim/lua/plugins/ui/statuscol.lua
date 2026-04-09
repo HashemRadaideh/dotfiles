@@ -7,25 +7,52 @@ return {
       relculright = true,
       ft_ignore = { "neo-tree", "Avante", "AvanteInput", "AvanteSelectedFiles" },
       segments = {
-        { text = { builtin.foldfunc }, click = "v:lua.ScFa" },
-        { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
+        {
+          text = {
+            -- function(args)
+            --   return ((args.lnum % 2 > 0) and "%#DiffDelete#%=" or "%#DiffAdd#%=") .. "%l"
+            -- end,
+            "%l "
+          },
+          click = "v:lua.ScLa"
+        },
         {
           sign = {
-            namespace = { "gitsigns" },
-            colwidth = 1,
-            auto = true,
-            wrap = true,
+            name = {
+              "DapBreakpoint",
+              "DapBreakpointCondition",
+              "DapBreakpointRejected",
+              "DapStopped",
+              "DapLogPoint"
+            },
+            maxwidth = 1,
+            auto = false,
+            wrap = false,
           },
+          condition = { builtin.not_empty },
           click = "v:lua.ScSa",
         },
         {
           sign = {
-            name = { ".*" },
-            text = { ".*" },
-            namespace = { ".*" },
+            namespace = { "diagnostic" },
+            name = { "Diagnostic", },
             maxwidth = 1,
             auto = false,
-            wrap = true,
+            wrap = false,
+          },
+          condition = { builtin.not_empty },
+          click = "v:lua.ScSa",
+        },
+        {
+          text = { "%C " },
+          click = "v:lua.ScFa"
+        },
+        {
+          sign = {
+            namespace = { "gitsigns" },
+            colwidth = 1,
+            auto = false,
+            wrap = false,
           },
           click = "v:lua.ScSa",
         },

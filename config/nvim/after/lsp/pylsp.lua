@@ -28,7 +28,7 @@ return {
         pylint = {
           enabled = true,
           args = {
-            "--disable=missing-module-docstring,missing-function-docstring,too-many-positional-arguments,too-many-arguments,too-many-instance-attributes,line-too-long,broad-exception-caught,missing-class-docstring,broad-exception-raised,too-few-public-methods,trailing-newlines,import-error,too-many-locals,too-many-statements,too-many-branches",
+            "--disable=missing-module-docstring,missing-function-docstring,too-many-positional-arguments,too-many-arguments,too-many-instance-attributes,line-too-long,broad-exception-caught,missing-class-docstring,broad-exception-raised,too-few-public-methods,trailing-newlines,import-error,too-many-locals,too-many-statements,too-many-branches,import-outside-toplevel",
           },
         },
         ruff = { enabled = true },

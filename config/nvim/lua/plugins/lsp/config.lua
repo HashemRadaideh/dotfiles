@@ -1,19 +1,21 @@
 return function()
   vim.diagnostic.config({
-    virtual_text = {
-      source = "if_many",
-      spacing = 2,
-      prefix = "■", -- "●", "▎"
-      format = function(diagnostic)
-        local diagnostic_message = {
-          [vim.diagnostic.severity.ERROR] = diagnostic.message,
-          [vim.diagnostic.severity.WARN] = diagnostic.message,
-          [vim.diagnostic.severity.INFO] = diagnostic.message,
-          [vim.diagnostic.severity.HINT] = diagnostic.message,
-        }
-        return diagnostic_message[diagnostic.severity]
-      end,
-    },
+    -- virtual_text = {
+    --   source = "if_many",
+    --   spacing = 2,
+    --   prefix = "■", -- "●", "▎"
+    --   format = function(diagnostic)
+    --     local diagnostic_message = {
+    --       [vim.diagnostic.severity.ERROR] = diagnostic.message,
+    --       [vim.diagnostic.severity.WARN] = diagnostic.message,
+    --       [vim.diagnostic.severity.INFO] = diagnostic.message,
+    --       [vim.diagnostic.severity.HINT] = diagnostic.message,
+    --     }
+    --     return diagnostic_message[diagnostic.severity]
+    --   end,
+    -- },
+    virtual_text = false,
+    virtual_lines = true, -- { current_line = true },
     float = {
       source = "if_many",
       show_header = true,
@@ -44,17 +46,95 @@ return function()
         vim.keymap.set(mode, keys, func, { silent = true, noremap = true, buffer = event.buf, desc = "LSP: " .. desc })
       end
 
-      map("n", "<leader>d[", vim.diagnostic.setloclist, "Add diagnostics to the location list")
-      map("n", "<leader>d]", vim.diagnostic.open_float, "Show diagnostics")
-      map("n", "gk", vim.diagnostic.goto_prev, "Goto previous diagnostic")
-      map("n", "gj", vim.diagnostic.goto_next, "Goto next diagnostic")
+      map("n", "<leader>dal", vim.diagnostic.setloclist, "Add diagnostics to the location list")
+      map("n", "<leader>dof", vim.diagnostic.open_float, "Show diagnostics")
+
+      map('n', '<leader>vl', function()
+        vim.diagnostic.config({ virtual_lines = not vim.diagnostic.config().virtual_lines })
+      end, 'Toggle diagnostic virtual_lines')
+
+      map("n", "gk", function()
+        vim.diagnostic.goto_prev({ float = false })
+      end, "Goto previous diagnostic")
+
+      map("n", "gj", function()
+        vim.diagnostic.goto_next({ float = false })
+      end, "Goto next diagnostic")
 
       -- map("n", "<leader>D", vim.lsp.buf.type_definition, "Goto Type Definition")
       map("n", "<leader>D", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definition")
       map("n", "gD", vim.lsp.buf.declaration, "Goto Declaration")
       -- map("n", "gd", vim.lsp.buf.definition, "Goto Definition")
       map("n", "gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
-      map("n", "gr", vim.lsp.buf.references, "Goto References")
+      -- map("n", "gr", vim.lsp.buf.references, "Goto References")
+
+      map("n", "gd", function()
+        local clients = vim.lsp.get_clients({ bufnr = event.buf })
+        if #clients == 0 then
+          vim.notify("No LSP client attached. Check :LspInfo", vim.log.levels.WARN)
+          return
+        end
+
+        local line = vim.api.nvim_get_current_line()
+        local filetype = vim.api.nvim_buf_get_option(event.buf, "filetype")
+        local col = vim.api.nvim_win_get_cursor(0)[2]
+
+        -- Check if cursor is on a require/import statement
+        local is_require_import = false
+        local module_path = nil
+
+        -- Lua require statements
+        if filetype == "lua" then
+          local require_pattern = "require%s*%(%s*['\"]([^'\"]+)['\"]"
+          local match = line:match(require_pattern)
+          if match then
+            local start, finish = line:find(require_pattern)
+            if start and finish and col >= start - 1 and col <= finish then
+              is_require_import = true
+              module_path = match:gsub("%.", "/")
+            end
+          end
+        end
+
+        -- JS/TS import/require statements
+        if filetype == "javascript" or filetype == "typescript" or filetype == "javascriptreact" or filetype == "typescriptreact" then
+          local import_pattern = "from%s+['\"]([^'\"]+)['\"]"
+          local require_pattern = "require%s*%(%s*['\"]([^'\"]+)['\"]"
+          local match = line:match(import_pattern) or line:match(require_pattern)
+          if match then
+            local start1, finish1 = line:find(import_pattern)
+            local start2, finish2 = line:find(require_pattern)
+            local start, finish = start1 or start2, finish1 or finish2
+            if start and finish and col >= start - 1 and col <= finish then
+              is_require_import = true
+              module_path = match
+            end
+          end
+        end
+
+        -- For require/import, use custom handler with fallback
+        if is_require_import and module_path then
+          local params = vim.lsp.util.make_position_params(0, clients[1].offset_encoding)
+          clients[1].request("textDocument/definition", params, function(err, result, ctx, config)
+            if err or not result or vim.tbl_isempty(result) then
+              -- Fallback to file search
+              local ok, telescope = pcall(require, "telescope.builtin")
+              if ok then
+                local search_term = module_path:match("([^/]+)$") or module_path
+                telescope.find_files({ default_text = search_term })
+              else
+                vim.notify("No locations found", vim.log.levels.INFO)
+              end
+            else
+              -- LSP found it, use default handler
+              vim.lsp.handlers["textDocument/definition"](err, result, ctx, config)
+            end
+          end, event.buf)
+        else
+          -- For function definitions, use standard LSP method
+          vim.lsp.buf.definition()
+        end
+      end, "Goto Definition")
       map("n", "gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
       -- map("n", "gi", vim.lsp.buf.implementation, "Goto Implementation")
       map("n", "gi", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
@@ -74,24 +154,24 @@ return function()
       map("n", "gW", require("telescope.builtin").lsp_dynamic_workspace_symbols, "Open Workspace Symbols")
 
       local client = vim.lsp.get_client_by_id(event.data.client_id)
-      local filetype = vim.api.nvim_buf_get_option(event.buf, "filetype")
 
-      if filetype ~= "fsharp" then
-        -- https://www.reddit.com/r/neovim/comments/so4g5e/if_you_guys_arent_using_lsp_signaturenvim_what/
-        local ok, lsp_signature = pcall(require, "lsp_signature")
-        if ok then
-          lsp_signature.on_attach({
-            padding = " ",
-            handler_opts = {
-              border = "none",
-            },
-            hint_prefix = "🔍",
-            max_height = 6,
-            toggle_key = "<C-u>",
-            move_cursor_key = "<C-w>",
-          }, event.buf)
-        end
-      end
+      -- local filetype = vim.api.nvim_buf_get_option(event.buf, "filetype")
+      -- if filetype ~= "fsharp" then
+      --   -- https://www.reddit.com/r/neovim/comments/so4g5e/if_you_guys_arent_using_lsp_signaturenvim_what/
+      --   local ok, lsp_signature = pcall(require, "lsp_signature")
+      --   if ok then
+      --     lsp_signature.on_attach({
+      --       padding = " ",
+      --       handler_opts = {
+      --         border = "none",
+      --       },
+      --       hint_prefix = "🔍",
+      --       max_height = 6,
+      --       toggle_key = "<C-u>",
+      --       move_cursor_key = "<C-w>",
+      --     }, event.buf)
+      --   end
+      -- end
 
       -- if client.server_capabilities.documentSymbolProvider then
       --   require("nvim-navic").attach(client, event.buf)
@@ -134,20 +214,23 @@ return function()
 
       if client and client.server_capabilities.codeLensProvider then
         local codelens_running = false
-        vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
-          buffer = event.buf,
-          callback = function()
-            if codelens_running then
-              return
-            end
-            codelens_running = true
+        -- vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
+        --   buffer = event.buf,
+        --   callback = function()
+        --     if codelens_running then
+        --       return
+        --     end
+        --     codelens_running = true
 
-            vim.lsp.codelens.refresh()
-            vim.defer_fn(function()
-              codelens_running = false
-            end, 4000)
-          end,
-        })
+        --     -- vim.lsp.codelens.refresh({ bufnr = bufnr}) is deprecated. Run ":checkhealth vim.deprecated" for more information
+        --     vim.lsp.codelens.refresh()
+        --     vim.defer_fn(function()
+        --       codelens_running = false
+        --     end, 4000)
+        --   end,
+        -- })
+
+        vim.lsp.codelens.enable(true, { bufnr = event.buf })
 
         map("n", "<leader>cl", vim.lsp.codelens.run, "Toggle Code Lens")
       end
@@ -243,22 +326,21 @@ return function()
   })
 
   local handlers = {
-    ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover),
-    ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help),
-    ["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-      underline = true,
-      -- signs = true,
-      update_in_insert = true,
-      virtual_text = {
-        spacing = 5,
-        -- severity_limit = "Warning",
-      },
-    }),
+    -- ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover),
+    -- ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help),
+    -- ["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+    --   underline = true,
+    --   -- signs = true,
+    --   update_in_insert = true,
+    --   virtual_text = {
+    --     spacing = 5,
+    --     -- severity_limit = "Warning",
+    --   },
+    -- }),
     -- ["textDocument/definition"] = goto_definition("vsplit"), -- Using vim.lsp.buf.definition directly now
     -- ["window/logMessage"] = function(_, result, ctx, _)
     --   local client = vim.lsp.get_client_by_id(ctx.client_id)
     --   local message = result.message
-
     --   local messageType = result.type
     --   local clientName = client and client.name or "Unknown client"
     --   if messageType == vim.lsp.protocol.MessageType.Error then
