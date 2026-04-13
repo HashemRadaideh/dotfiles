@@ -1,0 +1,24 @@
+return {
+  "jay-babu/mason-nvim-dap.nvim",
+  dependencies = {
+    "mfussenegger/nvim-dap",
+    "williamboman/mason.nvim",
+  },
+  opts = {
+    ensure_installed = {
+      "delve",
+      "codelldb",
+      "cortex-debug",
+      "cpptools",
+      "python", -- "debugpy",
+      "js-debug-adapter",
+      -- "chrome-debug-adapter",
+      "firefox", -- "firefox-debug-adapter",
+      -- "node-debug2-adapter",
+      "dart-debug-adapter",
+      -- "kotlin-debug-adapter",
+      "netcoredbg",
+    },
+    automatic_installation = true,
+  },
+}

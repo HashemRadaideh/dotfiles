@@ -23,6 +23,13 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   end,
 })
 
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "*",
+  callback = function()
+    vim.api.nvim_set_hl(0, "Folded", { bg = "NONE" })
+  end,
+})
+
 -- vim.api.nvim_create_autocmd("VimEnter", {
 --   callback = function()
 --     vim.fn.system("xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'")

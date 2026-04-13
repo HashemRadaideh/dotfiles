@@ -3,11 +3,13 @@ return {
   require("plugins.utils.crates"),
   require("plugins.utils.guess-indent"),
   require("plugins.utils.image"),
+  -- require("plugins.utils.img-clip"),
   require("plugins.utils.import-cost"),
   require("plugins.utils.indent"),
   require("plugins.utils.markdown"),
   require("plugins.utils.package-info"),
   require("plugins.utils.preview"),
   require("plugins.utils.pubspec-assist"),
+  require("plugins.utils.schema-companion"),
   -- require("plugins.utils.venv"),
 }

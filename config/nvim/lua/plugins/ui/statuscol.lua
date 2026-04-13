@@ -5,17 +5,9 @@ return {
     local builtin = require("statuscol.builtin")
     require("statuscol").setup({
       relculright = true,
+      foldfunc = "builtin",
       ft_ignore = { "neo-tree", "Avante", "AvanteInput", "AvanteSelectedFiles" },
       segments = {
-        {
-          text = {
-            -- function(args)
-            --   return ((args.lnum % 2 > 0) and "%#DiffDelete#%=" or "%#DiffAdd#%=") .. "%l"
-            -- end,
-            "%l "
-          },
-          click = "v:lua.ScLa"
-        },
         {
           sign = {
             name = {
@@ -33,6 +25,17 @@ return {
           click = "v:lua.ScSa",
         },
         {
+          text = {
+            -- function(args)
+            --   return ((args.lnum % 2 > 0) and "%#DiffDelete#%=" or "%#DiffAdd#%=") .. "%l"
+            -- end,
+            -- builtin.lnumfunc,
+            --
+            "%l ",
+          },
+          click = "v:lua.ScLa"
+        },
+        {
           sign = {
             namespace = { "diagnostic" },
             name = { "Diagnostic", },
@@ -44,7 +47,10 @@ return {
           click = "v:lua.ScSa",
         },
         {
-          text = { "%C " },
+          text = {
+            builtin.foldfunc, " "
+          },
+          condition = { builtin.not_empty },
           click = "v:lua.ScFa"
         },
         {
