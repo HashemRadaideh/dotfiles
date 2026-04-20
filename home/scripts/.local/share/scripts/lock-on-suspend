@@ -1,0 +1,73 @@
+#!/bin/sh
+
+LOGFILE="/home/hashem/lock-on-suspend.log"
+
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" >> "$LOGFILE"
+}
+
+run_as_user() {
+    sudo -u "$USER_NAME" \
+        env \
+        PATH="$USER_PATH" \
+        DISPLAY="$DISPLAY" \
+        WAYLAND_DISPLAY="$WAYLAND_DISPLAY" \
+        XDG_RUNTIME_DIR="$XDG_RUNTIME_DIR" \
+        XDG_SESSION_TYPE="$XDG_SESSION_TYPE" \
+        "$@" >> "$LOGFILE" 2>&1
+}
+
+lock_screen() {
+    log "lock_screen called, finding session..."
+
+    SESSION_ID=$(loginctl list-sessions --no-legend | while read -r sid uid uname seat tty; do
+        stype=$(loginctl show-session "$sid" -p Type --value 2>/dev/null)
+        if [ "$stype" = "wayland" ] || [ "$stype" = "x11" ]; then
+            echo "$sid"
+            break
+        fi
+    done)
+
+    if [ -z "$SESSION_ID" ]; then
+        log "ERROR: no graphical session found"
+        exit 0
+    fi
+
+    USER_NAME=$(loginctl show-session "$SESSION_ID" -p Name --value)
+    USER_ID=$(id -u "$USER_NAME")
+    SESSION_TYPE=$(loginctl show-session "$SESSION_ID" -p Type --value)
+
+    USER_SHELL=$(getent passwd "$USER_NAME" | cut -d: -f7)
+    USER_PATH="$(sudo -u "$USER_NAME" "$USER_SHELL" -lc 'echo $PATH')"
+
+    export XDG_RUNTIME_DIR="/run/user/$USER_ID"
+
+    if [ "$SESSION_TYPE" = "wayland" ]; then
+        export WAYLAND_DISPLAY="wayland-1"
+        export XDG_SESSION_TYPE="wayland"
+    else
+        export DISPLAY=":0"
+        export XDG_SESSION_TYPE="x11"
+    fi
+
+    if [ "$SESSION_TYPE" = "wayland" ]; then
+        HYPRLAND_SIG=$(sudo -u "$USER_NAME" \
+            env XDG_RUNTIME_DIR="$XDG_RUNTIME_DIR" \
+            ls "$XDG_RUNTIME_DIR/hypr/" 2>/dev/null | head -1)
+
+        log "Compositor: Hyprland (sig=$HYPRLAND_SIG), using hyprctl dispatch"
+        run_as_user env HYPRLAND_INSTANCE_SIGNATURE="$HYPRLAND_SIG" \
+            hyprctl dispatch exec screenlock
+    else
+        log "Session: x11, running directly"
+        run_as_user screenlock
+    fi
+}
+
+log "Script called with args: $*"
+
+case $1 in
+    pre) lock_screen ;;
+esac
+
+log "done"

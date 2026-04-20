@@ -1,0 +1,9 @@
+{
+    "workspace.library": [
+        "/usr/share/nvim/runtime/lua",
+        "/usr/share/nvim/runtime/lua/vim/lsp",
+        "/home/hashem/.local/share/nvim/lazy/lazy.nvim/lua/lazy",
+        "${3rd}/luv/library",
+        "${3rd}/luassert/library"
+    ]
+}

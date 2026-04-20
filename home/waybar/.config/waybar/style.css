@@ -1,0 +1,273 @@
+@import "themes/frappe.css";
+
+* {
+  font-size: 13px;
+  font-family: "LiterationSans Nerd Font";
+  font-weight: 400;
+  color: @text;
+}
+
+window#waybar {
+  background: transparent;
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
+}
+
+#custom-launcher,
+#custom-calculator,
+#custom-clipboard,
+#custom-new,
+#workspaces,
+#window,
+#taskbar,
+#clock,
+#tray,
+#network,
+#bluetooth,
+#wireplumber,
+#pulseaudio,
+#backlight,
+#cpu,
+#memory,
+#temperature,
+#battery,
+#custom-wallpaper,
+#idle_inhibitor,
+#custom-power,
+#custom-notification {
+  margin-top: 4px;
+  margin-left: 2px;
+  margin-right: 2px;
+  margin-bottom: 0;
+  padding: 2px 8px;
+  border-radius: 8px;
+  background-color: @base;
+  color: @text;
+}
+
+#workspaces,
+#taskbar,
+#window,
+#clock,
+#tray,
+#custom-notification {
+  border: 1px solid @surface2;
+}
+
+#custom-launcher,
+#custom-calculator,
+#custom-clipboard,
+#custom-wallpaper,
+#idle_inhibitor,
+#custom-new,
+#custom-power {
+  margin-left: 0;
+  margin-right: 0;
+  border-radius: 0;
+}
+
+#custom-launcher {
+  margin-right: 2px;
+  border-radius: 8px;
+  border: 1px solid @surface2;
+  color: @mauve;
+}
+
+#settings:hover #custom-launcher {
+  margin-right: 0;
+  border-radius: 8px 0 0 8px;
+  border-right: none;
+}
+
+#custom-calculator {
+  border-top: 1px solid @surface2;
+  border-bottom: 1px solid @surface2;
+  color: @yellow;
+}
+
+#custom-clipboard {
+  border-top: 1px solid @surface2;
+  border-bottom: 1px solid @surface2;
+  color: @sky;
+}
+
+#custom-wallpaper {
+  border-top: 1px solid @surface2;
+  border-bottom: 1px solid @surface2;
+  border-right: none;
+  color: @teal;
+}
+
+#idle_inhibitor {
+  border-top: 1px solid @surface2;
+  border-bottom: 1px solid @surface2;
+  color: @peach;
+}
+
+#idle_inhibitor.activated {
+  color: @red;
+}
+
+#custom-new {
+  border-top: 1px solid @surface2;
+  border-bottom: 1px solid @surface2;
+  color: @green;
+}
+
+#custom-power {
+  border-radius: 0 8px 8px 0;
+  border-top: 1px solid @surface2;
+  border-right: 1px solid @surface2;
+  border-bottom: 1px solid @surface2;
+  color: @red;
+}
+
+#workspaces,
+#taskbar {
+  padding: 2px;
+}
+
+#workspaces button {
+  color: @subtext0;
+  border-radius: 6px;
+}
+
+#workspaces button.active {
+  background-color: @surface0;
+  color: @mauve;
+}
+
+#workspaces button.urgent {
+  background-color: @red;
+  color: @crust;
+}
+
+#workspaces button.empty {
+  color: @overlay0;
+}
+
+#taskbar button.active {
+  background-color: @surface0;
+  color: @text;
+}
+
+#taskbar button.empty {
+  background-color: transparent;
+}
+
+#network,
+#bluetooth,
+#wireplumber,
+#pulseaudio,
+#backlight {
+  margin-left: 0;
+  margin-right: 0;
+  border-radius: 0;
+}
+
+#network {
+  margin-left: 2px;
+  border-radius: 8px 0 0 8px;
+  border-top: 1px solid @surface2;
+  border-left: 1px solid @surface2;
+  border-bottom: 1px solid @surface2;
+  color: @blue;
+}
+
+#network.disconnected {
+  color: @red;
+}
+
+#bluetooth {
+  border-top: 1px solid @surface2;
+  border-bottom: 1px solid @surface2;
+  color: @sky;
+}
+
+#bluetooth.disconnected {
+  color: @overlay0;
+}
+
+#wireplumber,
+#pulseaudio {
+  border-top: 1px solid @surface2;
+  border-bottom: 1px solid @surface2;
+  color: @yellow;
+}
+
+#wireplumber.muted,
+#pulseaudio.muted {
+  color: @overlay0;
+}
+
+#backlight {
+  margin-right: 2px;
+  border-radius: 0 8px 8px 0;
+  border-top: 1px solid @surface2;
+  border-right: 1px solid @surface2;
+  border-bottom: 1px solid @surface2;
+  color: @rosewater;
+}
+
+#cpu,
+#memory,
+#temperature,
+#battery {
+  margin-left: 0;
+  margin-right: 0;
+  border-radius: 0;
+}
+
+#battery {
+  margin-right: 2px;
+  border-radius: 8px;
+  border: 1px solid @surface2;
+  color: @green;
+}
+
+#battery.warning {
+  color: @yellow;
+}
+
+#battery.critical {
+  color: @red;
+}
+
+#battery.charging {
+  color: @teal;
+}
+
+#hardware:hover #battery {
+  margin-right: 2px;
+  border-radius: 0 8px 8px 0;
+  border-left: none;
+  border-top: 1px solid @surface2;
+  border-right: 1px solid @surface2;
+  border-bottom: 1px solid @surface2;
+}
+
+#temperature {
+  border-top: 1px solid @surface2;
+  border-bottom: 1px solid @surface2;
+  color: @peach;
+}
+
+#temperature.critical {
+  color: @red;
+}
+
+#cpu {
+  margin-left: 2px;
+  border-radius: 8px 0 0 8px;
+  border-top: 1px solid @surface2;
+  border-left: 1px solid @surface2;
+  border-bottom: 1px solid @surface2;
+  color: @sapphire;
+}
+
+#memory {
+  border-top: 1px solid @surface2;
+  border-bottom: 1px solid @surface2;
+  color: @teal;
+}

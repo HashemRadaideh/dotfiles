@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+feels_like_temperature=$(openweather | jq -r '.main.feels_like // empty')
+
+if [ -z "$feels_like_temperature" ] || [ "$feels_like_temperature" = "null" ]; then
+  echo "Error: Could not parse temperature from API response." >&2
+  exit 1
+fi
+
+printf "%.0f°C\n" "$feels_like_temperature"

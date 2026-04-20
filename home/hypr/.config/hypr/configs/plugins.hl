@@ -1,0 +1,14 @@
+plugin {
+    # split-monitor-workspaces {
+    #     count = 10
+    #     keep_focused = 0
+    #     enable_notifications = 0
+    # }
+
+    # hyprpm update
+    # hyprpm add https://github.com/shezdy/hyprsplit
+    # hyprpm enable hyprsplit
+    hyprsplit {
+        num_workspaces = 10
+    }
+}

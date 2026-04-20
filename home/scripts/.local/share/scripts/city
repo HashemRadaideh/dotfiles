@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+country=$(openweather | jq -r '.sys.country // empty')
+city=$(openweather | jq -r '.name // empty')
+
+if [ -z "$city" ] || [ "$city" = "null" ] || [ "$country" = "null" ]; then
+  echo "Error: Could not parse country info from API response." >&2
+  exit 1
+fi
+
+printf "%s, %s\n" "$country" "$city"

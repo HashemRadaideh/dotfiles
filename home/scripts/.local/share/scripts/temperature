@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+temp=$(openweather | jq -r '.main.temp // empty')
+
+if [ -z "$temp" ] || [ "$temp" = "null" ]; then
+  echo "Error: Could not parse weather info from API response." >&2
+  exit 1
+fi
+
+printf "%.0f°C\n" "$temp"

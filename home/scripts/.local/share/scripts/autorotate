@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+rotate-touchscreen() {
+  TOUCHSCREENS=$(xinput --list --name-only | grep -iE "touchscreen|wacom")
+
+  [ -z "$TOUCHSCREENS" ] && return
+
+  echo "$TOUCHSCREENS" | while read -r device; do
+    [ -z "$device" ] && continue
+
+    xinput set-prop "$device" "Coordinate Transformation Matrix" "$@"
+  done
+}
+
+rotate-touchpad() {
+  TOUCHPADS=$(xinput --list --name-only | grep -iE "touchpad|trackpoint")
+
+  [ -z "$TOUCHPADS" ] && return
+
+  echo "$TOUCHPADS" | while read -r device; do
+    [ -z "$device" ] && continue
+
+    xinput set-prop "$device" "Coordinate Transformation Matrix" "$@"
+  done
+}
+
+rotate-screen() {
+  DISPLAY_NAME=$(xrandr | grep -E "eDP[0-9\-]*" | grep " connected" | cut -d " " -f1)
+  [ -z "$DISPLAY_NAME" ] && DISPLAY_NAME=$(xrandr | grep -E "LVDS[0-9\-]*" | grep " connected" | cut -d " " -f1)
+
+  xrandr --output "$DISPLAY_NAME" --rotate "$1"
+
+  case "$1" in
+  "normal") matrix=(1 0 0 0 1 0 0 0 1) ;;
+  "inverted") matrix=(-1 0 1 0 -1 1 0 0 1) ;;
+  "left") matrix=(0 -1 1 1 0 0 0 0 1) ;;
+  "right") matrix=(0 1 0 -1 0 1 0 0 1) ;;
+  esac
+
+  rotate-touchscreen "${matrix[@]}"
+
+  rotate-touchpad "${matrix[@]}"
+}
+
+monitor-sensor | while read -r line; do
+  if [[ $line != *"Accelerometer orientation changed:"* ]]; then
+    continue
+  fi
+
+  case "$(echo "$line" | cut -d ' ' -f4)" in
+  "normal") rotate-screen "normal" ;;
+  "bottom-up") rotate-screen "inverted" ;;
+  "left-up") rotate-screen "left" ;;
+  "right-up") rotate-screen "right" ;;
+  esac
+done

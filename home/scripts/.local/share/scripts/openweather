@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+if ! command -v curl >/dev/null 2>&1 || ! command -v awk >/dev/null 2>&1 || ! command -v jq >/dev/null 2>&1; then
+  if ! command -v notify-send >/dev/null 2>&1; then
+    echo "Error: The 'curl', 'notify-send', 'jq' and 'awk' tools are required but not installed for $0."
+  else
+    notify-send -u critical "Error" "The 'curl', 'jq' and 'awk' tools are required but not installed for $0."
+  fi
+  exit 1
+fi
+
+api_key="${OPENWEATHER_API_KEY:-9f815d625b1fa077b8d8f70bdfb0c205}"
+
+if [ -z "$api_key" ]; then
+  echo "Error: OPENWEATHER_API_KEY environment variable is not set." >&2
+  echo "Please set it with: export OPENWEATHER_API_KEY='your-api-key'" >&2
+  exit 1
+fi
+
+cache="${XDG_CACHE_HOME:-$HOME/.cache}/weather_cache.json"
+max_age=86400 # 24 hours in seconds
+
+# Use cache if it exists and is less than a day old
+if [ -f "$cache" ]; then
+  cache_age=$(($(date +%s) - $(date -r "$cache" +%s)))
+  if [ "$cache_age" -lt "$max_age" ]; then
+    cat "$cache"
+    exit 0
+  fi
+fi
+
+loc="$(curl -s https://ipinfo.io | jq -r '.loc' | tr ',' ' ')"
+lat="$(echo $loc | awk '{print $1}')"
+lon="$(echo $loc | awk '{print $2}')"
+url="https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${api_key}&units=metric"
+
+response="$(curl -s -f "$url")"
+
+if [ $? -ne 0 ] || [ -z "$response" ]; then
+  # Fall back to stale cache if available
+  if [ -f "$cache" ]; then
+    echo "Warning: Failed to fetch fresh data, using stale cache." >&2
+    cat "$cache"
+    exit 0
+  fi
+  echo "Error: Failed to fetch weather data." >&2
+  exit 1
+fi
+
+echo "$response" | tee "$cache"

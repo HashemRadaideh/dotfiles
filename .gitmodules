@@ -1,24 +1,9 @@
-[submodule "config/awesome/awesome-buttons"]
-	path = config/awesome/awesome-buttons
+[submodule "awesome-buttons"]
+	path = home/awesome/.config/awesome/awesome-buttons
 	url = https://github.com/streetturtle/awesome-buttons
-[submodule "config/awesome/awesome-wm-widgets"]
-	path = config/awesome/awesome-wm-widgets
+[submodule "awesome-wm-widgets"]
+	path = home/awesome/.config/awesome/awesome-wm-widgets
 	url = https://github.com/streetturtle/awesome-wm-widgets
-[submodule "config/tmux/plugins/tpm"]
-	path = config/tmux/plugins/tpm
+[submodule "tmux-tpm"]
+	path = home/tmux/.config/tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
-[submodule "config/zsh/plugins/zsh-syntax-highlighting"]
-	path = config/zsh/plugins/zsh-syntax-highlighting
-	url = https://github.com/zsh-users/zsh-syntax-highlighting
-[submodule "config/zsh/plugins/zsh-autosuggestions"]
-	path = config/zsh/plugins/zsh-autosuggestions
-	url = https://github.com/zsh-users/zsh-autosuggestions
-[submodule "config/zsh/plugins/zsh-auto-notify"]
-	path = config/zsh/plugins/zsh-auto-notify
-	url = https://github.com/MichaelAquilina/zsh-auto-notify
-[submodule "config/zsh/plugins/zsh-history-substring-search"]
-	path = config/zsh/plugins/zsh-history-substring-search
-	url = https://github.com/zsh-users/zsh-history-substring-search
-[submodule "config/zsh/plugins/zsh-you-should-use"]
-	path = config/zsh/plugins/zsh-you-should-use
-	url = https://github.com/MichaelAquilina/zsh-you-should-use
