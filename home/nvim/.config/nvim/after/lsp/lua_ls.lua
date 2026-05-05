@@ -13,9 +13,7 @@ return {
         checkThirdParty = true,
         library = {
           vim.fn.expand("$VIMRUNTIME/lua"),
-          vim.fn.expand("$VIMRUNTIME/lua/vim/lsp"),
-          vim.api.nvim_get_runtime_file("", true),
-          vim.fn.stdpath("data") .. "/lazy/lazy.nvim/lua/lazy",
+          "${3rd}/luv/library",
         },
       },
       hint = {

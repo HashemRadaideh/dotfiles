@@ -91,7 +91,7 @@ return function()
 
       map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
 
-      map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "Code Action")
+      -- map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "Code Action")
 
       map("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, "Add Workspace Folder")
       map("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, "Remove Workspace Folder")

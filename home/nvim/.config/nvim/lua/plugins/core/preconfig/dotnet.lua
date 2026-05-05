@@ -3,10 +3,7 @@ return {
     "seblyng/roslyn.nvim",
     ft = { "cs", "razor" },
     dependencies = {
-      {
-        "tris203/rzls.nvim",
-        config = true,
-      },
+      { "tris203/rzls.nvim", config = true },
     },
     init = function()
       vim.filetype.add({

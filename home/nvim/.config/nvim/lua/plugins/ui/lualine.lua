@@ -144,18 +144,18 @@ return {
       return math.floor(line_ratio * 100) .. "%% │ " .. chars[index]
     end
 
-    local spaces = function()
-      return "spaces: " .. vim.bo[vim.api.nvim_get_current_buf()].shiftwidth
-    end
+    -- local spaces = function()
+    --   return "spaces: " .. vim.bo[vim.api.nvim_get_current_buf()].shiftwidth
+    -- end
 
-    local encoding = {
-      "encoding",
-      -- fmt = function(str)
-      --   return "encoding: " .. str
-      -- end,
-      cond = hide_in_width,
-      always_visible = false,
-    }
+    -- local encoding = {
+    --   "encoding",
+    --   -- fmt = function(str)
+    --   --   return "encoding: " .. str
+    --   -- end,
+    --   cond = hide_in_width,
+    --   always_visible = false,
+    -- }
 
     lualine.setup({
       options = {

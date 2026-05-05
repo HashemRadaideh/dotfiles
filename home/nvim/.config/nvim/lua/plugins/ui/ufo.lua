@@ -9,6 +9,7 @@ local handler = function(virtText, lnum, endLnum, width, truncate)
     "^%s*from%s+.*import",
     "^%s*use%s+",
     "^%s*pub%s+.*use%s+",
+    "^%s*using%s+",
     "^%s*include%s+",
     "^%s*/%*",
     "^%s*//",
@@ -35,7 +36,9 @@ local handler = function(virtText, lnum, endLnum, width, truncate)
 
   local function matches_any(str, patterns)
     for _, p in ipairs(patterns) do
-      if str:match(p) then return true end
+      if str:match(p) then
+        return true
+      end
     end
     return false
   end
@@ -64,7 +67,9 @@ local handler = function(virtText, lnum, endLnum, width, truncate)
 
   local function is_oneliner_fold()
     local line = get_line(lnum)
-    if not line or matches_any(line, ELLIPSIS_PATTERNS) then return false end
+    if not line or matches_any(line, ELLIPSIS_PATTERNS) then
+      return false
+    end
 
     local count = 0
     for _, l in ipairs(get_lines(lnum, endLnum)) do
@@ -120,8 +125,8 @@ local handler = function(virtText, lnum, endLnum, width, truncate)
   end
 
   if is_ellipsis_fold() then
-    local line    = get_line(lnum)
-    local indent  = line:match("^(%s*)") or ""
+    local line = get_line(lnum)
+    local indent = line:match("^(%s*)") or ""
     local keyword = line:match("^%s*(%S+)") or ""
     local closing = keyword:match("^/%*") and " */" or ""
 
@@ -156,6 +161,13 @@ local handler = function(virtText, lnum, endLnum, width, truncate)
   table.insert(newVirtText, { suffix, "MoreMsg" })
   return newVirtText
 end
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "*",
+  callback = function()
+    vim.api.nvim_set_hl(0, "Folded", { bg = "NONE" })
+  end,
+})
 
 return {
   "kevinhwang91/nvim-ufo",

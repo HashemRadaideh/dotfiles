@@ -8,7 +8,7 @@ return {
       "<leader>fp",
       "<cmd>lua require('gfold').pick_repo()<CR>",
       { noremap = true, silent = true },
-    }
+    },
   },
   opts = {
     -- base directory to look for repos

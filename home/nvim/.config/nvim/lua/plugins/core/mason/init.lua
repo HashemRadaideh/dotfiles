@@ -22,7 +22,5 @@ return {
       },
     },
   },
-  require("plugins.core.mason.tool-installer"),
-  require("plugins.core.mason.lspconfig"),
-  require("plugins.core.mason.nvim-dap"),
+  require("plugins.core.mason.extensions"),
 }

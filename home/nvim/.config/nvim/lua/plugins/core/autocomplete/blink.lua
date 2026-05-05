@@ -1,5 +1,6 @@
 return {
   "saghen/blink.cmp",
+  event = "InsertEnter",
   dependencies = {
     "Kaiser-Yang/blink-cmp-avante",
     "rafamadriz/friendly-snippets",
@@ -133,7 +134,7 @@ return {
         },
       },
     },
-    signature = { enabled = true },
+    signature = { enabled = false },
     fuzzy = {
       implementation = "prefer_rust_with_warning",
     },

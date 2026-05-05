@@ -37,6 +37,7 @@ return {
               "broad-exception-caught",
               "broad-exception-raised",
               "trailing-newlines",
+              "unknown-option-value",
             }, ","),
           },
         },
@@ -68,7 +69,7 @@ return {
 
               return venv_path ~= nil and venv_path .. "/bin/python" or vim.g.python3_host_prog
             end)(),
-            true
+            true,
           },
           report_progress = true,
           live_mode = false,

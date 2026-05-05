@@ -126,13 +126,13 @@ vim.keymap.set("n", "\\", "<cmd>vs<CR>", { noremap = true, silent = true })
 
 vim.keymap.set("n", "<A-->", function()
   vim.cmd("sp | term")
-  vim.api.nvim_buf_set_option(0, "bufhidden", "wipe")
+  vim.bo[vim.api.nvim_get_current_buf()].bufhidden = "wipe"
   vim.cmd("startinsert")
 end, { noremap = true, silent = true })
 
 vim.keymap.set("n", "<A-\\>", function()
   vim.cmd("vs | term")
-  vim.api.nvim_buf_set_option(0, "bufhidden", "wipe")
+  vim.bo[vim.api.nvim_get_current_buf()].bufhidden = "wipe"
   vim.cmd("startinsert")
 end, { noremap = true, silent = true })
 
