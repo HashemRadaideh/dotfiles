@@ -1,132 +1,99 @@
-zinit light zsh-users/zsh-syntax-highlighting
-zinit light zsh-users/zsh-completions
-zinit light zsh-users/zsh-autosuggestions
-zinit light Aloxaf/fzf-tab
+export HISTFILE="$XDG_CACHE_HOME/zsh/history"
+export HISTSIZE=1000000
+export SAVEHIST="$HISTSIZE"
+mkdir -p "${HISTFILE:h}"
 
-# zinit snippet OMZP::git
-# zinit snippet OMZP::sudo
-# zinit snippet OMZP::archlinux
-# zinit snippet OMZP::aws
-# zinit snippet OMZP::kubectl
-# zinit snippet OMZP::kubectx
-# zinit snippet OMZP::command-not-found
+export FUNCNEST=100
 
-function theme() {
-    if [[ -z "$DISPLAY" ]] ; then
-        # [ -x "$(command -v pfetch)"  ] && pfetch
+setopt appendhistory sharehistory hist_ignore_space hist_ignore_all_dups hist_save_no_dups hist_ignore_dups hist_find_no_dups
 
-        source "$ZDOTDIR/configs/prompt.zsh"
-    else
-        # [ -x "$(command -v macchina)"  ] && ~/Workspace/art/art > /tmp/ascii && macchina -t Cobalt
-        # [ -x "$(command -v macchina)"  ] && macchina
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 
-        source "$ZDOTDIR/configs/starship.zsh"
-    fi
-}
-
-theme
-
-function python-venv() {
-    local MYVENV=
-    local current_dir="$PWD"
-
-    while [[ "$current_dir" != "/" ]]; do
-        for dir in "$current_dir" "$current_dir"/.venv "$current_dir"/venv "$current_dir"/env; do
-            if [[ -f "$dir/pyvenv.cfg" ]]; then
-                MYVENV="$dir"
-                break 2
-            fi
-        done
-
-        current_dir="$(dirname "$current_dir")"
-    done
-
-    if [[ -d "$MYVENV" ]]; then
-        if [[ "$MYVENV" != "$VIRTUAL_ENV" ]]; then
-            source "$MYVENV/bin/activate" > /dev/null 2>&1
-        fi
-    else
-        [[ -n "$VIRTUAL_ENV" ]] && deactivate > /dev/null 2>&1
-        theme
-    fi
-
-    if [[ -d "$VIRTUAL_ENV" ]]; then
-        if [[ -z "$_PYTHON_VERSION" ]]; then
-            _PYTHON_VERSION=$(python3 -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")' 2>/dev/null)
-        fi
-
-        if [[ -n "$_PYTHON_VERSION" && -d "$VIRTUAL_ENV/lib/python$_PYTHON_VERSION/site-packages" ]]; then
-            export PYTHONPATH="$VIRTUAL_ENV/lib/python$_PYTHON_VERSION/site-packages"
-        fi
-    fi
-}
-
-autoload -U add-zsh-hook
-add-zsh-hook chpwd python-venv
-python-venv
-
-function sync_display_from_tmux() {
-    [[ -n "$TMUX" ]] || return 0
-
-    if [[ -n "$DISPLAY" && "$_LAST_DISPLAY" != "$DISPLAY" ]]; then
-        if ! xdpyinfo >/dev/null 2>&1; then
-            local new_display
-            new_display=$(tmux show-environment DISPLAY 2>/dev/null | cut -d= -f2)
-            [[ -n "$new_display" ]] && export DISPLAY="$new_display"
-        fi
-        _LAST_DISPLAY="$DISPLAY"
-    fi
-}
-
-add-zsh-hook precmd sync_display_from_tmux
-
-# if type clipcat-menu >/dev/null 2>&1; then
-#     alias clipedit=' clipcat-menu --finder=builtin edit'
-#     alias clipdel=' clipcat-menu --finder=builtin remove'
-
-#     bindkey -s '^\' "^Q clipcat-menu --finder=builtin insert ^m"
-#     bindkey -s '^]' "^Q clipcat-menu --finder=builtin remove ^m"
-# fi
-
-# if [ -t 1 ] && [[ -z "$TMUX" ]]; then
-#     TMOUT=300
-
-#     TRAPALRM() { cmatrix -s } # tock # pipes.sh | tock | cmatrix -s | asciiquarium
-
-#     # # trap "cmatrix -s" ALRM
-
-#     # eval `ttysvr logo --init 3`
-# fi
-
-autoload -Uz bashcompinit && bashcompinit
-
-autoload -Uz compinit
-local zcompdump="${XDG_CACHE_HOME}/zsh/.zcompdump"
-if [[ -f "$zcompdump" ]] && [[ "$zcompdump" -nt "${ZDOTDIR}/.zshrc" ]]; then
-    compinit -d "$zcompdump"
-else
-    compinit -C -d "$zcompdump"
+if [ ! -d "$ZINIT_HOME" ]; then
+  mkdir -p "$(dirname "$ZINIT_HOME")"
+  git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 fi
 
-fpath=($XDG_CACHE_HOME/.cache/zsh/completions $fpath)
+# shellcheck source=/dev/null
+source "${ZINIT_HOME}/zinit.zsh"
 
-eval "$(zoxide init --cmd cd zsh)"
+zinit light zsh-users/zsh-completions
 
-[ -x "$(command -v arduino-cli)" ] && eval "$(arduino-cli completion zsh)"
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+# shellcheck disable=SC2296
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' menu no
+# shellcheck disable=SC2016
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+# shellcheck disable=SC2016
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
-[ -x "$(command -v atac)" ] && atac completions zsh "$XDG_CACHE_HOME/zsh/completions" >/dev/null
+zstyle ':compinstall' filename "$ZDOTDIR/.zshrc"
 
-[ -x "$(command -v ng)" ] && source <(ng completion script)
+# autoload -Uz bashcompinit && bashcompinit
+autoload -Uz compinit
+# shellcheck disable=SC2157
+if [[ -n "${ZDOTDIR}/.zcompdump(#qN.mh+24)" ]]; then
+  compinit
+else
+  compinit -C
+fi
+_comp_options+=(globdots)
 
-[ -x "$(command -v brew)" ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+zinit light zsh-users/zsh-autosuggestions
 
-[ -s "$CARGO_HOME/env" ] && source "$CARGO_HOME/env"
+# shellcheck disable=SC2016
+zinit wait lucid light-mode for \
+  Aloxaf/fzf-tab \
+  zdharma-continuum/fast-syntax-highlighting \
+  olets/zsh-abbr \
+  atload'bindkey "${key[Up]}" history-substring-search-up; bindkey "${key[Down]}" history-substring-search-down; bindkey "^K" history-substring-search-up; bindkey "^J" history-substring-search-down' \
+  zsh-users/zsh-history-substring-search
 
-[ -r "$HOME/.opam/opam-init/init.zsh" ] && source "$HOME/.opam/opam-init/init.zsh"  > /dev/null 2> /dev/null
+zinit wait lucid for \
+  OMZP::git \
+  OMZP::sudo \
+  OMZP::archlinux \
+  OMZP::aws \
+  OMZP::kubectl \
+  OMZP::kubectx \
+  OMZP::command-not-found
 
-[[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
-[[ -s "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"
+zinit cdreplay -q
 
-[[ -d "$PYENV_ROOT/bin" ]] && eval "$(pyenv init - zsh)"
+setopt extendedglob nomatch notify autocd interactive_comments
+unsetopt beep
 
-[[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
+stty stop undef
+
+autoload -Uz zmv
+autoload -Uz add-zsh-hook
+
+command -v fzf &>/dev/null && eval "$(fzf --zsh)"
+command -v zoxide &>/dev/null && eval "$(zoxide init --cmd cd zsh)"
+command -v direnv &>/dev/null && eval "$(direnv hook zsh)"
+
+source "$ZDOTDIR/configs/nvim.zsh"
+
+if [[ -z "$DISPLAY" && -z "$WAYLAND_DISPLAY" && -z $SSH_CONNECTION ]]; then
+  source "$ZDOTDIR/configs/prompt.zsh"
+else
+  source "$ZDOTDIR/configs/starship.zsh"
+fi
+
+source "$ZDOTDIR/configs/nvm.zsh"
+source "$ZDOTDIR/configs/nix.zsh"
+source "$ZDOTDIR/configs/python.zsh"
+source "$ZDOTDIR/configs/sdkman.zsh"
+
+source "$ZDOTDIR/configs/brew.zsh"
+
+source "$ZDOTDIR/configs/fzf.zsh"
+source "$ZDOTDIR/configs/tmux.zsh"
+source "$ZDOTDIR/configs/fzt.zsh"
+source "$ZDOTDIR/configs/yazi.zsh"
+source "$ZDOTDIR/configs/lazygit.zsh"
+source "$ZDOTDIR/configs/lazydocker.zsh"
+
+source "$ZDOTDIR/configs/helpers.zsh"
+source "$ZDOTDIR/configs/aliases.zsh"
