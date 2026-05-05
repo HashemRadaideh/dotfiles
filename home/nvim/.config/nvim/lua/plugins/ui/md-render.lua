@@ -1,7 +1,7 @@
 return {
   "MeanderingProgrammer/render-markdown.nvim",
-  dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
   ft = { "markdown", "Avante" },
+  dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
   opts = {
     -- -- Pre configured settings that will attempt to mimic various target user experiences.
     -- -- User provided settings will take precedence.

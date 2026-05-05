@@ -1,6 +1,6 @@
 return {
   "luukvbaal/statuscol.nvim",
-  event = "VeryLazy",
+  event = { "BufReadPost", "BufNewFile" },
   config = function()
     local builtin = require("statuscol.builtin")
     require("statuscol").setup({
@@ -15,7 +15,7 @@ return {
               "DapBreakpointCondition",
               "DapBreakpointRejected",
               "DapStopped",
-              "DapLogPoint"
+              "DapLogPoint",
             },
             maxwidth = 1,
             auto = false,
@@ -33,12 +33,12 @@ return {
             --
             "%l ",
           },
-          click = "v:lua.ScLa"
+          click = "v:lua.ScLa",
         },
         {
           sign = {
             namespace = { "diagnostic" },
-            name = { "Diagnostic", },
+            name = { "Diagnostic" },
             maxwidth = 1,
             auto = false,
             wrap = false,
@@ -48,10 +48,11 @@ return {
         },
         {
           text = {
-            builtin.foldfunc, " "
+            builtin.foldfunc,
+            " ",
           },
           condition = { builtin.not_empty },
-          click = "v:lua.ScFa"
+          click = "v:lua.ScFa",
         },
         {
           sign = {

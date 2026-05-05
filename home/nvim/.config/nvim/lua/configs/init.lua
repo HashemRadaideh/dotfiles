@@ -1,4 +1,5 @@
-require("configs.notify")
-require("configs.options")
-require("configs.mappings")
+require("configs.notifications")
+require("configs.disabled")
 require("configs.autocmds")
+require("configs.options")
+require("configs.keymaps")

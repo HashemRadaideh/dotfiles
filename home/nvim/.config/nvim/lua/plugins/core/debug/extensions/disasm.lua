@@ -1,6 +1,7 @@
 return {
   "Jorenar/nvim-dap-disasm",
   dependencies = {
+    "mfussenegger/nvim-dap",
     "igorlfs/nvim-dap-view",
   },
   opts = {

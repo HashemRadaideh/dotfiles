@@ -1,17 +1,16 @@
 return {
   "yetone/avante.nvim",
-  event = "VeryLazy",
   version = false,
   build = vim.fn.has("win32") == 0 and "make" -- "make BUILD_FROM_SOURCE=true",
     or "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false",
   dependencies = {
     "nvim-lua/plenary.nvim",
     "MunifTanjim/nui.nvim",
-    "nvim-telescope/telescope.nvim",
-    "nvim-tree/nvim-web-devicons", -- echasnovski/mini.icons
+    "nvim-tree/nvim-web-devicons",
     "zbirenbaum/copilot.lua",
     "MeanderingProgrammer/render-markdown.nvim",
     "folke/snacks.nvim",
+    "ravitemer/mcphub.nvim",
   },
   cmd = {
     "AvanteToggle",

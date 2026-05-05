@@ -1,3 +1,11 @@
+require("utils.mason_ensure").ensure({
+  "marksman",
+  "mdformat",
+  "doctoc",
+  "markdown-toc",
+  "markdownlint",
+})
+
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = { "*.md" },
   group = vim.api.nvim_create_augroup("MarkdownTOC", { clear = true }),
@@ -23,12 +31,15 @@ vim.api.nvim_create_autocmd("BufWritePre", {
         lines[1],
         "",
         "<!--toc:start-->",
+        "",
         "<!-- START doctoc generated TOC please keep comment here to allow auto update -->",
+        "",
         "<!-- START doctoc generated TOC please keep comment here to allow auto update -->",
         "",
         "",
         "",
         "<!-- END doctoc generated TOC please keep comment here to allow auto update -->",
+        "",
         "<!--toc:end-->",
       }
 

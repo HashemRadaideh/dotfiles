@@ -30,10 +30,10 @@ return {
     kotlin = { "ktlint", "ktfmt", stop_after_first = true },
     java = { "google-java-format", "clang-format", stop_after_first = true },
     markdown = { "mdformat", "prettier", stop_after_first = true },
-    sh = { "beautysh", stop_after_first = true },
-    bash = { "beautysh", stop_after_first = true },
-    zsh = { "beautysh", stop_after_first = true },
-    fish = { "beautysh", stop_after_first = true },
+    sh = { "shfmt", "beautysh", stop_after_first = true },
+    bash = { "shfmt", "beautysh", stop_after_first = true },
+    zsh = { "shfmt", "beautysh", stop_after_first = true },
+    fish = { "fish_indent", "beautysh", stop_after_first = true },
     proto = { "buf" },
     protobuf = { "buf" },
     c = { "clang-format" },
@@ -43,6 +43,11 @@ return {
     fsharp = { "fantomas" },
     cs = { "csharpier" },
     dart = { "dcm" },
+    nix = { "nixpkgs_fmt" },
+    haskell = { "fourmolu", "ormolu", stop_after_first = true },
+    gdscript = { "gdformat" },
+    eruby = { "erb_format" },
+    php = { "php_cs_fixer" },
     python = function(bufnr)
       if require("conform").get_formatter_info("ruff_format", bufnr).available then
         return { "ruff_organize_imports", "ruff_format" }

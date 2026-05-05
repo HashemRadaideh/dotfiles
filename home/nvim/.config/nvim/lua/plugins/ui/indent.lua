@@ -1,13 +1,3 @@
-local highlight = {
-  "RainbowRed",
-  "RainbowYellow",
-  "RainbowBlue",
-  "RainbowOrange",
-  "RainbowGreen",
-  "RainbowViolet",
-  "RainbowCyan",
-}
-
 return {
   "lukas-reineke/indent-blankline.nvim",
   main = "ibl",
@@ -21,7 +11,15 @@ return {
     },
     scope = {
       show_start = false,
-      highlight = highlight,
+      highlight = {
+        "RainbowRed",
+        "RainbowYellow",
+        "RainbowBlue",
+        "RainbowOrange",
+        "RainbowGreen",
+        "RainbowViolet",
+        "RainbowCyan",
+      },
     },
   },
   config = function(_, opts)

@@ -162,13 +162,6 @@ local handler = function(virtText, lnum, endLnum, width, truncate)
   return newVirtText
 end
 
-vim.api.nvim_create_autocmd("ColorScheme", {
-  pattern = "*",
-  callback = function()
-    vim.api.nvim_set_hl(0, "Folded", { bg = "NONE" })
-  end,
-})
-
 return {
   "kevinhwang91/nvim-ufo",
   dependencies = {

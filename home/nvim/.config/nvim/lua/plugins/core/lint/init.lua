@@ -1,8 +1,5 @@
 return {
   "mfussenegger/nvim-lint",
-  event = {
-    "BufReadPost",
-    "BufNewFile",
-  },
+  event = { "BufReadPost" },
   config = require("plugins.core.lint.config"),
 }

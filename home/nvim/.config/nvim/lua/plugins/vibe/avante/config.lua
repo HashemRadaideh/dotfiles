@@ -1,10 +1,5 @@
 return {
-  -- "agentic" → AI calls tools automatically (create/edit files, bash, web search…)
-  -- "legacy"  → classic planning/diff, no auto tool execution
-  mode = "agentic",
   provider = "copilot",
-  auto_suggestions_provider = "copilot",
-  cursor_applying_provider = "copilot",
   providers = {
     copilot = {
       model = "gpt-4.1", -- "claude-sonnet-4.6"
@@ -15,9 +10,9 @@ return {
       },
     },
   },
-  web_search_engine = {
-    provider = "tavily",
-  },
+  -- "agentic" → AI calls tools automatically (create/edit files, bash, web search…)
+  -- "legacy"  → classic planning/diff, no auto tool execution
+  mode = "agentic",
   behaviour = {
     auto_suggestions = false,
     auto_set_highlight_group = true,
@@ -31,6 +26,54 @@ return {
     confirmation_ui_style = "inline_buttons",
     acp_follow_agent_locations = true,
     show_selection_hint = false,
+    enable_fastapply = true,
+  },
+  instructions_file = ".avante/rules.md",
+  rules = {
+    project_dir = ".avante/rules",
+    global_dir = "~/.config/avante/rules",
+  },
+  system_prompt = function()
+    local hub = require("mcphub").get_hub_instance()
+    return hub and hub:get_active_servers_prompt() or ""
+  end,
+  custom_tools = function()
+    return {
+      require("mcphub.extensions.avante").mcp_tool(),
+    }
+  end,
+  web_search_engine = {
+    provider = "tavily",
+  },
+  acp_providers = {
+    ["gemini-cli"] = {
+      command = "gemini",
+      args = { "--experimental-acp" },
+      env = {
+        NODE_NO_WARNINGS = "1",
+        GEMINI_API_KEY = os.getenv("GEMINI_API_KEY"),
+      },
+    },
+    ["claude-code"] = {
+      command = "npx",
+      args = { "@zed-industries/claude-code-acp" },
+      env = {
+        NODE_NO_WARNINGS = "1",
+        ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY"),
+      },
+    },
+    ["goose"] = {
+      command = "goose",
+      args = { "acp" },
+    },
+    ["codex"] = {
+      command = "npx",
+      args = { "@zed-industries/codex-acp" },
+      env = {
+        NODE_NO_WARNINGS = "1",
+        OPENAI_API_KEY = os.getenv("OPENAI_API_KEY"),
+      },
+    },
   },
   mappings = {
     diff = {
@@ -69,7 +112,7 @@ return {
       reverse_switch_windows = "<S-Tab>",
       remove_file = "d",
       add_file = "@",
-      close = { "<c-q>" },
+      close = { "q" },
     },
   },
   windows = {
@@ -101,7 +144,7 @@ return {
     },
   },
   selector = {
-    provider = "telescope",
+    provider = "snacks",
   },
   input = {
     provider = "snacks",
@@ -131,7 +174,6 @@ return {
     next_prompt = { normal = "<C-n>", insert = "<C-n>" },
     prev_prompt = { normal = "<C-p>", insert = "<C-p>" },
   },
-  instructions_file = ".avante/rules.md",
   shortcuts = {
     {
       name = "refactor",

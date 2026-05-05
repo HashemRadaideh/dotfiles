@@ -1,3 +1,8 @@
+vim.cmd([[
+  hi BqfPreviewBorder guifg=#50a14f ctermfg=71
+  hi link BqfPreviewRange Search
+]])
+
 return {
   "kevinhwang91/nvim-bqf",
   ft = "qf",
@@ -41,10 +46,4 @@ return {
       },
     },
   },
-  config = function()
-    vim.cmd([[
-      hi BqfPreviewBorder guifg=#50a14f ctermfg=71
-      hi link BqfPreviewRange Search
-    ]])
-  end,
 }

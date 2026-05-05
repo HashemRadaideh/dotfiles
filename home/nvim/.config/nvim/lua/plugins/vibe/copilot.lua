@@ -9,9 +9,6 @@ return {
         vim.g.copilot_nes_debounce = 500
       end,
     },
-    {
-      "fang2hou/blink-copilot",
-    },
   },
   opts = {
     -- https://docs.github.com/en/copilot/reference/ai-models/supported-models

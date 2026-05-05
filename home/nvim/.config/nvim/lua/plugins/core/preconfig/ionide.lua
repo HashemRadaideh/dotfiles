@@ -1,6 +1,6 @@
 return {
   "ionide/Ionide-vim",
-  ft = "fsharp",
+  ft = { "fsharp" },
   config = function()
     -- https://www.reddit.com/r/neovim/comments/17c11qq/comment/k9ftnu9/
 

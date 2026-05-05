@@ -1,5 +1,6 @@
 return {
   "iamcco/markdown-preview.nvim",
+  ft = { "markdown" },
   cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
   build = "cd app && npm install",
   init = function()
@@ -12,5 +13,4 @@ return {
       { noremap = true, silent = true, desc = "Toggle markdown preview" },
     },
   },
-  ft = { "markdown" },
 }

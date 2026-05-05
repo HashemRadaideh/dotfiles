@@ -25,9 +25,9 @@ return function()
     },
     signs = { --  
       text = {
-        [vim.diagnostic.severity.ERROR] = "󰅚 ", --  ⮾
-        [vim.diagnostic.severity.WARN] = "󰀪 ", --  ⚠
-        [vim.diagnostic.severity.INFO] = "󰋽 ", -- 
+        [vim.diagnostic.severity.ERROR] = " ", --  󰅚 ⮾ 
+        [vim.diagnostic.severity.WARN] = " ", --  󰀪 ⚠
+        [vim.diagnostic.severity.INFO] = " ", --  󰋽 
         [vim.diagnostic.severity.HINT] = "󰌶 ", -- 💡
       },
     },
@@ -50,7 +50,7 @@ return function()
         vim.diagnostic.config({ virtual_lines = not current and { current_line = true } or false })
       end, "Toggle diagnostic virtual_lines")
 
-      map("n", "<leader>dw", require("telescope.builtin").diagnostics, "Workspace Diagnostics")
+      map("n", "<leader>dw", vim.diagnostic.setqflist, "Workspace Diagnostics")
 
       map("n", "gk", function()
         vim.diagnostic.jump({ count = -1, float = false })
@@ -70,20 +70,12 @@ return function()
 
       map("n", "<leader>ts", vim.lsp.buf.typehierarchy, "Type Hierarchy")
 
-      -- map("n", "gD", vim.lsp.buf.declaration, "Goto Declaration")
-      -- map("n", "gd", vim.lsp.buf.definition, "Goto Definition")
-      -- map("n", "gR", vim.lsp.buf.references, "Goto References")
-      -- map("n", "gi", vim.lsp.buf.implementation, "Goto Implementation")
-      -- map("n", "<leader>D", vim.lsp.buf.type_definition, "Goto Type Definition")
-      -- map("n", "gO", vim.lsp.buf.document_symbol, "Document Symbols")
-      -- map("n", "gW", vim.lsp.buf.workspace_symbol, "Workspace Symbols")
-
-      map("n", "gd", require("telescope.builtin").lsp_definitions, "Goto Definition")
-      map("n", "gR", require("telescope.builtin").lsp_references, "Goto References")
-      map("n", "gi", require("telescope.builtin").lsp_implementations, "Goto Implementation")
-      map("n", "<leader>D", require("telescope.builtin").lsp_type_definitions, "Type Definition")
-      map("n", "gO", require("telescope.builtin").lsp_document_symbols, "Document Symbols")
-      map("n", "gW", require("telescope.builtin").lsp_workspace_symbols, "Workspace Symbols")
+      map("n", "gd", vim.lsp.buf.definition, "Goto Definition")
+      map("n", "gR", vim.lsp.buf.references, "Goto References")
+      map("n", "gi", vim.lsp.buf.implementation, "Goto Implementation")
+      map("n", "<leader>D", vim.lsp.buf.type_definition, "Type Definition")
+      map("n", "gO", vim.lsp.buf.document_symbol, "Document Symbols")
+      map("n", "gW", vim.lsp.buf.workspace_symbol, "Workspace Symbols")
 
       -- map("i", "<C-h>", vim.lsp.buf.signature_help, "Signature Help")
 
@@ -182,24 +174,5 @@ return function()
       --   end
       -- end
     end,
-  })
-
-  local capabilities = vim.lsp.protocol.make_client_capabilities()
-  -- capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
-  capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
-
-  capabilities = vim.tbl_deep_extend("force", capabilities, {
-    textDocument = {
-      foldingRange = {
-        dynamicRegistration = false,
-        lineFoldingOnly = true,
-      },
-      callHierarchy = { dynamicRegistration = false },
-      linkedEditingRange = { dynamicRegistration = false },
-    },
-  })
-
-  vim.lsp.config("*", {
-    capabilities = capabilities,
   })
 end

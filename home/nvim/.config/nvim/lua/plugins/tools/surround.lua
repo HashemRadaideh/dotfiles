@@ -1,6 +1,6 @@
 return {
   "kylechui/nvim-surround",
-  event = "VeryLazy",
+  event = "InsertEnter",
   -- keys = {
   --   { "ys", mode = { "n", "x" }, desc = "add surround (normal / visual)" },
   --   { "ds", mode = "n", desc = "delete surround" },

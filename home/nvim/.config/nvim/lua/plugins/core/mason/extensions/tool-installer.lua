@@ -4,6 +4,6 @@ return {
     "williamboman/mason.nvim",
   },
   opts = {
-    ensure_installed = require("mason-ensure-installed"),
+    ensure_installed = require("ensure_installed"),
   },
 }

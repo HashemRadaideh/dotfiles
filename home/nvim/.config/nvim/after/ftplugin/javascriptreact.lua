@@ -1,0 +1,9 @@
+require("utils.mason_ensure").ensure({
+	"typescript-language-server",
+	"tailwindcss-language-server",
+	"eslint_d",
+	"biome",
+	"prettierd",
+	"prettier",
+	"js-debug-adapter",
+})

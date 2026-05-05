@@ -1,5 +1,6 @@
 return {
   "mrcjkb/rustaceanvim",
+  ft = { "rust" },
   config = function()
     -- -- local mason_registry = require("mason-registry")
     -- -- local codelldb = mason_registry.get_package("codelldb")
