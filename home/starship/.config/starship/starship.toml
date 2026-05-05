@@ -1,28 +1,17 @@
+"$schema" = 'https://starship.rs/config-schema.json'
 
-add_newline = true
-
-format = """
+format = """\
 $username\
 $hostname\
-$localip\
-$shlvl\
-$singularity\
-$kubernetes\
 $directory\
 $sudo\
-$vcsh\
-(↓ Source control - for right side ↓)\
-$fossil_branch\
+(↓ Source control ↓)\
 $git_branch\
 $git_commit\
 $git_state\
 $git_metrics\
 $git_status\
-$hg_branch\
-(↑ Source control - for right side ↑)\
-$pijul_channel\
-$docker_context\
-$package\
+(↑ Source control ↑)\
 (↓ Toolchain version modules ↓)\
 $c\
 $cmake\
@@ -73,22 +62,29 @@ $meson\
 $spack\
 (↑ Toolchain version modules ↑)\
 (↓ Package modules ↓)\
+$package\
+$docker_context\
 $aws\
 $openstack\
 $azure\
-$env_var\
 $crystal\
-$custom\
+$pijul_channel\
 (↑ Package modules ↑)\
-$memory_usage\
 $cmd_duration\
-$battery\
+$line_break\
 $status\
-$os\
-$container\
-$character"""
+$character\
+"""
 
-# $gcloud\
+right_format = """\
+$jobs\
+"""
+
+add_newline = true
+
+scan_timeout = 500
+
+palette = "catppuccin_frappe"
 
 [username]
 format = "[$user]($style)"
@@ -100,32 +96,27 @@ style_user = "bold cyan"
 format = "[@](bold white)[$hostname]($style) in "
 ssh_only = true
 style = "bold dimmed green"
-# trim_at = "-"
+
+[directory]
+format = "[$read_only]($read_only_style)[$path]($style) "
+style = "cyan"
+read_only = " "
+read_only_style = "fg:dimmed white"
+# truncation_length = 0
+fish_style_pwd_dir_length = 1
+truncate_to_repo = true
+truncation_symbol = "repo: "
 
 [sudo]
-format = "[as $symbol ]($style)"
+format = "as [$symbol]($style) "
 allow_windows = true
 style = "bold red"
 symbol = "root"
 disabled = false
 
-[directory]
-format = "[$path ]($style)[$read_only]($read_only_style)"
-style = "cyan"
-truncate_to_repo = true
-truncation_length = 0
-truncation_symbol = "repo: "
-read_only = "  "
-read_only_style = "fg:blue bold"
-
-[character]
-error_symbol = "[✗](bold red)"
-success_symbol = "[](bold blue)"  # ❱❯
-vicmd_symbol = "[λ](bold magenta)"
-
 [git_branch]
 symbol = " "
-truncation_symbol = " "
+truncation_symbol = "…"
 
 [git_commit]
 commit_hash_length = 4
@@ -140,17 +131,186 @@ bisect = "bisecting"
 am = "am'ing"
 am_or_rebase = "am/rebase"
 
+[git_metrics]
+added_style = "bold green"
+deleted_style = "bold red"
+format = '([+$added]($added_style) )([-$deleted]($deleted_style) )'
+disabled = false
+
 [git_status]
-conflicted = "${count}"
-ahead = "${count}⇡"
-behind = "${count}⇣"
-diverged = "(${ahead_count}⇡${behind_count}⇣)⇕"
-# up_to_date = '✓'
-untracked = "${count}?"
-stashed = "${count}"
-modified = "${count}!"
-# staged = "${count}"
-staged = '[++\($count\)](green)'
-renamed = "${count}"
-deleted = "${count}"
-# typechanged = ""
+format = '[$all_status$ahead_behind]($style)'
+style = "bold red"
+ahead = '[⇡ $count ](bold cyan)'
+behind = '[⇣ $count ](bold cyan)'
+diverged = '[(⇡ $ahead_count ⇕ $behind_count ⇣)](bold yellow)'
+# up_to_date = '[✓ ](bold green)'
+conflicted = '[ $count ](bold red)'
+untracked = '[ $count ](yellow)'
+stashed = '[ $count ](dimmed white)'
+modified = '[ $count ](yellow)'
+staged = '[ $count ](bold green)'
+renamed = '[ $count ](bold blue)'
+deleted = '[ $count ](bold red)'
+
+typechanged = '[󰉢$count ](bold blue)'
+worktree_added = '[󰐕$count ](yellow)'
+worktree_deleted = '[󰍷$count ](yellow)'
+worktree_modified = '[󰏫$count ](yellow)'
+worktree_typechanged = '[󰉣$count ](yellow)'
+index_added = '[󰐖$count ](bold green)'
+index_deleted = '[󰍶$count ](bold red)'
+index_modified = '[󰺠$count ](bold green)'
+index_typechanged = '[󰉤$count ](bold blue)'
+
+[status]
+format = '[$symbol$status ]($style)'
+symbol = ' '                        # ✘
+style = 'bold red'
+disabled = false
+
+[character]
+success_symbol = "[](bold blue)"              # ❯  
+error_symbol = "[](bold red)"
+vimcmd_symbol = '[](bold green)'              # ❮   
+vimcmd_replace_one_symbol = '[❮](bold purple)'
+vimcmd_replace_symbol = '[❮](bold purple)'
+vimcmd_visual_symbol = '[❮](bold yellow)'
+
+[jobs]
+format = '[$symbol$number ]($style)'
+symbol = '⚙ '
+style = 'bold yellow'
+number_threshold = 1
+disabled = false
+
+[profiles]
+claude-code = "$claude_model$claude_context$claude_cost"
+
+[claude_model]
+format = "on [$symbol$model]($style) "
+symbol = "🤖 "
+style = "bold blue"
+
+[claude_context]
+format = "[$gauge $percentage]($style) "
+gauge_width = 10
+
+[claude_cost]
+format = "[$symbol$cost]($style) "
+symbol = "💰 "
+
+[claude_model.model_aliases]
+"global.anthropic.claude-sonnet-4-5-20250929-v1:0" = "Sonnet 4.5"
+"Claude Sonnet 4.5 (Vendor Proxy)" = "Sonnet"
+
+[palettes.catppuccin_frappe]
+rosewater = "#f2d5cf"
+flamingo = "#eebebe"
+pink = "#f4b8e4"
+mauve = "#ca9ee6"
+red = "#e78284"
+maroon = "#ea999c"
+peach = "#ef9f76"
+yellow = "#e5c890"
+green = "#a6d189"
+teal = "#81c8be"
+sky = "#99d1db"
+sapphire = "#85c1dc"
+blue = "#8caaee"
+lavender = "#babbf1"
+text = "#c6d0f5"
+subtext1 = "#b5bfe2"
+subtext0 = "#a5adce"
+overlay2 = "#949cbb"
+overlay1 = "#838ba7"
+overlay0 = "#737994"
+surface2 = "#626880"
+surface1 = "#51576d"
+surface0 = "#414559"
+base = "#303446"
+mantle = "#292c3c"
+crust = "#232634"
+
+[palettes.catppuccin_latte]
+rosewater = "#dc8a78"
+flamingo = "#dd7878"
+pink = "#ea76cb"
+mauve = "#8839ef"
+red = "#d20f39"
+maroon = "#e64553"
+peach = "#fe640b"
+yellow = "#df8e1d"
+green = "#40a02b"
+teal = "#179299"
+sky = "#04a5e5"
+sapphire = "#209fb5"
+blue = "#1e66f5"
+lavender = "#7287fd"
+text = "#4c4f69"
+subtext1 = "#5c5f77"
+subtext0 = "#6c6f85"
+overlay2 = "#7c7f93"
+overlay1 = "#8c8fa1"
+overlay0 = "#9ca0b0"
+surface2 = "#acb0be"
+surface1 = "#bcc0cc"
+surface0 = "#ccd0da"
+base = "#eff1f5"
+mantle = "#e6e9ef"
+crust = "#dce0e8"
+
+[palettes.catppuccin_macchiato]
+rosewater = "#f4dbd6"
+flamingo = "#f0c6c6"
+pink = "#f5bde6"
+mauve = "#c6a0f6"
+red = "#ed8796"
+maroon = "#ee99a0"
+peach = "#f5a97f"
+yellow = "#eed49f"
+green = "#a6da95"
+teal = "#8bd5ca"
+sky = "#91d7e3"
+sapphire = "#7dc4e4"
+blue = "#8aadf4"
+lavender = "#b7bdf8"
+text = "#cad3f5"
+subtext1 = "#b8c0e0"
+subtext0 = "#a5adcb"
+overlay2 = "#939ab7"
+overlay1 = "#8087a2"
+overlay0 = "#6e738d"
+surface2 = "#5b6078"
+surface1 = "#494d64"
+surface0 = "#363a4f"
+base = "#24273a"
+mantle = "#1e2030"
+crust = "#181926"
+
+[palettes.catppuccin_mocha]
+rosewater = "#f5e0dc"
+flamingo = "#f2cdcd"
+pink = "#f5c2e7"
+mauve = "#cba6f7"
+red = "#f38ba8"
+maroon = "#eba0ac"
+peach = "#fab387"
+yellow = "#f9e2af"
+green = "#a6e3a1"
+teal = "#94e2d5"
+sky = "#89dceb"
+sapphire = "#74c7ec"
+blue = "#89b4fa"
+lavender = "#b4befe"
+text = "#cdd6f4"
+subtext1 = "#bac2de"
+subtext0 = "#a6adc8"
+overlay2 = "#9399b2"
+overlay1 = "#7f849c"
+overlay0 = "#6c7086"
+surface2 = "#585b70"
+surface1 = "#45475a"
+surface0 = "#313244"
+base = "#1e1e2e"
+mantle = "#181825"
+crust = "#11111b"
