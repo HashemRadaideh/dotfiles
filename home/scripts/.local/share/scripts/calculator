@@ -255,10 +255,7 @@ class Calculator:
             else:
                 self.__equation.append(self.__num)
             try:
-                calculation = ""
-                for operand in self.__equation:
-                    calculation += operand
-                calculation = str(eval(calculation))
+                calculation = str(eval("".join(self.__equation)))  # pylint: disable=eval-used
                 self.__display.delete(1.0, END)
                 self.__display.insert(1.0, calculation)
                 self.__equation = []
@@ -271,7 +268,7 @@ class Calculator:
                 self.__error("Wrong syntax")
             except ValueError:
                 self.__error("The fuck just happend?")
-            except:
+            except Exception:
                 self.__error("Something went wrong")
         else:
             if self.__num == "":

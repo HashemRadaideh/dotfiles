@@ -1,9 +1,7 @@
 #!/usr/bin/env luajit
 
-local function notify(properties)
-	local text = properties.text or ""
-	local id = properties.id or 0
-	-- os.execute([[notify-send "]] .. text .. [[" -r ]] .. id)
+local function notify(_)
+	-- os.execute([[notify-send "]] .. properties.text or "" .. [[" -r ]] .. properties.id or 0)
 end
 
 local threshold = 10 -- threshold is approximately equal to gravity (9.81 m/s^2
@@ -24,32 +22,32 @@ local states = {
 		mode = modes.CLOSED,
 	},
 	{
-		check = function(x, y, z)
+		check = function(_, y, z)
 			return y < -threshold and z < -threshold
 		end,
 		mode = modes.LAPTOP,
 	},
 	{
-		check = function(x, y, z)
+		check = function(_, _, _)
 			return true
 		end,
 		mode = modes.TENT,
 	},
 	{
-		check = function(x, y, z)
+		check = function(_, _, _)
 			return true
 		end,
 		mode = modes.TABLET,
 	},
 	{
-		check = function(x, y, z)
+		check = function(_, _, _)
 			return true
 		end,
 		mode = modes.DESKTOP,
 	},
 }
 
-IMU = [[/sys/bus/iio/devices/iio:device0/]]
+local IMU = [[/sys/bus/iio/devices/iio:device0/]]
 
 local s = tonumber(io.open(IMU .. "in_accel_scale"):read("*all"))
 local x = tonumber(io.open(IMU .. "in_accel_x_raw"):read("*all")) * s
@@ -58,7 +56,7 @@ local z = tonumber(io.open(IMU .. "in_accel_z_raw"):read("*all")) * s
 notify({ text = "IMU at (" .. x .. ", " .. y .. ", " .. z .. ")", id = 1001 })
 
 local mode = modes.CLOSED
-for i, state in ipairs(states) do
+for _, state in ipairs(states) do
 	if state.check(x, y, z) then
 		notify({ text = "Device in mode " .. mode, id = 1002 })
 		mode = state.mode

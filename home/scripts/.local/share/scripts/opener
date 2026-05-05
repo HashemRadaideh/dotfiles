@@ -69,9 +69,11 @@ image/*)
   launch_gui nsxiv "$file"
   ;;
 video/x-ms-asf)
-  [ -z "$(mediainfo "$1" | grep "Cover\s*: Yes")" ] &&
-    (launch_term mpv --audio-display=no "$file") ||
-    (launch_gui mpv "$file")
+  if ! mediainfo "$1" | grep -q "Cover\s*: Yes"; then
+    launch_term mpv --audio-display=no "$file"
+  else
+    launch_gui mpv "$file"
+  fi
   ;;
 video/*)
   launch_gui mpv -quiet "$file"

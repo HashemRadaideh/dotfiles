@@ -1,5 +1,16 @@
 #!/usr/bin/env bash
 
+for tool in notify-send scrot grim slurp xclip wl-copy; do
+  if ! command -v "$tool" >/dev/null 2>&1; then
+    msg="Required tool '$tool' is not installed for $0."
+    command -v notify-send >/dev/null 2>&1 && notify-send -u critical "creamshot" "$msg"
+    echo "Error: $msg" >&2
+    _violations=$((${_violations:-0} + 1))
+  fi
+done
+
+[[ $_violations -gt 0 ]] && exit 1
+
 option=${1:-"fullscreen"}
 
 destination="${XDG_PICTURES_DIR:-$HOME/Pictures}/Screenshots/"
@@ -7,20 +18,6 @@ mkdir -p "$destination"
 default="$destination/screenshot_$(date +%Y-%m-%d_%H-%M-%S).png"
 
 screenshot=${2:-$default}
-
-command_exists() {
-  command -v "$1" >/dev/null 2>&1
-}
-
-if ! command_exists notify-send; then
-  echo "Error: 'notify-send' is required but not installed."
-  exit 1
-fi
-
-if ! command_exists notify-send; then
-  echo "Error: 'notify-send' is required but not installed."
-  exit 1
-fi
 
 if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "$DISPLAY" ]; then
   if ! command_exists scrot; then
@@ -49,6 +46,11 @@ fi
 [ -n "$3" ] && exit
 
 if [ -f "$screenshot" ]; then
+  if [ "$XDG_SESSION_TYPE" = "x11" ] && [ -n "$DISPLAY" ]; then
+    command_exists xclip && xclip -selection clipboard -t image/png -i "$screenshot"
+  else
+    command_exists wl-copy && wl-copy <"$screenshot"
+  fi
   notify-send -u low -i "$screenshot" "Screenshot taken" "Saved as $screenshot"
 else
   notify-send -u critical -i dialog-error "Screenshot Failed" "Could not save the screenshot."

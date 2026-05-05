@@ -1,30 +1,415 @@
 #!/usr/bin/env bash
 
-if [ -n "$(tmux ls 2>/dev/null)" ]; then
-  session=$(
-    tmux ls -F "#S" |
-      fzf --prompt="Session: " --print-query |
-      awk -v RS="\n" '
-        NR==1 { sub1=$0 }
-        NR==2 { sub2=$0 }
-        END   { print index(sub2, sub1) ? sub2 : sub1 }'
-  )
-else
-  exec tmux -u new -s "default"
-fi
+# # Default config (~/.config/fzt/fzt.conf):
+#
+# # logging
+# LOG_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/fzt"
+# LOG_FILE="fzt.log"
+# LOG_LEVEL="off"                    # off | debug | info | warn | error
+#
+# # search
+# SEARCH_PATHS=(~/:3) # path[:maxdepth] entries
+# HIDDEN="true"       # include hidden directories
+#
+# # sessions
+# SESSION_PREFIX="[session] "
+#
+# # keybindings
+# KEY_KILL="ctrl-d"
+#
+# # colors (word list or raw ANSI)
+# COLOR_SESSION_PREFIX="bold green"
+# COLOR_SESSION_NAME="white"
+# COLOR_ZOXIDE_PREFIX="dim white"
+# COLOR_ZOXIDE_NAME="bold blue"
+# COLOR_DIR_PREFIX="dim white"
+# COLOR_DIR_NAME="bold cyan"
+#
+# # vim: ft=bash
 
-[ -z "$session" ] && exit
+readonly _name="fzt"
 
-if tmux has -t "$session" 2>/dev/null; then
-  if [ -z "$TMUX" ]; then
-    exec tmux -u attach -t "$session"
+readonly _required_tools=(tmux fzf)
+readonly _optional_tools=(fd rg zoxide)
+
+_has_fd=false
+_has_rg=false
+_has_zoxide=false
+
+declare -rA _log_levels=([debug]=0 [info]=1 [warn]=2 [error]=3 [off]=99)
+declare -rA _fg_colors=([black]=30 [red]=31 [green]=32 [yellow]=33 [blue]=34 [magenta]=35 [cyan]=36 [white]=37)
+
+readonly COLOR_RESET=$'\033[0m'
+
+readonly _fzf_key_pattern='^(ctrl-[a-z/]|alt-[a-zA-Z0-9]|f([1-9]|1[0-2])|enter|space|backspace|bspace|del|delete|up|down|left|right|tab|btab|esc|pgup|pgdn|page-up|page-down|home|end|insert)$'
+readonly _color_word_pattern='^(bold|dim|italic|black|red|green|yellow|blue|magenta|cyan|white)$'
+
+color() {
+  local codes=()
+  for arg in "$@"; do
+    case "$arg" in
+    bold) codes+=(1) ;;
+    dim) codes+=(2) ;;
+    italic) codes+=(3) ;;
+    *) codes+=("${_fg_colors[$arg]:-39}") ;;
+    esac
+  done
+  local IFS=';'
+  printf '\033[%sm' "${codes[*]}"
+}
+
+resolve_color() {
+  if [[ "$1" == $'\033'* ]]; then
+    printf '%s' "$1"
   else
-    tmux -u switch -t "$session"
+    # shellcheck disable=SC2086
+    color $1
   fi
-else
-  if [ -z "$TMUX" ]; then
-    exec tmux -u new -s "$session"
+}
+
+log() {
+  mkdir -p "$LOG_DIR" 2>/dev/null
+  local level="$1"
+  shift
+  [[ "${_log_levels[$level]:-0}" -lt "${_log_levels[${LOG_LEVEL:-off}]:-99}" ]] && return
+  printf '[%s] [%s] %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "${level^^}" "$*" >>"$LOG_FILE_NAME" 2>/dev/null
+}
+
+_grep() {
+  if $_has_rg; then rg "$@"; else grep "$@"; fi
+}
+
+check_required_tools() {
+  local missing=() tool
+  for tool in "${_required_tools[@]}"; do
+    command -v "$tool" >/dev/null 2>&1 || missing+=("$tool")
+  done
+  [[ ${#missing[@]} -eq 0 ]] && return
+  local c_header c_bullet c_tool c_reset
+  c_header=$(color bold red)
+  c_bullet=$(color cyan)
+  c_tool=$(color yellow)
+  c_reset=$'\033[0m'
+  {
+    printf '%s%s: missing required tools%s\n' "$c_header" "$_name" "$c_reset"
+    for tool in "${missing[@]}"; do
+      printf '  %s•%s %s%s%s is not installed\n' "$c_bullet" "$c_reset" "$c_tool" "$tool" "$c_reset"
+    done
+    printf '\n%sPress any key to exit...%s' "$(color dim white)" "$c_reset"
+  } >/dev/tty
+  read -rn1 </dev/tty
+  printf '\n' >/dev/tty
+  command -v notify-send >/dev/null 2>&1 && notify-send -u critical "$_name" "Missing tools: ${missing[*]}"
+  exit 1
+}
+
+detect_optional_tools() {
+  local tool
+  for tool in "${_optional_tools[@]}"; do
+    declare -g "_has_${tool}=false"
+    command -v "$tool" >/dev/null 2>&1 && declare -g "_has_${tool}=true"
+  done
+}
+
+_config_warnings=()
+
+config_warn() {
+  local c_name c_val c_reset
+  c_name=$(color bold yellow)
+  c_val=$(color red)
+  c_reset=$'\033[0m'
+  _config_warnings+=("$(printf '%s%s%s: %s%q%s — %s' "$c_name" "$1" "$c_reset" "$c_val" "$2" "$c_reset" "$3")")
+}
+
+config_flush_warnings() {
+  [[ ${#_config_warnings[@]} -eq 0 ]] && return
+  local c_header c_bullet c_prompt c_reset
+  c_header=$(color bold red)
+  c_bullet=$(color cyan)
+  c_prompt=$(color dim white)
+  c_reset=$'\033[0m'
+  {
+    printf '%s%s: invalid configuration%s\n' "$c_header" "$_name" "$c_reset"
+    for w in "${_config_warnings[@]}"; do
+      printf '  %s•%s %s\n' "$c_bullet" "$c_reset" "$w"
+    done
+    printf '\n%sPress any key to continue...%s' "$c_prompt" "$c_reset"
+  } >/dev/tty
+  read -rn1 </dev/tty
+  printf '\n' >/dev/tty
+}
+
+config_str() {
+  local -n _sref="$1"
+  _sref="${_sref:-$2}"
+}
+
+config_bool() {
+  local -n _bref="$1"
+  local default="$2"
+  _bref="${_bref:-$default}"
+  if [[ "$_bref" != "true" && "$_bref" != "false" ]]; then
+    config_warn "$1" "$_bref" "defaulting to '$default'"
+    _bref="$default"
+  fi
+}
+
+config_key() {
+  local -n _kref="$1"
+  local default="$2"
+  _kref="${_kref:-$default}"
+  [[ "$_kref" =~ $_fzf_key_pattern ]] || {
+    config_warn "$1" "$_kref" "defaulting to '$default'"
+    _kref="$default"
+  }
+}
+
+config_enum() {
+  local _var="$1" _default="$2"
+  shift 2
+  local -n _eref="$_var"
+  _eref="${_eref:-$_default}"
+  local v
+  for v in "$@"; do [[ "$_eref" == "$v" ]] && return; done
+  config_warn "$_var" "$_eref" "defaulting to '$_default', valid: $*"
+  _eref="$_default"
+}
+
+config_color() {
+  local -n _cref="$1"
+  local default="$2"
+  if [[ -n "$_cref" && "$_cref" != $'\033'* ]]; then
+    local word
+    for word in $_cref; do
+      [[ "$word" =~ $_color_word_pattern ]] && continue
+      config_warn "$1" "$_cref" "defaulting to '$default'"
+      _cref=""
+      break
+    done
+  fi
+  _cref=$(resolve_color "${_cref:-$default}")
+}
+
+config_paths() {
+  local valid=() entry path
+  [[ ${#SEARCH_PATHS[@]} -eq 0 ]] && SEARCH_PATHS=(~/:3)
+  for entry in "${SEARCH_PATHS[@]}"; do
+    if [[ "$entry" =~ ^(.+):([0-9]+)$ ]]; then
+      path="${BASH_REMATCH[1]}"
+    else
+      path="$entry"
+    fi
+    path="${path/#\~/$HOME}"
+    if [[ ! -d "$path" ]]; then
+      config_warn "SEARCH_PATHS" "$entry" "skipping, directory not found"
+      continue
+    fi
+    valid+=("$entry")
+  done
+  [[ ${#valid[@]} -eq 0 ]] && valid=(~/:3)
+  SEARCH_PATHS=("${valid[@]}")
+}
+
+colorize_label() {
+  local color_prefix="$1" label="$2" color_name="$3"
+  while IFS= read -r item; do
+    printf '%s%s%s%s%s\n' "$color_prefix" "$label" "$COLOR_RESET" "$color_name" "$item"
+  done
+}
+
+colorize_path() {
+  local color_prefix="$1" color_name="$2"
+  while IFS= read -r dir; do
+    dir="${dir%/}"
+    dir="${dir/#"$HOME"/\~}"
+    printf '%s%s/%s%s%s\n' "$color_prefix" "${dir%/*}" "$COLOR_RESET" "$color_name" "${dir##*/}"
+  done
+}
+
+list_sessions() {
+  local raw
+  raw=$(tmux list-sessions -F "#{session_name}" 2>/dev/null) || return
+  [[ -z "$raw" ]] && return
+
+  if [[ -n "${TMUX}" ]]; then
+    local current
+    current=$(tmux display-message -p '#S')
+    raw=$(echo "$raw" | _grep -vFx "$current") || true
+  fi
+
+  [[ -n "$raw" ]] && printf '%s\n' "$raw"
+}
+
+list_zoxide() {
+  if ! $_has_zoxide; then
+    log debug "list_zoxide: zoxide not available, skipping"
+    return
+  fi
+  zoxide query -l 2>/dev/null | while IFS= read -r path; do
+    path="${path%/}"
+    [[ -d "$path" ]] || continue
+    printf '%s\n' "$path"
+  done
+}
+
+list_dirs() {
+  local fd_flags=(--type d --follow --absolute-path --min-depth 1 --color=never)
+  [[ "$HIDDEN" == "true" ]] && fd_flags+=(--hidden)
+
+  for entry in "${SEARCH_PATHS[@]}"; do
+    if [[ "$entry" =~ ^(.+):([0-9]+)$ ]]; then
+      path="${BASH_REMATCH[1]}"
+      depth="${BASH_REMATCH[2]}"
+    else
+      path="$entry"
+      depth="${MAX_DEPTH:-1}"
+    fi
+
+    path="${path/#\~/$HOME}"
+    [[ -d "$path" ]] || continue
+
+    if $_has_fd; then
+      fd "${fd_flags[@]}" --max-depth "$depth" . "$path" 2>/dev/null
+    elif [[ "$HIDDEN" == "true" ]]; then
+      find -L "$path" -mindepth 1 -maxdepth "$depth" -type d 2>/dev/null
+    else
+      find -L "$path" -mindepth 1 -maxdepth "$depth" -type d -not -path '*/.*' 2>/dev/null
+    fi
+  done
+}
+
+build_candidates() {
+  local zoxide_results zoxide_set
+  mapfile -t zoxide_results < <(list_zoxide)
+  zoxide_set=$(printf '%s\n' "${zoxide_results[@]}")
+  log debug "build_candidates: ${#zoxide_results[@]} zoxide entries"
+
+  list_sessions | colorize_label "$COLOR_SESSION_PREFIX" "$SESSION_PREFIX" "$COLOR_SESSION_NAME"
+  printf '%s\n' "${zoxide_results[@]}" | colorize_path "$COLOR_ZOXIDE_PREFIX" "$COLOR_ZOXIDE_NAME"
+  list_dirs | while IFS= read -r path; do
+    path="${path%/}"
+    _grep -qFx "$path" <<<"$zoxide_set" && continue
+    printf '%s\n' "$path"
+  done | colorize_path "$COLOR_DIR_PREFIX" "$COLOR_DIR_NAME"
+}
+
+strip_ansi() {
+  sed 's/\x1b\[[0-9;]*m//g'
+}
+
+pick() {
+  fzf --ansi --prompt=" Session: " --print-query --expect="$KEY_KILL" \
+    --header="$KEY_KILL: kill session"
+}
+
+session_switch() {
+  log info "session_switch: switching to '$1'"
+  if [[ -z "$TMUX" ]]; then
+    exec tmux -u attach -t "=$1"
   else
-    tmux new -d -s "$session" && tmux -u switch -t "$session"
+    tmux -u switch -t "=$1"
   fi
-fi
+}
+
+session_open_dir() {
+  local real_path base_name session_name suffix stored_path
+  real_path="${1/#\~/$HOME}"
+  base_name=$(basename "$real_path" | tr . _)
+  session_name="$base_name"
+  suffix=0
+
+  while tmux has-session -t "=$session_name" 2>/dev/null; do
+    stored_path=$(tmux show-environment -t "=$session_name" FZT_PATH 2>/dev/null | sed 's/^FZT_PATH=//')
+    if [[ "$stored_path" == "$real_path" ]]; then
+      session_switch "$session_name"
+      return
+    fi
+    suffix=$((suffix + 1))
+    session_name="${base_name}-${suffix}"
+  done
+
+  log info "session_open_dir: creating session '$session_name' at '$real_path'"
+  if [[ -z "$TMUX" ]]; then
+    exec tmux -u new -s "$session_name" -c "$real_path" \; set-environment FZT_PATH "$real_path"
+  else
+    tmux new -d -s "$session_name" -c "$real_path"
+    tmux set-environment -t "=$session_name" FZT_PATH "$real_path"
+    tmux -u switch -t "=$session_name"
+  fi
+}
+
+session_new() {
+  log info "session_new: '$1'"
+  if tmux has-session -t "=$1" 2>/dev/null; then
+    session_switch "$1"
+  elif [[ -z "$TMUX" ]]; then
+    exec tmux -u new -s "$1"
+  else
+    tmux new -d -s "$1" && tmux -u switch -t "=$1"
+  fi
+}
+
+check_required_tools
+detect_optional_tools
+
+CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/$_name"
+CONFIG_FILE="${CONFIG_FILE:-$_name.conf}"
+CONFIG_FILE_NAME="$CONFIG_DIR/$CONFIG_FILE"
+
+# shellcheck disable=SC1090
+[[ -f "$CONFIG_FILE_NAME" ]] && source "$CONFIG_FILE_NAME"
+
+LOG_DIR="${LOG_DIR:-${XDG_STATE_HOME:-$HOME/.local/state}/$_name}"
+LOG_FILE="${LOG_FILE:-$_name.log}"
+LOG_FILE_NAME="$LOG_DIR/$LOG_FILE"
+
+config_enum LOG_LEVEL "off" off debug info warn error
+
+log info "$_name starting"
+log debug "config file: $CONFIG_FILE_NAME (loaded: $([[ -f "$CONFIG_FILE_NAME" ]] && echo yes || echo no))"
+log debug "optional tools: fd=$_has_fd rg=$_has_rg zoxide=$_has_zoxide"
+
+config_paths
+config_bool HIDDEN "true"
+config_key KEY_KILL "ctrl-d"
+config_str SESSION_PREFIX "[session] "
+config_color COLOR_SESSION_PREFIX "bold green"
+config_color COLOR_SESSION_NAME "white"
+config_color COLOR_ZOXIDE_PREFIX "dim white"
+config_color COLOR_ZOXIDE_NAME "bold blue"
+config_color COLOR_DIR_PREFIX "dim white"
+config_color COLOR_DIR_NAME "bold cyan"
+
+log debug "SEARCH_PATHS: ${SEARCH_PATHS[*]}"
+log debug "SESSION_PREFIX='$SESSION_PREFIX' HIDDEN=$HIDDEN KEY_KILL=$KEY_KILL"
+
+config_flush_warnings
+
+while true; do
+  log debug "opening picker"
+  mapfile -t _pick < <(build_candidates | pick | strip_ansi)
+  _key="${_pick[1]}"
+  _result="${_pick[2]:-${_pick[0]}}"
+  log debug "picker result: key='$_key' result='$_result'"
+  [[ -z "$_result" ]] && {
+    log info "picker cancelled"
+    exit 0
+  }
+
+  if [[ "$_key" == "$KEY_KILL" ]]; then
+    if [[ "${_pick[2]}" == "$SESSION_PREFIX"* ]]; then
+      log info "killing session '${_pick[2]#"$SESSION_PREFIX"}'"
+      tmux kill-session -t "=${_pick[2]#"$SESSION_PREFIX"}" 2>/dev/null
+    fi
+    continue
+  fi
+
+  if [[ "$_result" == "$SESSION_PREFIX"* ]]; then
+    session_switch "${_result#"$SESSION_PREFIX"}"
+  elif [[ "$_result" == */* ]]; then
+    session_open_dir "$_result"
+  else
+    session_new "$_result"
+  fi
+  break
+done

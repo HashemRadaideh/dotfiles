@@ -30,13 +30,11 @@ if [ -f "$cache" ]; then
 fi
 
 loc="$(curl -s https://ipinfo.io | jq -r '.loc' | tr ',' ' ')"
-lat="$(echo $loc | awk '{print $1}')"
-lon="$(echo $loc | awk '{print $2}')"
+lat="$(echo "$loc" | awk '{print $1}')"
+lon="$(echo "$loc" | awk '{print $2}')"
 url="https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${api_key}&units=metric"
 
-response="$(curl -s -f "$url")"
-
-if [ $? -ne 0 ] || [ -z "$response" ]; then
+if ! response="$(curl -s -f "$url")" || [ -z "$response" ]; then
   # Fall back to stale cache if available
   if [ -f "$cache" ]; then
     echo "Warning: Failed to fetch fresh data, using stale cache." >&2

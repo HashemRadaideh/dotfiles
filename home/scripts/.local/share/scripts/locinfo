@@ -7,16 +7,16 @@ import requests
 
 CSV_PATH = "/home/hashem/.files/misc/IP2LOCATION-LITE-DB11.CSV"
 
-ip = requests.get("https://ipinfo.io/ip").text.strip()
+ip = requests.get("https://ipinfo.io/ip", timeout=10).text.strip()
 
 
-def get_lat_lon(ip):
-    with open(CSV_PATH, "r") as file:
+def get_lat_lon(ip_addr):
+    with open(CSV_PATH, "r", encoding="utf-8") as file:
         reader = csv.reader(file)
         for row in reader:
             ip_range_start = int(row[0])  # 'IP From'
             ip_range_end = int(row[1])  # 'IP To'
-            if ip_range_start <= int(ip_address(ip)) <= ip_range_end:
+            if ip_range_start <= int(ip_address(ip_addr)) <= ip_range_end:
                 return {
                     "country": row[3],
                     "region": row[4],
@@ -26,6 +26,7 @@ def get_lat_lon(ip):
                     "zipcode": row[8],
                     "timezone": row[9],
                 }
+    return None
 
 
 data = get_lat_lon(ip)

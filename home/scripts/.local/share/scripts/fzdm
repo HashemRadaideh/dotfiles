@@ -13,7 +13,7 @@ starter() {
   fi
 }
 
-list=("$(\ls "$XDG_DATA_HOME/sessions" | sort)" "tmux" "$(tty)" "power off" "reboot" "sleep" "logout")
+list=("$(command ls "$XDG_DATA_HOME/sessions" | sort)" "tmux" "$(tty)" "power off" "reboot" "sleep" "logout")
 file=$(printf "%s\n" "${list[@]}" | fzf --border-label=" Fuzzy Display Manager (fzdm) ")
 
 [ -z "$file" ] && exit

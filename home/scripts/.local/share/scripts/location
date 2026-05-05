@@ -11,6 +11,7 @@ fi
 
 response="$(curl -s https://ipinfo.io | jq -r '.loc' | tr ',' ':')"
 
+# shellcheck disable=SC2181
 if [ $? -ne 0 ] || [ -z "$response" ]; then
   echo "Error: Failed to fetch weather data." >&2
   exit 1

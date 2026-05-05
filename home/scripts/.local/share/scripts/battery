@@ -68,12 +68,10 @@ ICONS = {
 }
 
 icon_preference = "simple"
-tray_icon = None
+tray_icon = None  # pylint: disable=invalid-name
 
 
 def notify(title, message, percent, plugged):
-    global icon_preference
-
     if icon_preference == "simple":
         if plugged:
             if percent >= 95:
@@ -125,8 +123,6 @@ def notify(title, message, percent, plugged):
 
 
 def update_tray_icon(percent, plugged):
-    global tray_icon, icon_preference
-
     if icon_preference == "simple":
         if plugged:
             if percent >= 95:
@@ -206,7 +202,7 @@ def battery_monitor():
 
 
 def setup_tray_icon():
-    global tray_icon
+    global tray_icon  # pylint: disable=global-statement
 
     tray_icon = pystray.Icon("Battery Monitor")
     tray_icon.menu = pystray.Menu(
@@ -230,7 +226,7 @@ def setup_tray_icon():
 
 
 def switch_icon_preference(preference):
-    global icon_preference
+    global icon_preference  # pylint: disable=global-statement
     icon_preference = preference
 
 
