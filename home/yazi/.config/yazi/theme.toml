@@ -1,7 +1,7 @@
 "$schema" = "https://yazi-rs.github.io/schemas/theme.json"
 
-[app]
-overall = { bg = "#303446" }
+# [app]
+# overall = { bg = "#303446" }
 
 [mgr]
 cwd = { fg = "#81c8be" }
