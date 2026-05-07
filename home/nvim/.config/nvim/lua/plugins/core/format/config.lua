@@ -72,8 +72,9 @@ return {
   notify_no_formatters = false,
   formatters = {
     ["google-java-format"] = {
-      prepend_args = function(_self, ctx)
-        return vim.bo[ctx.buf].shiftwidth > 2 and { "--aosp" } or {}
+      prepend_args = function(_self, _ctx)
+        -- return vim.bo[ctx.buf].shiftwidth > 2 and { "--aosp" } or {}
+        return { "-a" }
       end,
     },
     ["ruff_format"] = {

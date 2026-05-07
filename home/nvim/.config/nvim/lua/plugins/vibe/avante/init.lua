@@ -83,3 +83,4 @@ return {
   },
   opts = require("plugins.vibe.avante.config"),
 }
+

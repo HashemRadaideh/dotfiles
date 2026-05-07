@@ -15,5 +15,6 @@ return {
 
     vim.g.wrapwidth_hl = "Conceal"
     -- vim.g.wrapwidth_sign = "┊"
+    -- vim.g.wrapwidth_number = true
   end,
 }
