@@ -5,16 +5,16 @@ fi
 export STARSHIP_CONFIG="$DOTFILES/home/starship/.config/starship/starship.toml"
 eval "$(starship init zsh)"
 
-zle-keymap-select() {
+zvm_after_select_vi_mode() {
   starship_zle-keymap-select
-  _cursor_by_keymap
 }
-zle -N zle-keymap-select
 
 zle-line-init() {
   emulate -L zsh
 
   [[ $CONTEXT == start ]] || return 0
+
+  zle -K viins
 
   while true; do
     zle .recursive-edit
