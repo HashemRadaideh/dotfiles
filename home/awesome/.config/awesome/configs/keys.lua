@@ -106,7 +106,7 @@ awful.keyboard.append_global_keybindings({
   end, { description = "Show main menu", group = "System" }),
 
   awful.key({ Super }, "Return", function()
-    awful.spawn(Terminal_multiplexed)
+    awful.spawn(Terminal_multiplexer)
   end, { description = "Open a terminal with multiplexer", group = "Launch" }),
 
   awful.key({ Super, Shift }, "Return", function()

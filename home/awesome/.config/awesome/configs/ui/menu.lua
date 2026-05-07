@@ -48,7 +48,6 @@ Main_menu = awful.menu({
           "Editors",
           {
             { "Terminal", Terminal_editor },
-            { "Visual", Graphical_editor },
           },
         },
       },
@@ -82,7 +81,6 @@ Main_menu = awful.menu({
           "Configure",
           {
             { "Terminal editor", Terminal_editor .. " " .. awesome.conffile },
-            { "Visual editor", Graphical_editor .. " " .. awesome.conffile },
           },
         },
         {

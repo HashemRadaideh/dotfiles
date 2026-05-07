@@ -33,10 +33,9 @@ Bluetooth_manager = "blueberry" -- "cinnamon-settings blueberry" -- "blueman-man
 File_manager = "thunar"
 Network_manager = "nmrofi" -- "cinnamon-settings network" or Terminal_emulator .. " -e " .. Shell .. " -c nmtui"
 Audio_manager = "pavucontrol"
-Graphical_editor = os.getenv("VISUAL")
 Terminal_editor = Terminal_emulator .. " -e " .. Shell .. " -c " .. (os.getenv("EDITOR") or "nvim")
 Terminal_file_manager = Terminal_emulator .. " -e " .. Shell .. " -c yazi"
-Terminal_multiplexed = Terminal_emulator .. " -e " .. Shell .. " -c fzt"
+Terminal_multiplexer = Terminal_emulator .. " -e fzt"
 Web_browser = "zen-browser"
 
 require("configs")
