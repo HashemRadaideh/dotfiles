@@ -186,6 +186,10 @@ bind = ,XF86AudioNext, exec, playerctl next
 bind = ,XF86AudioStop, exec, playerctl stop
 bind = ,XF86Calculator, exec, rofi -show calc -modi calc -no-show-match -no-sort -theme "themes/calculator.rasi" | wl-copy
 
-bind = , Print, exec, screenshot fullscreen
-bind = SHIFT, Print, exec, screenshot selected
-bind = SUPER, Print, exec, screenshot focused
+bind = , Print, exec, creamshot fullscreen
+bind = SHIFT, Print, exec, creamshot selected
+bind = SUPER, Print, exec, creamshot focused
+
+bind = SUPER, S, exec, creamshot fullscreen
+bind = SUPER SHIFT, S, exec, creamshot selected
+bind = SUPER CTRL, S, exec, creamshot focused
