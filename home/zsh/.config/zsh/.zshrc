@@ -1,5 +1,15 @@
 [[ -n $SSH_CONNECTION ]] && stty -echo 2>/dev/null
 
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+
+if [ ! -d "$ZINIT_HOME" ]; then
+  mkdir -p "$(dirname "$ZINIT_HOME")"
+  git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+fi
+
+# shellcheck source=/dev/null
+source "${ZINIT_HOME}/zinit.zsh"
+
 source "$ZDOTDIR/rc.zsh"
 
 if [[ -n $SSH_CONNECTION ]]; then

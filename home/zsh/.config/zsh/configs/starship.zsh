@@ -25,7 +25,6 @@ zle-line-init() {
 
   local saved_prompt=$PROMPT
   local saved_rprompt=$RPROMPT
-  # shellcheck disable=SC2016
   PROMPT='$(STARSHIP_CONFIG="$DOTFILES/home/starship/.config/starship/transient.toml" starship prompt --terminal-width="$COLUMNS" --keymap="${KEYMAP:-}" --status="$STARSHIP_CMD_STATUS" --pipestatus="${STARSHIP_PIPE_STATUS[*]}" --cmd-duration="${STARSHIP_DURATION:-}" --jobs="$STARSHIP_JOBS_COUNT")'
   RPROMPT=''
   zle .reset-prompt

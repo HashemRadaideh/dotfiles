@@ -19,7 +19,6 @@ python-venv-hook() {
   local dir="$PWD"
   while [[ "$dir" != "/" ]]; do
     if [[ -f "$dir/.venv/bin/activate" ]]; then
-      # shellcheck source=/dev/null
       source "$dir/.venv/bin/activate"
       return
     fi

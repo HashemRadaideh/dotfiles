@@ -1,3 +1,3 @@
 alias lc="lazydocker"
 
-bindkey -s '^f' "^ulazydocker^m"
+bindkey -s '^f' '^ulazydocker^m'

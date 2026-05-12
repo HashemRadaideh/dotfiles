@@ -1,17 +1,3 @@
-export KEYTIMEOUT=1
-
-vi-yank-clipboard() {
-  zle vi-yank
-  if [[ "$XDG_SESSION_TYPE" == x11 ]]; then
-    echo "$CUTBUFFER" | xclip -sel c
-  else
-    echo "$CUTBUFFER" | wl-copy
-  fi
-}
-zle -N vi-yank-clipboard
-
-bindkey -M vicmd 'y' vi-yank-clipboard
-
 autoload edit-command-line
 zle -N edit-command-line
 
@@ -63,5 +49,5 @@ nvims-rm() {
   fi
 }
 
-bindkey -s '^s' "^unvims^m"
-bindkey -s '^a' "^unvim^m"
+bindkey -s '^s' '^unvims^m'
+bindkey -s '^a' '^unvim^m'

@@ -42,7 +42,8 @@ export QT_QPA_PLATFORM="xcb"
 export QT_QPA_PLATFORMTHEME="qt6ct"
 # export QT_STYLE_OVERRIDE="kvantum"
 
-export FZF_DEFAULT_OPTS='--layout=reverse --cycle --exit-0'
+export FZF_DEFAULT_COMMAND='fd --type file --follow --hidden --exclude .git --color=always'
+export FZF_DEFAULT_OPTS="--layout=reverse --cycle --exit-0 --preview='bat --decorations=always --color=always {} 2>/dev/null' --bind=ctrl-u:preview-page-up,ctrl-d:preview-page-down"
 
 export _JAVA_OPTIONS="-Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java"
 export _JAVA_AWT_WM_NONREPARENTING=1
@@ -66,6 +67,9 @@ export GOPATH="$XDG_DATA_HOME/go"
 export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
 export NVM_DIR="$XDG_DATA_HOME/nvm"
+export NVM_LAZY_LOAD=true
+export NVM_AUTO_USE=true
+export PER_DIRECTORY_HISTORY_BASE="$XDG_DATA_HOME/zsh/directory_history"
 # export GEM_HOME="$(gem env user_gemhome)"
 export GEM_HOME="$XDG_DATA_HOME/gem"
 export SDKMAN_DIR="$XDG_DATA_HOME/sdkman"
