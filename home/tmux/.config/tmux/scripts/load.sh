@@ -2,10 +2,7 @@
 
 LOAD=$(uptime | awk -F'average: ' '{print $2}' | cut -d, -f1 | xargs)
 CPUS=$(nproc 2>/dev/null || echo 1)
-[ -z "$LOAD" ] && {
-  echo "N/A"
-  exit
-}
+[ -z "$LOAD" ] && exit
 
 LOW=$(tmux show-option -gqv "@load_low")
 MED=$(tmux show-option -gqv "@load_medium")

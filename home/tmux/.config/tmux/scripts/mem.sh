@@ -2,10 +2,10 @@
 
 TOTAL_KB=$(awk '/^MemTotal:/{print $2}' /proc/meminfo)
 AVAIL_KB=$(awk '/^MemAvailable:/{print $2}' /proc/meminfo)
-[ -z "$TOTAL_KB" ] && { echo "N/A"; exit; }
+[ -z "$TOTAL_KB" ] && exit
 
-USED_KB=$(( TOTAL_KB - AVAIL_KB ))
-PCT=$(( USED_KB * 100 / TOTAL_KB ))
+USED_KB=$((TOTAL_KB - AVAIL_KB))
+PCT=$((USED_KB * 100 / TOTAL_KB))
 
 fmt_mem() {
   local kb=$1

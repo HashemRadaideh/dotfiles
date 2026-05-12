@@ -1,18 +1,12 @@
 #!/bin/bash
 
 IFACE=$(ip route get 1.1.1.1 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i=="dev") {print $(i+1); exit}}')
-[ -z "$IFACE" ] && {
-  echo "N/A"
-  exit
-}
+[ -z "$IFACE" ] && exit
 
 TMPFILE="/tmp/tmux_netio_${IFACE}"
 
 read -r RX TX <<<"$(awk -v iface="${IFACE}:" '$1==iface{print $2, $10}' /proc/net/dev)"
-[ -z "$RX" ] && {
-  echo "N/A"
-  exit
-}
+[ -z "$RX" ] && exit
 
 if [ -f "$TMPFILE" ]; then
   read -r LAST_TIME LAST_RX LAST_TX <"$TMPFILE"

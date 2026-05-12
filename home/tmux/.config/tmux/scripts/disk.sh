@@ -1,10 +1,7 @@
 #!/bin/bash
 
 PCT=$(df / | awk 'NR==2{gsub(/%/,"",$5); print $5}')
-[ -z "$PCT" ] && {
-  echo "N/A"
-  exit
-}
+[ -z "$PCT" ] && exit
 
 LOW=$(tmux show-option -gqv "@disk_low")
 MED=$(tmux show-option -gqv "@disk_medium")

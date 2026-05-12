@@ -3,7 +3,7 @@
 TMPFILE="/tmp/tmux_cpu"
 NOW=$(date +%s)
 
-read -r _ user nice sys idle iowait irq softirq steal _ _ < /proc/stat
+read -r _ user nice sys idle iowait irq softirq steal _ _ </proc/stat
 TOTAL=$((user + nice + sys + idle + iowait + irq + softirq + steal))
 IDLE=$((idle + iowait))
 
@@ -16,7 +16,7 @@ if [ -f "$TMPFILE" ]; then
     echo "$NOW $TOTAL $IDLE" >"$TMPFILE"
 
     if [ "$DTOTAL" -gt 0 ]; then
-      PCT=$(( (DTOTAL - DIDLE) * 100 / DTOTAL ))
+      PCT=$(((DTOTAL - DIDLE) * 100 / DTOTAL))
     else
       PCT=0
     fi

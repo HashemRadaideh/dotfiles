@@ -4,8 +4,8 @@ TOTAL_KB=$(awk '/^SwapTotal:/{print $2}' /proc/meminfo)
 FREE_KB=$(awk '/^SwapFree:/{print $2}' /proc/meminfo)
 [ -z "$TOTAL_KB" ] || [ "$TOTAL_KB" -eq 0 ] && exit
 
-USED_KB=$(( TOTAL_KB - FREE_KB ))
-PCT=$(( USED_KB * 100 / TOTAL_KB ))
+USED_KB=$((TOTAL_KB - FREE_KB))
+PCT=$((USED_KB * 100 / TOTAL_KB))
 
 LOW=$(tmux show-option -gqv "@swap_low")
 MED=$(tmux show-option -gqv "@swap_medium")

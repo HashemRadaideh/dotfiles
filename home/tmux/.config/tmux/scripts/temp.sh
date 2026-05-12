@@ -10,10 +10,7 @@ for f in /sys/class/hwmon/hwmon*/temp*_input; do
 done
 
 [ -z "$TEMP" ] && TEMP=$(cat /sys/class/thermal/thermal_zone0/temp 2>/dev/null)
-[ -z "$TEMP" ] && {
-  echo "N/A"
-  exit
-}
+[ -z "$TEMP" ] && exit
 
 FREEZING=$(tmux show-option -gqv "@temp_freezing")
 LOW=$(tmux show-option -gqv "@temp_low")
@@ -41,21 +38,21 @@ fi
 
 UNIT=$(tmux show-option -gqv "@temp_unit")
 case "${UNIT:-celsius}" in
-  fahrenheit)
-    UNIT_ICON=$(tmux show-option -gqv "@temp_feh_icon")
-    UNIT_ICON="${UNIT_ICON:-°F}"
-    DISPLAY_DEG=$(( DEG * 9 / 5 + 32 ))
-    ;;
-  kelvin)
-    UNIT_ICON=$(tmux show-option -gqv "@temp_kel_icon")
-    UNIT_ICON="${UNIT_ICON:-°K}"
-    DISPLAY_DEG=$(( DEG + 273 ))
-    ;;
-  *)
-    UNIT_ICON=$(tmux show-option -gqv "@temp_cel_icon")
-    UNIT_ICON="${UNIT_ICON:-°C}"
-    DISPLAY_DEG="$DEG"
-    ;;
+fahrenheit)
+  UNIT_ICON=$(tmux show-option -gqv "@temp_feh_icon")
+  UNIT_ICON="${UNIT_ICON:-°F}"
+  DISPLAY_DEG=$((DEG * 9 / 5 + 32))
+  ;;
+kelvin)
+  UNIT_ICON=$(tmux show-option -gqv "@temp_kel_icon")
+  UNIT_ICON="${UNIT_ICON:-°K}"
+  DISPLAY_DEG=$((DEG + 273))
+  ;;
+*)
+  UNIT_ICON=$(tmux show-option -gqv "@temp_cel_icon")
+  UNIT_ICON="${UNIT_ICON:-°C}"
+  DISPLAY_DEG="$DEG"
+  ;;
 esac
 
 TMPL=$(tmux show-option -gqv "@temp_view_tmpl")

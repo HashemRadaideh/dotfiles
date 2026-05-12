@@ -84,7 +84,7 @@ Charging)
   ;;
 Full | "Not charging")
   COLOR="${CHARGED_COLOR:-#8caaee}"
-  ICON="󰁹"
+  ICON=""
   ;;
 *)
   ICON=$(discharge_icon "$PCT")
